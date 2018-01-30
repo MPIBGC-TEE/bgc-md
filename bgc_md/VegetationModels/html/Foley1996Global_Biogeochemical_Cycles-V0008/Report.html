@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: IBIS, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: IBIS, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 26/1/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Foley et al. (1996)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>Here we present a new terrestrial biosphere model (the Integrated Biosphere Simulator - IBIS) which demonstrates how land surface biophysics, terrestrial carbon fluxes, and global vegetation dynamics can be represented in a single, physically consistent modeling framework. In order to integrate a wide range of biophysical, physiological, and ecological processes, the model is designed around a hicrarchical, modular structure and uses a common state description throughout. First, a coupled simulation of the surface water, energy, and carbon fluxes is performed on hourly timesteps and is integrated over the year to estimate the annual water and carbon balance. Next, the annual carbon balance is used to predict changes in the leaf area index and biomass for each of nine plant functional types, which compete for light and water using different ecological strategies. The resulting patterns of annual evapotranspiration, runoff, and net primary productivity are in good agreement with observations. In addition, the model simulates patterns of vegetation dynamics that qualitatively agree with features of the natural process of secondary succession. Comparison of the model's inferred near- equilibrium vegetation categories with a potential natural vegetation map shows a fair degree of agreement. This integrated modeling framework provides a means of simulating hoth rapid biophysical processes and long-term ecosystem dynamics that can be directly incorporated within atmospheric models.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global ### Available parameter values</p>
+<table>
+<caption>Information on given parameter sets</caption>
+<thead>
+<tr class="header">
+<th align="left">Abbreviation</th>
+<th align="left">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Tropical evergreen trees</td>
+<td align="left"><span class="citation">Foley et al. (1996)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Values <br> <br>key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{il}\)</span></td>
+<td align="left">Carbon in leaves of plant functional type (PFT) i</td>
+<td align="center">foliage</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{is}\)</span></td>
+<td align="left">Carbon in transport tissue (mainly stems) of PFT<span class="math inline">\(_i\)</span></td>
+<td align="center">wood</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{ir}\)</span></td>
+<td align="left">Carbon in fine roots of PFT<span class="math inline">\(_i\)</span></td>
+<td align="center">fine_roots</td>
+</tr>
+</tbody>
+</table>
+<h1 id="photosynthetic-parameters">Photosynthetic Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Photosynthetic Parameters</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Tropical evergreen trees</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(NPP_{i}\)</span></td>
+<td align="left">Net Primary Production for PFT<span class="math inline">\(_i\)</span></td>
+<td align="center">NPP</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="allocation-coefficients">Allocation Coefficients</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Allocation Coefficients</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Tropical evergreen trees</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{il}\)</span></td>
+<td align="left">Fraction of annual NPP allocated to leaves for PFT<span class="math inline">\(_i\)</span></td>
+<td align="center">part_foliage</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.25\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(a_{is}\)</span></td>
+<td align="left">Fraction of annual NPP allocated to stem for PFT<span class="math inline">\(_i\)</span></td>
+<td align="center">part_wood</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.5\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{ir}\)</span></td>
+<td align="left">Fraction of annual NPP allocated to roots for PFT<span class="math inline">\(_i\)</span></td>
+<td align="center">part_roots</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.25\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="cycling-rates">Cycling Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Cycling Rates</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Tropical evergreen trees</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\tau_{il}\)</span></td>
+<td align="left">Residence time of carbon in leaves for PFT<span class="math inline">\(_i\)</span></td>
+<td align="center">cyc_foliage</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\tau_{is}\)</span></td>
+<td align="left">Residence time of carbon in stem for PFT<span class="math inline">\(_i\)</span></td>
+<td align="center">cyc_wood</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\tau_{ir}\)</span></td>
+<td align="left">Residence time of carbon in roots for PFT<span class="math inline">\(_i\)</span></td>
+<td align="center">cyc_roots</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Values <br> <br>key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{il}\\C_{is}\\C_{ir}\end{matrix}\right]\)</span></td>
+<td align="center">state_vector</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=NPP_{i}\)</span></td>
+<td align="center">scalar_func_phot</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}a_{il}\\a_{is}\\a_{ir}\end{matrix}\right]\)</span></td>
+<td align="center">part_coeff</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of turnover (cycling) rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\frac{1}{\tau_{il}} &amp; 0 &amp; 0\\0 &amp; -\frac{1}{\tau_{is}} &amp; 0\\0 &amp; 0 &amp; -\frac{1}{\tau_{ir}}\end{matrix}\right]\)</span></td>
+<td align="center">cyc_matrix</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td align="center">state_vector_derivative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{il}: NPP_{i}\cdot a_{il}\)</span> <br><span class="math inline">\(C_{is}: NPP_{i}\cdot a_{is}\)</span> <br><span class="math inline">\(C_{ir}: NPP_{i}\cdot a_{ir}\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<span class="math inline">\(C_{il}: \frac{C_{il}}{\tau_{il}}\)</span> <br><span class="math inline">\(C_{is}: \frac{C_{is}}{\tau_{is}}\)</span> <br><span class="math inline">\(C_{ir}: \frac{C_{ir}}{\tau_{ir}}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\frac{C_{il}}{\tau_{il}} + NPP_{i}\cdot a_{il}\\-\frac{C_{is}}{\tau_{is}} + NPP_{i}\cdot a_{is}\\-\frac{C_{ir}}{\tau_{ir}} + NPP_{i}\cdot a_{ir}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\frac{1}{\tau_{il}} &amp; 0 &amp; 0\\0 &amp; -\frac{1}{\tau_{is}} &amp; 0\\0 &amp; 0 &amp; -\frac{1}{\tau_{ir}}\end{matrix}\right]\)</span></p>
+<h1 id="references" class="references unnumbered">References</h1>
+<div id="ref-Foley1996Global_Biogeochemical_Cycles">
+<p>Foley, J. A., Prentice, I. C., Ramankutty, N., Lewis, S., Pollard, D., Sitch, S., &amp; Haxeltine, A. (1996). An Integrated biosphere model of land surface processes, terrestrial carbon balance, and vegetation dynamics. <em>Global Biogeochemical Cycles</em>, <em>10</em>, 603–628. <a href="http://doi.org/10.1029/96GB02692" class="uri">http://doi.org/10.1029/96GB02692</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,188 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: Andren1997EcologicalApplications
+name: ICBM
+longName: Introductory Carbon Balance Model
+version: 1
+model-id: S0002
+entryAuthor: "Holger Metzler"
+entryAuthorOrcid: 0000-0002-8239-1601
+entryCreationDate: 09/03/2016
+lastModification: _lm_
+#modApproach: 
+#spaceScale: global 
+timeScale: "30 years"
+#    unit: "1°"
+timeResolution: annual
+##doi: i10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+abstract: "A two-component model was devised, comprising young and old soil C, two decay constants, and parameters for litter input, ‘‘humification,’’ and external influences. Due to the model’s simplicity, the differential equations were solved analytically, and parameter optimizations can be made using generally available nonlinear regression programs. The calibration parameter values were derived from a 35-yr experiment with arable crops on a clay soil in central Sweden. We show how the model can be used for medium-term (30 yr) predictions of the effects of changed inputs, climate, initial pools, litter quality, etc., on soil carbon pools. Equations are provided for calculating steady-state pool sizes as well as model parameters from litter bag or $^{14}$C-labeled litter decomposition data. Strategies for model parameterization to different inputs, climatic regions, and soils, as well as the model’s relations to other model families, are briefly discussed."
+keywords: 
+    - "differential equations"
+    - "linear"
+    - "time invariant"
+    - "analytic"
+
+principles:
+    - "mass balance"
+    - "substrate dependence of decomposition"
+    - "heterogeneity of speed of decay"
+    - "internal transformations of organic matter"
+    - "environmental variability effects"
+
+bibtex: "@article{Andren1997EcologicalApplications, 
+            author = {Andr\\'{e}n, Olof and K\\\"{a}tterer, Thomas},
+            isbn = {1051-0761},
+            journal = {Ecological Applications},
+            number = {4},
+            pages = {1226--1236},
+            title = {{ICBM: the introductory carbon balance model for exploration of soil carbon balances}},
+            volume = {7},
+            year = {1997}
+            }"
+
+model:
+    - state_variables:
+        - Y:
+            desc: young pool of soil carbon
+#            key: "foliage"
+            unit: "kgCm^{-2}" 
+        - O: 
+            desc: old pool of soil carbon
+#            key: "wood"
+            unit: "kgCm^{-2}" 
+    
+    - decomposition_rates:
+        - k_1:
+            desc: decomposition rate of young pool
+            unit: "yr^{-1}"
+            type: parameter
+        - k_2:
+            desc: decomposition rate of old pool
+            unit: "yr^{-1}"
+            type: parameter
+
+    - input_components:
+        - i:
+            desc: mean annual carbon input
+            unit: "kgC m^{-2}yr^{-1}"
+            type: parameter
+
+    - transfer_coefficient:
+        - h:
+            desc: humification coefficient
+            type: parameter
+
+    - environmental_coefficients:
+        - r:
+            desc: climatic and edaphic factors
+            type: parameter
+
+    - time_variable:
+        - t:
+            unit: "yr"
+            key: time_symbol
+
+    - components:
+        - C:
+            desc: carbon content
+            exprs: "C = Matrix(2, 1, [Y, O])"
+            key: state_vector
+        - I:
+            desc: input vector
+            exprs: "I = Matrix(2, 1, [i, 0])"
+            key: input_vector
+        - xi:
+            desc: environmental effects multiplier
+            exprs: "xi = r"
+            key: env_eff_mult
+        - T:
+            desc: transition operator
+            exprs: "T = Matrix([[-1,  0],
+                                [ h, -1]])"
+            key: trans_op
+        - N:
+            desc: decomposition operator
+            exprs: "N = diag(k_1, k_2)"
+            key: decomp_op_nonlin
+        - f_s: 
+            exprs: "f_s = I + xi * T * N * C"
+            desc: the right hand side of the ode
+            key: state_vector_derivative
+
+#    - steady_state:
+
+model_run_data:
+    parameter_sets:
+        - "Bare fallow":
+            values:
+                k_1: 0.8
+                k_2: 0.00605
+                i: 0
+                h: 0.13
+                r: 1.32
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+        - "+N +straw":
+            values:
+                k_1: 0.8
+                k_2: 0.00605
+                i: 0.285
+                h: 0.125
+                r: 1.00
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+        - "-N +straw":
+            values: {k_1: 0.8, k_2: 0.00605, i: 0.248, h: 0.125, r: 1.22}
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+        - "-N -straw":
+            values: {k_1: 0.8, k_2: 0.00605, i: 0.057, h: 0.125, r: 1.17}
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+        - "+N -straw":
+            values: {k_1: 0.8, k_2: 0.00605, i: 0.091, h: 0.125, r: 1.07}
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+        - "Farmyard manure":
+            values: {k_1: 0.8, k_2: 0.00605, i: 0.272, h: 0.250, r: 1.10}
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+        - "Sewage sludge":
+            values: {k_1: 0.8, k_2: 0.00605, i: 0.296, h: 0.34, r: 0.97}
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+
+    initial_values:
+        - "Bare fallow":
+            values: {Y: 0.3, O: 3.96}
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+        - "+N +straw":
+            values: {Y: 0.3, O: 4.11}
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+        - "-N +straw":
+            values: {Y: 0.3, O: 4.05}
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+        - "-N -straw":
+            values: {Y: 0.3, O: 3.99}
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+        - "+N -straw":
+            values: {Y: 0.3, O: 4.02}
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+        - "Farmyard manure":
+            values: {Y: 0.3, O: 3.99}
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+        - "Sewage sludge":
+            values: {Y: 0.3, O: 4.14}
+            #doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+
+    run_times:
+        - RT1:
+            start: 0
+            end: 100
+            step_size: 0.1
+
+    possible_combinations:
+        - ["Bare fallow", "Bare fallow", RT1]
+        - ["+N +straw", "+N +straw", RT1]
+        - ["-N +straw", "-N +straw", RT1]
+        - ["-N -straw", "-N -straw", RT1]
+        - ["+N -straw", "+N -straw", RT1]
+        - ["Farmyard manure", "Farmyard manure", RT1]
+        - ["Sewage sludge", "Sewage sludge", RT1]
+
+    
+
+
+

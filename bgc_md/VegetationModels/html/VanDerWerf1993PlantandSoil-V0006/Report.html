@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: VanDerWerf1993PlantandSoil, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: VanDerWerf1993PlantandSoil, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 11/8/2015, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Van Der Werf, Enserink, Smit, &amp; Booij (1993)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>In this paper we model allocation of carbon and nitrogen to roots and leaves as a function of the nitrogen status of a plant. Under steady-state conditions, allocation of carbon and nitrogen to leaves is exponentially (positively) correlated with plant nitrogen concentration, whereas allocation to roots is correlated negatively, also in an exponential manner. Allocation functions derived under steady-state conditions are used to simulate biomass partitioning under non-steady-state nutrient conditions. Upon nitrogen deprivation, measured and simulated values are rather similar with time, suggesting that allocation functions derived under steady-state conditions also hold under non-steady-state conditions.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global</p>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(W_{l}\)</span></td>
+<td align="left">Dry weights of leaf blades</td>
+<td align="center">-</td>
+<td align="center">foliage</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(W_{s}\)</span></td>
+<td align="left">Dry weights of leaf sheaths</td>
+<td align="center">-</td>
+<td align="center">foliage</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(W_{r}\)</span></td>
+<td align="left">Dry weights of roots</td>
+<td align="center">-</td>
+<td align="center">fine_roots</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(N_{p}\)</span></td>
+<td align="left">Nitrogen. Rate of uptake obeys to the following expression</td>
+<td align="center"><span class="math inline">\(N_{p}=\sigma\cdot W_{r}\)</span></td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="additional-variables">Additional Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Additional Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{cl}\)</span></td>
+<td align="left">Cabon contents of leaf blades</td>
+<td align="center">variable</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{cs}\)</span></td>
+<td align="left">Cabon contents of leaf sheaths</td>
+<td align="center">variable</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{cr}\)</span></td>
+<td align="left">Cabon contents of roots</td>
+<td align="center">variable</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(r_{m}\)</span></td>
+<td align="left">Amount of carbon lost per day in root respiration (maintenance)</td>
+<td align="center">variable</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(c_{n u}\)</span></td>
+<td align="left">Amounts of carbon lost per unit of nitrogen taken up</td>
+<td align="center">variable</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(c_{g}\)</span></td>
+<td align="left">Amounts of carbon lost per unit of root biomass</td>
+<td align="center">variable</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\sigma\)</span></td>
+<td align="left">Rate of nitrogen uptake per unit of root weight</td>
+<td align="center">parameter</td>
+</tr>
+</tbody>
+</table>
+<h1 id="photosynthetic-parameters">Photosynthetic Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Photosynthetic Parameters</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\phi_{g}\)</span></td>
+<td align="left">Rate of gross photosynthesis per unit of leaf weight</td>
+<td align="center">GPP</td>
+<td align="center">parameter</td>
+</tr>
+</tbody>
+</table>
+<h1 id="allocation-coefficients">Allocation Coefficients</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Allocation Coefficients</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\alpha_{cl}\)</span></td>
+<td align="center">part_foliage</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\alpha_{cs}\)</span></td>
+<td align="center">part_wood</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\alpha_{cr}\)</span></td>
+<td align="center">part_roots</td>
+<td align="center">parameter</td>
+</tr>
+</tbody>
+</table>
+<h1 id="cycling-rates">Cycling Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Cycling Rates</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="center">Entry Author Orcid</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\gamma_{f}\)</span></td>
+<td align="center">0000-0002-0046-1160</td>
+<td align="center">cyc_foliage</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\gamma_{r}\)</span></td>
+<td align="center">0000-0002-0046-1160</td>
+<td align="center">cyc_roots</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\gamma_{w}\)</span></td>
+<td align="center">0000-0002-0046-1160</td>
+<td align="center">cyc_wood</td>
+<td align="center">parameter</td>
+</tr>
+</tbody>
+</table>
+<h1 id="respiration-rates">Respiration Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Respiration Rates</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Entry Author Orcid</th>
+<th align="center">Expressions</th>
+<th align="center">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(Q_{l}\)</span></td>
+<td align="left">Respiration rates per unit of leaf weight-variable formulated by us, for generalization purposes-</td>
+<td align="center">0000-0002-0046-1160</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(Q_{s}\)</span></td>
+<td align="left">Respiration rates per unit of stem weight -variable formulated by us, for generalization purposes-</td>
+<td align="center">0000-0002-0046-1160</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(Q_{r}\)</span></td>
+<td align="left">Respiration rates per unit of roots -variable formulated by us, for generalization purposes-</td>
+<td align="center">0000-0002-0046-1160</td>
+<td align="center"><span class="math inline">\(Q_{r}=\frac{r_{m}+\sigma\cdot c_{n,u}}{1+\frac{c_{g}}{C_{cr}}}\)</span></td>
+<td align="center">variable</td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}W_{l}\\W_{s}\\W_{r}\end{matrix}\right]\)</span></td>
+<td align="center">state_vector</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=\phi_{g}\)</span></td>
+<td align="center">scalar_func_phot</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(c\)</span></td>
+<td align="left">carbon contents per compartment</td>
+<td align="center"><span class="math inline">\(c=\left[\begin{matrix}\frac{1}{C_{cl}} &amp; 0 &amp; 0\\0 &amp;\frac{1}{C_{cs}} &amp; 0\\0 &amp; 0 &amp;\frac{1}{C_{cr}}\end{matrix}\right]\)</span></td>
+<td align="center">C_content</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(R\)</span></td>
+<td align="left">vector of respiration rates</td>
+<td align="center"><span class="math inline">\(R=\left[\begin{matrix}- Q_{l} &amp; 0 &amp; 0\\0 &amp; - Q_{s} &amp; 0\\0 &amp; 0 &amp; - Q_{r}\end{matrix}\right]\)</span></td>
+<td align="center">resp_matrix</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}\alpha_{cl}\\\alpha_{cs}\\\frac{\alpha_{cr}}{1 +\frac{c_{g}}{C_{cr}}}\end{matrix}\right]\)</span></td>
+<td align="center">part_coeff</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of turnover (cycling) rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{r} &amp; 0\\0 &amp; 0 &amp; -\gamma_{w}\end{matrix}\right]\)</span></td>
+<td align="center">cyc_matrix</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u\cdot x_{0, 0} c b + A c x + R c x\)</span></td>
+<td align="center">state_vector_derivative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(W_{l}: \alpha_{cl}\cdot\phi_{g}\)</span> <br><span class="math inline">\(W_{s}: \alpha_{cs}\cdot\phi_{g}\)</span> <br><span class="math inline">\(W_{r}: \frac{\alpha_{cr}\cdot\phi_{g}}{1 +\frac{c_{g}}{C_{cr}}}\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<span class="math inline">\(W_{l}: W_{l}\cdot\gamma_{f}\)</span> <br><span class="math inline">\(W_{s}: W_{s}\cdot\gamma_{r}\)</span> <br><span class="math inline">\(W_{r}: W_{r}\cdot\gamma_{w}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\frac{Q_{l}}{C_{cl}}\cdot W_{l} +\frac{W_{l}}{C_{cl}}\cdot\alpha_{cl}\cdot\phi_{g} -\frac{W_{l}}{C_{cl}}\cdot\gamma_{f}\\-\frac{Q_{s}}{C_{cs}}\cdot W_{s} +\frac{W_{l}}{C_{cs}}\cdot\alpha_{cs}\cdot\phi_{g} -\frac{W_{s}}{C_{cs}}\cdot\gamma_{r}\\\frac{W_{l}\cdot\alpha_{cr}\cdot\phi_{g}}{C_{cr}\cdot\left(1 +\frac{c_{g}}{C_{cr}}\right)} -\frac{W_{r}}{C_{cr}}\cdot\gamma_{w} -\frac{W_{r}\cdot\left(c_{n u}\cdot\sigma + r_{m}\right)}{C_{cr}\cdot\left(1 +\frac{c_{g}}{C_{cr}}\right)}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\frac{Q_{l}}{C_{cl}} +\frac{\alpha_{cl}}{C_{cl}}\cdot\phi_{g} -\frac{\gamma_{f}}{C_{cl}} &amp; 0 &amp; 0\\\frac{\alpha_{cs}}{C_{cs}}\cdot\phi_{g} &amp; -\frac{Q_{s}}{C_{cs}} -\frac{\gamma_{r}}{C_{cs}} &amp; 0\\\frac{\alpha_{cr}\cdot\phi_{g}}{C_{cr}\cdot\left(1 +\frac{c_{g}}{C_{cr}}\right)} &amp; 0 &amp; -\frac{\gamma_{w}}{C_{cr}} -\frac{c_{n u}\cdot\sigma + r_{m}}{C_{cr}\cdot\left(1 +\frac{c_{g}}{C_{cr}}\right)}\end{matrix}\right]\)</span></p>
+<h1 id="references" class="references unnumbered">References</h1>
+<div id="ref-VanDerWerf1993PlantandSoil">
+<p>Van Der Werf, A., Enserink, T., Smit, B., &amp; Booij, R. (1993). Allocation of carbon and nitrogen as a function of the internal nitrogen status of a plant: Modelling allocation under non-steady-state situations. <em>Plant and Soil</em>, <em>155-156</em>(1), 183–186. <a href="http://doi.org/10.1007/BF00025014" class="uri">http://doi.org/10.1007/BF00025014</a></p>
+</div>
+</body>
+</html>

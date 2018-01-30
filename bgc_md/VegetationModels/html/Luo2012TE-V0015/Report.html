@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: Luo2012TE, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: Luo2012TE, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 24/3/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Luo, Weng, &amp; Yang (n.d.)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>Ecosystem ecology is a subdiscipline of ecology that focuses on exchange of energy and materials between organisms and the environment. The materials that are commonly studied in ecosystem ecology include water, carbon, nitrogen, phosphorus, and other elements that organisms use as nutrients. The source of energy for most ecosystems is solar radiation. In this entry, material cy-cling and energy exchange are generally described before the carbon cycle is used as an example to illustrate our quantitative and theoretical understanding of ecosystem ecology.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global</p>
+<h3 id="available-parameter-values">Available parameter values</h3>
+<table>
+<caption>Information on given parameter sets</caption>
+<thead>
+<tr class="header">
+<th align="left">Abbreviation</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Original parameters of the publication</td>
+<td align="left">Parameter value of GPP corresponds to an annual average</td>
+</tr>
+</tbody>
+</table>
+<h3 id="available-initial-values">Available initial values</h3>
+<table>
+<caption>Information on given sets of initial values</caption>
+<thead>
+<tr class="header">
+<th align="left">Abbreviation</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Original initial values of the publication</td>
+<td align="left">original dataset of the publication. Parameter value of GPP corresponds to an annual average</td>
+</tr>
+</tbody>
+</table>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Values <br> <br>Original initial values of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{f}\)</span></td>
+<td align="left">Carbon in foliage</td>
+<td align="center">foliage</td>
+<td align="center"><span class="math inline">\(250\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{r}\)</span></td>
+<td align="left">Carbon in roots</td>
+<td align="center">fine_roots</td>
+<td align="center"><span class="math inline">\(192\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{w}\)</span></td>
+<td align="left">Carbon in woody tissue</td>
+<td align="center">wood</td>
+<td align="center"><span class="math inline">\(4145\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="photosynthetic-parameters">Photosynthetic Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Photosynthetic Parameters</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+<th align="center">Values <br> <br>Original parameters of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(GPP\)</span></td>
+<td align="left">Photosynthetic rate (Carbon input) at time t</td>
+<td align="center">-</td>
+<td align="center">GPP</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot day^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(3370\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(T\)</span></td>
+<td align="left">Temperature</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(Q_{10}\)</span></td>
+<td align="left">Temperature quotient that describes a change in decomposition rate for evey 10°C difference in temperature</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(W\)</span></td>
+<td align="left">Volumetric soil moisture</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{W}\)</span></td>
+<td align="left">Function of W</td>
+<td align="center"><span class="math inline">\(f_{W}=\operatorname{Min}\left(0.5\cdot W, 1\right)\)</span></td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(f_{T}\)</span></td>
+<td align="left">Function of T</td>
+<td align="center"><span class="math inline">\(f_{T}=Q_{10}^{\frac{T-10}{10}}\)</span></td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\epsilon_{t}\)</span></td>
+<td align="left">Environmental scalar</td>
+<td align="center"><span class="math inline">\(\epsilon_{t}=f_{W}\cdot f_{T}\)</span></td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(km^2\)</span></td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="allocation-coefficients">Allocation Coefficients</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Allocation Coefficients</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Original parameters of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\eta_{f}\)</span></td>
+<td align="left">Fixed partitioning ratio (fraction) of available carbon allocated to foliage</td>
+<td align="center">part_foliage</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.14\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\eta_{r}\)</span></td>
+<td align="left">Fixed partitioning ratio (fraction) of available carbon allocated to roots</td>
+<td align="center">part_roots</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.26\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\eta_{w}\)</span></td>
+<td align="left">Fixed partitioning ratio (fraction) of available carbon allocated to wood</td>
+<td align="center">part_wood</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.14\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="cycling-rates">Cycling Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Cycling Rates</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Entry Author Orcid</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Original parameters of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\gamma_{f}\)</span></td>
+<td align="left">Foliage turnover rate</td>
+<td align="center">0000-0002-0046-1160</td>
+<td align="center">cyc_foliage</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.00258\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\gamma_{r}\)</span></td>
+<td align="left">Roots turnover rate</td>
+<td align="center">0000-0002-0046-1160</td>
+<td align="center">cyc_roots</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.00239\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\gamma_{w}\)</span></td>
+<td align="left">Wood turnover rate</td>
+<td align="center">0000-0002-0046-1160</td>
+<td align="center">cyc_wood</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(5.86\cdot 10^{-5}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Values <br> <br>key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{f}\\C_{w}\\C_{r}\end{matrix}\right]\)</span></td>
+<td align="center">state_vector</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=GPP\cdot \epsilon_{t}\)</span></td>
+<td align="center">scalar_func_phot</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}\eta_{f}\\\eta_{w}\\\eta_{r}\end{matrix}\right]\)</span></td>
+<td align="center">part_coeff</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of turnover (cycling) rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{w} &amp; 0\\0 &amp; 0 &amp; -\gamma_{r}\end{matrix}\right]\)</span></td>
+<td align="center">cyc_matrix</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td align="center">state_vector_derivative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{f}: GPP\cdot Q_{10}^{\frac{T}{10} - 1}\cdot\eta_{f}\cdot\min\left(1, 0.5\cdot W\right)\)</span> <br><span class="math inline">\(C_{r}: GPP\cdot Q_{10}^{\frac{T}{10} - 1}\cdot\eta_{w}\cdot\min\left(1, 0.5\cdot W\right)\)</span> <br><span class="math inline">\(C_{w}: GPP\cdot Q_{10}^{\frac{T}{10} - 1}\cdot\eta_{r}\cdot\min\left(1, 0.5\cdot W\right)\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<span class="math inline">\(C_{f}: C_{f}\cdot\gamma_{f}\)</span> <br><span class="math inline">\(C_{r}: C_{w}\cdot\gamma_{w}\)</span> <br><span class="math inline">\(C_{w}: C_{r}\cdot\gamma_{r}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}- C_{f}\cdot\gamma_{f} + GPP\cdot Q_{10}^{\frac{T}{10} - 1}\cdot\eta_{f}\cdot\min\left(1, 0.5\cdot W\right)\\- C_{w}\cdot\gamma_{w} + GPP\cdot Q_{10}^{\frac{T}{10} - 1}\cdot\eta_{w}\cdot\min\left(1, 0.5\cdot W\right)\\- C_{r}\cdot\gamma_{r} + GPP\cdot Q_{10}^{\frac{T}{10} - 1}\cdot\eta_{r}\cdot\min\left(1, 0.5\cdot W\right)\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{w} &amp; 0\\0 &amp; 0 &amp; -\gamma_{r}\end{matrix}\right]\)</span></p>
+<h1 id="references" class="references unnumbered">References</h1>
+<div id="ref-Luo2012TE">
+<p>Luo, Y., Weng, E., &amp; Yang, Y. (n.d.). Ecosystem Ecology. In A. Hastings &amp; L. Gross (Eds.), <em>Encyclopedia of Theoretical Ecology</em> (pp. 219–229). Berkeley: University of California Press.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\astroncite{Comins and McMurtrie}{1993}]{Comins1993EA}
+Comins, H.~N. and McMurtrie, R.~E. (1993).
+\newblock Long-term response of nutrient-limited forests to {CO$_2$}
+  enrichment; equilibrium behavior of plant-soil models.
+\newblock {\em Ecological Applications}, 3(4):666--681.
+
+\bibitem[\protect\astroncite{Foley et~al.}{1996}]{Foley1996GBC}
+Foley, J.~A., Prentice, I.~C., Ramankutty, N., Levis, S., Pollard, D., Sitch,
+  S., and Haxeltine, A. (1996).
+\newblock An integrated biosphere model of land surface processes, terrestrial
+  carbon balance, and vegetation dynamics.
+\newblock {\em Global Biogeochemical Cycles}, 10(4):603--628.
+
+\bibitem[\protect\astroncite{Novere et~al.}{2005}]{LeNovere2005CompBiol}
+Novere, N.~L., Finney, A., Hucka, M., Bhalla, U.~S., Campagne, F.,
+  Collado-Vides, J., Crampin, E.~J., Halstead, M., Klipp, E., Mendes, P.,
+  Nielsen, P., Sauro, H., Shapiro, B., Snoep, J.~L., Spence, H.~D., and Wanner,
+  B.~L. (2005).
+\newblock Minimum information requested in the annotation of biochemical models
+  (miriam).
+\newblock {\em Nat Biotech}, 23(12):1509--1515.
+
+\bibitem[\protect\astroncite{Weng and Luo}{2011}]{Weng2011EA}
+Weng, E. and Luo, Y. (2011).
+\newblock Relative information contributions of model vs. data to short- and
+  long-term forecasts of forest carbon dynamics.
+\newblock {\em Ecological Applications}, 21(5):1490--1505.
+
+\end{thebibliography}

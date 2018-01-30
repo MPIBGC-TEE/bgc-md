@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Report of the model: Exoenzyme model - reverse Michaelis Menten, improved (Exoenzyme rMM+), version: 3</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="buttondown.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">Report of the model: Exoenzyme model - reverse Michaelis Menten, improved (Exoenzyme rMM+), version: 3</h1>
+</header>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Holger Metzler (Orcid ID: 0000-0002-8239-1601) on 15/03/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers soil organic matter decomposition. It was originally described by <span class="citation" data-cites="Schimel2003SoilBiologyandBiochemistry">Schimel &amp; Weintraub (2003)</span>.</p>
+<h3 id="further-references">Further references</h3>
+<p><span class="citation" data-cites="Sierra2015EM">Sierra &amp; Müller (2015)</span>: states an improved version considering substrate dependence of decomposition</p>
+<h3 id="abstract">Abstract</h3>
+<p>Traditional models of soil organic matter (SOM) decomposition are all based on first order kinetics in which the decomposition rate of a particular C pool is proportional to the size of the pool and a simple decomposition constant (<span class="math inline">\(dC/dt = kC\)</span>). In fact, SOM decomposition is catalyzed by extracellular enzymes that are produced by microorganisms. We built a simple theoretical model to explore the behavior of the decomposition – microbial growth system when the fundamental kinetic assumption is changed from first order kinetics to exoenzymes catalyzed decomposition (<span class="math inline">\(dC/dt = KC\times Enzymes\)</span>). An analysis of the enzyme kinetics showed that there must be some mechanism to produce a non-linear response of decomposition rates to enzyme concentration—the most likely is competition for enzyme binding on solid substrates as predicted by Langmuir adsorption isotherm theory. This non-linearity also induces C limitation, regardless of the potential supply of C. The linked C and N version of the model showed that actual polymer breakdown and microbial use of the released monomers can be disconnected, and that it requires relatively little N to maintain the maximal rate of decomposition, regardless of the microbial biomass’ ability to use the breakdown products. In this model, adding a pulse of C to an N limited system increases respiration, while adding N actually decreases respiration (as C is redirected from waste respiration to microbial growth). For many years, researchers have argued that the lack of a respiratory response by soil microbes to added N indicates that they are not N limited. This model suggests that conclusion may be wrong. While total C flow may be limited by the functioning of the exoenzyme system, actual microbial growth may be N limited.</p>
+<h3 id="keywords">Keywords</h3>
+<p>differential equations, nonlinear, time invariant</p>
+<h3 id="principles">Principles</h3>
+<p>substrate dependence of decomposition, heterogeneity of speed of decay, internal transformations of organic matter, substrate interactions</p>
+<h3 id="available-parameter-values">Available parameter values</h3>
+<table>
+<caption>Information on given parameter sets</caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Abbreviation</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Set 1</td>
+<td style="text-align: left;">original values from linked model (no nitrogen cycle considered in this model here)</td>
+</tr>
+</tbody>
+</table>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(S\)</span></td>
+<td style="text-align: left;">soil organic carbon</td>
+<td style="text-align: center;"><span class="math inline">\(g\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(D\)</span></td>
+<td style="text-align: left;">dissolved organic carbon</td>
+<td style="text-align: center;"><span class="math inline">\(g\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(M\)</span></td>
+<td style="text-align: left;">microbial biomass</td>
+<td style="text-align: center;"><span class="math inline">\(g\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(E\)</span></td>
+<td style="text-align: left;">exoenzymes</td>
+<td style="text-align: center;"><span class="math inline">\(g\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="additional-parameters">Additional Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Additional Parameters</caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 22%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Type</th>
+<th style="text-align: center;">Values <br> <br>Set 1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(K_{es}\)</span></td>
+<td style="text-align: left;">half saturation constant for enzymes on substrate</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(0.0003\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(SUE\)</span></td>
+<td style="text-align: left;">substrate use efficiency</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(0.5\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(K_{e}\)</span></td>
+<td style="text-align: left;">fraction of of dissolved organic carbon that is allocated to exoenzymes</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(0.05\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(K_{r}\)</span></td>
+<td style="text-align: left;">proportion of dead microbial biomass that is available for microbial use</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(0.85\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="decomposition-rates">Decomposition Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Decomposition Rates</caption>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 14%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expressions</th>
+<th style="text-align: center;">Type</th>
+<th style="text-align: center;">Units</th>
+<th style="text-align: center;">Values <br> <br>Set 1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(k_{d}\)</span></td>
+<td style="text-align: left;">collapsed decomposition constant</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(d^{-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(D_{C}\)</span></td>
+<td style="text-align: left;">decomposition of polymeric material to produce available carbon</td>
+<td style="text-align: center;"><span class="math inline">\(D_{C}=\frac{k_{d}\cdot E}{K_{es}+E}\)</span></td>
+<td style="text-align: center;">auxiliary variable</td>
+<td style="text-align: center;"><span class="math inline">\(g d^{-1}\)</span></td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(k_{m}\)</span></td>
+<td style="text-align: left;">microbial maintenance rate</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(d^{-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.01\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(k_{t}\)</span></td>
+<td style="text-align: left;">rate of microbial biomass that dies in each time interval</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(d^{-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.012\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(k_{l}\)</span></td>
+<td style="text-align: left;">decay constant for exoenzymes</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(d^{-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.05\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="respiration-variables">Respiration Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Respiration Variables</caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 22%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expressions</th>
+<th style="text-align: center;">Values <br> <br>Set 1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(R_{e}\)</span></td>
+<td style="text-align: left;">respiration to support enzyme synthesis</td>
+<td style="text-align: center;"><span class="math inline">\(R_{e}=\frac{K_{e}\cdot D\cdot \left(1-SUE\right)}{SUE}\)</span></td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(R_{m}\)</span></td>
+<td style="text-align: left;">respiration to support maintenance energy needs</td>
+<td style="text-align: center;"><span class="math inline">\(R_{m}=k_{m}\cdot M\)</span></td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(R_{g}\)</span></td>
+<td style="text-align: left;">respiration to support growth of the microbial biomass (not allowed to be negative)</td>
+<td style="text-align: center;"><span class="math inline">\(R_{g}=\operatorname{Max}\left(\left(D-K_{e}\cdot D-R_{e}-R_{m}\right)\cdot \left(1-SUE\right), 0\right)\)</span></td>
+<td style="text-align: center;">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:100%;">
+<caption>Information on Components</caption>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 30%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expressions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(C\)</span></td>
+<td style="text-align: left;">carbon content</td>
+<td style="text-align: center;"><span class="math inline">\(C=\left[\begin{matrix}S\\D\\M\\E\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(T\)</span></td>
+<td style="text-align: left;">transition operator</td>
+<td style="text-align: center;"><span class="math inline">\(T=\left[\begin{matrix}-1 &amp; 0 &amp; 0 &amp; 0\\1 &amp; -1 &amp;\frac{K_{r}\cdot k_{t}}{SUE\cdot k_{m} + k_{t}} &amp; 0\\0 &amp; - K_{e} + SUE &amp; -1 &amp; 0\\0 &amp; K_{e} &amp; 0 &amp; -1\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(N\)</span></td>
+<td style="text-align: left;">decomposition operator</td>
+<td style="text-align: center;"><span class="math inline">\(N=\left[\begin{matrix}D_{C} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 1 &amp; 0 &amp; 0\\0 &amp; 0 &amp; SUE\cdot k_{m} + k_{t} &amp; 0\\0 &amp; 0 &amp; 0 &amp; k_{l}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(f_{s}\)</span></td>
+<td style="text-align: left;">the right hand side of the ode</td>
+<td style="text-align: center;"><span class="math inline">\(f_{s}=T\cdot N\cdot C\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(D: D\cdot\left(- SUE + 1\right)\)</span> <br><span class="math inline">\(M: M\cdot\left(- K_{r}\cdot k_{t} + SUE\cdot k_{m} + k_{t}\right)\)</span> <br><span class="math inline">\(E: E\cdot k_{l}\)</span> <br></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<span class="math inline">\(S \rightarrow D: \frac{E\cdot S\cdot k_{d}}{E + K_{es}}\)</span> <br><span class="math inline">\(D \rightarrow M: D\cdot\left(- K_{e} + SUE\right)\)</span> <br><span class="math inline">\(D \rightarrow E: D\cdot K_{e}\)</span> <br><span class="math inline">\(M \rightarrow D: K_{r}\cdot M\cdot k_{t}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\frac{E\cdot S\cdot k_{d}}{E + K_{es}}\\- D +\frac{E\cdot S\cdot k_{d}}{E + K_{es}} + K_{r}\cdot M\cdot k_{t}\\D\cdot\left(- K_{e} + SUE\right) + M\cdot\left(- SUE\cdot k_{m} - k_{t}\right)\\D\cdot K_{e} - E\cdot k_{l}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\frac{E\cdot k_{d}}{E + K_{es}} &amp; 0 &amp; 0 &amp;\frac{E\cdot S\cdot k_{d}}{\left(E + K_{es}\right)^{2}} -\frac{S\cdot k_{d}}{E + K_{es}}\\\frac{E\cdot k_{d}}{E + K_{es}} &amp; -1 &amp; K_{r}\cdot k_{t} &amp; -\frac{E\cdot S\cdot k_{d}}{\left(E + K_{es}\right)^{2}} +\frac{S\cdot k_{d}}{E + K_{es}}\\0 &amp; - K_{e} + SUE &amp; - SUE\cdot k_{m} - k_{t} &amp; 0\\0 &amp; K_{e} &amp; 0 &amp; - k_{l}\end{matrix}\right]\)</span></p>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
+<div id="ref-Schimel2003SoilBiologyandBiochemistry">
+<p>Schimel, J. P., &amp; Weintraub, M. N. (2003). The implications of exoenzyme activity on microbial carbon and nitrogen limitation in soil: A theoretical model. <em>Soil Biology and Biochemistry</em>, <em>35</em>(4), 549–563.</p>
+</div>
+<div id="ref-Sierra2015EM">
+<p>Sierra, C. A., &amp; Müller, M. (2015). A general mathematical framework for representing soil organic matter dynamics. <em>Ecological Monographs</em>, <em>85</em>(4), 505–524. <a href="http://doi.org/10.1890/15-0361.1" class="uri">http://doi.org/10.1890/15-0361.1</a></p>
+</div>
+</div>
+</body>
+</html>

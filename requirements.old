@@ -1,0 +1,41 @@
+
+bibtexparser
+CacheControl
+CompartmentalSystems
+testinfrastructure
+future == 0.14.3
+arrow == 0.5.0
+memoized_property == 1.0.2
+##for mendeley
+requests == 2.5.1
+mendeley 
+chardet
+ipython
+matplotlib >= 1.5.3
+ndg-httpsclient
+Pygments
+python-subunit
+PyYAML
+tqdm
+numpy >=1.11.2
+scipy >=0.17.0
+# mpi4py >=2.0.0
+linecache2
+pyasn1
+# pathos
+plotly
+urllib3
+certifi
+idna
+
+# To avoid the official package pytexit-0.1.8 which has an error 
+# we demand version ==0.1.9 explicitly 
+# If the package has not been installed yet setuptools or pip will
+# try to find it on pypy and fail 
+# In our repository we can easily install Holgers hanged version
+# by running
+# python3 SoilR/Code/packageTests/pytexit-0.1.9 setup.py develop
+# If we want to make the package public we have to provide
+# an url (e.g. on github) in the dependency_links argument  
+# in setup.py
+pytexit==0.1.9 

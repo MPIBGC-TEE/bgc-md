@@ -1,0 +1,128 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: Schimel2003SoilBiologyandBiochemistry
+name: Exoenzyme
+longName: Exoenzyme model
+version: 1
+model-id: S0005
+entryAuthor: "Holger Metzler"
+entryAuthorOrcid: 0000-0002-8239-1601
+entryCreationDate: 11/03/2016
+lastModification: _lm_
+#modApproach: 
+#timeScale: "50 to 2000 years"
+#spaceScale: [plot, field, regional, national, global]
+timeResolution: daily
+#doi: 10.2136/sssaj1987.03615995005100050015x
+abstract: "Traditional models of soil organic matter (SOM) decomposition are all based on first order kinetics in which the decomposition rate of a particular C pool is proportional to the size of the pool and a simple decomposition constant ($dC/dt = kC$). In fact, SOM decomposition is catalyzed by extracellular enzymes that are produced by microorganisms. We built a simple theoretical model to explore the behavior of the decomposition – microbial growth system when the fundamental kinetic assumption is changed from first order kinetics to exoenzymes catalyzed decomposition ($dC/dt = KC\\times Enzymes$). An analysis of the enzyme kinetics showed that there must be some mechanism to produce a non-linear response of decomposition rates to enzyme concentration—the most likely is competition for enzyme binding on solid substrates as predicted by Langmuir adsorption isotherm theory. This non-linearity also induces C limitation, regardless of the potential supply of C. The linked C and N version of the model showed that actual polymer breakdown and microbial use of the released monomers can be disconnected, and that it requires relatively little N to maintain the maximal rate of decomposition, regardless of the microbial biomass’ ability to use the breakdown products. In this model, adding a pulse of C to an N limited system increases respiration, while adding N actually decreases respiration (as C is redirected from waste respiration to microbial growth). For many years, researchers have argued that the lack of a respiratory response by soil microbes to added N indicates that they are not N limited. This model suggests that conclusion may be wrong. While total C flow may be limited by the functioning of the exoenzyme system, actual microbial growth may be N limited."
+
+keywords: 
+    - "differential equations"
+    - "nonlinear"
+    - "time invariant"
+#    - "analytic"
+
+principles:
+#    - "mass balance"
+#    - "substrate dependence of decomposition"
+    - "heterogeneity of speed of decay"
+    - "internal transformations of organic matter"
+#    - "environmental variability effects"
+    - "substrate interactions"
+
+bibtex: "@article{Schimel2003SoilBiologyandBiochemistry,
+             author = {Schimel, Joshua P and Weintraub, Michael N},
+             isbn = {0038-0717},
+             journal = {Soil Biology and Biochemistry},
+             number = {4},
+             pages = {549--563},
+             title = {The implications of exoenzyme activity on microbial carbon and nitrogen limitation in soil: a theoretical model},
+             volume = {35},
+             year = {2003}
+        }"
+
+model:
+    - state_variables:
+        - S:
+            desc: soil organic carbon
+            unit: "g"
+        - D:
+            desc: dissolved organic carbon
+            unit: "g"
+        - M:
+            desc: microbial biomass
+            unit: "g"
+        - E:
+            desc: exoenzymes
+            unit: "g"
+
+    - decomposition_rates:
+        - k_d:
+            desc: collapsed decomposition constant
+            unit: "d^{-1}"
+            type: parameter
+        - k_m:
+            desc: microbial maintenance rate
+            unit: "d^{-1}"
+            type: parameter
+        - k_t:
+            desc: rate of microbial biomass that dies in each time interval
+            unit: "d^{-1}"
+            type: parameter
+        - k_l:
+            desc: decay constant for exoenzymes
+            unit: "d^{-1}"
+            type: parameter
+
+    - additional_parameters:          
+        - SUE:
+            desc: substrate use efficiency
+            type: parameter
+        - K_e:
+            desc: fraction of of dissolved organic carbon that is allocated to exoenzymes
+            type: parameter
+        - K_r:
+            desc: proportion of dead microbial biomass that is available for microbial use
+            type: parameter
+
+    - respiration_variables:
+        - R_e:
+            desc: respiration to support enzyme synthesis
+            exprs: "R_e = K_e*D*(1-SUE)/SUE"
+#            type: 
+        - R_m:
+            desc: respiration to support maintenance energy needs
+            exprs: "R_m = k_m*M"
+#            type: 
+        - R_g:
+            desc: respiration to support growth of the microbial biomass (not allowed to be negative)
+            exprs: "R_g = Max((D - K_e*D - R_e - R_m)*(1-SUE),0)"
+#            type: 
+                
+    - components:
+        - C:
+            desc: carbon content
+            exprs: "C = Matrix(4, 1, [S, D, M, E])"
+            key: state_vector
+        - T:
+            desc: transition operator
+            exprs: "T = Matrix([[-1,        0,                            0,  0],
+                                [ 1,       -1,        K_r*k_t/(k_m*SUE+k_t),  0],
+                                [ 0, SUE-K_e,                            -1,  0],
+                                [ 0,     K_e,                             0, -1]])"
+            key: trans_op
+        - N:
+            desc: decomposition operator
+            exprs: "N = diag(k_d*E/S, 1, k_m*SUE+k_t, k_l)"
+            key: decomp_op_nonlin
+        - f_s: 
+            exprs: "f_s = T * N * C"
+            desc: the right hand side of the ode
+            key: state_vector_derivative
+
+model_run_data:
+    parameter_sets:
+        - "Set 1":
+            values: {k_d: 1, K_e: 0.05, k_l: 0.05, k_m: 0.01, SUE: 0.5, k_t: 0.012, K_r: 0.85}
+            desc: original values from linked model (no nitrogen cycle considered in this model here)
+
+

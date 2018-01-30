@@ -1,0 +1,229 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: Parton1987SoilSciSocAmJ
+name: Century
+version: 1
+model-id: S0004
+entryAuthor: "Holger Metzler"
+entryAuthorOrcid: 0000-0002-8239-1601
+entryCreationDate: 10/03/2016
+lastModification: _lm_
+#modApproach: 
+timeScale: "50 to 2000 years"
+#spaceScale: [plot, field, regional, national, global]
+#timeResolution: annual # ??? monthly
+doi: 10.2136/sssaj1987.03615995005100050015x
+abstract: "We analyzed climatic and textural controls of soil organic C and N for soils of the U.S. Great Plains. We used a model of soil organic matter (SOM) quantity and composition to simulate steady-state organic matter levels for 24 grassland locations in the Great Plains. The model was able to simulate the effects of climatic gradients on SOM and productivity. Soil texture was also a major control over organic matter dynamics. The model adequately predicted aboveground plant production and soil C and N levels across soil textures (sandy, medium, and fine); however, the model tended to overestimate soil C and N levels for fine textured soil by 10 to 15%. The impact of grazing on the system was simulated and showed that steady-state soil C and N levels were sensitive to the grazing intensity, with soil C and N levels decreasing with increased grazing rates. Regional trends in SOM can be predicted using four site-specific variables, temperature, moisture, soil texture, and plant lignin content. Nitrogen inputs must also be known. Grazing intensity during soil development is also a significant control over steady-state levels of SOM, and since few data are available on presettlement grazing, some uncertainty is inherent in the model predictions."
+
+keywords: 
+    - "differential equations"
+#    - "linear"
+    - "time variant"
+#    - "analytic"
+
+principles:
+    - "mass balance"
+    - "substrate dependence of decomposition"
+    - "heterogeneity of speed of decay"
+    - "internal transformations of organic matter"
+    - "environmental variability effects"
+#    - "substrate interactions"
+
+bibtex: "@article{Parton1987SoilSciSocAmJ,
+             author = {Parton, W J and Schimel, D S and Cole, C V and Ojima, D S},
+             doi = {10.2136/sssaj1987.03615995005100050015x},
+             journal = {Soil Sci. Soc. Am. J.},
+             link = {https://www.soils.org/publications/sssaj/abstracts/51/5/1173},
+             number = {5},
+             pages = {1173--1179},
+             title = {Analysis of Factors Controlling Soil Organic Matter Levels in {Great Plains} Grasslands},
+             volume = {51},
+             year = {1987}
+        }"
+
+model:
+    - state_variables:
+        - C_1:
+            desc: structural soil surface litter pool
+#            key: "foliage"
+#            unit: "t C*ha^{-1}"
+        - C_2: 
+            desc: metabolic soil surface litter pool
+#            key: "wood"
+#            unit: "t C*ha^{-1}"
+        - C_3:
+            desc: structural soil litter pool
+#            key: "foliage"
+#            unit: "t C*ha^{-1}"
+        - C_4: 
+            desc: metabolic soil litter pool
+#            key: "wood"
+#            unit: "t C*ha^{-1}"
+        - C_5:
+            desc: active soil organic matter pool
+#            unit: "t C*ha^{-1}"
+        - C_6:
+            desc: slow soil organic matter pool
+#            unit: "t C*ha^{-1}"
+        - C_7:
+            desc: passive soil organic matter pool
+#            unit: "t C*ha^{-1}"
+    
+    - maximum_decomposition_rates:
+        - K_1:
+            desc: maximum decomposition rate of structural soil surface litter
+#            unit: "yr^{-1}"
+            type: parameter
+        - K_2:
+            desc: maximum decomposition rate of metabolic soil surface litter
+#            unit: "yr^{-1}"
+            type: parameter
+        - K_3:
+            desc: maximum decomposition rate of structural soil litter
+#            unit: "yr^{-1}"
+            type: parameter
+        - K_4:
+            desc: maximum decomposition rate of metabolic soil litter
+#            unit: "yr^{-1}"
+            type: parameter
+        - K_5:
+            desc: maximum decomposition rate of active soil organic matter
+#            unit: "yr^{-1}"
+            type: parameter
+        - K_6:
+            desc: maximum decomposition rate of slow soil organic matter
+#            unit: "yr^{-1}"
+            type: parameter        
+        - K_7:
+            desc: maximum decomposition rate of passive organic matter
+#            unit: "yr^{-1}"
+            type: parameter
+
+    - decomposition_rates:
+        - k_1:
+            desc: decomposition rate of structural soil surface litter
+            exprs: "k_1 = K_1 * exp(-3 * Ls)"
+#            unit: "yr^{-1}"
+#            type: auxiliary_variable
+        - k_3:
+            desc: decomposition rate of structural soil litter
+            exprs: "k_3 = K_3 * exp(-3 * Ls)"
+#            unit: "yr^{-1}"
+#            type: auxiliary_variable
+        - k_5:
+            desc: decomposition rate of active soil organic matter
+            exprs: "k_5 = K_5 * (1 - 0.75 * Tx)"
+#            unit: "yr^{-1}"
+#            type: auxiliary_variable
+
+    - additional_parameters:          
+        - LN:
+            desc: lignin-to-nitrogen ratio
+            type: parameter
+        - Ls:
+            desc: fraction of structural material that is lignin
+            type: parameter
+        - Tx:
+            desc: silt and clay fraction of the soil
+            type: parameter
+        - A_l:
+            desc: lignin fraction that is composed in structural pools (equals Ls?)
+            type: parameter
+
+    - auxiliary_variables:
+        - E_s:
+            desc: "fraction of carbon lost as CO$_2$ when active soil organic matter is decomposed and stabilized into slow organic matter"
+            exprs: "E_s = 0.85 - 0.68 * Tx"
+#            type: auxiliary variable
+        - F_m:
+            desc: fraction of incoming metabolic litter
+            exprs: "F_m = 0.85 - 0.018 * LN"
+#            type: auxiliary variable
+        - F_s:
+            desc: fraction of incoming structural litter
+            exprs: "F_s = 1 - F_m"
+#            type: auxiliary variable
+
+    - input_components:
+        - J_1:
+            desc: organic matter input to surface
+            type: parameter
+        - J_2:
+            desc: organic matter input to soil
+            type: parameter
+
+    - transfer_coefficients:
+        - alpha_51:
+            desc: flux coefficient from strucutral soil surface litter pool to active soil organic matter pool
+            exprs: "alpha_51 = 0.55 * (1 - A_l)"
+#            unit:
+#            type: auxiliary variable
+        - alpha_53:
+            desc: flux coefficient from strucutral soil litter pool to active soil organic matter pool
+            exprs: "alpha_53 = 0.45 * (1 - A_l)"
+#            unit:
+#            type: auxiliary variable
+        - alpha_61:
+            desc: flux coefficient from strucutral soil surface litter pool to slow soil organic matter pool
+            exprs: "alpha_61 = 0.7 * A_l"
+#            unit:
+#            type: auxiliary variable
+        - alpha_63:
+            desc: flux coefficient from strucutral soil litter pool to slow soil organic matter pool
+            exprs: "alpha_63 = alpha_61"
+#            unit:
+#            type: auxiliary variable
+        - alpha_65:
+            desc: flux coefficient from strucutral soil surface litter pool to slow soil organic matter pool
+            exprs: "alpha_65 = 1 - E_s - 0.004"
+#            unit:
+#            type: auxiliary variable
+
+    - environmental_coefficients:
+        - f_T:
+            desc: function of temperature
+            type: variable
+        - f_W:
+            desc: function of soil moisture
+            type: variable
+
+    - components:
+        - C:
+            desc: carbon content
+            exprs: "C = Matrix(7, 1, [C_1, C_2, C_3, C_4, C_5, C_6, C_7])"
+            key: state_vector
+        - I:
+            desc: input vector
+            exprs: "I = Matrix(7, 1, [J_1*F_s, J_1*F_m, J_2*F_s, J_2*F_m, 0, 0, 0])"
+            key: input_vector
+        - xi:
+            desc: environmental effects multiplier (DEFAG)
+            exprs: "xi = f_T * f_W"
+            key: env_eff_mult
+        - A:
+            desc: decomposition operator
+            exprs: "A = Matrix([[        -k_1,        0,            0,        0,            0,        0,        0],
+                                [           0,     -K_2,            0,        0,            0,        0,        0],
+                                [           0,        0,         -k_3,        0,            0,        0,        0],
+                                [           0,        0,            0,     -K_4,            0,        0,        0],
+                                [alpha_51*k_1, 0.45*K_2, alpha_53*k_3, 0.45*K_4,         -k_5, 0.42*K_6, 0.45*K_7],
+                                [alpha_61*k_1,        0, alpha_63*k_3,        0, alpha_65*k_5,     -K_6,        0],
+                                [           0,        0,            0,        0,    0.004*k_5, 0.03*K_6,     -K_7]])"
+            key: decomp_op_lin
+        - f_s: 
+            exprs: "f_s = I + xi * A * C"
+            desc: the right hand side of the ode
+            key: state_vector_derivative
+
+model_run_data:
+    parameter_sets:
+        - "Set 1":
+            values: {K_1: 0.076, K_2: 0.28, K_3: 0.094, K_4: 0.35, K_5: 0.14, K_6: 0.0038, K_7: 0.00013, xi: 1}
+            desc: original values without effects of temperature and soil moisture
+
+    initial_values:
+        - "IV 1":
+            values: {C_1: 100, C_2: 200}
+            desc: original values without effects of temperature and soil moisture
+
+    possible_combinations:
+        - ["Set 1", "IV 1"]

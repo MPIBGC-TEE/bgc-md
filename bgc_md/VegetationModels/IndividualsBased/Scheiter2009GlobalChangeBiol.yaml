@@ -1,0 +1,125 @@
+
+# vim:set ff: unix expandtab ts: 4 sw: 4: 
+citationKey: Scheiter2009GlobalChangeBiol
+name: aDGVM
+version: 1
+model-id: V0003
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+entryCreationDate: 17/7/2015 # changeset 2200 (.py)
+lastModification: _lm_
+modApproach: individuals based
+partitioningScheme: dynamic
+spaceScale: global 
+#    unit: "1°"
+timeResolution: monthly 
+doi: 10.1111/j.1365-2486.2008.01838.x
+#t = # units: days
+model:
+    - state_variables:
+        - B_L:
+            desc: Carbon in foliage
+            key: "foliage"
+        - B_R:
+            desc: Carbon in roots
+            key: "fine_roots"
+        - B_S:
+            desc: Carbon in woody tissue
+            key: "wood"
+    - additional_variables:
+        - Q_i:
+            desc: describes light availability
+            type: variable
+        - G_i:
+            desc: describes water availability
+            type: variable
+        - C_i:
+            desc: deviance of leaf biomass from $a_{0L}$
+            type: variable
+            exprs: "C_i = (B_L/(a_0L*(B_R+B_S+B_L)))"    
+    - photosynthetic_parameters:
+        - A_CC:
+            desc: Leaf level photosynthetic rate
+            type: parameter
+        - R_g:
+            desc: Growth respiration # PAR use efficiency
+            type: parameter
+        - C:
+            desc: Canopy area of the plant
+            key: canopy_area
+            type: variable
+        - C_delta:
+            desc: Net carbon gain
+            type: parameter
+            key: NPP
+            exprs: "C_delta = A_CC*C-R_g"
+    - allocation_coefficients:
+    #CAUTION: Partitions in this work were the following: Leaves, Roots (including woody roots, not only fine roots?) and Stems
+        - a_0R:
+            desc: fraction of carbon allocated to roots when resources are not limiting
+            type: parameter
+        - a_0S:
+            desc: fraction of carbon allocated to stems when resources are not limiting
+            type: parameter
+        - a_0L:
+            desc: fraction of carbon allocated to leaves when resources are not limiting
+            type: parameter
+        - a_L:
+            type: variable
+            key: "part_foliage"
+            exprs: "a_L = ((1-C_i)/(3+a_0R+a_0S-Q_i-G_i-C_i))" 
+        - a_R:
+            type: variable
+            key: "part_roots"
+            exprs: "a_R = ((1+a_0R-G_i)/(3+a_0R+a_0S-Q_i-G_i-C_i))" 
+        - a_S:
+            type: variable
+            key: "part_wood"
+            exprs: "a_S = ((1+a_0S-Q_i)/(3+a_0R+a_0S-Q_i-G_i-C_i))" 
+    - cycling_rates:
+        - gamma_f:
+            desc:
+            type: parameter
+            key: "cyc_foliage"
+            entryAuthorOrcid: 0000-0002-0046-1160
+            unit: 
+        - gamma_r:
+            desc:
+            type: parameter
+            key: "cyc_roots"
+            entryAuthorOrcid: 0000-0002-0046-1160
+            unit: 
+        - gamma_w:
+            desc:
+            type: parameter
+            key: "cyc_wood"
+            entryAuthorOrcid: 0000-0002-0046-1160
+
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x = Matrix(3,1,[B_L, B_R, B_S])"
+            desc: vector of states for vegetation
+        - u: 
+            key: scalar_func_phot    
+            exprs: "u = C_delta"
+            desc: scalar function of photosynthetic inputs
+        - b: 
+            key: part_coeff    
+            exprs: "b = Matrix(3,1,[a_L, a_R, a_S])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - A: 
+            key: cyc_matrix    
+            exprs: "A=diag(-gamma_f, -gamma_r, -gamma_w)"
+            desc: matrix of turnover (cycling) rates 
+        - f_v: 
+            key: state_vector_derivative  
+            exprs: "fv = u*b + A*x"
+            desc: the righthandside of the ode
+
+model_run_data:
+    parameter_sets:
+        - "Original parameters of the publication":
+            values: {a_0L: 0.3, a_0R: 0.5, a_0S: 0.2, Q_i: 1}
+    #Q_i: 1 when light is highly available (See sup. material 1, pg 17)
+            doi: 10.1111/j.1365-2486.2008.01838.x

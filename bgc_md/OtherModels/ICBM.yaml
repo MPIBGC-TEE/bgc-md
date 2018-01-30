@@ -1,0 +1,113 @@
+name: ICBM
+longName: Introductory Carbon Balance Model
+model-id: S0002
+entryAuthor: "Holger Metzler"
+entryCreationDate: 09/03/2016
+doi: 10.1890/1051-0761(1997)007[1226:ITICBM]2.0.CO;2
+
+
+
+bibtex: "@article{ID,
+            author = {None},
+            title = {Hallo},
+            journal = {None},
+            year = {1997}
+        }"
+
+model:
+    - state_variables:
+        - Y:
+            desc: young pool of soil carbon
+            unit: "kgCm^{-2}" 
+        - O: 
+            desc: old pool of soil carbon
+            unit: "kgCm^{-2}" 
+    
+    - parameters:
+        - i:
+            desc: mean annual carbon input
+            unit: "kgC m^{-2}yr^{-1}"
+            type: parameter
+        - k_1:
+            desc: decomposition rate of young pool
+            unit: "yr^{-1}"
+            type: parameter
+        - k_2:
+            desc: decomposition rate of old pool
+            unit: "yr^{-1}"
+            type: parameter
+        - h:
+            desc: humification coefficient
+            type: parameter
+        - r:
+            desc: climatic and edaphic factors
+            type: parameter
+
+    - time_variable:
+        - t:
+            unit: "yr"
+            key: time_symbol
+
+    - components:
+        - C:
+            desc: carbon content
+            exprs: "C = Matrix(2, 1, [Y, O])"
+            key: state_vector
+        - I:
+            desc: input vector
+            exprs: "I = Matrix(2, 1, [i, 0])"
+            key: input_vector
+        - xi:
+            desc: environmental effects multiplier
+            exprs: "xi = r"
+            key: env_eff_mult
+        - T:
+            desc: transition operator
+            exprs: "T = Matrix([[-1,  0],
+                                [ h, -1]])"
+            key: trans_op
+        - N:
+            desc: decomposition operator
+            exprs: "N = diag(k_1, k_2)"
+            key: decomp_op_nonlin
+        - f_s: 
+            exprs: "f_s = I + xi * T * N * C"
+            desc: the right hand side of the ode
+            key: state_vector_derivative
+
+model_run_data:
+    parameter_sets:
+        - "Bare fallow":
+            values:
+                k_1: 0.8
+                k_2: 0.00605
+                i: 0
+                h: 0.13
+                r: 1.32
+        - "+N +straw":
+            values:
+                k_1: 0.8
+                k_2: 0.00605
+                i: 0.285
+                h: 0.125
+                r: 1.00
+
+    initial_values:
+        - "Bare fallow":
+            values: 
+                Y: 0.3
+                O: 3.96
+        - "+N +straw":
+            values: 
+                Y: 0.3
+                O: 4.11
+
+    run_times:
+        - RT1:
+            start: 0
+            end: 100
+            step_size: 0.1
+
+    possible_combinations:
+        - ["Bare fallow", "Bare fallow", RT1]
+        - ["+N +straw", "+N +straw", RT1]

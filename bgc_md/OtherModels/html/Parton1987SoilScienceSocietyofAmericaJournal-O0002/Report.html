@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: BGC-MD, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: BGC-MD, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Carlos Sierra (Orcid ID: 0000-0003-0009-4169) on 13/04/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers soil organic matter decomposition. It was originally described by <span class="citation">Parton, Schimel, Cole, &amp; Ojima (1987)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>This is a fake model to produce a logo</p>
+<h3 id="keywords">Keywords</h3>
+<p>differential equations, time variant</p>
+<h3 id="principles">Principles</h3>
+<p>mass balance, substrate dependence of decomposition, heterogeneity of speed of decay, internal transformations of organic matter, environmental variability effects</p>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(B\)</span></td>
+<td align="left">Bio</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(G\)</span></td>
+<td align="left">geo</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C\)</span></td>
+<td align="left">chemistry</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(M\)</span></td>
+<td align="left">Model</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(D\)</span></td>
+<td align="left">Database</td>
+</tr>
+</tbody>
+</table>
+<h1 id="decomposition-rates">Decomposition Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Decomposition Rates</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(k_{1}\)</span></td>
+<td align="left">decomposition rate of structural soil surface litter</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(k_{2}\)</span></td>
+<td align="left">decomposition rate of structural soil surface litter</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(k_{3}\)</span></td>
+<td align="left">decomposition rate of structural soil surface litter</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(k_{4}\)</span></td>
+<td align="left">decomposition rate of structural soil litter</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(k_{5}\)</span></td>
+<td align="left">decomposition rate of active soil organic matter</td>
+<td align="center">parameter</td>
+</tr>
+</tbody>
+</table>
+<h1 id="input-components">Input Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Input Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(I_{1}\)</span></td>
+<td align="left">organic matter input to surface</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(I_{2}\)</span></td>
+<td align="left">organic matter input to soil</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(I_{3}\)</span></td>
+<td align="left">organic matter input to soil</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(I_{4}\)</span></td>
+<td align="left">organic matter input to soil</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(I_{5}\)</span></td>
+<td align="left">organic matter input to soil</td>
+<td align="center">parameter</td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:32%;">
+<caption>Information on Components</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(X\)</span></td>
+<td align="left">carbon content</td>
+<td align="center"><span class="math inline">\(X=\left[\begin{matrix}B\\G\\C\\D\\M\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(I\)</span></td>
+<td align="left">input vector</td>
+<td align="center"><span class="math inline">\(I=\left[\begin{matrix}I_{1}\\0\\0\\0\\0\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">decomposition operator</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}- k_{1} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\1 &amp; - k_{2} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 1 &amp; - k_{3} &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; - k_{4} &amp; 1\\0 &amp; 0 &amp; 0 &amp; 0 &amp; - k_{5}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(f_{s}\)</span></td>
+<td align="left">the right hand side of the ode</td>
+<td align="center"><span class="math inline">\(f_{s}=I+A\,X\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(B: I_{1}\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(B: B\cdot\left(k_{1} - 1\right)\)</span> <br><span class="math inline">\(G: G\cdot\left(k_{2} - 1\right)\)</span> <br><span class="math inline">\(C: C\cdot k_{3}\)</span> <br><span class="math inline">\(M: D\cdot k_{4}\)</span> <br><span class="math inline">\(D: M\cdot\left(k_{5} - 1\right)\)</span> <br></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<span class="math inline">\(B &gt; G: B\)</span> <br><span class="math inline">\(G &gt; C: G\)</span> <br><span class="math inline">\(D &gt; M: M\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}- B\cdot k_{1} + I_{1}\\B - G\cdot k_{2}\\- C\cdot k_{3} + G\\- D\cdot k_{4} + M\\- M\cdot k_{5}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}- k_{1} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\1 &amp; - k_{2} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 1 &amp; - k_{3} &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; - k_{4} &amp; 1\\0 &amp; 0 &amp; 0 &amp; 0 &amp; - k_{5}\end{matrix}\right]\)</span></p>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(B = \frac{I_{1}}{k_{1}}\)</span> <br><span class="math inline">\(G = \frac{I_{1}}{k_{1}\cdot k_{2}}\)</span> <br><span class="math inline">\(C = \frac{I_{1}}{k_{1}\cdot k_{2}\cdot k_{3}}\)</span> <br><span class="math inline">\(D = 0\)</span> <br><span class="math inline">\(M = 0\)</span> <br> <br></p>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
+<div id="ref-Parton1987SoilScienceSocietyofAmericaJournal">
+<p>Parton, W. J., Schimel, D. S., Cole, C. V., &amp; Ojima, D. S. (1987). Analysis of factors controlling soil organic matter levels in great plains grasslands. <em>Soil Science Society of America Journal</em>, <em>51</em>(i), 1173–1179. <a href="http://doi.org/10.2136/sssaj1987.03615995005100050015x" class="uri">http://doi.org/10.2136/sssaj1987.03615995005100050015x</a></p>
+</div>
+</div>
+</body>
+</html>

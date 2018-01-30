@@ -1,0 +1,117 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: EmanuelTalkModel
+name: EmanuelTalkModel
+version: 1
+model-id: O0004
+entryAuthor: Holger Metzler
+#entryAuthorOrcid: 0000-0003-0009-4169
+entryCreationDate: 22/08/2016
+lastModification: _lm_
+#modApproach: 
+#timeScale: years
+#spaceScale: [plot, field, regional, national, global]
+#timeResolution: annual # ??? monthly
+#doi: 10.2136/sssaj1987.03615995005100050015x
+bibtex: "@article{ID,
+            author = {None},
+            title = {Hallo},
+            journal = {None},
+            year = {1997}
+        }"
+abstract: This is a fake model to produce a figure for the department talk
+keywords: 
+    - "differential equations"
+    - "linear"
+#    - "time variant"
+    - "analytic"
+
+principles:
+    - "mass balance"
+    - "substrate dependence of decomposition"
+    - "heterogeneity of speed of decay"
+    - "internal transformations of organic matter"
+#    - "environmental variability effects"
+#    - "substrate interactions"
+
+model:
+    - state_variables:
+        - x_1:
+            desc: x_1
+            key: "non-woody tree parts"
+            unit: "Pg C"
+        - x_2: 
+            desc: x_2
+            key: "woody tree parts"
+            unit: "Pg C"
+        - x_3:
+            desc: x_3
+            key: "ground vegetation"
+            unit: "Pg C"
+        - x_4: 
+            desc: x_4
+            key: "detritus/decomposers"
+            unit: "Pg C"
+        - x_5:
+            desc: x_5
+            unit: "active soil carbon"
+            unit: "Pg C"
+    
+
+#    - decomposition_rates:
+#        - k_1:
+#            desc: decomposition rate of structural soil surface litter
+#            type: parameter
+#        - k_2:
+#            desc: decomposition rate of structural soil surface litter
+#            type: parameter
+#        - k_3:
+#            desc: decomposition rate of structural soil surface litter
+#            type: parameter
+#        - k_4:
+#            desc: decomposition rate of structural soil litter
+#            type: parameter
+#        - k_5:
+#            desc: decomposition rate of active soil organic matter
+#            type: parameter
+
+#    - input_components:
+#        - u_1:
+#            desc: organic matter input to surface
+#            type: parameter
+#        - u_2:
+#            desc: organic matter input to soil
+#            type: parameter
+#        - u_3:
+#            desc: organic matter input to soil
+#            type: parameter
+#        - u_4:
+#            desc: organic matter input to soil
+#            type: parameter
+#        - u_5:
+#            desc: organic matter input to soil
+#            type: parameter
+
+
+    - components:
+        - x:
+            desc: carbon content
+            exprs: "x = Matrix(5, 1, [x_1, x_2, x_3, x_4, x_5])"
+            key: state_vector
+        - u:
+            desc: input vector
+            exprs: "u = Matrix(5, 1, [77, 0 , 36, 0, 0])"
+            key: input_vector
+        - A:
+            desc: decomposition operator
+            exprs: "A = Matrix([[-2.08,     0,     0,    0,      0],
+                                [ 0.84, -0.07,     0,    0,      0],
+                                [    0,     0, -0.52,    0,      0],
+                                [ 0.57,  0.03,  0.17, -0.59,     0],
+                                [    0, 0.004, 0.087, 0.037, -0.01]])"
+            key: decomp_op_lin
+        - f_s: 
+            exprs: "f_s = u + A * x"
+            desc: the right hand side of the ode
+            key: state_vector_derivative
+
+

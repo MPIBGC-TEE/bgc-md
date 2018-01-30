@@ -1,0 +1,152 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+
+citationKey: NoKey
+name: Three microbe-substrate pairs
+#longName: Microbial-Enzyme-Mediated Decomposition model
+version: 1
+model-id: O001
+entryAuthor: "Carlos Sierra"
+entryAuthorOrcid: 0000-0003-0009-4169
+entryCreationDate: 13/04/2016
+lastModification: _lm_
+#modApproach: 
+#timeScale: "up to 3000 years"
+#spaceScale: [plot, field, regional, national, global]
+#timeResolution: hourly
+doi: 10.1890/12-0681.1
+
+abstract: "This is a simple model used to represent the flexibility of the General Model"
+
+
+principles:
+    - "mass balance"
+    - "substrate dependence of decomposition"
+    - "heterogeneity of speed of decay"
+    - "internal transformations of organic matter"
+#    - "environmental variability effects"
+    - "substrate interactions"
+
+
+model:
+    - state_variables:
+        - S1:
+            desc: Substrate 1
+            unit: "mgC g^{-1}\\text{ soil}"
+        - B1:
+            desc: Microbial biomass guild 1
+            unit: "mgC g^{-1}\\text{ soil}"
+        - S2:
+            desc: Substrate 2
+            unit: "mgC g^{-1}\\text{ soil}"
+        - B2:
+            desc: microbial biomass guild 2
+            unit: "mgC g^{-1}\\text{ soil}"
+        - S3:
+            desc: Substrate 3
+            unit: "mgC g^{-1}\\text{ soil}"
+        - B3:
+            desc: Microbial biomass guild 3
+            unit: "mgC g^{-1}\\text{ soil}"
+
+    - parameters:          
+        - k_s1:
+            desc: Decomposition rate of substrate 1
+            unit: "m^{3} d^{-1} g^{-1}"
+            type: parameter
+        - k_s2:
+            desc: Decomposition rate of substrate 2
+            unit: "m^{3} d^{-1} g^{-1}"
+            type: parameter
+        - k_s3:
+            desc: Decomposition rate of substrate 3
+            unit: "m^{3} d^{-1} g^{-1}"
+            type: parameter
+        - k_b1:
+            desc: Microbial decay rate guild 1
+            unit: "d^{-1}"
+            type: parameter
+        - k_b2:
+            desc: Microbial decay rate guild 2
+            unit: "d^{-1}"
+            type: parameter
+        - k_b3:
+            desc: Microbial decay rate guild 3
+            unit: "d^{-1}"
+            type: parameter
+        - r_1:
+            desc: respired C fraction 1
+            unit: 
+            type: parameter
+        - r_2:
+            desc: respired C fraction 2
+            unit:
+            type: parameter
+        - r_3:
+            desc: respired C fraction 3
+            unit: 
+            type: parameter
+        - K_M1:
+            desc: Michaelis-Menten constant 1
+            unit: "g m^{-3}"
+            type: parameter
+        - K_M2:
+            desc: Michaelis-Menten constant 2
+            unit: "g m^{-3}"
+            type: parameter
+        - K_M3:
+            desc: Michaelis-Menten constant 3
+            unit: "g m^{-3}"
+            type: parameter
+
+
+    - input_components:
+        - I_1:
+            desc: input to substrate 1
+            type: parameter
+            unit: "g m^{-3} d^{-1}"
+        - I_2:
+            desc: input to substrate 2
+            unit: "g m^{-3} d^{-1}"
+            type: parameter
+        - I_3:
+            desc: input to substrate 3
+            unit: "g m^{-3} d^{-1}"
+            type: parameter
+                   
+    - components:
+        - C:
+            desc: carbon content
+            exprs: "C = Matrix(6, 1, [S1, B1, S2, B2, S3, B3])"
+            key: state_vector
+        - I:
+            desc: input vector
+            exprs: "I = Matrix(6, 1, [I_1, 0, I_2, 0, I_3, 0])"
+            key: input_vector
+        - T:
+            desc: transition operator
+            exprs: "T = Matrix([[   -1,   1,   0,   0,   0,   0],
+                                [1-r_1,  -1,   0,   0,   0,   0],
+                                [    0,   0,  -1,   1,   0,   0],
+                                [    0,   0,1-r_2,  -1,  0,   0],
+                                [    0,   0,   0,   0,  -1,   1],
+                                [    0,   0,   0,   0, 1-r_3, -1]])"
+            key: trans_op
+        - N: 
+            desc: decomposition operator
+            exprs: "N = Matrix([[k_s1*B1/(K_M1+S1),              0,                0,        0,                0,    0],
+                                [                 0,            k_b1,               0,        0,                0,    0],
+                                [                 0,              0,k_s2*B2/(K_M2+S2),        0,                0,    0],
+                                [                 0,              0,                0,     k_b2,                0,    0],
+                                [                 0,              0,                0,        0,k_s2*B2/(K_M2+S2),    0],
+                                [                 0,              0,                0,        0,                0, k_b3]])"
+                                
+            key: decomp_op_nonlin
+        - f_s: 
+            exprs: "f_s = I + T * N * C"
+            desc: the right hand side of the ode
+            key: state_vector_derivative
+
+######################################################################
+
+# include model run information
+

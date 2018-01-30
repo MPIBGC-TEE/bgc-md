@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: Microbial-Enzyme-Mediated Decomposition model (MEND), version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: Microbial-Enzyme-Mediated Decomposition model (MEND), version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Holger Metzler (Orcid ID: 0000-0002-8239-1601) on 21/03/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers soil organic matter decomposition. It was originally described by <span class="citation">Wang, Post, &amp; Mayes (2013)</span>.</p>
+<h3 id="further-references">Further references</h3>
+<p><span class="citation">Li, Wang, Allison, Mayes, &amp; Luo (2014)</span>: </p>
+<h3 id="abstract">Abstract</h3>
+<p>We developed a microbial-enzyme-mediated decomposition (MEND) model, based on the Michaelis-Menten kinetics, that describes the dynamics of physically defined pools of soil organic matter (SOC). These include particulate, mineral-associated, dissolved organic matter (POC, MOC, and DOC, respectively), microbial biomass, and associated exoenzymes. The ranges and/or distributions of parameters were determined by both analytical steady-state and dynamic analyses with SOC data from the literature. We used an improved multi-objective parameter sensitivity analysis (MOPSA) to identify the most important parameters for the full model: maintenance of microbial biomass, turnover and synthesis of enzymes, and carbon use efficiency (CUE). The model predicted that an increase of 2°C (baseline temperature 12°C) caused the pools of POC-cellulose, MOC, and total SOC to increase with dynamic CUE and decrease with constant CUE, as indicated by the 50% confidence intervals. Regardless of dynamic or constant CUE, the changes in pool size of POC, MOC, and total SOC varied from −8% to 8% under +2°C. The scenario analysis using a single parameter set indicates that higher temperature with dynamic CUE might result in greater net increases in both POC-cellulose and MOC pools. Different dynamics of various SOC pools reflected the catalytic functions of specific enzymes targeting specific substrates and the interactions between microbes, enzymes, and SOC. With the feasible parameter values estimated in this study, models incorporating fundamental principles of microbial-enzyme dynamics can lead to simulation results qualitatively different from traditional models with fast/slow/passive pools.</p>
+<h3 id="keywords">Keywords</h3>
+<p>differential equations, nonlinear, time invariant, Michaelis-Menten</p>
+<h3 id="principles">Principles</h3>
+<p>mass balance, substrate dependence of decomposition, heterogeneity of speed of decay, internal transformations of organic matter, substrate interactions</p>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:32%;">
+<caption>Information on State Variables</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(P\)</span></td>
+<td align="left">particulate organic carbon pool</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(M\)</span></td>
+<td align="left">mineral associated organic carbon pool</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(Q\)</span></td>
+<td align="left">active layer of <span class="math inline">\(M\)</span> interacting with dissolved organic carbon through adsorption and desorption</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(B\)</span></td>
+<td align="left">microbial biomass pool</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(D\)</span></td>
+<td align="left">dissolved organic carbon pool</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(EP\)</span></td>
+<td align="left">enzymes for the decomposition of <span class="math inline">\(P\)</span></td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(EM\)</span></td>
+<td align="left">enzymes for the decompsotion of <span class="math inline">\(M\)</span></td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="parameters">Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:43%;">
+<caption>Information on Parameters</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(V_{P}\)</span></td>
+<td align="left">maximum specific decomposition rate for <span class="math inline">\(P\)</span> by <span class="math inline">\(EP\)</span></td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(K_{P}\)</span></td>
+<td align="left">half-saturation constant for decomposition of <span class="math inline">\(P\)</span></td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(V_{M}\)</span></td>
+<td align="left">maximum specific decomposition rate for <span class="math inline">\(M\)</span> by <span class="math inline">\(EM\)</span></td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(K_{M}\)</span></td>
+<td align="left">half-saturation constant for decomposition of <span class="math inline">\(M\)</span></td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(V_{D}\)</span></td>
+<td align="left">maximum specific uptake rate of <span class="math inline">\(D\)</span> for growth of <span class="math inline">\(B\)</span></td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(K_{D}\)</span></td>
+<td align="left">half-saturation constant for uptake of <span class="math inline">\(D\)</span> for growth of <span class="math inline">\(B\)</span></td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(m_{R}\)</span></td>
+<td align="left">specific maintenance factor or rate</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(E_{C}\)</span></td>
+<td align="left">carbon use efficiency</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(Q_{max}\)</span></td>
+<td align="left">maximum dissolved organic carbon sorption capacity</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(K_{ads}\)</span></td>
+<td align="left">specific adsorption rate</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(K_{des}\)</span></td>
+<td align="left">desorption rate</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(r_{EP}\)</span></td>
+<td align="left">turnover rate of <span class="math inline">\(EP\)</span></td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(r_{EM}\)</span></td>
+<td align="left">turnover rate of <span class="math inline">\(EM\)</span></td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(g_{D}\)</span></td>
+<td align="left">fraction of dead <span class="math inline">\(B\)</span> allocated to <span class="math inline">\(D\)</span></td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(p_{EP}\)</span></td>
+<td align="left">fraction of <span class="math inline">\(m_{R}\)</span> for production of <span class="math inline">\(EP\)</span></td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(p_{EM}\)</span></td>
+<td align="left">fraction of <span class="math inline">\(m_{R}\)</span> for production of <span class="math inline">\(EM\)</span></td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{D}\)</span></td>
+<td align="left">fraction of decomposed <span class="math inline">\(P\)</span> allocated to <span class="math inline">\(D\)</span></td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="additional-variables">Additional Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:43%;">
+<caption>Information on Additional Variables</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(F_{E}\)</span></td>
+<td align="left">enzyme production rate</td>
+<td align="center"><span class="math inline">\(F_{E}=m_{R}\)</span></td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(F_{R}\)</span></td>
+<td align="left">microbial respiration rate</td>
+<td align="center"><span class="math inline">\(F_{R}=\frac{\left(\frac{1}{E_{C}}-1\right)\cdot \left(V_{D}+m_{R}\right)\cdot D}{K_{D}+D}\)</span></td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(F_{U}\)</span></td>
+<td align="left">dissolved organic matter uptakte rate</td>
+<td align="center"><span class="math inline">\(F_{U}=\frac{\frac{1}{E_{C}}\cdot \left(V_{D}+m_{R}\right)\cdot B}{K_{D}+D}\)</span></td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(F_{A}\)</span></td>
+<td align="left">adsorption rate of dissolved organic matter</td>
+<td align="center"><span class="math inline">\(F_{A}=K_{ads}\cdot \left(1-\frac{Q}{Q_{max}}\right)\)</span></td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="input-components">Input Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:43%;">
+<caption>Information on Input Components</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(I_{P}\)</span></td>
+<td align="left">soil organic carbon input rate</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil } h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(I_{D}\)</span></td>
+<td align="left">dissolved organic carbon input rate</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil } h^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:32%;">
+<caption>Information on Components</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C\)</span></td>
+<td align="left">carbon content</td>
+<td align="center"><span class="math inline">\(C=\left[\begin{matrix}P\\M\\Q\\B\\D\\EP\\EM\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(I\)</span></td>
+<td align="left">input vector</td>
+<td align="center"><span class="math inline">\(I=\left[\begin{matrix}I_{P}\\0\\0\\0\\I_{D}\\0\\0\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(T\)</span></td>
+<td align="left">transition operator</td>
+<td align="center"><span class="math inline">\(T=\left[\begin{matrix}-1 &amp; 0 &amp; 0 &amp;\frac{F_{E}}{F_{E} + F_{R}}\cdot\left(- g_{D} + 1\right)\cdot\left(- p_{EM} - p_{EP} + 1\right) &amp; 0 &amp; 0 &amp; 0\\- f_{D} + 1 &amp; -1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; -1 &amp; 0 &amp;\frac{F_{A}}{F_{A} + F_{U}} &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; -1 &amp;\frac{F_{U}}{F_{A} + F_{U}} &amp; 0 &amp; 0\\f_{D} &amp; 1 &amp; 1 &amp;\frac{F_{E}\cdot g_{D}}{F_{E} + F_{R}}\cdot\left(- p_{EM} - p_{EP} + 1\right) &amp; -1 &amp; 1 &amp; 1\\0 &amp; 0 &amp; 0 &amp;\frac{F_{E}\cdot p_{EP}}{F_{E} + F_{R}} &amp; 0 &amp; -1 &amp; 0\\0 &amp; 0 &amp; 0 &amp;\frac{F_{E}\cdot p_{EM}}{F_{E} + F_{R}} &amp; 0 &amp; 0 &amp; -1\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(N\)</span></td>
+<td align="left">decomposition operator</td>
+<td align="center"><span class="math inline">\(N=\left[\begin{matrix}\frac{EP\cdot V_{P}}{K_{P} + P} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp;\frac{EM\cdot V_{M}}{K_{M} + M} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp;\frac{K_{des}}{Q_{max}} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; F_{E} + F_{R} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; F_{A} + F_{U} &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; r_{EP} &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; r_{EM}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{s}\)</span></td>
+<td align="left">the right hand side of the ode</td>
+<td align="center"><span class="math inline">\(f_{s}=I+T\cdot N\cdot C\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(P: I_{P}\)</span> <br><span class="math inline">\(D: I_{D}\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(B: -\frac{B\cdot D}{E_{C}\cdot\left(D + K_{D}\right)}\cdot\left(E_{C}\cdot V_{D} + E_{C}\cdot m_{R} - V_{D} - m_{R}\right)\)</span> <br></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<span class="math inline">\(P \rightarrow M: -\frac{EP\cdot P\cdot V_{P}}{K_{P} + P}\cdot\left(f_{D} - 1\right)\)</span> <br><span class="math inline">\(P \rightarrow D: \frac{EP\cdot P\cdot V_{P}}{K_{P} + P}\cdot f_{D}\)</span> <br><span class="math inline">\(M \rightarrow D: \frac{EM\cdot M\cdot V_{M}}{K_{M} + M}\)</span> <br><span class="math inline">\(Q \rightarrow D: \frac{K_{des}}{Q_{max}}\cdot Q\)</span> <br><span class="math inline">\(B \rightarrow P: B\cdot m_{R}\cdot\left(g_{D} - 1\right)\cdot\left(p_{EM} + p_{EP} - 1\right)\)</span> <br><span class="math inline">\(B \rightarrow D: B\cdot g_{D}\cdot m_{R}\cdot\left(- p_{EM} - p_{EP} + 1\right)\)</span> <br><span class="math inline">\(B \rightarrow EP: B\cdot m_{R}\cdot p_{EP}\)</span> <br><span class="math inline">\(B \rightarrow EM: B\cdot m_{R}\cdot p_{EM}\)</span> <br><span class="math inline">\(D \rightarrow Q: -\frac{D}{Q_{max}}\cdot K_{ads}\cdot\left(Q - Q_{max}\right)\)</span> <br><span class="math inline">\(D \rightarrow B: \frac{B\cdot D\cdot\left(V_{D} + m_{R}\right)}{E_{C}\cdot\left(D + K_{D}\right)}\)</span> <br><span class="math inline">\(EP \rightarrow D: EP\cdot r_{EP}\)</span> <br><span class="math inline">\(EM \rightarrow D: EM\cdot r_{EM}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}B\cdot m_{R}\cdot\left(- g_{D} + 1\right)\cdot\left(- p_{EM} - p_{EP} + 1\right) -\frac{EP\cdot P\cdot V_{P}}{K_{P} + P} + I_{P}\\-\frac{EM\cdot M\cdot V_{M}}{K_{M} + M} +\frac{EP\cdot P\cdot V_{P}}{K_{P} + P}\cdot\left(- f_{D} + 1\right)\\D\cdot K_{ads}\cdot\left(-\frac{Q}{Q_{max}} + 1\right) -\frac{K_{des}}{Q_{max}}\cdot Q\\\frac{B\cdot D\cdot\left(V_{D} + m_{R}\right)}{E_{C}\cdot\left(D + K_{D}\right)} + B\cdot\left(-\frac{D}{D + K_{D}}\cdot\left(-1 +\frac{1}{E_{C}}\right)\cdot\left(V_{D} + m_{R}\right) - m_{R}\right)\\B\cdot g_{D}\cdot m_{R}\cdot\left(- p_{EM} - p_{EP} + 1\right) + D\cdot\left(-\frac{B\cdot\left(V_{D} + m_{R}\right)}{E_{C}\cdot\left(D + K_{D}\right)} - K_{ads}\cdot\left(-\frac{Q}{Q_{max}} + 1\right)\right) +\frac{EM\cdot M\cdot V_{M}}{K_{M} + M} + EM\cdot r_{EM} +\frac{EP\cdot P\cdot V_{P}}{K_{P} + P}\cdot f_{D} + EP\cdot r_{EP} + I_{D} +\frac{K_{des}}{Q_{max}}\cdot Q\\B\cdot m_{R}\cdot p_{EP} - EP\cdot r_{EP}\\B\cdot m_{R}\cdot p_{EM} - EM\cdot r_{EM}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}\frac{EP\cdot P\cdot V_{P}}{\left(K_{P} + P\right)^{2}} -\frac{EP\cdot V_{P}}{K_{P} + P} &amp; 0 &amp; 0 &amp; m_{R}\cdot\left(- g_{D} + 1\right)\cdot\left(- p_{EM} - p_{EP} + 1\right) &amp; 0 &amp; -\frac{P\cdot V_{P}}{K_{P} + P} &amp; 0\\-\frac{EP\cdot P\cdot V_{P}}{\left(K_{P} + P\right)^{2}}\cdot\left(- f_{D} + 1\right) +\frac{EP\cdot V_{P}}{K_{P} + P}\cdot\left(- f_{D} + 1\right) &amp;\frac{EM\cdot M\cdot V_{M}}{\left(K_{M} + M\right)^{2}} -\frac{EM\cdot V_{M}}{K_{M} + M} &amp; 0 &amp; 0 &amp; 0 &amp;\frac{P\cdot V_{P}}{K_{P} + P}\cdot\left(- f_{D} + 1\right) &amp; -\frac{M\cdot V_{M}}{K_{M} + M}\\0 &amp; 0 &amp; -\frac{D}{Q_{max}}\cdot K_{ads} -\frac{K_{des}}{Q_{max}} &amp; 0 &amp; K_{ads}\cdot\left(-\frac{Q}{Q_{max}} + 1\right) &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; -\frac{D}{D + K_{D}}\cdot\left(-1 +\frac{1}{E_{C}}\right)\cdot\left(V_{D} + m_{R}\right) +\frac{D\cdot\left(V_{D} + m_{R}\right)}{E_{C}\cdot\left(D + K_{D}\right)} - m_{R} &amp; -\frac{B\cdot D\cdot\left(V_{D} + m_{R}\right)}{E_{C}\cdot\left(D + K_{D}\right)^{2}} + B\cdot\left(\frac{D}{\left(D + K_{D}\right)^{2}}\cdot\left(-1 +\frac{1}{E_{C}}\right)\cdot\left(V_{D} + m_{R}\right) -\frac{1}{D + K_{D}}\cdot\left(-1 +\frac{1}{E_{C}}\right)\cdot\left(V_{D} + m_{R}\right)\right) +\frac{B\cdot\left(V_{D} + m_{R}\right)}{E_{C}\cdot\left(D + K_{D}\right)} &amp; 0 &amp; 0\\-\frac{EP\cdot P\cdot V_{P}}{\left(K_{P} + P\right)^{2}}\cdot f_{D} +\frac{EP\cdot V_{P}\cdot f_{D}}{K_{P} + P} &amp; -\frac{EM\cdot M\cdot V_{M}}{\left(K_{M} + M\right)^{2}} +\frac{EM\cdot V_{M}}{K_{M} + M} &amp;\frac{D}{Q_{max}}\cdot K_{ads} +\frac{K_{des}}{Q_{max}} &amp; -\frac{D\cdot\left(V_{D} + m_{R}\right)}{E_{C}\cdot\left(D + K_{D}\right)} + g_{D}\cdot m_{R}\cdot\left(- p_{EM} - p_{EP} + 1\right) &amp;\frac{B\cdot D\cdot\left(V_{D} + m_{R}\right)}{E_{C}\cdot\left(D + K_{D}\right)^{2}} -\frac{B\cdot\left(V_{D} + m_{R}\right)}{E_{C}\cdot\left(D + K_{D}\right)} - K_{ads}\cdot\left(-\frac{Q}{Q_{max}} + 1\right) &amp;\frac{P\cdot V_{P}\cdot f_{D}}{K_{P} + P} + r_{EP} &amp;\frac{M\cdot V_{M}}{K_{M} + M} + r_{EM}\\0 &amp; 0 &amp; 0 &amp; m_{R}\cdot p_{EP} &amp; 0 &amp; - r_{EP} &amp; 0\\0 &amp; 0 &amp; 0 &amp; m_{R}\cdot p_{EM} &amp; 0 &amp; 0 &amp; - r_{EM}\end{matrix}\right]\)</span></p>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
+<div id="ref-Li2014Biogeochemistry">
+<p>Li, J., Wang, G., Allison, S. D., Mayes, M. A., &amp; Luo, Y. (2014). Soil carbon sensitivity to temperature and carbon use efficiency compared across microbial-ecosystem models of varying complexity. <em>Biogeochemistry</em>, <em>119</em>(1-3), 67–84.</p>
+</div>
+<div id="ref-Wang2013EcologicalApplications">
+<p>Wang, G., Post, W. M., &amp; Mayes, M. A. (2013). Development of microbial-enzyme-mediated decomposition model parameters through steady-state and dynamic analyses. <em>Ecological Applications</em>, <em>23</em>(1), 255–272. <a href="http://doi.org/10.1890/12-0681.1" class="uri">http://doi.org/10.1890/12-0681.1</a></p>
+</div>
+</div>
+</body>
+</html>

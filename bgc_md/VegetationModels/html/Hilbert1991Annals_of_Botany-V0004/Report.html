@@ -1,0 +1,435 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: Hilbert1991Annals_of_Botany, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: Hilbert1991Annals_of_Botany, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 29/7/2015, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Hilbert &amp; Reynolds (1991)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>A model is developed that considers the allocation of carbon and nitrogen substrates to a protein compartment in the shoots, shoot structural components, and root biomass. Inclusion of a shoot-protein compartment allows variation in shoot-specific activity to be modelled as a function of leaf nitrogen concentration. Allocation to the biomass compartments is controlled by two partitioning variables that are defined by explicitly using the balanced activity hypothesis. The model produces balanced activity where the shoot-specific activity, as well as root and shoot biomass, vary in response to the above-ground (light and CO<span class="math inline">\(_2\)</span>) and below-ground (nitrogen) environments. The predicted patterns of both root: shoot ratio and leaf nitrogen concentration in response to environmental resource availability are qualitatively consistent with general trends observed in plants.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global</p>
+<h3 id="available-parameter-values">Available parameter values</h3>
+<table>
+<caption>Information on given parameter sets</caption>
+<thead>
+<tr class="header">
+<th align="left">Abbreviation</th>
+<th align="left">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Original dataset of the publication</td>
+<td align="left"><span class="citation">Hilbert &amp; Reynolds (1991)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Values <br> <br>key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(W_{p}\)</span></td>
+<td align="left">Mass of leaf proteins</td>
+<td align="center">foliage</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(W_{s}\)</span></td>
+<td align="left">Mass of leaf structural components</td>
+<td align="center">foliage</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(W_{r}\)</span></td>
+<td align="left">Mass of roots</td>
+<td align="center">fine_roots</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(W_{C}\)</span></td>
+<td align="left">Substrate carbon</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(W_{N}\)</span></td>
+<td align="left">Substrate nitrogen</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="additional-variables">Additional Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Additional Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+<th align="center">Values <br> <br>Original dataset of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(W_{g}\)</span></td>
+<td align="left">Plant biomass</td>
+<td align="center"><span class="math inline">\(W_{g}=W_{p}+W_{s}+W_{r}\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\kappa\)</span></td>
+<td align="left">growth rate coefficient</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\sigma_{c}\)</span></td>
+<td align="left">photosynthetic rate per unit leaf</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\sigma_{r}\)</span></td>
+<td align="left">specific root activity</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\([g N (g root)^{-1} d^{-1}]\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(h_{max}\)</span></td>
+<td align="left">leaf max. thickness</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\([m]\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(h_{half}\)</span></td>
+<td align="left"><span class="math inline">\(h_0.5\)</span> leaf half thickness</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(I\)</span></td>
+<td align="left">photon flux density</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\([\mu mol\, m^{-2}\,s^{-1}]\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\rho\)</span></td>
+<td align="left">leaf density</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{C}\)</span></td>
+<td align="left">proportion of carbon</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(f_{N}\)</span></td>
+<td align="left">proportion of nitrogen</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(B\)</span></td>
+<td align="left">target whole plant nitrogen:carbon ratio</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(f_{cp}\)</span></td>
+<td align="left">proportion of carbon in leaf proteins</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{cs}\)</span></td>
+<td align="left">proportion of carbon in leaf structural components</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(f_{cr}\)</span></td>
+<td align="left">proportion of carbon in roots</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{np}\)</span></td>
+<td align="left">proportion of nitrogen in leaf proteins</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(f_{ns}\)</span></td>
+<td align="left">proportion of nitrogen in leaf structural components</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{nr}\)</span></td>
+<td align="left">proportion of nitrogen in roots</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C\)</span></td>
+<td align="left">Substrate carbon concentration</td>
+<td align="center"><span class="math inline">\(C=\frac{W_{C}}{W_{g}}\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(N\)</span></td>
+<td align="left">Substrate nitrogen concentration</td>
+<td align="center"><span class="math inline">\(N=\frac{W_{N}}{W_{g}}\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(h\)</span></td>
+<td align="left">-</td>
+<td align="center"><span class="math inline">\(h=\frac{h_{max}\cdot I}{h_{half}+I}\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">Area</td>
+<td align="center"><span class="math inline">\(A=\frac{W_{s}}{\rho}\cdot h\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(P\)</span></td>
+<td align="left">-</td>
+<td align="center"><span class="math inline">\(P=\frac{f_{C}\cdot \sigma_{r}\cdot W_{r}}{f_{N}}\cdot \sigma_{c}\cdot A\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(Q\)</span></td>
+<td align="left">-</td>
+<td align="center"><span class="math inline">\(Q=\frac{f_{N}}{B\cdot f_{C}}\)</span></td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="allocation-coefficients">Allocation Coefficients</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Allocation Coefficients</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="center">Expressions</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Original dataset of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\lambda_{p}\)</span></td>
+<td align="center"><span class="math inline">\(\lambda_{p}=\frac{P}{1+P+Q}\)</span></td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(\frac{1}{3}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\lambda_{s}\)</span></td>
+<td align="center"><span class="math inline">\(\lambda_{s}=\frac{Q}{1+P+Q}\)</span></td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(\frac{1}{3}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\lambda_{r}\)</span></td>
+<td align="center"><span class="math inline">\(\lambda_{r}=\frac{1}{1+P+Q}\)</span></td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(\frac{1}{3}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="auxiliary-variables">Auxiliary Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Auxiliary Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Entry Author Orcid</th>
+<th align="center">Expressions</th>
+<th align="center">Values <br> <br>Original dataset of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(O_{C}\)</span></td>
+<td align="left">output share of <span class="math inline">\(W_C\)</span></td>
+<td align="center">0000-0002-8239-1601</td>
+<td align="center"><span class="math inline">\(O_{C}=f_{cp}\cdot \lambda_{p}\cdot W_{p}+f_{cs}\cdot \lambda_{s}\cdot W_{s}+f_{cr}\cdot \lambda_{r}\cdot W_{r}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(O_{N}\)</span></td>
+<td align="left">output share of <span class="math inline">\(W_N\)</span></td>
+<td align="center">0000-0002-8239-1601</td>
+<td align="center"><span class="math inline">\(O_{N}=f_{np}\cdot \lambda_{p}\cdot W_{p}+f_{ns}\cdot \lambda_{s}\cdot W_{s}+f_{nr}\cdot \lambda_{r}\cdot W_{r}\)</span></td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Entry Author Orcid</th>
+<th align="center">Expressions</th>
+<th align="center">Values <br> <br>key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center">0000-0002-8239-1601</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}W_{p}\\W_{s}\\W_{r}\\W_{C}\\W_{N}\end{matrix}\right]\)</span></td>
+<td align="center">state_vector</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(Inp\)</span></td>
+<td align="left">external inputs through photosysthesis and roots</td>
+<td align="center">0000-0002-8239-1601</td>
+<td align="center"><span class="math inline">\(Inp=\left[\begin{matrix}C\cdot N\cdot W_{p}\cdot\kappa\cdot\lambda_{p}\cdot\left(- f_{cp} - f_{np} + 1\right)\\C\cdot N\cdot W_{s}\cdot\kappa\cdot\lambda_{s}\cdot\left(- f_{cs} - f_{ns} + 1\right)\\C\cdot N\cdot W_{r}\cdot\kappa\cdot\lambda_{r}\cdot\left(- f_{cr} - f_{nr} + 1\right)\\A\cdot\sigma_{c}\\W_{r}\cdot\sigma_{r}\end{matrix}\right]\)</span></td>
+<td align="center">input_vector</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(T\)</span></td>
+<td align="left">-</td>
+<td align="center">0000-0002-8239-1601</td>
+<td align="center"><span class="math inline">\(T=\left[\begin{matrix}-1 &amp; 0 &amp; 0 &amp;\frac{W_{p}}{O_{C}}\cdot f_{cp}\cdot\lambda_{p} &amp;\frac{W_{p}}{O_{N}}\cdot f_{np}\cdot\lambda_{p}\\0 &amp; -1 &amp; 0 &amp;\frac{W_{s}}{O_{C}}\cdot f_{cs}\cdot\lambda_{s} &amp;\frac{W_{s}}{O_{N}}\cdot f_{ns}\cdot\lambda_{s}\\0 &amp; 0 &amp; -1 &amp;\frac{W_{r}}{O_{C}}\cdot f_{cr}\cdot\lambda_{r} &amp;\frac{W_{r}}{O_{N}}\cdot f_{nr}\cdot\lambda_{r}\\0 &amp; 0 &amp; 0 &amp; -1 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; -1\end{matrix}\right]\)</span></td>
+<td align="center">trans_op</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(N_{gm}\)</span></td>
+<td align="left">-</td>
+<td align="center">0000-0002-8239-1601</td>
+<td align="center"><span class="math inline">\(N_{gm}=\left[\begin{matrix}0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp;\frac{N}{W_{g}}\cdot O_{C}\cdot\kappa &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp;\frac{C}{W_{g}}\cdot O_{N}\cdot\kappa\end{matrix}\right]\)</span></td>
+<td align="center">cyc_op_nonlin</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center">0000-0002-8239-1601</td>
+<td align="center"><span class="math inline">\(f_{v}=Inp+T\cdot N_{gm}\cdot x\)</span></td>
+<td align="center">state_vector_derivative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(W_{p}: \frac{I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cp} - f_{np} + 1\right)}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\)</span> <br><span class="math inline">\(W_{s}: \frac{W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot\kappa\cdot\left(- f_{cs} - f_{ns} + 1\right)}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\)</span> <br><span class="math inline">\(W_{r}: \frac{W_{C}\cdot W_{N}\cdot W_{r}\cdot\kappa\cdot\left(- f_{cr} - f_{nr} + 1\right)}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\)</span> <br><span class="math inline">\(W_{C}: \frac{I\cdot W_{s}\cdot h_{max}\cdot\sigma_{c}}{\rho\cdot\left(I + h_{half}\right)}\)</span> <br><span class="math inline">\(W_{N}: W_{r}\cdot\sigma_{r}\)</span> <br></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<span class="math inline">\(W_{C} &gt; W_{p}: \frac{B\cdot I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}^{2}\cdot f_{cp}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(B\cdot I\cdot W_{r}\cdot W_{s}\cdot f_{C}^{2}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r} + B\cdot f_{C}\cdot f_{N}\cdot\rho\cdot\left(I + h_{half}\right) + f_{N}^{2}\cdot\rho\cdot\left(I + h_{half}\right)\right)}\)</span> <br><span class="math inline">\(W_{C} &gt; W_{s}: \frac{W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}^{2}\cdot f_{cs}\cdot\kappa\cdot\rho\cdot\left(I + h_{half}\right)}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(B\cdot I\cdot W_{r}\cdot W_{s}\cdot f_{C}^{2}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r} + B\cdot f_{C}\cdot f_{N}\cdot\rho\cdot\left(I + h_{half}\right) + f_{N}^{2}\cdot\rho\cdot\left(I + h_{half}\right)\right)}\)</span> <br><span class="math inline">\(W_{C} &gt; W_{r}: \frac{B\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot f_{C}\cdot f_{N}\cdot f_{cr}\cdot\kappa\cdot\rho\cdot\left(I + h_{half}\right)}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(B\cdot I\cdot W_{r}\cdot W_{s}\cdot f_{C}^{2}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r} + B\cdot f_{C}\cdot f_{N}\cdot\rho\cdot\left(I + h_{half}\right) + f_{N}^{2}\cdot\rho\cdot\left(I + h_{half}\right)\right)}\)</span> <br><span class="math inline">\(W_{N} &gt; W_{p}: \frac{B\cdot I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}^{2}\cdot f_{np}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(B\cdot I\cdot W_{r}\cdot W_{s}\cdot f_{C}^{2}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r} + B\cdot f_{C}\cdot f_{N}\cdot\rho\cdot\left(I + h_{half}\right) + f_{N}^{2}\cdot\rho\cdot\left(I + h_{half}\right)\right)}\)</span> <br><span class="math inline">\(W_{N} &gt; W_{s}: \frac{W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}^{2}\cdot f_{ns}\cdot\kappa\cdot\rho\cdot\left(I + h_{half}\right)}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(B\cdot I\cdot W_{r}\cdot W_{s}\cdot f_{C}^{2}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r} + B\cdot f_{C}\cdot f_{N}\cdot\rho\cdot\left(I + h_{half}\right) + f_{N}^{2}\cdot\rho\cdot\left(I + h_{half}\right)\right)}\)</span> <br><span class="math inline">\(W_{N} &gt; W_{r}: \frac{B\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot f_{C}\cdot f_{N}\cdot f_{nr}\cdot\kappa\cdot\rho\cdot\left(I + h_{half}\right)}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(B\cdot I\cdot W_{r}\cdot W_{s}\cdot f_{C}^{2}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r} + B\cdot f_{C}\cdot f_{N}\cdot\rho\cdot\left(I + h_{half}\right) + f_{N}^{2}\cdot\rho\cdot\left(I + h_{half}\right)\right)}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cp} - f_{np} + 1\right)}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\\\frac{W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot f_{cs}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot f_{ns}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot\kappa\cdot\left(- f_{cs} - f_{ns} + 1\right)}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\\\frac{W_{C}\cdot W_{N}\cdot W_{r}\cdot f_{cr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{N}\cdot W_{r}\cdot f_{nr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{N}\cdot W_{r}\cdot\kappa\cdot\left(- f_{cr} - f_{nr} + 1\right)}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\\\frac{I\cdot W_{s}\cdot h_{max}\cdot\sigma_{c}}{\rho\cdot\left(I + h_{half}\right)} -\frac{W_{C}\cdot W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}}\cdot\left(\frac{I\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{r}\cdot f_{cr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} +\frac{W_{s}\cdot f_{N}\cdot f_{cs}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right)\\-\frac{W_{C}\cdot W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}}\cdot\left(\frac{I\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{r}\cdot f_{nr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} +\frac{W_{s}\cdot f_{N}\cdot f_{ns}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right) + W_{r}\cdot\sigma_{r}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\frac{2\cdot I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cp} - f_{np} + 1\right)}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cp} - f_{np} + 1\right)}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} &amp; -\frac{I^{2}\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}^{2}\cdot W_{s}\cdot f_{C}^{2}\cdot f_{cp}\cdot h_{max}^{2}\cdot\kappa\cdot\sigma_{c}^{2}\cdot\sigma_{r}^{2}}{f_{N}^{2}\cdot\rho^{2}\cdot\left(I + h_{half}\right)^{2}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I^{2}\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}^{2}\cdot W_{s}\cdot f_{C}^{2}\cdot f_{np}\cdot h_{max}^{2}\cdot\kappa\cdot\sigma_{c}^{2}\cdot\sigma_{r}^{2}}{f_{N}^{2}\cdot\rho^{2}\cdot\left(I + h_{half}\right)^{2}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I^{2}\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}^{2}\cdot W_{s}\cdot f_{C}^{2}\cdot h_{max}^{2}\cdot\kappa\cdot\sigma_{c}^{2}\cdot\sigma_{r}^{2}\cdot\left(- f_{cp} - f_{np} + 1\right)}{f_{N}^{2}\cdot\rho^{2}\cdot\left(I + h_{half}\right)^{2}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{2\cdot I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cp} - f_{np} + 1\right)}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot f_{C}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cp} - f_{np} + 1\right)}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} &amp; -\frac{I^{2}\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}^{2}\cdot f_{C}^{2}\cdot f_{cp}\cdot h_{max}^{2}\cdot\kappa\cdot\sigma_{c}^{2}\cdot\sigma_{r}^{2}}{f_{N}^{2}\cdot\rho^{2}\cdot\left(I + h_{half}\right)^{2}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I^{2}\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}^{2}\cdot f_{C}^{2}\cdot f_{np}\cdot h_{max}^{2}\cdot\kappa\cdot\sigma_{c}^{2}\cdot\sigma_{r}^{2}}{f_{N}^{2}\cdot\rho^{2}\cdot\left(I + h_{half}\right)^{2}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I^{2}\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}^{2}\cdot f_{C}^{2}\cdot h_{max}^{2}\cdot\kappa\cdot\sigma_{c}^{2}\cdot\sigma_{r}^{2}\cdot\left(- f_{cp} - f_{np} + 1\right)}{f_{N}^{2}\cdot\rho^{2}\cdot\left(I + h_{half}\right)^{2}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{2\cdot I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cp} - f_{np} + 1\right)}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{p}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cp} - f_{np} + 1\right)}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} &amp;\frac{I\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{N}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cp} - f_{np} + 1\right)}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} &amp;\frac{I\cdot W_{C}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{I\cdot W_{C}\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cp} - f_{np} + 1\right)}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\\-\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot f_{cs}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot f_{ns}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot\kappa\cdot\left(- f_{cs} - f_{ns} + 1\right)}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} &amp; -\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot W_{s}\cdot f_{cs}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{B\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot W_{s}\cdot f_{ns}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{B\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot W_{s}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cs} - f_{ns} + 1\right)}{B\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot f_{cs}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot f_{ns}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot\kappa\cdot\left(- f_{cs} - f_{ns} + 1\right)}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{N}\cdot f_{N}\cdot f_{cs}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{N}\cdot f_{N}\cdot f_{ns}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{N}\cdot f_{N}\cdot\kappa\cdot\left(- f_{cs} - f_{ns} + 1\right)}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} &amp; -\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{s}^{2}\cdot f_{cs}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{B\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{s}^{2}\cdot f_{ns}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{B\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{s}^{2}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cs} - f_{ns} + 1\right)}{B\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot f_{cs}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot f_{ns}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{s}\cdot f_{N}\cdot\kappa\cdot\left(- f_{cs} - f_{ns} + 1\right)}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} &amp;\frac{W_{N}\cdot W_{s}\cdot f_{N}\cdot f_{cs}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{N}\cdot W_{s}\cdot f_{N}\cdot f_{ns}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{N}\cdot W_{s}\cdot f_{N}\cdot\kappa\cdot\left(- f_{cs} - f_{ns} + 1\right)}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} &amp;\frac{W_{C}\cdot W_{s}\cdot f_{N}\cdot f_{cs}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{s}\cdot f_{N}\cdot f_{ns}\cdot\kappa}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{s}\cdot f_{N}\cdot\kappa\cdot\left(- f_{cs} - f_{ns} + 1\right)}{B\cdot f_{C}\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\\-\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot f_{cr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot f_{nr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot\kappa\cdot\left(- f_{cr} - f_{nr} + 1\right)}{\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} &amp; -\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}^{2}\cdot f_{C}\cdot f_{cr}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}^{2}\cdot f_{C}\cdot f_{nr}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}^{2}\cdot f_{C}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cr} - f_{nr} + 1\right)}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot f_{cr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot f_{nr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot\kappa\cdot\left(- f_{cr} - f_{nr} + 1\right)}{\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} &amp; -\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cr}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{nr}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}\cdot\left(- f_{cr} - f_{nr} + 1\right)}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot f_{cr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot f_{nr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{2\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot\kappa\cdot\left(- f_{cr} - f_{nr} + 1\right)}{\left(W_{p} + W_{r} + W_{s}\right)^{3}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{N}\cdot f_{cr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{N}\cdot f_{nr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{N}\cdot\kappa\cdot\left(- f_{cr} - f_{nr} + 1\right)}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} &amp;\frac{W_{N}\cdot W_{r}\cdot f_{cr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{N}\cdot W_{r}\cdot f_{nr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{N}\cdot W_{r}\cdot\kappa\cdot\left(- f_{cr} - f_{nr} + 1\right)}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} &amp;\frac{W_{C}\cdot W_{r}\cdot f_{cr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{r}\cdot f_{nr}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{C}\cdot W_{r}\cdot\kappa\cdot\left(- f_{cr} - f_{nr} + 1\right)}{\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\\-\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{2\cdot W_{C}\cdot W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{3}}\cdot\left(\frac{I\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{r}\cdot f_{cr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} +\frac{W_{s}\cdot f_{N}\cdot f_{cs}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right) &amp;\frac{I\cdot h_{max}\cdot\sigma_{c}}{\rho\cdot\left(I + h_{half}\right)} -\frac{W_{C}\cdot W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}}\cdot\left(-\frac{I^{2}\cdot W_{p}\cdot W_{r}^{2}\cdot W_{s}\cdot f_{C}^{2}\cdot f_{cp}\cdot h_{max}^{2}\cdot\sigma_{c}^{2}\cdot\sigma_{r}^{2}}{f_{N}^{2}\cdot\rho^{2}\cdot\left(I + h_{half}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} +\frac{I\cdot W_{p}\cdot W_{r}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{I\cdot W_{r}^{2}\cdot f_{C}\cdot f_{cr}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{cs}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{B\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} +\frac{f_{N}\cdot f_{cs}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right) +\frac{2\cdot W_{C}\cdot W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{3}}\cdot\left(\frac{I\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{r}\cdot f_{cr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} +\frac{W_{s}\cdot f_{N}\cdot f_{cs}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right) &amp; -\frac{W_{C}\cdot W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}}\cdot\left(-\frac{I^{2}\cdot W_{p}\cdot W_{r}\cdot W_{s}^{2}\cdot f_{C}^{2}\cdot f_{cp}\cdot h_{max}^{2}\cdot\sigma_{c}^{2}\cdot\sigma_{r}^{2}}{f_{N}^{2}\cdot\rho^{2}\cdot\left(I + h_{half}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} +\frac{I\cdot W_{p}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cr}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} +\frac{f_{cr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} -\frac{I\cdot W_{s}^{2}\cdot f_{cs}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{B\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}}\right) +\frac{2\cdot W_{C}\cdot W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{3}}\cdot\left(\frac{I\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{r}\cdot f_{cr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} +\frac{W_{s}\cdot f_{N}\cdot f_{cs}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right) &amp; -\frac{W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}}\cdot\left(\frac{I\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{r}\cdot f_{cr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} +\frac{W_{s}\cdot f_{N}\cdot f_{cs}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right) &amp; -\frac{W_{C}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}}\cdot\left(\frac{I\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{cp}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{r}\cdot f_{cr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} +\frac{W_{s}\cdot f_{N}\cdot f_{cs}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right)\\-\frac{I\cdot W_{C}\cdot W_{N}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\kappa\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(W_{p} + W_{r} + W_{s}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{2\cdot W_{C}\cdot W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{3}}\cdot\left(\frac{I\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{r}\cdot f_{nr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} +\frac{W_{s}\cdot f_{N}\cdot f_{ns}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right) &amp; -\frac{W_{C}\cdot W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}}\cdot\left(-\frac{I^{2}\cdot W_{p}\cdot W_{r}^{2}\cdot W_{s}\cdot f_{C}^{2}\cdot f_{np}\cdot h_{max}^{2}\cdot\sigma_{c}^{2}\cdot\sigma_{r}^{2}}{f_{N}^{2}\cdot\rho^{2}\cdot\left(I + h_{half}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} +\frac{I\cdot W_{p}\cdot W_{r}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{I\cdot W_{r}^{2}\cdot f_{C}\cdot f_{nr}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} -\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{ns}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{B\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} +\frac{f_{N}\cdot f_{ns}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right) +\frac{2\cdot W_{C}\cdot W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{3}}\cdot\left(\frac{I\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{r}\cdot f_{nr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} +\frac{W_{s}\cdot f_{N}\cdot f_{ns}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right) &amp; -\frac{W_{C}\cdot W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}}\cdot\left(-\frac{I^{2}\cdot W_{p}\cdot W_{r}\cdot W_{s}^{2}\cdot f_{C}^{2}\cdot f_{np}\cdot h_{max}^{2}\cdot\sigma_{c}^{2}\cdot\sigma_{r}^{2}}{f_{N}^{2}\cdot\rho^{2}\cdot\left(I + h_{half}\right)^{2}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} +\frac{I\cdot W_{p}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} -\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{nr}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}} +\frac{f_{nr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} -\frac{I\cdot W_{s}^{2}\cdot f_{ns}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{B\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)^{2}}\right) +\frac{2\cdot W_{C}\cdot W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{3}}\cdot\left(\frac{I\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{r}\cdot f_{nr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} +\frac{W_{s}\cdot f_{N}\cdot f_{ns}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right) +\sigma_{r} &amp; -\frac{W_{N}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}}\cdot\left(\frac{I\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{r}\cdot f_{nr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} +\frac{W_{s}\cdot f_{N}\cdot f_{ns}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right) &amp; -\frac{W_{C}\cdot\kappa}{\left(W_{p} + W_{r} + W_{s}\right)^{2}}\cdot\left(\frac{I\cdot W_{p}\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot f_{np}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)} +\frac{W_{r}\cdot f_{nr}}{\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}} +\frac{W_{s}\cdot f_{N}\cdot f_{ns}}{B\cdot f_{C}\cdot\left(\frac{I\cdot W_{r}\cdot W_{s}\cdot f_{C}\cdot h_{max}\cdot\sigma_{c}\cdot\sigma_{r}}{f_{N}\cdot\rho\cdot\left(I + h_{half}\right)} + 1 +\frac{f_{N}}{B\cdot f_{C}}\right)}\right)\end{matrix}\right]\)</span></p>
+<h1 id="references" class="references unnumbered">References</h1>
+<div id="ref-Hilbert1991Annals_of_Botany">
+<p>Hilbert, D. W., &amp; Reynolds, J. F. (1991). A Model Allocating Growth Among Leaf Proteins, Shoot Structure, and Root Biomass to Produce Balanced Activity. <em>Annals of Botany</em>, <em>68</em>(5), 417–425.</p>
+</div>
+</body>
+</html>

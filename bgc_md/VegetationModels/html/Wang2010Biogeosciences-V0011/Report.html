@@ -1,0 +1,710 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: CABLE, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: CABLE, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 14/3/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Wang, Law, &amp; Pak (2010)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>Carbon storage by many terrestrial ecosystems can be limited by nutrients, predominantly nitrogen (N) and phosphorus (P), in addition to other environmental constraints, water, light and temperature. However the spatial distribution and the extent of both N and P limitation at the global scale have not been quantified. Here we have developed a global model of carbon (C), nitrogen (N) and phosphorus (P) cycles for the terrestrial biosphere. Model estimates of steady state C and N pool sizes and major fluxes between plant, litter and soil pools, under present climate conditions, agree well with various independent estimates. The total amount of C in the terrestrial biosphere is 2767 Gt C, and the C fractions in plant, litter and soil organic matter are 19%, 4% and 77%. The total amount of N is 135 Gt N, with about 94% stored in the soil, 5% in the plant live biomass, and 1% in litter. We found that the estimates of total soil P and its partitioning into different pools in soil are quite sensitive to biochemical P mineralization. The total amount of P (plant biomass, litter and soil) excluding occluded P in soil is 17 Gt P in the terrestrial biosphere, 33% of which is stored in the soil organic matter if biochemical P mineralization is modelled, or 31 Gt P with 67% in soil organic matter otherwise. This model was used to derive the global distribution and uncertainty of N or P limitation on the productivity of terrestrial ecosystems at steady state under present conditions. Our model estimates that the net primary productivity of most tropical evergreen broadleaf forests and tropical savannahs is reduced by about 20% on average by P limitation, and most of the remaining biomes are N limited; N limitation is strongest in high latitude deciduous needle leaf forests, and reduces its net primary productivity by up to 40% under present conditions.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global</p>
+<h3 id="available-parameter-values">Available parameter values</h3>
+<table>
+<caption>Information on given parameter sets</caption>
+<thead>
+<tr class="header">
+<th align="left">Abbreviation</th>
+<th align="left">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Evergreen needle leaf forest</td>
+<td align="left"><span class="citation">Wang et al. (2010)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Evergreen broadleaf forest</td>
+<td align="left"><span class="citation">Wang et al. (2010)</span></td>
+</tr>
+<tr class="odd">
+<td align="left">Deciduous needle leaf forest</td>
+<td align="left"><span class="citation">Wang et al. (2010)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Deciduous broadleaf forest</td>
+<td align="left"><span class="citation">Wang et al. (2010)</span></td>
+</tr>
+<tr class="odd">
+<td align="left">Mixed forest</td>
+<td align="left"><span class="citation">Wang et al. (2010)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Shrub land (open and close shrubland)</td>
+<td align="left"><span class="citation">Wang et al. (2010)</span></td>
+</tr>
+<tr class="odd">
+<td align="left">Woddy savannah</td>
+<td align="left"><span class="citation">Wang et al. (2010)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Savannah</td>
+<td align="left"><span class="citation">Wang et al. (2010)</span></td>
+</tr>
+<tr class="odd">
+<td align="left">Grassland</td>
+<td align="left"><span class="citation">Wang et al. (2010)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Crop land (cropland mosaic was aggregated into this term)</td>
+<td align="left"><span class="citation">Wang et al. (2010)</span></td>
+</tr>
+<tr class="odd">
+<td align="left">Barren or sparse vegetation</td>
+<td align="left"><span class="citation">Wang et al. (2010)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{leaf}\)</span></td>
+<td align="left">Plant (carbon) pool Leaf</td>
+<td align="center">foliage</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{root}\)</span></td>
+<td align="left">Plant (carbon) pool Root</td>
+<td align="center">fine_roots</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{wood}\)</span></td>
+<td align="left">Plant (carbon) pool Wood</td>
+<td align="center">wood</td>
+</tr>
+</tbody>
+</table>
+<h1 id="photosynthetic-parameters">Photosynthetic Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Photosynthetic Parameters</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+<th align="center">Values <br> <br>Evergreen needle leaf forest</th>
+<th align="center">Evergreen broadleaf forest</th>
+<th align="center">Deciduous needle leaf forest</th>
+<th align="center">Deciduous broadleaf forest</th>
+<th align="center">Mixed forest</th>
+<th align="center">Shrub land (open and close shrubland)</th>
+<th align="center">Woddy savannah</th>
+<th align="center">Savannah</th>
+<th align="center">Grassland</th>
+<th align="center">Crop land (cropland mosaic was aggregated into this term)</th>
+<th align="center">Barren or sparse vegetation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\Delta_{t}\)</span></td>
+<td align="left">Time step of model integration</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(d\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(N_{min}\)</span></td>
+<td align="left">Amount of mineral N in soil</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(P_{lab}\)</span></td>
+<td align="left">Amount of labile P in soil</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gP\cdot m^{-2}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(F_{nupmin}\)</span></td>
+<td align="left">Minimum amount of N uptake required to sustain a given NPP</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(F_{pupmin}\)</span></td>
+<td align="left">Minimum amount of P uptake required to sustain a given NPP</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(x_{nup}\)</span></td>
+<td align="left">Nitrogen uptake limitation on NPP</td>
+<td align="center"><span class="math inline">\(x_{nup}=\operatorname{Min}\left(1, \frac{N_{min}}{F_{nupmin}\cdot \\Delta _{t}}\right)\)</span></td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x_{pup}\)</span></td>
+<td align="left">Phosphorus uptake limitation on NPP</td>
+<td align="center"><span class="math inline">\(x_{pup}=\operatorname{Min}\left(1, \frac{P_{lab}}{F_{pupmin}\cdot \\Delta _{t}}\right)\)</span></td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(x_{npup}\)</span></td>
+<td align="left">Nutrient uptake limiting factor</td>
+<td align="center"><span class="math inline">\(x_{npup}=\operatorname{Min}\left(x_{nup}, x_{pup}\right)\)</span></td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(n_{leaf}\)</span></td>
+<td align="left">N:C ratio of leaf biomass</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(gN/gC\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{42}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{21}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{50}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{21}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{28}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{33}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{21}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{21}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{42}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{21}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{17}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(p_{leaf}\)</span></td>
+<td align="left">P:C ratio of leaf biomass</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(gP/gC\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{408}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{400}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{405}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{333}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{278}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{293}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{354}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{492}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{833}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{333}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{167}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(k_{n}\)</span></td>
+<td align="left">Empirical constant</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(gN\cdot (gC)^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(0.01\)</span></td>
+<td align="center"><span class="math inline">\(0.01\)</span></td>
+<td align="center"><span class="math inline">\(0.01\)</span></td>
+<td align="center"><span class="math inline">\(0.01\)</span></td>
+<td align="center"><span class="math inline">\(0.01\)</span></td>
+<td align="center"><span class="math inline">\(0.01\)</span></td>
+<td align="center"><span class="math inline">\(0.01\)</span></td>
+<td align="center"><span class="math inline">\(0.01\)</span></td>
+<td align="center"><span class="math inline">\(0.01\)</span></td>
+<td align="center"><span class="math inline">\(0.01\)</span></td>
+<td align="center"><span class="math inline">\(0.01\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(k_{p}\)</span></td>
+<td align="left">Empirical constant</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(gP\cdot (gC)^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(0.0006\)</span></td>
+<td align="center"><span class="math inline">\(0.0006\)</span></td>
+<td align="center"><span class="math inline">\(0.0006\)</span></td>
+<td align="center"><span class="math inline">\(0.0006\)</span></td>
+<td align="center"><span class="math inline">\(0.0006\)</span></td>
+<td align="center"><span class="math inline">\(0.0006\)</span></td>
+<td align="center"><span class="math inline">\(0.0006\)</span></td>
+<td align="center"><span class="math inline">\(0.0006\)</span></td>
+<td align="center"><span class="math inline">\(0.0006\)</span></td>
+<td align="center"><span class="math inline">\(0.0006\)</span></td>
+<td align="center"><span class="math inline">\(0.0006\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x_{nleaf}\)</span></td>
+<td align="left">-</td>
+<td align="center"><span class="math inline">\(x_{nleaf}=\frac{n_{leaf}}{n_{leaf}+k_{n}}\)</span></td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(x_{pleaf}\)</span></td>
+<td align="left">-</td>
+<td align="center"><span class="math inline">\(x_{pleaf}=\frac{p_{leaf}}{p_{leaf}+k_{p}}\)</span></td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x_{npleaf}\)</span></td>
+<td align="left">Nutrient concentration limiting factor</td>
+<td align="center"><span class="math inline">\(x_{npleaf}=\operatorname{Min}\left(x_{nleaf}, x_{pleaf}\right)\)</span></td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(F_{cmax}\)</span></td>
+<td align="left">Nutrient unlimited NPP</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot d^{-1}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(F_{c}\)</span></td>
+<td align="left">Net Primary Productivity (flux)</td>
+<td align="center"><span class="math inline">\(F_{c}=x_{npleaf}\cdot x_{npup}\cdot F_{cmax}\)</span></td>
+<td align="center">NPP</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot d^{-1}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="allocation-coefficients">Allocation Coefficients</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Allocation Coefficients</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Evergreen needle leaf forest</th>
+<th align="center">Evergreen broadleaf forest</th>
+<th align="center">Deciduous needle leaf forest</th>
+<th align="center">Deciduous broadleaf forest</th>
+<th align="center">Mixed forest</th>
+<th align="center">Shrub land (open and close shrubland)</th>
+<th align="center">Woddy savannah</th>
+<th align="center">Savannah</th>
+<th align="center">Grassland</th>
+<th align="center">Crop land (cropland mosaic was aggregated into this term)</th>
+<th align="center">Barren or sparse vegetation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{leaf}\)</span></td>
+<td align="left">Fraction of NPP allocated to plant pool Leaf</td>
+<td align="center">part_foliage</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.42\)</span></td>
+<td align="center"><span class="math inline">\(0.25\)</span></td>
+<td align="center"><span class="math inline">\(0.4\)</span></td>
+<td align="center"><span class="math inline">\(0.3\)</span></td>
+<td align="center"><span class="math inline">\(0.35\)</span></td>
+<td align="center"><span class="math inline">\(0.4\)</span></td>
+<td align="center"><span class="math inline">\(0.3\)</span></td>
+<td align="center"><span class="math inline">\(0.2\)</span></td>
+<td align="center"><span class="math inline">\(0.3\)</span></td>
+<td align="center"><span class="math inline">\(0.3\)</span></td>
+<td align="center"><span class="math inline">\(0.2\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(a_{root}\)</span></td>
+<td align="left">Fraction of NPP allocated to plant pool Root</td>
+<td align="center">part_roots</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.25\)</span></td>
+<td align="center"><span class="math inline">\(0.65\)</span></td>
+<td align="center"><span class="math inline">\(0.3\)</span></td>
+<td align="center"><span class="math inline">\(0.5\)</span></td>
+<td align="center"><span class="math inline">\(0.25\)</span></td>
+<td align="center"><span class="math inline">\(0.45\)</span></td>
+<td align="center"><span class="math inline">\(0.6\)</span></td>
+<td align="center"><span class="math inline">\(0.7\)</span></td>
+<td align="center"><span class="math inline">\(0.7\)</span></td>
+<td align="center"><span class="math inline">\(0.7\)</span></td>
+<td align="center"><span class="math inline">\(0.6\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{wood}\)</span></td>
+<td align="left">Fraction of NPP allocated to plant pool Wood</td>
+<td align="center">part_wood</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.33\)</span></td>
+<td align="center"><span class="math inline">\(0.1\)</span></td>
+<td align="center"><span class="math inline">\(0.3\)</span></td>
+<td align="center"><span class="math inline">\(0.2\)</span></td>
+<td align="center"><span class="math inline">\(0.4\)</span></td>
+<td align="center"><span class="math inline">\(0.15\)</span></td>
+<td align="center"><span class="math inline">\(0.1\)</span></td>
+<td align="center"><span class="math inline">\(0.1\)</span></td>
+<td align="center"><span class="math inline">\(0\)</span></td>
+<td align="center"><span class="math inline">\(0\)</span></td>
+<td align="center"><span class="math inline">\(0.2\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="turnover-rates">Turnover Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Turnover Rates</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+<th align="center">Values <br> <br>Evergreen needle leaf forest</th>
+<th align="center">Evergreen broadleaf forest</th>
+<th align="center">Deciduous needle leaf forest</th>
+<th align="center">Deciduous broadleaf forest</th>
+<th align="center">Mixed forest</th>
+<th align="center">Shrub land (open and close shrubland)</th>
+<th align="center">Woddy savannah</th>
+<th align="center">Savannah</th>
+<th align="center">Grassland</th>
+<th align="center">Crop land (cropland mosaic was aggregated into this term)</th>
+<th align="center">Barren or sparse vegetation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\mu_{leaf}\)</span></td>
+<td align="left">Turnover rate of plant pool Leaf</td>
+<td align="center">cyc_foliage</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(year^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{2}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{2}{3}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{4503599627370496}{3602879701896397}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{8}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{4503599627370496}{5404319552844595}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{4503599627370496}{5404319552844595}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{2}{3}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{2}{3}\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\mu_{root}\)</span></td>
+<td align="left">Turnover rate of plant pool Root</td>
+<td align="center">cyc_roots</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(year^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{18}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{10}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{10}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{10}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{10}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{5}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{5}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{3}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{3}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{9007199254740992}{8106479329266893}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{4}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\mu_{wood}\)</span></td>
+<td align="left">Turnover rate of plant pool Wood</td>
+<td align="center">cyc_wood</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(year^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{70}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{60}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{80}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{40}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{50}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{40}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{40}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{40}\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(1\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{5}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{leaf}\\C_{root}\\C_{wood}\end{matrix}\right]\)</span></td>
+<td align="center">state_vector</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=F_{c}\)</span></td>
+<td align="center">scalar_func_phot</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}a_{leaf}\\a_{root}\\a_{wood}\end{matrix}\right]\)</span></td>
+<td align="center">part_coeff</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of turnover (cycling) rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\mu_{leaf} &amp; 0 &amp; 0\\0 &amp; -\mu_{root} &amp; 0\\0 &amp; 0 &amp; -\mu_{wood}\end{matrix}\right]\)</span></td>
+<td align="center">cyc_matrix</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td align="center">state_vector_derivative</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot d^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{leaf}: F_{cmax}\cdot a_{leaf}\cdot\min\left(\frac{n_{leaf}}{k_{n} + n_{leaf}},\frac{p_{leaf}}{k_{p} + p_{leaf}}\right)\cdot\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}},\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\)</span> <br><span class="math inline">\(C_{root}: F_{cmax}\cdot a_{root}\cdot\min\left(\frac{n_{leaf}}{k_{n} + n_{leaf}},\frac{p_{leaf}}{k_{p} + p_{leaf}}\right)\cdot\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}},\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\)</span> <br><span class="math inline">\(C_{wood}: F_{cmax}\cdot a_{wood}\cdot\min\left(\frac{n_{leaf}}{k_{n} + n_{leaf}},\frac{p_{leaf}}{k_{p} + p_{leaf}}\right)\cdot\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}},\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<span class="math inline">\(C_{leaf}: C_{leaf}\cdot\mu_{leaf}\)</span> <br><span class="math inline">\(C_{root}: C_{root}\cdot\mu_{root}\)</span> <br><span class="math inline">\(C_{wood}: C_{wood}\cdot\mu_{wood}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}- C_{leaf}\cdot\mu_{leaf} + F_{cmax}\cdot a_{leaf}\cdot\min\left(\frac{n_{leaf}}{k_{n} + n_{leaf}},\frac{p_{leaf}}{k_{p} + p_{leaf}}\right)\cdot\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}},\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\\- C_{root}\cdot\mu_{root} + F_{cmax}\cdot a_{root}\cdot\min\left(\frac{n_{leaf}}{k_{n} + n_{leaf}},\frac{p_{leaf}}{k_{p} + p_{leaf}}\right)\cdot\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}},\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\\- C_{wood}\cdot\mu_{wood} + F_{cmax}\cdot a_{wood}\cdot\min\left(\frac{n_{leaf}}{k_{n} + n_{leaf}},\frac{p_{leaf}}{k_{p} + p_{leaf}}\right)\cdot\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}},\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\mu_{leaf} &amp; 0 &amp; 0\\0 &amp; -\mu_{root} &amp; 0\\0 &amp; 0 &amp; -\mu_{wood}\end{matrix}\right]\)</span></p>
+<h1 id="references" class="references unnumbered">References</h1>
+<div id="ref-Wang2010Biogeosciences">
+<p>Wang, Y. P., Law, R. M., &amp; Pak, B. (2010). A global model of carbon, nitrogen and phosphorus cycles for the terrestrial biosphere. <em>Biogeosciences</em>, <em>7</em>(7), 2261–2282. <a href="http://doi.org/10.5194/bg-7-2261-2010" class="uri">http://doi.org/10.5194/bg-7-2261-2010</a></p>
+</div>
+</body>
+</html>

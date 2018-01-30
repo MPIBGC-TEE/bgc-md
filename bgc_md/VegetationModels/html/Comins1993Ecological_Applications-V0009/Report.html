@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: G'DAY, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: G'DAY, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 27/1/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Comins &amp; McMurtrie (1993)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>Established process-based models of forest biomass production in relation to atmospheric CO<span class="math inline">\(_2\)</span> concentration (McMurtrie 1991) and soil carbon/nutrient dynamics (Parton et al. 1987) are integrated to derive the &quot;Generic Decomposition and Yield&quot; model (G'DAY). The model is used to describe how photosynthesis and nutritional factors interact to determine the productivity of forests growing under nitrogen-limited conditions. A simulated instantaneous doubling of atmospheric CO<span class="math inline">\(_2\)</span> concentration leads to a growth response that is initially large (27% above productivity at current CO<span class="math inline">\(_2\)</span>) but declines to &lt;10% elevation within 5 yr. The decline occurs because increases in photosynthetic carbon gain at elevated CO<span class="math inline">\(_2\)</span> are not matched by increases in nutrient supply. Lower foliar N concentrations at elevated CO<span class="math inline">\(_2\)</span> have two countervailing effects on forest production: decreased rates of N cycling between vegetation and soils (with negative consequences for productivity), and reduced rates of N loss through gaseous emission, fire, and leaching. Theoretical analysis reveals that there is an enduring response to CO<span class="math inline">\(_2\)</span> enrichment, but that the magnitude of the long-term equilibrium response is extremely sensitive to the assumed rate of gaseous emission resulting from mineralization of nitrogen. Theory developed to analyze G'DAY is applicable to other published production-decomposition models describing the partitioning of soil carbon among compartments with widely differing decay-time constants.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global</p>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(F\)</span></td>
+<td align="left">Foliage carbon content per unit ground area at equilibrium</td>
+<td align="center">foliage</td>
+<td align="center"><span class="math inline">\(Mg/ha\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(R\)</span></td>
+<td align="left">Root carbon</td>
+<td align="center">fine_roots</td>
+<td align="center"><span class="math inline">\(Mg/ha\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(W\)</span></td>
+<td align="left">Carbon in woody tissue</td>
+<td align="center">wood</td>
+<td align="center"><span class="math inline">\(Mg/ha\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="photosynthetic-parameters">Photosynthetic Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Photosynthetic Parameters</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(G\)</span></td>
+<td align="left">Net rate of plant carbon production</td>
+<td align="center">NPP</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(Mg\cdot ha^{-1}\cdot yr^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="partitioning-coefficients">Partitioning coefficients</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Partitioning coefficients</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\eta_{f}\)</span></td>
+<td align="left">Allocation fraction to foliar biomass</td>
+<td align="center">part_foliage</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\eta_{r}\)</span></td>
+<td align="left">Allocation fraction to roots biomass</td>
+<td align="center">part_roots</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\eta_{w}\)</span></td>
+<td align="left">Allocation fraction to wood (in stem, branches and large structurl roots) biomass</td>
+<td align="center">part_wood</td>
+<td align="center">parameter</td>
+</tr>
+</tbody>
+</table>
+<h1 id="cycling-rates">Cycling Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Cycling Rates</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\gamma_{f}\)</span></td>
+<td align="left">Foliage senescence rate</td>
+<td align="center">cyc_foliage</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(yr^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\gamma_{r}\)</span></td>
+<td align="left">Roots senescence rate</td>
+<td align="center">cyc_roots</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(yr^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\gamma_{w}\)</span></td>
+<td align="left">Wood senescence rate</td>
+<td align="center">cyc_wood</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(yr^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}F\\R\\W\end{matrix}\right]\)</span></td>
+<td align="center">state_vector</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=G\)</span></td>
+<td align="center">scalar_func_phot</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}\eta_{f}\\\eta_{r}\\\eta_{w}\end{matrix}\right]\)</span></td>
+<td align="center">part_coeff</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of senescence (cycling) rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{r} &amp; 0\\0 &amp; 0 &amp; -\gamma_{w}\end{matrix}\right]\)</span></td>
+<td align="center">cyc_matrix</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td align="center">state_vector_derivative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(F: G\cdot\eta_{f}\)</span> <br><span class="math inline">\(R: G\cdot\eta_{r}\)</span> <br><span class="math inline">\(W: G\cdot\eta_{w}\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<span class="math inline">\(F: F\cdot\gamma_{f}\)</span> <br><span class="math inline">\(R: R\cdot\gamma_{r}\)</span> <br><span class="math inline">\(W: W\cdot\gamma_{w}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}- F\cdot\gamma_{f} + G\cdot\eta_{f}\\G\cdot\eta_{r} - R\cdot\gamma_{r}\\G\cdot\eta_{w} - W\cdot\gamma_{w}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{r} &amp; 0\\0 &amp; 0 &amp; -\gamma_{w}\end{matrix}\right]\)</span></p>
+<h1 id="references" class="references unnumbered">References</h1>
+<div id="ref-Comins1993Ecological_Applications">
+<p>Comins, H. N., &amp; McMurtrie, R. E. (1993). Long-Term Response of Nutrient-Limited Forests to CO<span class="math inline">\(_2\)</span> Enrichment; Equilibrium Behavior of Plant-Soil Models. <em>Ecological Applications</em>, <em>3</em>(4), 666–681.</p>
+</div>
+</body>
+</html>

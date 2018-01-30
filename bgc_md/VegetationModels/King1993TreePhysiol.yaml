@@ -1,0 +1,127 @@
+
+ # vim:set ff=unix expandtab ts=4 sw=4: 
+citationKey: King1993TreePhysiol
+name: 
+version: 1
+model-id: V0005
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+entryCreationDate: 29/7/2015 # cahngeset: 2256
+lastModification: _lm_
+modApproach: process based
+partitioningScheme: fixed
+spaceScale: global 
+#    unit: "1°"
+timeResolution: monthly 
+doi: 10.1093/treephys/12.2.119
+#t = # units: days, years for allocation
+# Characteristics: even-aged conifer stands with adequate water, but suboptimal nitrogen.
+model:
+    - state_variables:
+        - F:
+            desc: Foliage dry mass 
+            key: "foliage"
+            unit: "kgC*m^{-2}" 
+        - R:
+            desc: Fine roots dry mass 
+            key: "fine_roots"
+            unit: "kgC*m^{-2}" 
+        - W:
+            desc: Woody tissue dry mass
+            key: "wood"
+            unit: "kgC*m^{-2}" 
+
+#    - nitrogen_parameters:
+#        - N_sat:
+#            desc: Foliar N above which the light utilization coef. does not increase
+#            type: parameter
+    
+    - photosynthetic_parameters:
+#        - epsilon_0:
+#            desc: maximum value of epsilon
+#            type: parameter
+#            unit: "kg*MJ^{-1}"
+        - k:
+            desc: Radiation extinction coefficient of canopy
+            type: parameter
+        - Phi_0:
+            desc: Incident PAR
+            type: parameter
+            unit: "MJ*m*^{-2}*year^{-1}"
+            key: IPAR
+        - omega: 
+            desc: Specific leaf area
+            type: parameter
+            unit: "m*^2*kg^{-1}"
+        - Phi:
+            desc:  Annual photosynthetically active radiation (PAR) intercepted by the canopy
+            type: variable # In the paper it is considered a state variable
+            unit: "MJ*m*^{-2}*year^{-1}"
+            exprs: "Phi = Phi_0*(1-exp(-k*omega*F))"
+            key: PAR
+        - epsilon:
+            desc: Light utilization coefficient
+            type: parameter # In the paper it is considered a state variable
+            unit: "kg*MJ^{-1}"
+            # exprs: f(N) see pg 4, eq. 3
+            key: light_use_eff
+        - G:
+            desc: Rate of biomass production per unit ground area
+            type: variable # In the paper it is considered a state variable
+            key: GPP
+            unit: "kg*m^{-2}*year^{-1}" 
+            exprs: "G=Phi*epsilon"
+    - allocation_coefficients:
+        - eta_f:
+            desc: Fraction of biomass production partitioned to leaves 
+            type: parameter
+            key: "part_foliage"
+        - eta_r:
+            desc: Fraction of biomass production partitioned to roots 
+            type: parameter
+            key: "part_roots"
+        - eta_w:
+            desc: Fraction of biomass production partitioned to wood
+            type: parameter
+            key: "part_wood"
+            exprs: "eta_w=1-eta_f-eta_r"
+    - cycling_rates:
+        - gamma_f:
+            desc: Senescence rate per unit foliage biomass
+            type: parameter
+            key: "cyc_foliage"
+            unit: "kg^{-1}"
+        - gamma_r:
+            desc: Senescence rate per unit fine roots biomass
+            type: parameter
+            key: "cyc_roots"
+            unit: "kg^{-1}"
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(3,1,[F, R, W])"
+            desc: vector of states for vegetation
+        - u: 
+            key: scalar_func_phot    
+            exprs: "u=G"
+            desc: scalar function of photosynthetic inputs
+        - b: 
+            key: part_coeff    
+            exprs: "b=Matrix(3,1,[eta_f, eta_r, eta_w])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - A: 
+            key: cyc_matrix    
+            exprs: "A=diag(-gamma_f, -gamma_r, 0)"
+            desc: matrix of turnover (cycling) rates 
+        - f_v: 
+            key: state_vector_derivative  
+            exprs: "f_v = u*b + A*x"
+            desc: the righthandside of the ode
+model_run_data:
+    parameter_sets:
+        - "Chosen based on the performance of Pinus radiata at Puruki, New Zeland":
+            values: {k: 0.5, Phi_0: 2500, omega: 5, gamma_r: 2, gamma_f: 0.5}
+            #values: {N_sat: 0.016, k: 0.5, epsilon_0: 0.015, Phi_0: 2500, omega: 5, eta_f: 'Rational(20,100)', eta_r: 'Rational(55,100)', gamma_r: 2, gamma_f: 0.5} 
+
+## eta_ are not mentioned in the paper... probably the different values they gave to them were part of the hypothesis
+            doi: 10.1093/treephys/12.2.119

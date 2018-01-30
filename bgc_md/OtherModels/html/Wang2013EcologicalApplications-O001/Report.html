@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: Three microbe-substrate pairs, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: Three microbe-substrate pairs, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Carlos Sierra (Orcid ID: 0000-0003-0009-4169) on 13/04/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers soil organic matter decomposition. It was originally described by <span class="citation">Wang, Post, &amp; Mayes (2013)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>This is a simple model used to represent the flexibility of the General Model</p>
+<h3 id="principles">Principles</h3>
+<p>mass balance, substrate dependence of decomposition, heterogeneity of speed of decay, internal transformations of organic matter, substrate interactions</p>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(S_{1}\)</span></td>
+<td align="left">Substrate 1</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(B_{1}\)</span></td>
+<td align="left">Microbial biomass guild 1</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(S_{2}\)</span></td>
+<td align="left">Substrate 2</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(B_{2}\)</span></td>
+<td align="left">microbial biomass guild 2</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(S_{3}\)</span></td>
+<td align="left">Substrate 3</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(B_{3}\)</span></td>
+<td align="left">Microbial biomass guild 3</td>
+<td align="center"><span class="math inline">\(mgC g^{-1}\text{ soil}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="parameters">Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:43%;">
+<caption>Information on Parameters</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(k_{s1}\)</span></td>
+<td align="left">Decomposition rate of substrate 1</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(m^{3} d^{-1} g^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(k_{s2}\)</span></td>
+<td align="left">Decomposition rate of substrate 2</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(m^{3} d^{-1} g^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(k_{s3}\)</span></td>
+<td align="left">Decomposition rate of substrate 3</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(m^{3} d^{-1} g^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(k_{b1}\)</span></td>
+<td align="left">Microbial decay rate guild 1</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(d^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(k_{b2}\)</span></td>
+<td align="left">Microbial decay rate guild 2</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(d^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(k_{b3}\)</span></td>
+<td align="left">Microbial decay rate guild 3</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(d^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(r_{1}\)</span></td>
+<td align="left">respired C fraction 1</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(r_{2}\)</span></td>
+<td align="left">respired C fraction 2</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(r_{3}\)</span></td>
+<td align="left">respired C fraction 3</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(K_{M1}\)</span></td>
+<td align="left">Michaelis-Menten constant 1</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(g m^{-3}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(K_{M2}\)</span></td>
+<td align="left">Michaelis-Menten constant 2</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(g m^{-3}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(K_{M3}\)</span></td>
+<td align="left">Michaelis-Menten constant 3</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(g m^{-3}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="input-components">Input Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Input Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(I_{1}\)</span></td>
+<td align="left">input to substrate 1</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(g m^{-3} d^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(I_{2}\)</span></td>
+<td align="left">input to substrate 2</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(g m^{-3} d^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(I_{3}\)</span></td>
+<td align="left">input to substrate 3</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(g m^{-3} d^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:43%;">
+<caption>Information on Components</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C\)</span></td>
+<td align="left">carbon content</td>
+<td align="center"><span class="math inline">\(C=\left[\begin{matrix}S_{1}\\B_{1}\\S_{2}\\B_{2}\\S_{3}\\B_{3}\end{matrix}\right]\)</span></td>
+<td align="center">state_vector</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(I\)</span></td>
+<td align="left">input vector</td>
+<td align="center"><span class="math inline">\(I=\left[\begin{matrix}I_{1}\\0\\I_{2}\\0\\I_{3}\\0\end{matrix}\right]\)</span></td>
+<td align="center">input_vector</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(T\)</span></td>
+<td align="left">transition operator</td>
+<td align="center"><span class="math inline">\(T=\left[\begin{matrix}-1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\- r_{1} + 1 &amp; -1 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; -1 &amp; 1 &amp; 0 &amp; 0\\0 &amp; 0 &amp; - r_{2} + 1 &amp; -1 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; -1 &amp; 1\\0 &amp; 0 &amp; 0 &amp; 0 &amp; - r_{3} + 1 &amp; -1\end{matrix}\right]\)</span></td>
+<td align="center">trans_op</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(N\)</span></td>
+<td align="left">decomposition operator</td>
+<td align="center"><span class="math inline">\(N=\left[\begin{matrix}\frac{B_{1}\cdot k_{s1}}{K_{M1} + S_{1}} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; k_{b1} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp;\frac{B_{2}\cdot k_{s2}}{K_{M2} + S_{2}} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; k_{b2} &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp;\frac{B_{2}\cdot k_{s2}}{K_{M2} + S_{2}} &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; k_{b3}\end{matrix}\right]\)</span></td>
+<td align="center">decomp_op_nonlin</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{s}\)</span></td>
+<td align="left">the right hand side of the ode</td>
+<td align="center"><span class="math inline">\(f_{s}=I+T\cdot N\cdot C\)</span></td>
+<td align="center">state_vector_derivative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(S1: I_{1}\)</span> <br><span class="math inline">\(S2: I_{2}\)</span> <br><span class="math inline">\(S3: I_{3}\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(S1: \frac{B_{1}\cdot S_{1}\cdot k_{s1}}{K_{M1} + S_{1}}\cdot r_{1}\)</span> <br><span class="math inline">\(S2: \frac{B_{2}\cdot S_{2}\cdot k_{s2}}{K_{M2} + S_{2}}\cdot r_{2}\)</span> <br><span class="math inline">\(S3: \frac{B_{2}\cdot S_{3}\cdot k_{s2}}{K_{M2} + S_{2}}\cdot r_{3}\)</span> <br></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<span class="math inline">\(S1 &gt; B1: -\frac{B_{1}\cdot S_{1}\cdot k_{s1}}{K_{M1} + S_{1}}\cdot\left(r_{1} - 1\right)\)</span> <br><span class="math inline">\(B1 &gt; S1: B_{1}\cdot k_{b1}\)</span> <br><span class="math inline">\(S2 &gt; B2: -\frac{B_{2}\cdot S_{2}\cdot k_{s2}}{K_{M2} + S_{2}}\cdot\left(r_{2} - 1\right)\)</span> <br><span class="math inline">\(B2 &gt; S2: B_{2}\cdot k_{b2}\)</span> <br><span class="math inline">\(S3 &gt; B3: -\frac{B_{2}\cdot S_{3}\cdot k_{s2}}{K_{M2} + S_{2}}\cdot\left(r_{3} - 1\right)\)</span> <br><span class="math inline">\(B3 &gt; S3: B_{3}\cdot k_{b3}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\frac{B_{1}\cdot S_{1}\cdot k_{s1}}{K_{M1} + S_{1}} + B_{1}\cdot k_{b1} + I_{1}\\\frac{B_{1}\cdot S_{1}\cdot k_{s1}}{K_{M1} + S_{1}}\cdot\left(- r_{1} + 1\right) - B_{1}\cdot k_{b1}\\-\frac{B_{2}\cdot S_{2}\cdot k_{s2}}{K_{M2} + S_{2}} + B_{2}\cdot k_{b2} + I_{2}\\\frac{B_{2}\cdot S_{2}\cdot k_{s2}}{K_{M2} + S_{2}}\cdot\left(- r_{2} + 1\right) - B_{2}\cdot k_{b2}\\-\frac{B_{2}\cdot S_{3}\cdot k_{s2}}{K_{M2} + S_{2}} + B_{3}\cdot k_{b3} + I_{3}\\\frac{B_{2}\cdot S_{3}\cdot k_{s2}}{K_{M2} + S_{2}}\cdot\left(- r_{3} + 1\right) - B_{3}\cdot k_{b3}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}\frac{B_{1}\cdot S_{1}\cdot k_{s1}}{\left(K_{M1} + S_{1}\right)^{2}} -\frac{B_{1}\cdot k_{s1}}{K_{M1} + S_{1}} &amp; -\frac{S_{1}\cdot k_{s1}}{K_{M1} + S_{1}} + k_{b1} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\-\frac{B_{1}\cdot S_{1}\cdot k_{s1}}{\left(K_{M1} + S_{1}\right)^{2}}\cdot\left(- r_{1} + 1\right) +\frac{B_{1}\cdot k_{s1}}{K_{M1} + S_{1}}\cdot\left(- r_{1} + 1\right) &amp;\frac{S_{1}\cdot k_{s1}}{K_{M1} + S_{1}}\cdot\left(- r_{1} + 1\right) - k_{b1} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp;\frac{B_{2}\cdot S_{2}\cdot k_{s2}}{\left(K_{M2} + S_{2}\right)^{2}} -\frac{B_{2}\cdot k_{s2}}{K_{M2} + S_{2}} &amp; -\frac{S_{2}\cdot k_{s2}}{K_{M2} + S_{2}} + k_{b2} &amp; 0 &amp; 0\\0 &amp; 0 &amp; -\frac{B_{2}\cdot S_{2}\cdot k_{s2}}{\left(K_{M2} + S_{2}\right)^{2}}\cdot\left(- r_{2} + 1\right) +\frac{B_{2}\cdot k_{s2}}{K_{M2} + S_{2}}\cdot\left(- r_{2} + 1\right) &amp;\frac{S_{2}\cdot k_{s2}}{K_{M2} + S_{2}}\cdot\left(- r_{2} + 1\right) - k_{b2} &amp; 0 &amp; 0\\0 &amp; 0 &amp;\frac{B_{2}\cdot S_{3}\cdot k_{s2}}{\left(K_{M2} + S_{2}\right)^{2}} &amp; -\frac{S_{3}\cdot k_{s2}}{K_{M2} + S_{2}} &amp; -\frac{B_{2}\cdot k_{s2}}{K_{M2} + S_{2}} &amp; k_{b3}\\0 &amp; 0 &amp; -\frac{B_{2}\cdot S_{3}\cdot k_{s2}}{\left(K_{M2} + S_{2}\right)^{2}}\cdot\left(- r_{3} + 1\right) &amp;\frac{S_{3}\cdot k_{s2}}{K_{M2} + S_{2}}\cdot\left(- r_{3} + 1\right) &amp;\frac{B_{2}\cdot k_{s2}}{K_{M2} + S_{2}}\cdot\left(- r_{3} + 1\right) &amp; - k_{b3}\end{matrix}\right]\)</span></p>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
+<div id="ref-Wang2013EcologicalApplications">
+<p>Wang, G., Post, W. M., &amp; Mayes, M. A. (2013). Development of microbial-enzyme-mediated decomposition model parameters through steady-state and dynamic analyses. <em>Ecological Applications</em>, <em>23</em>(1), 255–272. <a href="http://doi.org/10.1890/12-0681.1" class="uri">http://doi.org/10.1890/12-0681.1</a></p>
+</div>
+</div>
+</body>
+</html>

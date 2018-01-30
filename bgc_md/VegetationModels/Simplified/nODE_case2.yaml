@@ -1,0 +1,118 @@
+
+## vim:set ff=unix expandtab ts=4 sw=4:
+name: nODE2
+longName: Nonlinear ODE case 2
+version: 1
+model-id: nODE2
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+entryCreationDate: 7/5/2016
+lastModification: _lm_
+modApproach: process based
+partitioningScheme: fixed
+#spaceScale: global 
+#timeResolution: monthly 
+abstract: "Read in draft"
+bibtex: "@article{Ceballos2016,
+            author = {Ceballos-Núñez, Verónika},
+            journal = {In production},
+            number = {1},
+            pages = {1-2},
+            title = {Nonlinearities in vegetation functioning},
+            volume = {1},
+            year = {2016}
+        }"
+model:
+    - state_variables:
+        - x_1:
+            unit: "kgC*m^{-2}" 
+        - x_2:
+            unit: "kgC*m^{-2}" 
+        - x_3:
+            unit: "kgC*m^{-2}" 
+    - photosynthetic_parameters:
+        - k_1:
+            desc: Absorption rates (light, CO2, water...)
+            unit: "yr^{-1}"
+        - NPP:
+            exprs: "NPP = k_1 + x_1"
+            unit: "kgC*m^{-2}*yr^{-1}" 
+    - allocation_coefficients:
+        - eta_1:
+            unit:
+        - eta_2:
+            unit:
+        - eta_3:
+            unit:
+    - cycling_rates:
+        - tau_1:
+            unit: "yr^{-1}"
+        - tau_2:
+            unit: "yr^{-1}"
+        - tau_3:
+            unit: "yr^{-1}"
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(3,1,[x_1, x_2, x_3])"
+            desc: vector of states for vegetation
+            unit: "kgC*m^{-2}" 
+        - u: 
+            key: scalar_func_phot    
+            exprs: "u=NPP"
+            desc: scalar function of photosynthetic inputs
+            unit: "kgC*m^{-2}*yr^{-1}" 
+        - b: 
+            key: part_coeff    
+            exprs: "b=Matrix(3,1,[eta_1, eta_2, eta_3])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+            unit:
+        - A: 
+            key: cyc_matrix    
+            exprs: "A=diag(-tau_1, -tau_2, -tau_3)"
+            desc: matrix of turnover (cycling) rates 
+            unit: "yr^{-1}"
+        - f_v: 
+            key: state_vector_derivative  
+            exprs: "f_v = u*b + A*x"
+            desc: the righthandside of the ode
+            unit: "kgC*m^{-2}*yr^{-1}" 
+
+model_run_data:
+    parameter_sets:
+        - "set1":
+            values: {k_1: 10, eta_1: 2, eta_2: 0.1, eta_3: 5, tau_1: 10, tau_2: 0.1, tau_3: 10}
+            #values: {k_1: 5, eta_1: 2, eta_NSC: 5, eta_2: 0.1, eta_3: 5, gamma_1NSC: 1, gamma_NSCw: 0.01, gamma_NSCr: 1, gamma_1: 10, gamma_2: 0.1, gamma_3: 10}
+            bibtex: "@article{Ceballos2016,
+                        Author = {Ceballos-Núñez, Verónika},
+                        Journal = {In production},
+                        Number = {1},
+                        Pages = {1-2},
+                        Title = {Nonlinearities in vegetation functioning},
+                        Volume = {1},
+                        Year = {2016}
+                    }"
+
+    initial_values:
+        - "values(0)":
+            values: {x_1: 0, x_2: 0, x_3: 0}
+            bibtex: "@article{Ceballos2016,
+                        Author = {Ceballos-Núñez, Verónika},
+                        Journal = {In production},
+                        Number = {1},
+                        Pages = {1-2},
+                        Title = {Nonlinearities in vegetation functioning},
+                        Volume = {1},
+                        Year = {2016}
+                    }"
+
+    run_times:
+        - RT1:
+            start: 0
+            end: 10
+            step_size: 0.01
+
+    possible_combinations:
+        - ["set1", "values(0)", RT1]
+
+

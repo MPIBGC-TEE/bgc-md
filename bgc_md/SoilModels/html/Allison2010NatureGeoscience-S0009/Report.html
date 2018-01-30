@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: AWB, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: AWB, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Holger Metzler (Orcid ID: 0000-0002-8239-1601) on 17/03/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers soil organic matter decomposition. It was originally described by <span class="citation">S. D. Allison, Wallenstein, &amp; Bradford (2010)</span>.</p>
+<h3 id="further-references">Further references</h3>
+<p><span class="citation">Li, Wang, Allison, Mayes, &amp; Luo (2014)</span>: The notation here is adapted to the one in this paper. Temperature sensitivities for <span class="math inline">\(V\)</span>, <span class="math inline">\(V_{U}\)</span>, <span class="math inline">\(K\)</span>, and <span class="math inline">\(K_{U}\)</span> follow the Arrhenius relationship.</p>
+<h3 id="abstract">Abstract</h3>
+<p>Most ecosystem models predict that climate warming will stimulate microbial decomposition of soil carbon, producing a positive feedback to rising global temperatures. Although field experiments document an initial increase in the loss of CO<span class="math inline">\(_{2}\)</span> from soils in response to warming, in line with these predictions, the carbon dioxide loss from soils tends to decline to control levels within a few years. This attenuation response could result from changes in microbial physiological properties with increasing temperature, such as a decline in the fraction of assimilated carbon that is allocated to growth, termed carbon-use efficiency. Here we explore these mechanisms using a microbial-enzyme model to simulate the responses of soil carbon to warming by 5°C. We find that declines in microbial biomass and degradative enzymes can explain the observed attenuation of soil-carbon emissions in response to warming. Specifically, reduced carbon-use efficiency limits the biomass of microbial decomposers and mitigates the loss of soil carbon. However, microbial adaptation or a change in microbial communities could lead to an upward adjustment of the efficiency of carbon use, counteracting the decline in microbial biomass and accelerating soil-carbon loss. We conclude that the soil-carbon response to climate warming depends on the efficiency of soil microbes in using carbon.</p>
+<h3 id="keywords">Keywords</h3>
+<p>differential equations, nonlinear, time variant, Michaelis-Menten</p>
+<h3 id="principles">Principles</h3>
+<p>mass balance, substrate dependence of decomposition, heterogeneity of speed of decay, internal transformations of organic matter, environmental variability effects, substrate interactions</p>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(S\)</span></td>
+<td align="left">soil organic carbon pool</td>
+<td align="center"><span class="math inline">\(mgC cm^{-3}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(D\)</span></td>
+<td align="left">dissolved organic carbon pool</td>
+<td align="center"><span class="math inline">\(mgC cm^{-3}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(B\)</span></td>
+<td align="left">microbial biomass pool</td>
+<td align="center"><span class="math inline">\(mgC cm^{-3}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(E\)</span></td>
+<td align="left">enzyme pool</td>
+<td align="center"><span class="math inline">\(mgC cm^{-3}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="constants">Constants</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Constants</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(R\)</span></td>
+<td align="left">ideal gas constant</td>
+<td align="center"><span class="math inline">\(R=0.008314\)</span></td>
+<td align="center"><span class="math inline">\(kJ mol^{-1} K^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="parameters">Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:43%;">
+<caption>Information on Parameters</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(r_{B}\)</span></td>
+<td align="left">microbial biomass turnover rate</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(r_{E}\)</span></td>
+<td align="left">enzyme production rate</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(r_{L}\)</span></td>
+<td align="left">enzyme loss rate</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(a_{BS}\)</span></td>
+<td align="left">fraction of dead microbial biomass transferred to soil organic matter</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(V_{Umax}\)</span></td>
+<td align="left">reference for maximum rate of dissolved organic carbon uptake</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(V_{max}\)</span></td>
+<td align="left">reference for maximum rate of soil organic carbon decomposition</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(h^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(E_{aU}\)</span></td>
+<td align="left">activation energy to convert substrate into product</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(kJ mol^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(E_{a}\)</span></td>
+<td align="left">activation energy for soil organic carbon decomposition</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(kJ mol^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\epsilon_{0}\)</span></td>
+<td align="left">base carbon uptake efficiency</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\epsilon_{s}\)</span></td>
+<td align="left">carbon uptake efficieny slope</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(°C^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(K_{U0}\)</span></td>
+<td align="left">base half saturation constant for carbon uptkae</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(mg C cm^{-3}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(K_{Us}\)</span></td>
+<td align="left">half saturation constant slope for carbon uptake</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(mg C cm^{-3} °C^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(K_{0}\)</span></td>
+<td align="left">base half saturation constant for soil organic carbon decomposition</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(mg C cm^{-3}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(K_{s}\)</span></td>
+<td align="left">half saturation constant slope for soil organic carbon decomposition</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(mg C cm^{-3} °C^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="additional-variables">Additional Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:54%;">
+<caption>Information on Additional Variables</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(t\)</span></td>
+<td align="left">time</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(hr\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(T\)</span></td>
+<td align="left">temperature</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(°C\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(V_{U}\)</span></td>
+<td align="left">maximum dissolved organic carbon uptake rate</td>
+<td align="center"><span class="math inline">\(V_{U}=V_{Umax}\cdot \operatorname{exp}\left(\frac{- E_{aU}}{R\cdot \left(T+273\right)}\right)\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(V\)</span></td>
+<td align="left">maximum decomosition rate of soil orgacic carbon</td>
+<td align="center"><span class="math inline">\(V=V_{max}\cdot \operatorname{exp}\left(\frac{- E_{a}}{R\cdot \left(T+273\right)}\right)\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(E_{C}\)</span></td>
+<td align="left">carbon uptake efficiency</td>
+<td align="center"><span class="math inline">\(E_{C}=\epsilon_{0}+\epsilon_{s}\cdot T\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(K_{U}\)</span></td>
+<td align="left">half saturation constant for carbon uptake</td>
+<td align="center"><span class="math inline">\(K_{U}=K_{U0}+K_{Us}\cdot T\)</span></td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(mg C cm^{-3}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(K\)</span></td>
+<td align="left">half saturation constant for soil organic carbon decomposition</td>
+<td align="center"><span class="math inline">\(K=K_{0}+K_{s}\cdot T\)</span></td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(mg C cm^{-3}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="input-components">Input Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Input Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(I_{S}\)</span></td>
+<td align="left">soil organic carbon input rate</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(mg C cm^{-3} h^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(I_{D}\)</span></td>
+<td align="left">dissolved organic carbon input rate</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(mg C cm^{-3} h^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:32%;">
+<caption>Information on Components</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C\)</span></td>
+<td align="left">carbon content</td>
+<td align="center"><span class="math inline">\(C=\left[\begin{matrix}S\\D\\B\\E\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(I\)</span></td>
+<td align="left">input vector</td>
+<td align="center"><span class="math inline">\(I=\left[\begin{matrix}I_{S}\\I_{D}\\0\\0\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(T_{M}\)</span></td>
+<td align="left">transition operator</td>
+<td align="center"><span class="math inline">\(T_{M}=\left[\begin{matrix}-1 &amp; 0 &amp;\frac{a_{BS}\cdot r_{B}}{r_{B} + r_{E}} &amp; 0\\1 &amp; -1 &amp;\frac{r_{B}\cdot\left(- a_{BS} + 1\right)}{r_{B} + r_{E}} &amp; 1\\1 &amp; E_{C} &amp; -1 &amp; 0\\0 &amp; 0 &amp;\frac{r_{E}}{r_{B} + r_{E}} &amp; -1\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(N\)</span></td>
+<td align="left">decomposition operator</td>
+<td align="center"><span class="math inline">\(N=\left[\begin{matrix}\frac{E\cdot V}{K + S} &amp; 0 &amp; 0 &amp; 0\\0 &amp;\frac{B\cdot V_{U}}{D + K_{U}} &amp; 0 &amp; 0\\0 &amp; 0 &amp; r_{B} + r_{E} &amp; 0\\0 &amp; 0 &amp; 0 &amp; r_{L}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{s}\)</span></td>
+<td align="left">the right hand side of the ode</td>
+<td align="center"><span class="math inline">\(f_{s}=I+T_{M}\cdot N\cdot C\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(S: I_{S}\)</span> <br><span class="math inline">\(D: I_{D}\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(S: -\frac{E\cdot S\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{K_{0} + K_{s}\cdot T + S}\)</span> <br><span class="math inline">\(D: -\frac{B\cdot D\cdot V_{Umax}\cdot e^{-\frac{E_{aU}}{0.008314\cdot T + 2.269722}}}{D + K_{U0} + K_{Us}\cdot T}\cdot\left(T\cdot\epsilon_{s} +\epsilon_{0} - 1\right)\)</span> <br></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<span class="math inline">\(S \rightarrow D: \frac{E\cdot S\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{K_{0} + K_{s}\cdot T + S}\)</span> <br><span class="math inline">\(S \rightarrow B: \frac{E\cdot S\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{K_{0} + K_{s}\cdot T + S}\)</span> <br><span class="math inline">\(D \rightarrow B: \frac{B\cdot D\cdot V_{Umax}\cdot e^{-\frac{E_{aU}}{0.008314\cdot T + 2.269722}}}{D + K_{U0} + K_{Us}\cdot T}\cdot\left(T\cdot\epsilon_{s} +\epsilon_{0}\right)\)</span> <br><span class="math inline">\(B \rightarrow S: B\cdot a_{BS}\cdot r_{B}\)</span> <br><span class="math inline">\(B \rightarrow D: B\cdot r_{B}\cdot\left(- a_{BS} + 1\right)\)</span> <br><span class="math inline">\(B \rightarrow E: B\cdot r_{E}\)</span> <br><span class="math inline">\(E \rightarrow D: E\cdot r_{L}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}B\cdot a_{BS}\cdot r_{B} -\frac{E\cdot S\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{K_{0} + K_{s}\cdot T + S} + I_{S}\\-\frac{B\cdot D\cdot V_{Umax}\cdot e^{-\frac{E_{aU}}{0.008314\cdot T + 2.269722}}}{D + K_{U0} + K_{Us}\cdot T} + B\cdot r_{B}\cdot\left(- a_{BS} + 1\right) +\frac{E\cdot S\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{K_{0} + K_{s}\cdot T + S} + E\cdot r_{L} + I_{D}\\\frac{B\cdot D\cdot V_{Umax}\cdot e^{-\frac{E_{aU}}{0.008314\cdot T + 2.269722}}}{D + K_{U0} + K_{Us}\cdot T}\cdot\left(T\cdot\epsilon_{s} +\epsilon_{0}\right) + B\cdot\left(- r_{B} - r_{E}\right) +\frac{E\cdot S\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{K_{0} + K_{s}\cdot T + S}\\B\cdot r_{E} - E\cdot r_{L}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}\frac{E\cdot S\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{\left(K_{0} + K_{s}\cdot T + S\right)^{2}} -\frac{E\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{K_{0} + K_{s}\cdot T + S} &amp; 0 &amp; a_{BS}\cdot r_{B} &amp; -\frac{S\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{K_{0} + K_{s}\cdot T + S}\\-\frac{E\cdot S\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{\left(K_{0} + K_{s}\cdot T + S\right)^{2}} +\frac{E\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{K_{0} + K_{s}\cdot T + S} &amp;\frac{B\cdot D\cdot V_{Umax}\cdot e^{-\frac{E_{aU}}{0.008314\cdot T + 2.269722}}}{\left(D + K_{U0} + K_{Us}\cdot T\right)^{2}} -\frac{B\cdot V_{Umax}\cdot e^{-\frac{E_{aU}}{0.008314\cdot T + 2.269722}}}{D + K_{U0} + K_{Us}\cdot T} &amp; -\frac{D\cdot V_{Umax}\cdot e^{-\frac{E_{aU}}{0.008314\cdot T + 2.269722}}}{D + K_{U0} + K_{Us}\cdot T} + r_{B}\cdot\left(- a_{BS} + 1\right) &amp;\frac{S\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{K_{0} + K_{s}\cdot T + S} + r_{L}\\-\frac{E\cdot S\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{\left(K_{0} + K_{s}\cdot T + S\right)^{2}} +\frac{E\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{K_{0} + K_{s}\cdot T + S} &amp; -\frac{B\cdot D\cdot V_{Umax}\cdot e^{-\frac{E_{aU}}{0.008314\cdot T + 2.269722}}}{\left(D + K_{U0} + K_{Us}\cdot T\right)^{2}}\cdot\left(T\cdot\epsilon_{s} +\epsilon_{0}\right) +\frac{B\cdot V_{Umax}\cdot e^{-\frac{E_{aU}}{0.008314\cdot T + 2.269722}}}{D + K_{U0} + K_{Us}\cdot T}\cdot\left(T\cdot\epsilon_{s} +\epsilon_{0}\right) &amp;\frac{D\cdot V_{Umax}\cdot e^{-\frac{E_{aU}}{0.008314\cdot T + 2.269722}}}{D + K_{U0} + K_{Us}\cdot T}\cdot\left(T\cdot\epsilon_{s} +\epsilon_{0}\right) - r_{B} - r_{E} &amp;\frac{S\cdot V_{max}\cdot e^{-\frac{E_{a}}{0.008314\cdot T + 2.269722}}}{K_{0} + K_{s}\cdot T + S}\\0 &amp; 0 &amp; r_{E} &amp; - r_{L}\end{matrix}\right]\)</span></p>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
+<div id="ref-Allison2010NatureGeoscience">
+<p>Allison, S. D., Wallenstein, M. D., &amp; Bradford, M. A. (2010). Soil-carbon response to warming dependent on microbial physiology. <em>Nature Geoscience</em>, <em>3</em>(5), 336–340. <a href="http://doi.org/10.1038/ngeo846" class="uri">http://doi.org/10.1038/ngeo846</a></p>
+</div>
+<div id="ref-Li2014Biogeochemistry">
+<p>Li, J., Wang, G., Allison, S. D., Mayes, M. A., &amp; Luo, Y. (2014). Soil carbon sensitivity to temperature and carbon use efficiency compared across microbial-ecosystem models of varying complexity. <em>Biogeochemistry</em>, <em>119</em>(1-3), 67–84.</p>
+</div>
+</div>
+</body>
+</html>

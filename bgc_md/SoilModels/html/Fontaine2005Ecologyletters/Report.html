@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: The C-N model of SOM dynamics, two decomposer types (FB2005 (4)), version: SOM decomposers C limited, FOM composers N limited (case 4)</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: The C-N model of SOM dynamics, two decomposer types (FB2005 (4)), version: SOM decomposers C limited, FOM composers N limited (case 4)</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Holger Metzler (Orcid ID: 0000-0002-8239-1601) on 22/03/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers soil organic matter decomposition. It was originally described by <span class="citation">Fontaine &amp; Barot (2005)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>Soil organic matter (SOM) models are based on the equation <span class="math inline">\(dC/dt = −kC\)</span> which states that the decomposition rate of a particular carbon (C) pool is proportional to the size of the pool and the decomposition constant <span class="math inline">\(k\)</span>. However, this equation does not adequately describe the decomposition of recalcitrant SOM compounds. We present an alternative theory of SOM dynamics in which SOM decay rate is controlled by the size and the diversity of microbe populations and by the supply of energy-rich litter compounds. We show that the SOM pool does not necessarily reach equilibrium and may increase continuously, which explains how SOM can accumulate over thousands of years. However, the simulated SOM accumulation involves the sequestration of available nutrients. How can plants persist? This question is explored with two models that couple the C cycle with a limiting nutrient. The first model considers a single type of microbe whereas the second includes two functional types in competition for energy and nutrient acquisition. The condition for plant persistence is the presence of these two competing microbial types.</p>
+<h3 id="keywords">Keywords</h3>
+<p>differential equations, linear, time invariant, analytic</p>
+<h3 id="principles">Principles</h3>
+<p>substrate dependence of decomposition, heterogeneity of speed of decay, internal transformations of organic matter, substrate interactions</p>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{s}\)</span></td>
+<td align="left">carbon stock in soil organic matter</td>
+<td align="center"><span class="math inline">\(\text{quantitiy of carbon}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{f}\)</span></td>
+<td align="left">carbon stock in fresh organic matter</td>
+<td align="center"><span class="math inline">\(\text{quantitiy of carbon}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{ds}\)</span></td>
+<td align="left">carbon stock in soil organic matter decomposers</td>
+<td align="center"><span class="math inline">\(\text{quantitiy of carbon}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{df}\)</span></td>
+<td align="left">carbon stock in fresh organic matter decomposers</td>
+<td align="center"><span class="math inline">\(\text{quantitiy of carbon}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(N\)</span></td>
+<td align="left">mineral nitrogen pool (<span class="math inline">\(N:C\)</span> ratio always constant)</td>
+<td align="center"><span class="math inline">\(\text{quantitiy of nitrogen}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="decomposition-coefficients">Decomposition Coefficients</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Decomposition Coefficients</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">decomposers consumption rate of SOM</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(\text{time}^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(r\)</span></td>
+<td align="left">fraction of decomposer biomass released as CO<span class="math inline">\(_2\)</span></td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(\text{time}^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(s\)</span></td>
+<td align="left">decomposers production rate of soil organic matter</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(\text{time}^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(k\)</span></td>
+<td align="left">rate of fresh organic matter decomposition under substrate limitation (<span class="math inline">\(N\)</span> excess)</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(\text{time}^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(y\)</span></td>
+<td align="left">soil organic matter decomposer consumption rate of fresh organic matter under substrate limitations</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(\text{time}^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="additional-parameters">Additional Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Additional Parameters</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\alpha\)</span></td>
+<td align="left"><span class="math inline">\(N:C\)</span> ratio in soil organic matter and in decomposers</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\beta\)</span></td>
+<td align="left"><span class="math inline">\(N:C\)</span> ratio in fresh organic matter</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(i\)</span></td>
+<td align="left">rate of mineral <span class="math inline">\(N\)</span> diffusion in soil</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(\text{time}^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="input-components">Input Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Input Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\Phi_{l}\)</span></td>
+<td align="left">fresh organic matter carbon flux</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\((\text{quantity of carbon})(\text{time}))^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\Phi_{i}\)</span></td>
+<td align="left">nitrogen that flows into the ecosystem</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\((\text{quantity of nitrogen})(\text{time}))^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\Phi_{o}\)</span></td>
+<td align="left">nitrogen that flows out of the ecosystem</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\((\text{quantity of nitrogen})(\text{time}))^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\Phi_{up}\)</span></td>
+<td align="left">nitrogen flux associated with the nitrogen uptake by the plant cover</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\((\text{quantity of nitrogen})(\text{time}))^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(I\)</span></td>
+<td align="left">input vector</td>
+<td align="center"><span class="math inline">\(I=\left[\begin{matrix}0\\\Phi_{l}\\0\\0\\\Phi_{i} -\Phi_{o} -\Phi_{up}\end{matrix}\right]\)</span></td>
+<td align="center">input_vector</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C\)</span></td>
+<td align="left">carbon content</td>
+<td align="center"><span class="math inline">\(C=\left[\begin{matrix}C_{s}\\C_{f}\\C_{ds}\\C_{df}\\N\end{matrix}\right]\)</span></td>
+<td align="center">state_vector</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(A_{GeM}\)</span></td>
+<td align="left">decomposition operator</td>
+<td align="center"><span class="math inline">\(A_{GeM}=\left[\begin{matrix}0 &amp; 0 &amp; - A + s &amp; s &amp; 0\\0 &amp; - y &amp; 0 &amp; -\frac{\alpha\cdot r}{\alpha -\beta} &amp; -\frac{i}{\alpha -\beta}\\0 &amp; y &amp; A - r - s &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp;\frac{\alpha\cdot r}{\alpha -\beta} - r - s &amp;\frac{i}{\alpha -\beta}\\0 &amp; y\cdot\left(-\alpha +\beta\right) &amp;\alpha\cdot r &amp; 0 &amp; - i\end{matrix}\right]\)</span></td>
+<td align="center">decomp_op_lin</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(f_{s}\)</span></td>
+<td align="left">the right hand side of the ode</td>
+<td align="center"><span class="math inline">\(f_{s}=I+A_{GeM}\cdot C\)</span></td>
+<td align="center">state_vector_derivative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{f}: \Phi_{l}\)</span> <br><span class="math inline">\(N: \Phi_{i} -\Phi_{o} -\Phi_{up}\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(C_{f}: C_{f}\cdot y\cdot\left(\alpha -\beta\right)\)</span> <br><span class="math inline">\(C_{ds}: C_{ds}\cdot r\cdot\left(-\alpha + 1\right)\)</span> <br><span class="math inline">\(C_{df}: C_{df}\cdot r\)</span> <br><span class="math inline">\(N: N\cdot i\)</span> <br></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<span class="math inline">\(C_{f} &gt; C_{ds}: C_{f}\cdot y\)</span> <br><span class="math inline">\(C_{f} &gt; N: C_{f}\cdot y\cdot\left(-\alpha +\beta\right)\)</span> <br><span class="math inline">\(C_{ds} &gt; C_{s}: C_{ds}\cdot\left(- A + s\right)\)</span> <br><span class="math inline">\(C_{ds} &gt; N: C_{ds}\cdot\alpha\cdot r\)</span> <br><span class="math inline">\(C_{df} &gt; C_{s}: C_{df}\cdot s\)</span> <br><span class="math inline">\(C_{df} &gt; C_{f}: -\frac{C_{df}\cdot\alpha\cdot r}{\alpha -\beta}\)</span> <br><span class="math inline">\(N &gt; C_{f}: -\frac{N\cdot i}{\alpha -\beta}\)</span> <br><span class="math inline">\(N &gt; C_{df}: \frac{N\cdot i}{\alpha -\beta}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}C_{df}\cdot s + C_{ds}\cdot\left(- A + s\right)\\-\frac{C_{df}\cdot\alpha\cdot r}{\alpha -\beta} - C_{f}\cdot y -\frac{N\cdot i}{\alpha -\beta} +\Phi_{l}\\C_{ds}\cdot\left(A - r - s\right) + C_{f}\cdot y\\C_{df}\cdot\left(\frac{\alpha\cdot r}{\alpha -\beta} - r - s\right) +\frac{N\cdot i}{\alpha -\beta}\\C_{ds}\cdot\alpha\cdot r + C_{f}\cdot y\cdot\left(-\alpha +\beta\right) - N\cdot i +\Phi_{i} -\Phi_{o} -\Phi_{up}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}0 &amp; 0 &amp; - A + s &amp; s &amp; 0\\0 &amp; - y &amp; 0 &amp; -\frac{\alpha\cdot r}{\alpha -\beta} &amp; -\frac{i}{\alpha -\beta}\\0 &amp; y &amp; A - r - s &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp;\frac{\alpha\cdot r}{\alpha -\beta} - r - s &amp;\frac{i}{\alpha -\beta}\\0 &amp; y\cdot\left(-\alpha +\beta\right) &amp;\alpha\cdot r &amp; 0 &amp; - i\end{matrix}\right]\)</span></p>
+<h1 id="references" class="references unnumbered">References</h1>
+<div id="ref-Fontaine2005Ecologyletters">
+<p>Fontaine, S., &amp; Barot, S. (2005). Size and functional diversity of microbe populations control plant persistence and long‐term soil carbon accumulation. <em>Ecology Letters</em>, <em>8</em>(10), 1075–1087. <a href="http://doi.org/10.1111/j.1461-0248.2005.00813.x" class="uri">http://doi.org/10.1111/j.1461-0248.2005.00813.x</a></p>
+</div>
+</body>
+</html>

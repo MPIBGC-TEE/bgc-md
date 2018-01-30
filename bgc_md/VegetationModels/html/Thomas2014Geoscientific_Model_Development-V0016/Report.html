@@ -1,0 +1,404 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: ACONITE, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: ACONITE, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 29/3/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Thomas &amp; Williams (2014)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>National Science Foundation Awards AGS-1020767 and EF-1048481</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global # State Variables The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{leaf}\)</span></td>
+<td align="left">Carbon in foliage</td>
+<td align="center">foliage</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{wood}\)</span></td>
+<td align="left">Carbon in wood</td>
+<td align="center">fine_wood</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{root}\)</span></td>
+<td align="left">Carbon in roots</td>
+<td align="center">wood</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{labile}\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{bud}\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{labileRa}\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(N_{leaf}\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(N_{wood}\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(N_{root}\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(N_{labile}\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(N_{bud}\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="photosynthetic-parameters">Photosynthetic Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Photosynthetic Parameters</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(GPP\)</span></td>
+<td align="left">Photosynthesis; based on ACM model (see article for description)</td>
+<td align="center">GPP</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="allocation-fluxes">Allocation Fluxes</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Allocation Fluxes</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{budC2leaf}\)</span></td>
+<td align="left">Allocation from bud C pool to leaf C</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(a_{woodC}\)</span></td>
+<td align="left">Allocation from labile C to wood C</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{rootC}\)</span></td>
+<td align="left">Allocation from labile C to root C</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(a_{budC2Ramain}\)</span></td>
+<td align="left">Allocation of bud C pool to maintenance respiration pool when maintain respiration pool reaches zero; represents forgoing future leaf C to prevent carbon starvation.</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{budC}\)</span></td>
+<td align="left">Allocation of labile C to bud C; a fraction of the potential maximum leaf C</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(a_{Ramain}\)</span></td>
+<td align="left">Allocation of labile C to future maintenance respiration; helps prevent carbon starvation during periods of negative NPP</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{budN2leaf}\)</span></td>
+<td align="left">Allocation from bud N pool to leaf C (???); bud N is set in previous year</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(a_{budN2Ramain}\)</span></td>
+<td align="left">When bud C is used for maintenance respiration (a<span class="math inline">\(_budC2Ramain\)</span> &gt; 0), bud N is returned to the labile N pool</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{budN}\)</span></td>
+<td align="left">Allocation of labile N to bud N; in seasonal environments it occurs in year prior to being displayed as leaf N</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(a_{woodN}\)</span></td>
+<td align="left">Allocation from labile N to wood N</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{rootN}\)</span></td>
+<td align="left">Allocation from labile N to root N (???)</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(a_{labileRamain}\)</span></td>
+<td align="left">Allocation of labile C to respiration of living tissues</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="nitrogen-uptake-and-fixation">Nitrogen Uptake And Fixation</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Nitrogen Uptake And Fixation</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">doi</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(U_{NH4}\)</span></td>
+<td align="left">Uptake of NH<span class="math inline">\(_4^+\)</span> from mineral soil NH<span class="math inline">\(_4^+\)</span></td>
+<td align="center"><span class="math inline">\(\frac{10.1007}{BF_{00015315}}\)</span></td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(U_{NO3}\)</span></td>
+<td align="left">Uptake of NO<span class="math inline">\(_3^-\)</span> from mineral soil NO<span class="math inline">\(_3^-\)</span></td>
+<td align="center"><span class="math inline">\(\frac{10.1007}{BF_{00015315}}\)</span></td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(U_{Nfix}\)</span></td>
+<td align="left">Fixation of N from N<span class="math inline">\(_2\)</span>; function of Ra<span class="math inline">\(_excess\)</span> flux, temperature, N demand, and C cost</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="turnover-fluxes">Turnover Fluxes</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Turnover Fluxes</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\tau_{wood}\)</span></td>
+<td align="left">Turnover of wood (C and N)</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\tau_{root}\)</span></td>
+<td align="left">Turnover of root (C and N)</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(t_{leafC}\)</span></td>
+<td align="left">Turnover of leaf C to litter C; constant over year in humid tropics; seasonal otherwise</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(t_{woodC}\)</span></td>
+<td align="left">Turnover of wood C to CWDC pool; occurs throughout year</td>
+<td align="center"><span class="math inline">\(t_{woodC}=C_{wood}\cdot \tau_{wood}\)</span></td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(t_{rootC}\)</span></td>
+<td align="left">Turnover of root C to litter C; occurs throughout year</td>
+<td align="center"><span class="math inline">\(t_{rootC}=C_{root}\cdot \tau_{root}\)</span></td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(t_{retransN}\)</span></td>
+<td align="left">Reabsorption of N from leaves to labile N</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(t_{leafN}\)</span></td>
+<td align="left">Turnover of leaf N to litter N; constant over year in humid tropics; seasonal otherwise</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(t_{woodN}\)</span></td>
+<td align="left">Turnover of wood N to CWDN pool; occurs throughout year</td>
+<td align="center"><span class="math inline">\(t_{woodN}=N_{wood}\cdot \tau_{wood}\)</span></td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(t_{rootN}\)</span></td>
+<td align="left">Turnover of root N to litter N; occurs throughout year</td>
+<td align="center"><span class="math inline">\(t_{rootN}=N_{root}\cdot \tau_{root}\)</span></td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="respiration-fluxes">Respiration Fluxes</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Respiration Fluxes</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(Ra_{growth}\)</span></td>
+<td align="left">Growth respiration that occurs when tissue is allocated; a constant fraction of carbon allocated to tissue</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(Ra_{excess}\)</span></td>
+<td align="left">Respiration that occurs when labile C exceeds a maximum labile C store; used for N fixation</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(Ra_{main}\)</span></td>
+<td align="left">Respiration of living tissues; a function of N content and temperature</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states (C<span class="math inline">\(_i\)</span>) for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{leaf}\\C_{wood}\\C_{root}\\C_{labile}\\C_{bud}\\C_{labileRa}\\N_{leaf}\\N_{wood}\\N_{root}\\N_{labile}\\N_{bud}\end{matrix}\right]\)</span></td>
+<td align="center">state_vector</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(I\)</span></td>
+<td align="left">vector of fluxes into pool (C<span class="math inline">\(_i\)</span>)</td>
+<td align="center"><span class="math inline">\(I=\left[\begin{matrix}a_{budC2leaf}\\a_{woodC}\\a_{rootC}\\GPP\\a_{budC}\\a_{budC2Ramain} + a_{labileRamain}\\a_{budN2leaf}\\a_{woodN}\\a_{rootN}\\U_{NH4} + U_{NO3} + U_{Nfix} + a_{budN2Ramain} + t_{retransN}\\a_{budN2leaf}\end{matrix}\right]\)</span></td>
+<td align="center">inflows</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(O\)</span></td>
+<td align="left">vector of fluxes out of pool (C<span class="math inline">\(_i\)</span>)</td>
+<td align="center"><span class="math inline">\(O=\left[\begin{matrix}- t_{leafC}\\- t_{woodC}\\- t_{rootC}\\- a_{budC} - a_{rootC} - a_{woodC}\\- a_{budC2leaf}\\0\\- t_{leafN} - t_{retransN}\\- t_{woodN}\\- t_{rootN}\\- a_{budN} - a_{rootN} - a_{woodN}\\0\end{matrix}\right]\)</span></td>
+<td align="center">outflows</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(R\)</span></td>
+<td align="left">vector of respiration fluxes of pool (C<span class="math inline">\(_i\)</span>)</td>
+<td align="center"><span class="math inline">\(R=\left[\begin{matrix}0\\0\\0\\- Ra_{excess} - Ra_{growth} - a_{labileRamain}\\- a_{budC2Ramain}\\- Ra_{main}\\0\\0\\0\\0\\- a_{budN2Ramain}\end{matrix}\right]\)</span></td>
+<td align="center">resp_matrix</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=I+O+R\)</span></td>
+<td align="center">state_vector_derivative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}a_{budC2leaf} - t_{leafC}\\- C_{wood}\cdot\tau_{wood} + a_{woodC}\\- C_{root}\cdot\tau_{root} + a_{rootC}\\GPP - Ra_{excess} - Ra_{growth} - a_{budC} - a_{labileRamain} - a_{rootC} - a_{woodC}\\a_{budC} - a_{budC2Ramain} - a_{budC2leaf}\\- Ra_{main} + a_{budC2Ramain} + a_{labileRamain}\\a_{budN2leaf} - t_{leafN} - t_{retransN}\\- N_{wood}\cdot\tau_{wood} + a_{woodN}\\- N_{root}\cdot\tau_{root} + a_{rootN}\\U_{NH4} + U_{NO3} + U_{Nfix} - a_{budN} + a_{budN2Ramain} - a_{rootN} - a_{woodN} + t_{retransN}\\- a_{budN2Ramain} + a_{budN2leaf}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{array}{ccccccccccc}0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; -\tau_{wood} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; -\tau_{root} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; -\tau_{wood} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; -\tau_{root} &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\end{array}\right]\)</span></p>
+<h1 id="references" class="references unnumbered">References</h1>
+<div id="ref-Thomas2014Geoscientific_Model_Development">
+<p>Thomas, R. Q., &amp; Williams, M. (2014). A model using marginal efficiency of investment to analyze carbon and nitrogen interactions in terrestrial ecosystems (ACONITE Version 1). <em>Geoscientific Model Development</em>, <em>7</em>(5), 2015–2037. <a href="http://doi.org/10.5194/gmd-7-2015-2014" class="uri">http://doi.org/10.5194/gmd-7-2015-2014</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+
+# vim:set ff=unix expandtab ts=4 sw=4: 
+citationKey: Running1988EcolModel
+name: FOREST-BGC
+version: 1
+model-id: V0001
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+entryCreationDate: 17/7/2015 # changeset 2200 (.py)
+lastModification: _lm_
+modApproach: process based
+partitioningScheme: fixed
+spaceScale: site 
+#    unit: "1°"
+timeResolution: monthly 
+doi: 10.1016/0304-3800(88)90112-3
+#t = # units: days, years for allocation
+reviews:
+      - reviewer: Carlos Sierra
+        orcid: 0000-0003-0009-4169
+        date: 12/04/2016
+        desc: "Added a set of parameters that were missing from original publication."
+        type: shallow 
+model:
+    - state_variables:
+        - t:
+            desc: time step
+            unit: "year"
+            type: variable
+            key: time_symbol
+        - C_f:
+            desc: Carbon in foliage
+            key: "foliage"
+        - C_r: 
+            desc: Carbon in roots 
+            key: "fine_roots"
+        - C_w:
+            desc: Carbon in woody tissue
+            key: "wood"
+    - allocation_coefficients:
+        - eta_f:
+            desc:
+            type: parameter
+            key: "part_foliage"
+            unit: 
+        - eta_r:
+            desc:
+            type: parameter
+            key: "part_roots"
+            unit: 
+        - eta_w:
+            desc:
+            type: parameter
+            key: "part_wood"
+            unit:
+    - cycling_rates:
+        - gamma_f:
+            desc:
+            type: parameter
+            key: "cyc_foliage"
+            entryAuthorOrcid: 0000-0002-0046-1160
+            unit: 
+        - gamma_r:
+            desc:
+            type: parameter
+            key: "cyc_roots"
+            entryAuthorOrcid: 0000-0002-0046-1160
+            unit: 
+        - gamma_w:
+            desc:
+            type: parameter
+            key: "cyc_wood"
+            entryAuthorOrcid: 0000-0002-0046-1160
+            unit:
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(3,1,[C_f, C_r, C_w])"
+            desc: vector of states for vegetation
+        - u: 
+            key: scalar_func_phot    
+            desc: scalar function of photosynthetic inputs
+        - b: 
+            key: part_coeff    
+            exprs: "b=Matrix(3,1,[eta_f, eta_r, eta_w])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - A: 
+            key: cyc_matrix    
+            exprs: "A=diag(-gamma_f, -gamma_r, -gamma_w)"
+            desc: matrix of turnover (cycling) rates 
+        - f_v: 
+            key: state_vector_derivative  
+            exprs: "f_v = u*b + A*x"
+            desc: the righthandside of the ode
+model_run_data:
+    parameter_sets:
+#        - "Original dataset of the publication":
+#            values: {eta_f: 'Rational(25,100)', eta_r: 'Rational(40,100)', eta_w: 'Rational(35,100)', gamma_r: 'Rational(40,100)', gamma_f: 'Rational(33,100)', gamma_w: 'Rational(0,100)'}
+#            doi: 10.1016/0304-3800(88)90112-3
+#        - "Additional set 1":
+#            values: {eta_f: 'Rational(20,100)', eta_r: 'Rational(55,100)', eta_w: 'Rational(25,100)', gamma_r: 'Rational(75,100)'}
+#            doi: 10.1093/treephys/9.1-2.161 # Hunt1991TreePhysiol
+#        - "Additional set 2":
+#            values: {eta_f: 'Rational(48,100)', eta_r: 'Rational(37,100)',eta_w: 'Rational(15,100)', gamma_r: 'Rational(75,100)'}
+#            doi: "10.1139/x91-151" # Korol1991CanJForRes
+        - "set3":
+            values: {u: 1400, eta_f: 0.48, eta_r: 0.44, eta_w: 0.49, gamma_r: 3.03, gamma_f: 23.32, gamma_w: 0.04}
+
+    initial_values:
+        - "X(0)":
+            values: {C_f: 200, C_w: 5000, C_r: 300}
+            
+
+    run_times:
+        - RT1:
+            start: 0
+            end: 20000
+            step_size: 0.01
+
+    possible_combinations:
+        - ["set3", "X(0)", RT1]
+# set3, X(0) and RT1 are default values suggested by this entry's creator only to be able to run the model.

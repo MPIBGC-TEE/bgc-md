@@ -1,0 +1,112 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: Parton1987SoilSciSocAmJ
+name: BGC-MD
+version: 1
+model-id: O0002
+entryAuthor: "Carlos Sierra"
+entryAuthorOrcid: 0000-0003-0009-4169
+entryCreationDate: 13/04/2016
+lastModification: _lm_
+#modApproach: 
+timeScale: years
+#spaceScale: [plot, field, regional, national, global]
+#timeResolution: annual # ??? monthly
+doi: 10.2136/sssaj1987.03615995005100050015x
+abstract: This is a fake model to produce a logo
+keywords: 
+    - "differential equations"
+#    - "linear"
+    - "time variant"
+#    - "analytic"
+
+principles:
+    - "mass balance"
+    - "substrate dependence of decomposition"
+    - "heterogeneity of speed of decay"
+    - "internal transformations of organic matter"
+    - "environmental variability effects"
+#    - "substrate interactions"
+
+
+model:
+    - state_variables:
+        - B:
+            desc: Bio
+#            key: "foliage"
+#            unit: "t C*ha^{-1}"
+        - G: 
+            desc: geo
+#            key: "wood"
+#            unit: "t C*ha^{-1}"
+        - C:
+            desc: chemistry
+#            key: "foliage"
+#            unit: "t C*ha^{-1}"
+        - M: 
+            desc: Model
+#            key: "wood"
+#            unit: "t C*ha^{-1}"
+        - D:
+            desc: Database
+#            unit: "t C*ha^{-1}"
+#            unit: "t C*ha^{-1}"
+    
+
+    - decomposition_rates:
+        - k_1:
+            desc: decomposition rate of structural soil surface litter
+            type: parameter
+        - k_2:
+            desc: decomposition rate of structural soil surface litter
+            type: parameter
+        - k_3:
+            desc: decomposition rate of structural soil surface litter
+            type: parameter
+        - k_4:
+            desc: decomposition rate of structural soil litter
+            type: parameter
+        - k_5:
+            desc: decomposition rate of active soil organic matter
+            type: parameter
+
+    - input_components:
+        - I_1:
+            desc: organic matter input to surface
+            type: parameter
+        - I_2:
+            desc: organic matter input to soil
+            type: parameter
+        - I_3:
+            desc: organic matter input to soil
+            type: parameter
+        - I_4:
+            desc: organic matter input to soil
+            type: parameter
+        - I_5:
+            desc: organic matter input to soil
+            type: parameter
+
+
+
+    - components:
+        - X:
+            desc: carbon content
+            exprs: "X = Matrix(5, 1, [B, G, C, D, M])"
+            key: state_vector
+        - I:
+            desc: input vector
+            exprs: "I = Matrix(5, 1, [I_1, 0 , 0, 0, 0])"
+            key: input_vector
+        - A:
+            desc: decomposition operator
+            exprs: "A = Matrix([[  -k_1,       0,         0,        0,     0],
+                                [     1,    -k_2,         0,        0,     0],
+                                [     0,       1,      -k_3,        0,     0],
+                                [     0,       0,         0,     -k_4,     1],
+                                [     0,       0,         0,        0,  -k_5]])"
+            key: decomp_op_lin
+        - f_s: 
+            exprs: "f_s = I + A * X"
+            desc: the right hand side of the ode
+            key: state_vector_derivative
+

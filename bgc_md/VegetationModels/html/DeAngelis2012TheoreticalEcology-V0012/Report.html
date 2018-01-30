@@ -1,0 +1,478 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: DeAngelis2012TheoreticalEcology, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: DeAngelis2012TheoreticalEcology, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 15/3/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">DeAngelis, Ju, Liu, Bryant, &amp; Gourley (2012)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>We use modeling to determine the optimal relative plant carbonallocations between foliage, fine roots, anti-herbivoredefense, and reproduction to maximize reproductive output. Themodel treats these plant components and the herbivorecompartment as variables. Herbivory is assumed to be purelyfolivory. Key external factors include nutrient availability,degree of shading, and intensity of herbivory. Threealternative functional responses are used for herbivory, two ofwhich are variations on donor-dependent herbivore (models 1aand 1b) and one of which is a Lotka–Volterra type ofinteraction (model 2). All three were modified to include thenegative effect of chemical defenses on the herbivore. Analysisshowed that, for all three models, two stable equilibria couldoccur, which differs from most common functional responses whenno plant defense component is included. Optimal strategies ofcarbon allocation were defined as the maximum biomass ofreproductive propagules produced per unit time, and found tovary with changes in external factors. Increased intensity ofherbivory always led to an increase in the fractionalallocation of carbon to defense. Decreases in availablelimiting nutrient generally led to increasing importance ofdefense. Decreases in available light had little effect ondefense but led to increased allocation to foliage. Decreasesin limiting nutrient and available light led to decreases inallocation to reproduction in models 1a and 1b but not model 2.Increases in allocation to plant defense were usuallyaccompanied by shifts in carbon allocation away from fineroots, possibly because higher plant defense reduced the lossof nutrients to herbivory.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global</p>
+<h3 id="available-parameter-values">Available parameter values</h3>
+<table>
+<caption>Information on given parameter sets</caption>
+<thead>
+<tr class="header">
+<th align="left">Abbreviation</th>
+<th align="left">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Original dataset of the publication</td>
+<td align="left"><span class="citation">DeAngelis et al. (2012)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{f}\)</span></td>
+<td align="left">Foliage carbon content per unit ground area at equilibrium</td>
+<td align="center">foliage</td>
+<td align="center"><span class="math inline">\(g\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{r}\)</span></td>
+<td align="left">Fine root carbon</td>
+<td align="center">fine_roots</td>
+<td align="center"><span class="math inline">\(g\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{w}\)</span></td>
+<td align="left">Carbon in woody tissue</td>
+<td align="center">wood</td>
+<td align="center"><span class="math inline">\(g\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(N_{f}\)</span></td>
+<td align="left">Nitrogen in foliage</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(g\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(N_{pore}\)</span></td>
+<td align="left">Soil pore water nutrient pool</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(gN\cdot g^{-1}water\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="additional-variables">Additional Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Additional Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+<th align="center">Values <br> <br>Original dataset of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(F_{i}\)</span></td>
+<td align="left">Herbivore functional response</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(N_{r}\)</span></td>
+<td align="left">Nitrogen in roots</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(v_{f}\)</span></td>
+<td align="left">N:C ratio in foliage</td>
+<td align="center"><span class="math inline">\(v_{f}=\frac{N_{f}}{C_{f}}\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(v_{r}\)</span></td>
+<td align="left">N:C ratio in fine roots</td>
+<td align="center"><span class="math inline">\(v_{r}=\frac{N_{r}}{C_{r}}\)</span></td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(0.002\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(N_{w}\)</span></td>
+<td align="left">Nitrogen in wood</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(v_{w}\)</span></td>
+<td align="left">N:C ratio in wood</td>
+<td align="center"><span class="math inline">\(v_{w}=\frac{N_{w}}{C_{w}}\)</span></td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(5.0\cdot 10^{-5}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(v_{m}\)</span></td>
+<td align="left">N:C ratio for reproductive propagules</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(0.005\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="photosynthetic-parameters">Photosynthetic Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Photosynthetic Parameters</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+<th align="center">Values <br> <br>Original dataset of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(G_{0}\)</span></td>
+<td align="left">Maximum possible primary production, assuming all light is captured and photosynthesizing material (foliage) is operating optimally.</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(30\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(b_{f}\)</span></td>
+<td align="left">Converts carbon per square meter to LAI</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(0.004\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(k_{f}\)</span></td>
+<td align="left">Foliage light-extinction (Beer-Lambert law) coefficient</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(0.2\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(v_{0}\)</span></td>
+<td align="left">Half-saturation constant for the effect of foliar nitrogen concentration on primary production</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(0.02\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(G\)</span></td>
+<td align="left">Net carbon production or growth per unit time</td>
+<td align="center"><span class="math inline">\(G=G_{0}\cdot \left(1-\operatorname{exp}\left(- k_{f}\cdot b_{f}\cdot C_{f}\right)\right)\cdot \frac{v_{f}}{v_{0}+v_{f}}\)</span></td>
+<td align="center">NPP</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="nutrient-uptake">Nutrient Uptake</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Nutrient Uptake</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+<th align="center">Values <br> <br>Original dataset of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(g_{N}\)</span></td>
+<td align="left">Maximum possible nutrient uptake rate</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(15\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(k_{N}\)</span></td>
+<td align="left">Half-saturation constant for uptake of soil porewater N</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(5\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(k_{r}\)</span></td>
+<td align="left">Coefficient analogous to k<span class="math inline">\(_f\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(0.15\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(b_{r}\)</span></td>
+<td align="left">Coefficient of fine root length per unit C</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(0.001\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(U\)</span></td>
+<td align="left">Nutrient uptake rate of plant available nutrient. Saturated response of uptake to soil porewater concentration is assumed</td>
+<td align="center"><span class="math inline">\(U=\frac{g_{N}\cdot N_{pore}}{k_{N}+N_{pore}}\cdot \left(1-\operatorname{exp}\left(- k_{r}\cdot b_{r}\cdot C_{r}\right)\right)\)</span></td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="allocation-fractions">Allocation fractions</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Allocation fractions</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Original dataset of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(s_{f}\)</span></td>
+<td align="left">Allocation ratio of wood to foliage</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.5\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(s_{r}\)</span></td>
+<td align="left">Allocation ratio of wood to fine roots</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.5\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\eta_{f}\)</span></td>
+<td align="left">Allocation fraction to foliar biomass</td>
+<td align="center">-</td>
+<td align="center">part_foliage</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\eta_{r}\)</span></td>
+<td align="left">Allocation fraction to roots biomass</td>
+<td align="center">-</td>
+<td align="center">part_roots</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\eta_{w}\)</span></td>
+<td align="left">Allocation fraction to wood (in stem, branches and large structurl roots) biomass</td>
+<td align="center"><span class="math inline">\(\eta_{w}=s_{f}\cdot \eta_{f}+s_{r}\cdot \eta_{r}\)</span></td>
+<td align="center">part_reproduction</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\eta_{m}\)</span></td>
+<td align="left">Allocation fraction to reproduction</td>
+<td align="center">-</td>
+<td align="center">part_reproduction</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\eta_{d}\)</span></td>
+<td align="left">Allocation fraction to plant defense</td>
+<td align="center"><span class="math inline">\(\eta_{d}=1-\left(\eta_{f}+\eta_{r}+\eta_{w}+\eta_{m}\right)\)</span></td>
+<td align="center">part_defense</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="cycling-rates">Cycling Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Cycling Rates</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+<th align="center">Values <br> <br>Original dataset of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\gamma_{f}\)</span></td>
+<td align="left">Foliage senescence rate</td>
+<td align="center">cyc_foliage</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(day^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(0.005\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\gamma_{r}\)</span></td>
+<td align="left">Roots senescence rate</td>
+<td align="center">cyc_roots</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(day^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(0.01\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\gamma_{w}\)</span></td>
+<td align="left">Wood senescence rate</td>
+<td align="center">cyc_wood</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(day^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(0.001\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Values <br> <br>key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{f}\\C_{r}\\C_{w}\\N_{f}\end{matrix}\right]\)</span></td>
+<td align="center">state_vector</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=G\)</span></td>
+<td align="center">scalar_func_phot</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}\eta_{f}\\\eta_{r}\\\eta_{w}\\-\eta_{m}\cdot v_{m} -\eta_{r}\cdot v_{r} -\eta_{w}\cdot v_{w} +\frac{U}{G}\end{matrix}\right]\)</span></td>
+<td align="center">part_coeff</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of senescence (cycling) rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\frac{F_{i}}{N_{f}} -\gamma_{f} &amp; 0 &amp; 0 &amp; 0\\0 &amp; -\gamma_{r} &amp; 0 &amp; 0\\0 &amp; 0 &amp; -\gamma_{w} &amp; 0\\0 &amp; 0 &amp; 0 &amp; -\frac{F_{i}}{N_{f}} -\gamma_{f}\end{matrix}\right]\)</span></td>
+<td align="center">cyc_matrix</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td align="center">state_vector_derivative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{f}: \frac{G_{0}\cdot N_{f}\cdot\eta_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\)</span> <br><span class="math inline">\(C_{r}: \frac{G_{0}\cdot N_{f}\cdot\eta_{r}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\)</span> <br><span class="math inline">\(C_{w}: \frac{G_{0}\cdot N_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right)\)</span> <br><span class="math inline">\(N_{f}: \frac{G_{0}\cdot N_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\frac{C_{f}\cdot N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)} -\eta_{m}\cdot v_{m} -\frac{N_{w}}{C_{w}}\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right) -\frac{N_{r}}{C_{r}}\cdot\eta_{r}\right)\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<span class="math inline">\(C_{f}: \frac{C_{f}}{N_{f}}\cdot\left(F_{i} + N_{f}\cdot\gamma_{f}\right)\)</span> <br><span class="math inline">\(C_{r}: C_{r}\cdot\gamma_{r}\)</span> <br><span class="math inline">\(C_{w}: C_{w}\cdot\gamma_{w}\)</span> <br><span class="math inline">\(N_{f}: F_{i} + N_{f}\cdot\gamma_{f}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}C_{f}\cdot\left(-\frac{F_{i}}{N_{f}} -\gamma_{f}\right) +\frac{G_{0}\cdot N_{f}\cdot\eta_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\\- C_{r}\cdot\gamma_{r} +\frac{G_{0}\cdot N_{f}\cdot\eta_{r}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\\- C_{w}\cdot\gamma_{w} +\frac{G_{0}\cdot N_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right)\\N_{f}\cdot\left(-\frac{F_{i}}{N_{f}} -\gamma_{f}\right) +\frac{G_{0}\cdot N_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\frac{C_{f}\cdot N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)} -\eta_{m}\cdot v_{m} -\frac{N_{w}}{C_{w}}\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right) -\frac{N_{r}}{C_{r}}\cdot\eta_{r}\right)\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\frac{F_{i}}{N_{f}} -\gamma_{f} +\frac{G_{0}\cdot N_{f}\cdot b_{f}\cdot\eta_{f}\cdot k_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot e^{- C_{f}\cdot b_{f}\cdot k_{f}} -\frac{G_{0}\cdot N_{f}\cdot\eta_{f}}{C_{f}^{2}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right) +\frac{G_{0}\cdot N_{f}^{2}\cdot\eta_{f}}{C_{f}^{3}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)^{2}}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right) &amp; 0 &amp; 0 &amp;\frac{C_{f}}{N_{f}^{2}}\cdot F_{i} +\frac{G_{0}\cdot\eta_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right) -\frac{G_{0}\cdot N_{f}\cdot\eta_{f}}{C_{f}^{2}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)^{2}}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\\\frac{G_{0}\cdot N_{f}\cdot b_{f}\cdot\eta_{r}\cdot k_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot e^{- C_{f}\cdot b_{f}\cdot k_{f}} -\frac{G_{0}\cdot N_{f}\cdot\eta_{r}}{C_{f}^{2}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right) +\frac{G_{0}\cdot N_{f}^{2}\cdot\eta_{r}}{C_{f}^{3}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)^{2}}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right) &amp; -\gamma_{r} &amp; 0 &amp;\frac{G_{0}\cdot\eta_{r}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right) -\frac{G_{0}\cdot N_{f}\cdot\eta_{r}}{C_{f}^{2}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)^{2}}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\\\frac{G_{0}\cdot N_{f}\cdot b_{f}\cdot k_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right)\cdot e^{- C_{f}\cdot b_{f}\cdot k_{f}} -\frac{G_{0}\cdot N_{f}}{C_{f}^{2}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right) +\frac{G_{0}\cdot N_{f}^{2}}{C_{f}^{3}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)^{2}}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right) &amp; 0 &amp; -\gamma_{w} &amp;\frac{G_{0}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right) -\frac{G_{0}\cdot N_{f}}{C_{f}^{2}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)^{2}}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right)\\\frac{G_{0}\cdot N_{f}\cdot b_{f}\cdot k_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(\frac{C_{f}\cdot N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)} -\eta_{m}\cdot v_{m} -\frac{N_{w}}{C_{w}}\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right) -\frac{N_{r}}{C_{r}}\cdot\eta_{r}\right)\cdot e^{- C_{f}\cdot b_{f}\cdot k_{f}} +\frac{G_{0}\cdot N_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(-\frac{C_{f}\cdot N_{pore}\cdot b_{f}\cdot g_{N}\cdot k_{f}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)\cdot e^{- C_{f}\cdot b_{f}\cdot k_{f}}}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)^{2}\cdot\left(N_{pore} + k_{N}\right)} +\frac{N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)} -\frac{N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)}{C_{f}\cdot G_{0}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)}\right) -\frac{G_{0}\cdot N_{f}}{C_{f}^{2}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\frac{C_{f}\cdot N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)} -\eta_{m}\cdot v_{m} -\frac{N_{w}}{C_{w}}\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right) -\frac{N_{r}}{C_{r}}\cdot\eta_{r}\right) +\frac{G_{0}\cdot N_{f}^{2}}{C_{f}^{3}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)^{2}}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\frac{C_{f}\cdot N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)} -\eta_{m}\cdot v_{m} -\frac{N_{w}}{C_{w}}\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right) -\frac{N_{r}}{C_{r}}\cdot\eta_{r}\right) &amp;\frac{G_{0}\cdot N_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\frac{C_{f}\cdot N_{pore}\cdot b_{r}\cdot g_{N}\cdot k_{r}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)\cdot e^{- C_{r}\cdot b_{r}\cdot k_{r}}}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)} +\frac{N_{r}}{C_{r}^{2}}\cdot\eta_{r}\right) &amp;\frac{G_{0}\cdot N_{f}\cdot N_{w}}{C_{f}\cdot C_{w}^{2}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right) &amp; -\gamma_{f} +\frac{G_{0}\cdot N_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(-\frac{C_{f}\cdot N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}{G_{0}\cdot N_{f}^{2}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)} +\frac{N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)}\right) +\frac{G_{0}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\frac{C_{f}\cdot N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)} -\eta_{m}\cdot v_{m} -\frac{N_{w}}{C_{w}}\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right) -\frac{N_{r}}{C_{r}}\cdot\eta_{r}\right) -\frac{G_{0}\cdot N_{f}}{C_{f}^{2}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)^{2}}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\frac{C_{f}\cdot N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)} -\eta_{m}\cdot v_{m} -\frac{N_{w}}{C_{w}}\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right) -\frac{N_{r}}{C_{r}}\cdot\eta_{r}\right)\end{matrix}\right]\)</span></p>
+<h1 id="references" class="references unnumbered">References</h1>
+<div id="ref-DeAngelis2012TheoreticalEcology">
+<p>DeAngelis, D. L., Ju, S., Liu, R., Bryant, J. P., &amp; Gourley, S. A. (2012). Plant allocation of carbon to defense as a function of herbivory, light and nutrient availability. <em>Theoretical Ecology</em>, <em>5</em>(3), 445–456. <a href="http://doi.org/10.1007/s12080-011-0135-z" class="uri">http://doi.org/10.1007/s12080-011-0135-z</a></p>
+</div>
+</body>
+</html>

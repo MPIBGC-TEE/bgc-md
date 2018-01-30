@@ -1,0 +1,203 @@
+
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: DeAngelis2012TheorEcol
+name: 
+version:
+model-id: V0012
+basedOn: "G'DAY"
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+entryCreationDate: 15/3/2016 # cahngeset: 3312
+lastModification: _lm_
+modApproach: process based
+partitioningScheme: fixed
+spaceScale: global 
+#    unit: "1°"
+timeResolution: monthly 
+doi: 10.1007/s12080-011-0135-z
+model:
+    - state_variables:
+        - C_f:
+            desc: Foliage carbon content per unit ground area at equilibrium 
+            key: "foliage"
+            unit: "g*m^{-2}"
+        - C_r: 
+            desc: Fine root carbon
+            key: "fine_roots"
+            unit: "g*m^{-2}"
+        - C_w:
+            desc: Carbon in woody tissue
+            key: "wood"
+            unit: "g*m^{-2}"
+        - N_f:
+            desc: Nitrogen in foliage
+            unit: "g*m^{-2}"
+            key: leaf_N
+        - N_pore:
+            desc: Soil pore water nutrient pool 
+            unit: "gN*g^{-1}water"
+    
+    - additional_variables:
+        - F_i:
+            desc: Herbivore functional response
+            # exprs: "F_i = " See paper!!!
+            unit: "gN*m^{-2}*day^{-1}"
+            type: variable
+        - N_r:
+            desc: Nitrogen in roots
+            type: variable
+            key: root_N
+        - v_f:
+            desc: "N:C ratio in foliage" 
+            exprs: "v_f = N_f/C_f"
+            type: variable
+            key: leaf_N_C_ratio
+        - v_r:
+            desc: "N:C ratio in fine roots" 
+            exprs: "v_r = N_r/C_r"
+            type: parameter # Fixed ratios were assumed
+            key: root_N_C_ratio 
+        - N_w:
+            desc: Nitrogen in wood
+            type: variable
+            key: wood_N
+        - v_w:
+            desc: "N:C ratio in wood" 
+            exprs: "v_w = N_w/C_w"
+            type: parameter # Fixed ratios were assumed
+            key: wood_N_C_ratio
+        - v_m:
+            desc: "N:C ratio for reproductive propagules" 
+            type: parameter
+            key: reproductive_N_C_ratio
+
+    - photosynthetic_parameters:
+        - G_0:
+            desc: Maximum possible primary production, assuming all light is captured and photosynthesizing material (foliage) is operating optimally. 
+            type: parameter
+            key: GPP # fixme?
+        - b_f:
+            desc: Converts carbon per square meter to LAI
+            type: parameter
+            key: LAI # fixme: this is not properly LAI, but LAI wouldn't show because it is comented out. Consider the key: scaling_factor for all parameters used in empirical equations
+        - k_f:
+            desc: Foliage light-extinction (Beer-Lambert law) coefficient
+            type: parameter
+            key: light_ext # fixme?
+        - v_0:
+            desc: Half-saturation constant for the effect of foliar nitrogen concentration on primary production
+            type: parameter
+            key: N_depend_NPP #fixme: should it have same key as E_nf in Murty... ?
+#        - I_Cf:
+#            desc: Saturating effect of leaf area index (LAI = b_f*C_f)
+#        - E_vf:
+#            desc: "Represents assumption that the photosynthetic efficiency of foliage is linearly dependent on the  N_f:C_f ratio"
+        - G:
+            desc: Net carbon production or growth per unit time
+            exprs: "G = G_0*(1-(exp(-k_f*b_f*C_f)))*(v_f/(v_0+v_f))"
+            type: variable
+            key: NPP
+            unit: "gC*m^{-2}*day^{-1}"
+
+    - nutrient_uptake:
+        - g_N:
+            desc: Maximum possible nutrient uptake rate
+            key: nutrient_lim_factor #fixme: should it have this key, or should it get a more specific one? 
+        - k_N:
+            desc: Half-saturation constant for uptake of soil porewater N
+            key: scaling_factor #fixme: should it have this key, or should it get a more specific one? 
+        - k_r:
+            desc: Coefficient analogous to k$_f$
+            key: scaling_factor #fixme: should it have this key, or should it get a more specific one? 
+        - b_r:
+            desc: Coefficient of fine root length per unit C
+            key: scaling_factor #fixme: should it have this key, or should it get a more specific one? 
+        - U:
+            desc: Nutrient uptake rate of plant available nutrient. Saturated response of uptake to soil porewater concentration is assumed
+            exprs: "U = (g_N*N_pore/(k_N+ N_pore))*(1-exp(-k_r*b_r*C_r))" # See page 4
+            unit: "gN*m^{-2}*day^{-1}"
+            type: variable
+            key: nutrient_uptake
+
+        
+
+    - allocation_coefficients[Allocation fractions]:
+        - s_f:
+            desc: Allocation ratio of wood to foliage 
+            type: parameter
+            key: scaling_factor #fixme: should it have this key, or should it get a more specific one? 
+        - s_r:
+            desc: Allocation ratio of wood to fine roots
+            type: parameter
+            key: scaling_factor #fixme: should it have this key, or should it get a more specific one? 
+        - eta_f:
+            desc: Allocation fraction to foliar biomass
+            type: parameter
+            key: "part_foliage"
+        - eta_r:
+            desc: Allocation fraction to roots biomass 
+            type: parameter
+            key: "part_roots"
+        - eta_w:
+            desc: Allocation fraction to wood (in stem, branches and large structurl roots) biomass
+            exprs: "eta_w = (s_f*eta_f)+(s_r*eta_r)"
+            type: parameter
+            key: "part_reproduction"
+        - eta_m:
+            desc: Allocation fraction to reproduction
+            type: parameter
+            key: "part_reproduction"
+        - eta_d:
+            desc: Allocation fraction to plant defense
+            type: parameter
+            key: "part_defense"
+            exprs: "eta_d = 1 - (eta_f + eta_r + eta_w + eta_m)"
+
+    - cycling_rates:
+        - gamma_f: 
+            desc: Foliage senescence rate
+            type: parameter
+            key: "cyc_foliage"
+            unit: "day^{-1}" 
+        - gamma_r:
+            desc: Roots senescence rate
+            type: parameter
+            key: "cyc_roots"
+            unit: "day^{-1}" 
+        - gamma_w:
+            desc: Wood senescence rate
+            type: parameter
+            key: "cyc_wood"
+            unit: "day^{-1}"
+
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(4,1,[C_f, C_r, C_w, N_f])"
+            desc: vector of states for vegetation
+        - u: 
+            key: scalar_func_phot    
+            exprs: "u=G"
+            desc: scalar function of photosynthetic inputs
+        - b: 
+            key: part_coeff    
+            exprs: "b=Matrix(4,1,[eta_f, eta_r, eta_w, (U/G)-eta_r*v_r-eta_w*v_w-eta_m*v_m])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - A: 
+            key: cyc_matrix    
+            exprs: "A=diag(-gamma_f-(F_i/N_f), -gamma_r, -gamma_w, -gamma_f-(F_i/N_f))"
+            desc: matrix of senescence (cycling) rates 
+        - f_v: 
+            key: state_vector_derivative  
+            exprs: "f_v = u*b + A*x"
+            desc: the righthandside of the ode
+model_run_data:
+    parameter_sets:
+        - "Original dataset of the publication":
+            values: {v_r: 0.002, v_w: 0.00005, v_m: 0.005, gamma_f: 0.005, gamma_r: 0.01, gamma_w: 0.001, G_0: 30, v_0: 0.02, g_N: 15, k_N: 5, b_f: 0.004, k_f: 0.2, b_r: 0.001, k_r: 0.15, s_f: 0.5, s_r: 0.5}
+# See table 1 in page 7
+            doi: 10.1007/s12080-011-0135-z
+
+
+
+

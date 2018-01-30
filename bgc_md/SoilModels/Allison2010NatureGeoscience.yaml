@@ -1,0 +1,267 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+
+citationKey: Allison2010NatureGeoscience
+name: AWB
+version: 1
+model-id: S0009
+entryAuthor: "Holger Metzler"
+entryAuthorOrcid: 0000-0002-8239-1601
+entryCreationDate: 17/03/2016
+lastModification: _lm_
+#modApproach: 
+timeScale: "up to 3000 years"
+#spaceScale: [plot, field, regional, national, global]
+timeResolution: hourly
+doi: 10.1038/ngeo846
+
+abstract: "Most ecosystem models predict that climate warming will stimulate microbial decomposition of soil carbon, producing a positive feedback to rising global temperatures. Although field experiments document an initial increase in the loss of CO$_2$ from soils in response to warming, in line with these predictions, the carbon dioxide loss from soils tends to decline to control levels within a few years. This attenuation response could result from changes in microbial physiological properties with increasing temperature, such as a decline in the fraction of assimilated carbon that is allocated to growth, termed carbon-use efficiency. Here we explore these mechanisms using a microbial-enzyme model to simulate the responses of soil carbon to warming by 5°C. We find that declines in microbial biomass and degradative enzymes can explain the observed attenuation of soil-carbon emissions in response to warming. Specifically, reduced carbon-use efficiency limits the biomass of microbial decomposers and mitigates the loss of soil carbon. However, microbial adaptation or a change in microbial communities could lead to an upward adjustment of the efficiency of carbon use, counteracting the decline in microbial biomass and accelerating soil-carbon loss. We conclude that the soil-carbon response to climate warming depends on the efficiency of soil microbes in using carbon."
+ 
+keywords: 
+    - "differential equations"
+    - "nonlinear"
+    - "time variant"
+#    - "analytic"
+    - "Michaelis-Menten"
+
+principles:
+    - "mass balance"
+    - "substrate dependence of decomposition"
+    - "heterogeneity of speed of decay"
+    - "internal transformations of organic matter"
+    - "environmental variability effects"
+    - "substrate interactions"
+
+
+bibtex: "@article{Allison2010NatureGeoscience,
+         author = {Allison, Steven D. and Wallenstein, Matthew D. and Bradford, Mark A.},
+         title = {Soil-carbon response to warming dependent on microbial physiology},
+         journal = {Nature Geoscience},
+         year = {2010},
+         volume = {3},
+         number = {5},
+         pages = {336--340},
+         publisher = {Nature Publishing Group},
+         link = {http://dx.doi.org/10.1038/ngeo846},
+         doi = {10.1038/ngeo846}
+        }"
+
+further_references:
+    - bibtex: "@article{Li2014Biogeochemistry,
+                 author = {Li, Jianwei and Wang, Gangsheng and Allison, Steven D and Mayes, Melanie A and Luo, Yiqi},
+                 title = {Soil carbon sensitivity to temperature and carbon use efficiency compared across microbial-ecosystem models of varying complexity},
+                 journal = {Biogeochemistry},
+                 volume = {119},
+                 number = {1-3},
+                 pages = {67--84},
+                 year = {2014},
+                 publisher = {Springer}
+                }"
+      desc: "The notation here is adapted to the one in this paper. Temperature sensitivities for $V$, $V_U$, $K$, and $K_U$ follow the Arrhenius relationship."
+
+model:
+    - state_variables:
+        - S:
+            desc: soil organic carbon pool
+            unit: "mgC cm^{-3}"
+        - D:
+            desc: dissolved organic carbon pool
+            unit: "mgC cm^{-3}"
+        - B:
+            desc: microbial biomass pool
+            unit: "mgC cm^{-3}"
+        - E:
+            desc: enzyme pool
+            unit: "mgC cm^{-3}"
+        
+    - constants:
+        - R: 
+            desc: ideal gas constant
+            exprs: "R = 0.008314"
+            unit: "kJ mol^{-1} K^{-1}"
+#            type: constant
+
+    - parameters:          
+        - r_B:
+            desc: "microbial biomass turnover rate"
+            unit: "h^{-1}"
+            type: parameter
+        - r_E:
+            desc: enzyme production rate
+            unit: "h^{-1}"
+            type: parameter
+        - r_L:
+            desc: enzyme loss rate
+            unit: "h^{-1}"
+            type: parameter
+        - a_BS:
+            desc: fraction of dead microbial biomass transferred to soil organic matter
+            unit: 
+            type: parameter
+        - V_Umax: 
+            desc: reference for maximum rate of dissolved organic carbon uptake
+            unit: "h^{-1}"
+            type: parameter
+        - V_max: 
+            desc: reference for maximum rate of soil organic carbon decomposition
+            unit: "h^{-1}"
+            type: parameter
+        - E_aU:
+            desc: activation energy to convert substrate into product
+            unit: "kJ mol^{-1}"
+            type: parameter
+        - E_a:
+            desc: activation energy for soil organic carbon decomposition
+            unit: "kJ mol^{-1}"
+            type: parameter
+        - epsilon_0:
+            desc: base carbon uptake efficiency
+            unit:
+            type: parameter
+        - epsilon_s:
+            desc: carbon uptake efficieny slope
+            unit: "°C^{-1}"
+            type: parameter
+        - K_U0:
+            desc: base half saturation constant for carbon uptkae
+            unit: "mg C cm^{-3}"
+            type: parameter
+        - K_Us:
+            desc: half saturation constant slope for carbon uptake
+            unit: "mg C cm^{-3} °C^{-1}"
+            type: parameter
+        - K_0:
+            desc: base half saturation constant for soil organic carbon decomposition
+            unit: "mg C cm^{-3}"
+            type: parameter
+        - K_s:
+            desc: half saturation constant slope for soil organic carbon decomposition
+            unit: "mg C cm^{-3} °C^{-1}"
+            type: parameter
+
+    - additional_variables:
+        - t:
+            desc: time
+            unit: "hr"
+            type: variable
+            key: time_symbol
+        - T:
+            desc: temperature
+            unit: "°C"
+            type: variable
+        - V_U:
+            desc: maximum dissolved organic carbon uptake rate
+            exprs: "V_U = V_Umax * exp(-E_aU/(R*(T+273)))"
+            unit: 
+            type: variable
+        - V:
+            desc: maximum decomosition rate of soil orgacic carbon
+            exprs: "V = V_max * exp(-E_a/(R*(T+273)))"
+            unit:
+            type: variable
+        - E_C:
+            desc: carbon uptake efficiency
+            exprs: "E_C = epsilon_0 + epsilon_s * T"
+            unit:
+            type: variable
+        - K_U:
+            desc: half saturation constant for carbon uptake
+            exprs: "K_U = K_U0 + K_Us * T"
+            unit: "mg C cm^{-3}"
+            type: variable
+        - K:
+            desc: half saturation constant for soil organic carbon decomposition
+            exprs: "K = K_0 + K_s * T"
+            unit: "mg C cm^{-3}"
+            type: variable
+     
+    - input_components:
+        - I_S:
+            desc: soil organic carbon input rate
+            unit: "mg C cm^{-3} h^{-1}"
+            type: parameter
+        - I_D:
+            desc: dissolved organic carbon input rate
+            unit: "mg C cm^{-3} h^{-1}"
+            type: parameter
+
+                    
+    - components:
+        - C:
+            desc: carbon content
+            exprs: "C = Matrix(4, 1, [S, D, B, E])"
+            key: state_vector
+        - I:
+            desc: input vector
+            exprs: "I = Matrix(4, 1, [I_S, I_D, 0, 0])"
+            key: input_vector
+        - T_M:
+            desc: transition operator
+            exprs: "T_M = Matrix([[-1,   0,     a_BS*r_B/(r_B+r_E),  0],
+                                [ 1,  -1, (1-a_BS)*r_B/(r_B+r_E),  1],
+                                [ 1, E_C,                     -1,  0],
+                                [ 0,   0,          r_E/(r_B+r_E), -1]])"
+            key: trans_op
+        - N: 
+            desc: decomposition operator
+            exprs: "N = Matrix([[V*E/(K+S),             0,       0,   0],
+                                [         0, V_U*B/(K_U+D),       0,   0],
+                                [         0,             0, r_B+r_E,   0],
+                                [         0,             0,       0, r_L]])"
+            key: decomp_op_nonlin
+        - f_s: 
+            exprs: "f_s = I + T_M * N * C"
+            desc: the right hand side of the ode
+            key: state_vector_derivative
+
+# still don't know how to bring parameter sets here
+# different model descriptions in Li and in original paper
+# different units
+
+# we would need to be able to split the yaml file into two versions of the model
+
+#model-run-data:
+#    parameter_sets:
+#        - "Li":
+#            values:
+#                - I_S: 0.00014
+#                - I_D: 0.00001
+#                - V_max: 1
+#                - V_Umax: 0.01
+#                - 
+#                
+#            desc: "unit used here ist $mgC g^{-1}\\text{ soil}$ instead of $mgC cm^{-3}$"
+#            bibtex: "@article{Li2014Biogeochemistry,
+#                         author = {Li, Jianwei and Wang, Gangsheng and Allison, Steven D and Mayes, Melanie A and Luo, Yiqi},
+#                         title = {Soil carbon sensitivity to temperature and carbon use efficiency compared across microbial-ecosystem models of varying complexity},
+#                         journal = {Biogeochemistry},
+#                         volume = {119},
+#                         number = {1-3},
+#                         pages = {67--84},
+#                         year = {2014},
+#                         publisher = {Springer}
+#                        }"
+##        - "Spinup":
+##            values: 
+##                - I_S: 0.0005
+##                - I_D: 0.0005
+##                - r_B: 0.0002
+##                - r_E: 0.00005
+##                - r_L: 0.001
+##                
+##                
+##            desc: spinup data for enzyme model runs from supplementary material
+#
+#    initial_values:
+##        - "Spinup":
+##            values: {S: 100, D: 0.5, B: 0.5, E: 0.01}
+##            desc: spinup data for enzyme model runs from supplementary material
+#
+#    run_times:
+##        - "Spinup":
+##            start: 0
+##            end: 24000000
+##            step_size: 
+##           interval: 240000
+#    possible_combinations:
+#        - [,,]
+

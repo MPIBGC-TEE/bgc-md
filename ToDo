@@ -1,0 +1,2 @@
+- test if all the variables used in an expression are already defined (This would help finding the mistake in the yaml file)
+

@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: FOREST-BGC, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: FOREST-BGC, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 17/7/2015, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">S. W. Running &amp; Coughlan (1988)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>An ecosystem process model is described that calculates the carbon, water and nitrogen cycles through a forest ecosystem. The model, FOREST-BGC, treats canopy interception and evaporation, transpiration, photosynthesis, growth and maintenance respiration, carbon allocation above and below-ground, litterfall, decomposition and nitrogen mineralization. The model uses leaf area index (LAI) to quantify the forest structure important for energy and mass exchange, and this represents a key simplification for regional scale applications. FOREST-BGC requires daily incoming short-wave radiation, air temperature, dew point, and precipitation as driving variables. The model was used to simulate the annual hydrologic balance and net primary production of a hypothetical forest stand in seven contrasting environments across North America for the year 1984. Hydrologic partitioning ranged from 14/86/0% for evaporation, transpiration and outflow, respectively, in Fairbanks, AK (annual precipitation of 313 mm) to 10/27/66% in Jacksonville, FL (annual ppt of 1244 mm), and these balances changed as LAI was increased from 3 to 9 in successive simulations. Net primary production (npp) ranged from 0.0 t C ha-1 year-1 at Tucson, AZ, to 14.1 t C ha-1 year-1 at Knoxville, TN and corresponded reasonably with observed values at each site. The sensitivity of ecosystem processes to varying LAI in different climates was substantial, and underscores the utility of parameterizing this model at regional scales in the future with forest LAI measurements derived from satellite imagery. ?? 1988.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>site</p>
+<h3 id="available-parameter-values">Available parameter values</h3>
+<table>
+<caption>Information on given parameter sets</caption>
+<thead>
+<tr class="header">
+<th align="left">Abbreviation</th>
+<th align="left">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Original dataset of the publication</td>
+<td align="left"><span class="citation">S. W. Running &amp; Coughlan (1988)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Additional set 1</td>
+<td align="left"><span class="citation">Hunt Jr, Martin, &amp; Running (1991)</span></td>
+</tr>
+<tr class="odd">
+<td align="left">Additional set 2</td>
+<td align="left"><span class="citation">Korol, Running, Milner, &amp; Hunt (1991)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{f}\)</span></td>
+<td align="left">Carbon in foliage</td>
+<td align="center">foliage</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{r}\)</span></td>
+<td align="left">Carbon in roots</td>
+<td align="center">fine_roots</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{w}\)</span></td>
+<td align="left">Carbon in woody tissue</td>
+<td align="center">wood</td>
+</tr>
+</tbody>
+</table>
+<h1 id="allocation-coefficients">Allocation Coefficients</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Allocation Coefficients</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Original dataset of the publication</th>
+<th align="center">Additional set 1</th>
+<th align="center">Additional set 2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\eta_{f}\)</span></td>
+<td align="center">part_foliage</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(\frac{1}{4}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{5}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{12}{25}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\eta_{r}\)</span></td>
+<td align="center">part_roots</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(\frac{2}{5}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{11}{20}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{37}{100}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\eta_{w}\)</span></td>
+<td align="center">part_wood</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(\frac{7}{20}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{1}{4}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{3}{20}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="cycling-rates">Cycling Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Cycling Rates</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="center">Entry Author Orcid</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Original dataset of the publication</th>
+<th align="center">Additional set 1</th>
+<th align="center">Additional set 2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\gamma_{f}\)</span></td>
+<td align="center">0000-0002-0046-1160</td>
+<td align="center">cyc_foliage</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(\frac{33}{100}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\gamma_{r}\)</span></td>
+<td align="center">0000-0002-0046-1160</td>
+<td align="center">cyc_roots</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(\frac{2}{5}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{3}{4}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{3}{4}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\gamma_{w}\)</span></td>
+<td align="center">0000-0002-0046-1160</td>
+<td align="center">cyc_wood</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{f}\\C_{r}\\C_{w}\end{matrix}\right]\)</span></td>
+<td align="center">state_vector</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center">-</td>
+<td align="center">scalar_func_phot</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}\eta_{f}\\\eta_{r}\\\eta_{w}\end{matrix}\right]\)</span></td>
+<td align="center">part_coeff</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of turnover (cycling) rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{r} &amp; 0\\0 &amp; 0 &amp; -\gamma_{w}\end{matrix}\right]\)</span></td>
+<td align="center">cyc_matrix</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td align="center">state_vector_derivative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{f}: \eta_{f}\cdot u\)</span> <br><span class="math inline">\(C_{r}: \eta_{r}\cdot u\)</span> <br><span class="math inline">\(C_{w}: \eta_{w}\cdot u\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<span class="math inline">\(C_{f}: C_{f}\cdot\gamma_{f}\)</span> <br><span class="math inline">\(C_{r}: C_{r}\cdot\gamma_{r}\)</span> <br><span class="math inline">\(C_{w}: C_{w}\cdot\gamma_{w}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}- C_{f}\cdot\gamma_{f} +\eta_{f}\cdot u\\- C_{r}\cdot\gamma_{r} +\eta_{r}\cdot u\\- C_{w}\cdot\gamma_{w} +\eta_{w}\cdot u\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{r} &amp; 0\\0 &amp; 0 &amp; -\gamma_{w}\end{matrix}\right]\)</span></p>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(C_{f} = \frac{\eta_{f}}{\gamma_{f}}\cdot u\)</span> <br><span class="math inline">\(C_{r} = \frac{\eta_{r}}{\gamma_{r}}\cdot u\)</span> <br><span class="math inline">\(C_{w} = \frac{\eta_{w}}{\gamma_{w}}\cdot u\)</span> <br> <br></p>
+<h2 id="steady-states-potentially-incomplete-according-jacobian-eigenvalues-damping-ratio">Steady states (potentially incomplete), according jacobian eigenvalues, damping ratio</h2>
+<h3 id="parameter-set-original-dataset-of-the-publication">Parameter set: Original dataset of the publication</h3>
+<p><span class="math inline">\(C_f: \frac{25}{33}\cdot u\)</span>, <span class="math inline">\(C_r: u\)</span>, <span class="math inline">\(C_w: C_{w}\)</span> <br> <br><span class="math inline">\(\lambda_{1}: 0.000\)</span> <br><span class="math inline">\(\lambda_{2}: -0.330\)</span> <br><span class="math inline">\(\lambda_{3}: -0.400\)</span> <br></p>
+<h3 id="parameter-set-additional-set-1">Parameter set: Additional set 1</h3>
+<p><span class="math inline">\(C_f: \frac{u}{5\cdot\gamma_{f}}\)</span>, <span class="math inline">\(C_r: \frac{11}{15}\cdot u\)</span>, <span class="math inline">\(C_w: \frac{u}{4\cdot\gamma_{w}}\)</span> <br> <br><span class="math inline">\(\lambda_{1}: -\gamma_{f}\)</span> <br><span class="math inline">\(\lambda_{2}: -\gamma_{w}\)</span> <br><span class="math inline">\(\lambda_{3}: -0.75\)</span> <br></p>
+<h3 id="parameter-set-additional-set-2">Parameter set: Additional set 2</h3>
+<p><span class="math inline">\(C_f: \frac{12\cdot u}{25\cdot\gamma_{f}}\)</span>, <span class="math inline">\(C_r: \frac{37}{75}\cdot u\)</span>, <span class="math inline">\(C_w: \frac{3\cdot u}{20\cdot\gamma_{w}}\)</span> <br> <br><span class="math inline">\(\lambda_{1}: -\gamma_{f}\)</span> <br><span class="math inline">\(\lambda_{2}: -\gamma_{w}\)</span> <br><span class="math inline">\(\lambda_{3}: -0.75\)</span> <br></p>
+<h1 id="references" class="references unnumbered">References</h1>
+<div id="ref-HuntJr1991Treephysiology">
+<p>Hunt Jr, E. R., Martin, F. C., &amp; Running, S. W. (1991). Simulating the effects of climatic variation on stem carbon accumulation of a ponderosa pine stand: comparison with annual growth increment data. <em>Tree Physiology</em>, <em>9</em>(1_2), 161–171. <a href="http://doi.org/10.1093/treephys/9.1-2.161" class="uri">http://doi.org/10.1093/treephys/9.1-2.161</a></p>
+</div>
+<div id="ref-Korol1991CanadianJournalofForestResearch-RevueCanadienneDeRechercheForestiere">
+<p>Korol, R. L., Running, S. W., Milner, K. S., &amp; Hunt, E. R. (1991). TESTING A MECHANISTIC CARBON BALANCE MODEL AGAINST OBSERVED TREE GROWTH. <em>Canadian Journal of Forest Research-Revue Canadienne De Recherche Forestiere</em>, <em>21</em>(7), 1098–1105. <a href="http://doi.org/10.1139/x91-151" class="uri">http://doi.org/10.1139/x91-151</a></p>
+</div>
+<div id="ref-Running1988EcologicalModelling">
+<p>Running, S. W., &amp; Coughlan, J. C. (1988). A general model of forest ecosystem processes for regional applications I. Hydrologic balance, canopy gas exchange and primary production processes. <em>Ecological Modelling</em>, <em>42</em>(2), 125–154. <a href="http://doi.org/10.1016/0304-3800(88)90112-3" class="uri">http://doi.org/10.1016/0304-3800(88)90112-3</a></p>
+</div>
+</body>
+</html>

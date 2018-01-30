@@ -1,0 +1,472 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: Murty2000Ecological_Modelling, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: Murty2000Ecological_Modelling, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 16/3/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Murty &amp; McMurtrie (2000)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>For closed canopy forests, both above-ground net primary productivity (ANPP) and wood yield decline as stands age. However the physiological mechanisms responsible for the decline are not well understood. Understanding of the causes of the decline and incorporation of aging mechanisms into models of forest production are essential both for sound forest management and for reliable prediction of changes in terrestrial carbon storage under altered climates. To investigate causes for declining net primary productivity (NPP) an ecosystem model G'DAY was modified to include aging mechanisms associated with three main current hypotheses for NPP decline. These hypotheses are: (1) sapwood maintenance respiration increases as stands age, reducing the availability of carbon to support growth; (2) stomatal conductance and hence photosynthetic rates decline; and (3) soil nitrogen availability declines due to nitrogen (N) accumulation in woody litter. A model-based method was developed for determining the relative importance of three mechanisms for NPP decline in forest stands. The method involves a decomposition of simulated model output into three components, each related to one aging mechanism. The method is illustrated by parameterizing G'DAY for young (40 year-old) and mature (245 year-old) stands of Pinus contorta in Colorado USA. Results from this method of analysis indicate that: 1. The G'DAY model without aging mechanisms cannot reproduce the observed changes in NPP as stands age. When the above three aging mechanisms are switched off, G'DAY shows only transient changes in NPP lasting less than 20 years. When the aging mechanisms are incorporated in G'DAY, the model simulates declining NPP on a scale similar to that observed in the field. 2. The gradual decline in NPP following canopy closure is sensitive to assumptions about aging mechanisms and is particularly sensitive to assumptions about soil N availability and declining photosynthetic rates. We identified key areas of model uncertainty requiring further experimental clarification. Here we highlight two inadequately understood processes: soil N immobilization associated with woody litter accumulation and changes in carbon allocation as stands develop. (C) 2000 Elsevier Science B.V.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global # Time The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Time</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(t\)</span></td>
+<td align="left">Age of the stand</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(t_{1}\)</span></td>
+<td align="left">Age of the stand at which <span class="math inline">\(\epsilon_{0}\)</span> begins to decline</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(t_{2}\)</span></td>
+<td align="left">Age of the stand at which <span class="math inline">\(\epsilon_{0}\)</span> reaches a minimum</td>
+</tr>
+</tbody>
+</table>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{f}\)</span></td>
+<td align="left">Foliar carbon mass</td>
+<td align="center">foliage</td>
+<td align="center"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{r}\)</span></td>
+<td align="left">Root carbon</td>
+<td align="center">fine_roots</td>
+<td align="center"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{w}\)</span></td>
+<td align="left">Carbon in woody tissue</td>
+<td align="center">wood</td>
+<td align="center"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="additional-variables">Additional Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Additional Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{sw}\)</span></td>
+<td align="left">Sapwood carbon content</td>
+<td align="center"><span class="math inline">\(C_{sw}=1.11\cdot C_{w}^{0.77}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(N_{f}\)</span></td>
+<td align="left">Nitrogen content of foliage</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(kgN\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(N_{r}\)</span></td>
+<td align="left">Nitrogen content of fine roots</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(n_{f}\)</span></td>
+<td align="left">Foliar N:C ratio</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(n_{crit}\)</span></td>
+<td align="left">Foliar N:C ratio below which production is N-limited</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(T_{a}\)</span></td>
+<td align="left">Mean air temperature</td>
+<td align="center">-</td>
+<td align="center">air_temperature</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(Q_{10}\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(Q_{010}\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="respiration-parameters">Respiration Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Respiration Parameters</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(R_{c}\)</span></td>
+<td align="left">Total construction respiration</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(R_{0}\)</span></td>
+<td align="left">Respiration rate per unit nitrogen content corresponding to a temperature of 0°C</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(kgC\cdot kgN^{-1}\cdot year^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(R_{mf}\)</span></td>
+<td align="left">Annual maintenance respiration rate of foliage (dark period only)</td>
+<td align="center"><span class="math inline">\(R_{mf}=0.5\cdot R_{0}\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(R_{mr}\)</span></td>
+<td align="left">Annual maintenance respiration rate of fine roots (dark period only)</td>
+<td align="center"><span class="math inline">\(R_{mr}=R_{0}\cdot N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(R_{msw}\)</span></td>
+<td align="left">Annual maintenance respiration rate of sapwood (dark period only)</td>
+<td align="center"><span class="math inline">\(R_{msw}=0.00876\cdot C_{sw}\cdot Q_{010}^{\frac{T_{a}}{10}}\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(R_{m}\)</span></td>
+<td align="left">Total maintenance respiration</td>
+<td align="center"><span class="math inline">\(R_{m}=R_{mf}+R_{mr}+R_{msw}\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="photosynthetic-parameters">Photosynthetic Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Photosynthetic Parameters</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(I_{0}\)</span></td>
+<td align="left">Incident PAR</td>
+<td align="center">-</td>
+<td align="center">IPAR</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(GJ\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\sigma\)</span></td>
+<td align="left">Leaf area per unit carbon</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(m^{2}\cdot kgC^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(k\)</span></td>
+<td align="left">Light extinction coefficient</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(APAR\)</span></td>
+<td align="left">Absorbed photosynthetically active radiation</td>
+<td align="center"><span class="math inline">\(APAR=I_{0}\cdot \left(1-\operatorname{exp}\left(- k\cdot \sigma\cdot C_{f}\right)\right)\)</span></td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(E_{nf}\)</span></td>
+<td align="left">Function that represents the dependence of NPP on foliar N:C ratio (n_f)</td>
+<td align="center"><span class="math inline">\(E_{nf}=\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\epsilon_{young}\)</span></td>
+<td align="left">Maximum gross PAR utilization efficiency of young stands</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(gC\cdot MJ^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\epsilon_{old}\)</span></td>
+<td align="left">Maximum gross PAR utilization efficiency of old stands</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(gC\cdot MJ^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\epsilon_{0}\)</span></td>
+<td align="left">Maximum gross PAR utilization efficiency</td>
+<td align="center"><span class="math inline">\(\epsilon_{0}=\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\)</span></td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(gC\cdot MJ^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(GPP\)</span></td>
+<td align="left">Gross primary production</td>
+<td align="center"><span class="math inline">\(GPP=\epsilon_{0}\cdot E_{nf}\cdot APAR\)</span></td>
+<td align="center">-</td>
+<td align="center">variable</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(NPP\)</span></td>
+<td align="left">Annual net primary production</td>
+<td align="center"><span class="math inline">\(NPP=GPP-\left(R_{c}+R_{m}\right)\)</span></td>
+<td align="center">NPP</td>
+<td align="center">variable</td>
+<td align="center"><span class="math inline">\(kgC\cdot m^{-2}\cdot year^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="partitioning-coefficients">Partitioning coefficients</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Partitioning coefficients</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{f}\)</span></td>
+<td align="left">Allocation fraction to foliar biomass</td>
+<td align="center">-</td>
+<td align="center">part_foliage</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(a_{r}\)</span></td>
+<td align="left">Allocation fraction to roots biomass</td>
+<td align="center">-</td>
+<td align="center">part_roots</td>
+<td align="center">parameter</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{w}\)</span></td>
+<td align="left">Allocation fraction to wood (in stem, branches and large structurl roots) biomass</td>
+<td align="center"><span class="math inline">\(a_{w}=1-a_{f}-a_{r}\)</span></td>
+<td align="center">part_wood</td>
+<td align="center">parameter</td>
+</tr>
+</tbody>
+</table>
+<h1 id="cycling-rates">Cycling Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Cycling Rates</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">key</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\gamma_{f}\)</span></td>
+<td align="left">Foliage senescence rate</td>
+<td align="center">cyc_foliage</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(yr^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\gamma_{r}\)</span></td>
+<td align="left">Roots senescence rate</td>
+<td align="center">cyc_roots</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(yr^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\gamma_{w}\)</span></td>
+<td align="left">Wood senescence rate</td>
+<td align="center">cyc_wood</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(yr^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Variable</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">key</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{f}\\C_{r}\\C_{w}\end{matrix}\right]\)</span></td>
+<td align="center">state_vector</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=NPP\)</span></td>
+<td align="center">scalar_func_phot</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}a_{f}\\a_{r}\\a_{w}\end{matrix}\right]\)</span></td>
+<td align="center">part_coeff</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of senescence (cycling) rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{r} &amp; 0\\0 &amp; 0 &amp; -\gamma_{w}\end{matrix}\right]\)</span></td>
+<td align="center">cyc_matrix</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td align="center">state_vector_derivative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{f}: a_{f}\cdot\left(- 0.0097236\cdot C_{w}^{0.77}\cdot Q_{010}^{\frac{T_{a}}{10}} + I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases} - 0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - R_{c}\right)\)</span> <br><span class="math inline">\(C_{r}: a_{r}\cdot\left(- 0.0097236\cdot C_{w}^{0.77}\cdot Q_{010}^{\frac{T_{a}}{10}} + I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases} - 0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - R_{c}\right)\)</span> <br><span class="math inline">\(C_{w}: \left(- a_{f} - a_{r} + 1\right)\cdot\left(- 0.0097236\cdot C_{w}^{0.77}\cdot Q_{010}^{\frac{T_{a}}{10}} + I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases} - 0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - R_{c}\right)\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<span class="math inline">\(C_{f}: C_{f}\cdot\gamma_{f}\)</span> <br><span class="math inline">\(C_{r}: C_{r}\cdot\gamma_{r}\)</span> <br><span class="math inline">\(C_{w}: C_{w}\cdot\gamma_{w}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}- C_{f}\cdot\gamma_{f} + a_{f}\cdot\left(- 0.0097236\cdot C_{w}^{0.77}\cdot Q_{010}^{\frac{T_{a}}{10}} + I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases} - 0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - R_{c}\right)\\- C_{r}\cdot\gamma_{r} + a_{r}\cdot\left(- 0.0097236\cdot C_{w}^{0.77}\cdot Q_{010}^{\frac{T_{a}}{10}} + I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases} - 0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - R_{c}\right)\\- C_{w}\cdot\gamma_{w} +\left(- a_{f} - a_{r} + 1\right)\cdot\left(- 0.0097236\cdot C_{w}^{0.77}\cdot Q_{010}^{\frac{T_{a}}{10}} + I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases} - 0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - R_{c}\right)\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}I_{0}\cdot a_{f}\cdot k\cdot\sigma\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\left(\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases}\right)\cdot e^{- C_{f}\cdot k\cdot\sigma} -\gamma_{f} &amp; 0 &amp; -\frac{0.007487172}{C_{w}^{0.23}}\cdot Q_{010}^{\frac{T_{a}}{10}}\cdot a_{f}\\I_{0}\cdot a_{r}\cdot k\cdot\sigma\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\left(\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases}\right)\cdot e^{- C_{f}\cdot k\cdot\sigma} &amp; -\gamma_{r} &amp; -\frac{0.007487172}{C_{w}^{0.23}}\cdot Q_{010}^{\frac{T_{a}}{10}}\cdot a_{r}\\I_{0}\cdot k\cdot\sigma\cdot\left(- a_{f} - a_{r} + 1\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\left(\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases}\right)\cdot e^{- C_{f}\cdot k\cdot\sigma} &amp; 0 &amp; -\frac{0.007487172}{C_{w}^{0.23}}\cdot Q_{010}^{\frac{T_{a}}{10}}\cdot\left(- a_{f} - a_{r} + 1\right) -\gamma_{w}\end{matrix}\right]\)</span></p>
+<h1 id="references" class="references unnumbered">References</h1>
+<div id="ref-Murty2000Ecological_Modelling">
+<p>Murty, D., &amp; McMurtrie, R. E. (2000). The decline of forest productivity as stands age: A model-based method for analysing causes for the decline. <em>Ecological Modelling</em>, <em>134</em>(2-3), 185–205. <a href="http://doi.org/10.1016/S0304-3800(00)00345-8" class="uri">http://doi.org/10.1016/S0304-3800(00)00345-8</a></p>
+</div>
+</body>
+</html>
