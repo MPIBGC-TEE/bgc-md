@@ -1,5 +1,4 @@
-# vim:set ff=unix expandtab ts=4 sw=4:
-INSTALL
+#INSTALLATION
     prerequisites:
       - venv
         To install we recommend using a virtual python environment.
