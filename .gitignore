@@ -1,0 +1,3 @@
+*.egg-info/*
+*.pyc
+bgc_md/tests/tmp
