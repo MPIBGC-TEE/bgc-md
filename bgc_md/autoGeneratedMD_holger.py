@@ -901,8 +901,8 @@ def create_model_list_report_html(model_list, output_file_name, html_dir_path):
     for tick in ax.yaxis.get_major_ticks():
         tick.label.set_fontsize(20) 
 
-    add_xhist_data_to_scatter(ax, xdata, '# models', fontsize=xhist_fs)
-    add_yhist_data_to_scatter(ax, ydata, '# models', fontsize=yhist_fs)
+    add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=xhist_fs)
+    add_yhist_data_to_scatter(ax, ydata, ' models', fontsize=yhist_fs)
 
     rel += MatplotlibFigure(fig,"Figure 4", "# variables & parameters")
 
@@ -912,7 +912,7 @@ def create_model_list_report_html(model_list, output_file_name, html_dir_path):
     ax = fig.add_subplot(1,1,1)
     ModelList(model_list).scatter_plus_hist_nr_vars_vs_nr_ops(ax)
     if model_type == 'soil_model':
-        ax.set_ylabel('# operations to calculate $\mathbf{f}_s(\mathbf{C},t)$', fontsize = 22)
+        ax.set_ylabel(' operations to calculate $\mathbf{f}_s(\mathbf{C},t)$', fontsize = 22)
     rel += MatplotlibFigure(fig,"Figure 4b", "# variables & # operations")
 
     # symbols and depth of operations
@@ -943,8 +943,8 @@ def create_model_list_report_html(model_list, output_file_name, html_dir_path):
     for tick in ax.yaxis.get_major_ticks():
         tick.label.set_fontsize(20) 
 
-    add_xhist_data_to_scatter(ax, xdata, '# models', fontsize=xhist_fs)
-    add_yhist_data_to_scatter(ax, ydata, '# models', fontsize=yhist_fs)
+    add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=xhist_fs)
+    add_yhist_data_to_scatter(ax, ydata, ' models', fontsize=yhist_fs)
     plt.rcdefaults()
     rel += MatplotlibFigure(fig,"Figure 5", "# variables & cascading depth of operations")
 
@@ -965,10 +965,10 @@ def create_model_list_report_html(model_list, output_file_name, html_dir_path):
     ax.set_position([box.x0, box.y0+box.height*0.4, box.width, box.height*0.6])
     ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
     if model_type == 'vegetation_model':
-        ax.set_xlabel(r'# operations to calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22",  labelpad=20)
+        ax.set_xlabel(r' operations to calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22",  labelpad=20)
         ax.set_ylabel('cascading depth of operations\n' + r'to calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22",  labelpad=20)
     if model_type == 'soil_model':
-        ax.set_xlabel(r'# operations to calculate $\mathbf{f}_s(\mathbf{C},t)$', fontsize = "22",  labelpad=20)
+        ax.set_xlabel(r' operations to calculate $\mathbf{f}_s(\mathbf{C},t)$', fontsize = "22",  labelpad=20)
         ax.set_ylabel('cascading depth of operations\n' + r'to calculate $\mathbf{f}_s(\mathbf{C},t)$', fontsize = "22",  labelpad=20)
     ax.yaxis.labelpad = 0
 
@@ -980,8 +980,8 @@ def create_model_list_report_html(model_list, output_file_name, html_dir_path):
     ax.set_ylim((0,max(ydata)+1))
     ax.set_xlim((0,max(xdata)+50))
 
-#    add_xhist_data_to_scatter(ax, xdata, '# models')
-    add_yhist_data_to_scatter(ax, ydata, '# models', fontsize=yhist_fs)
+#    add_xhist_data_to_scatter(ax, xdata, ' models')
+    add_yhist_data_to_scatter(ax, ydata, ' models', fontsize=yhist_fs)
     rel += MatplotlibFigure(fig,"Figure 6", "cascading depth and # operations")
 
     # partitioning scheme and number of operations
@@ -1001,7 +1001,7 @@ def create_model_list_report_html(model_list, output_file_name, html_dir_path):
         ax.set_position([box.x0, box.y0, box.width * 0.4, box.height])
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), scatterpoints=1, frameon=False)
         ax.set_xlabel("partitioning scheme", fontsize = "22", labelpad=25)
-        ax.set_ylabel('# operations to\n' + r'calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22", labelpad=25)
+        ax.set_ylabel(' operations to\n' + r'calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22", labelpad=25)
     #    ax.yaxis.label.set_position([-0.2,0])
         ax.set_ylim((0,max(ydata)+10))
         ax.set_xlim((-0.2,max(xdata)+0.2))
@@ -1013,7 +1013,7 @@ def create_model_list_report_html(model_list, output_file_name, html_dir_path):
         for tick in ax.yaxis.get_major_ticks():
             tick.label.set_fontsize(16) 
     
-        add_xhist_data_to_scatter(ax, xdata, '# models', fontsize=16)
+        add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=16)
     
         rel += MatplotlibFigure(fig,"Figure 7", "Type of carbon partitioning scheme among pools and # operations")
 
