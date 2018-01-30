@@ -1,5 +1,0 @@
-bibtexparser
-CompartmentalSystems
-testinfrastructure
-mendeley
-PyYAML

@@ -1,2 +1,0 @@
-bgc_md
-external_module

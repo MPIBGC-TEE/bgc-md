@@ -22,8 +22,7 @@ from .SmoothReservoirModel import SmoothReservoirModel
 from .helpers_reservoir import has_pw, numsol_symbolic_system, arrange_subplots, melt, generalized_inverse_CDF, draw_rv, stochastic_collocation_transform, numerical_rhs, MH_sampling, save_csv, load_csv, stride
 
 
-#class SmoothModelRun:
-class SmoothModelRun(ModelRun):
+class SmoothModelRun:
     def __init__(self, smooth_reservoir_model, parameter_set = None, start_values = None, times = None, func_set = {}):
         # we cannot use dict() as default because the test suite makes weird things with it!
         if parameter_set is None: parameter_set = dict()

@@ -18,7 +18,7 @@ print("################################### running tests #######################
 
 s=unittest.defaultTestLoader.discover(bgc_md.tests.__path__[0],pattern="Test*")
 concurrent_suite = ConcurrentTestSuite(s, fork_for_tests(16))
-#concurrent_suite = ConcurrentTestSuite(s, fork_for_tests(1))
+##concurrent_suite = ConcurrentTestSuite(s, fork_for_tests(1))
 r=unittest.TextTestRunner()
 res=r.run(concurrent_suite)
 if (len(res.errors)+len(res.failures))>0:
