@@ -136,7 +136,7 @@ $Y: 0.061$, $O: 1.007$ <br> <br>$\lambda_{1}: -0.936$ <br>$\lambda_{2}: -0.007$ 
 
 
 ### Parameter set: +N -straw
-$Y: 0.106$, $O: 1.757$ <br> <br>$\lambda_{1}: -0.856$ <br>$\lambda_{2}: -0.006$ <br>
+$Y: 0.106$, $O: 1.757$ <br> <br>$\lambda_{1}: -0.006$ <br>$\lambda_{2}: -0.856$ <br>
 
 
 ### Parameter set: Farmyard manure
@@ -144,7 +144,7 @@ $Y: 0.309$, $O: 10.218$ <br> <br>$\lambda_{1}: -0.880$ <br>$\lambda_{2}: -0.007$
 
 
 ### Parameter set: Sewage sludge
-$Y: 0.381$, $O: 17.149$ <br> <br>$\lambda_{1}: -0.776$ <br>$\lambda_{2}: -0.006$ <br>
+$Y: 0.381$, $O: 17.149$ <br> <br>$\lambda_{1}: -0.006$ <br>$\lambda_{2}: -0.776$ <br>
 
 
 ## Model simulations

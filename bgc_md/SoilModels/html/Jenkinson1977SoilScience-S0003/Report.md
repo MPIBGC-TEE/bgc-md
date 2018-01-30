@@ -149,7 +149,7 @@ $C_{1} = \frac{DR\cdot J}{f_{T}\cdot f_{W}\cdot k_{1}\cdot\left(DR + 1.0\right)}
 ## Steady states (potentially incomplete), according jacobian eigenvalues, damping ratio
 
 ### Parameter set: Set1
-$C_1: \frac{0.100327868852459}{f_{T}\cdot f_{W}}$, $C_2: \frac{2.3224043715847}{f_{T}\cdot f_{W}}$, $C_3: \frac{0.337161881627308}{f_{T}\cdot f_{W}}$, $C_4: \frac{13.061358109997}{f_{T}\cdot f_{W}}$, $C_5: C_{5}$ <br> <br>$\lambda_{1}: 0$ <br>$\lambda_{2}: - 0.3\cdot f_{T}\cdot f_{W}$ <br>$\lambda_{3}: - 10.0\cdot f_{T}\cdot f_{W}$ <br>$\lambda_{4}: - 0.593\cdot f_{T}\cdot f_{W}$ <br>$\lambda_{5}: - 0.01733\cdot f_{T}\cdot f_{W}$ <br>
+$C_1: \frac{0.100327868852459}{f_{T}\cdot f_{W}}$, $C_2: \frac{2.3224043715847}{f_{T}\cdot f_{W}}$, $C_3: \frac{0.337161881627308}{f_{T}\cdot f_{W}}$, $C_4: \frac{13.061358109997}{f_{T}\cdot f_{W}}$, $C_5: C_{5}$ <br> <br>$\lambda_{1}: 0$ <br>$\lambda_{2}: - 10.0\cdot f_{T}\cdot f_{W}$ <br>$\lambda_{3}: - 0.593\cdot f_{T}\cdot f_{W}$ <br>$\lambda_{4}: - 0.3\cdot f_{T}\cdot f_{W}$ <br>$\lambda_{5}: - 0.01733\cdot f_{T}\cdot f_{W}$ <br>
 
 
 

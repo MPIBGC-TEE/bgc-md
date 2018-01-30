@@ -1,26 +1,18 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Report of the model: Henin’s model, version: 1</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <link rel="stylesheet" href="buttondown.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+  <title>Report of the model: Henin's model, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 </head>
 <body>
-<header>
-<h1 class="title">Report of the model: Henin’s model, version: 1</h1>
-</header>
+<div id="header">
+<h1 class="title">Report of the model: Henin's model, version: 1</h1>
+</div>
 <h1 id="general-overview">General Overview</h1>
 <br>
 <center>
@@ -28,7 +20,7 @@
 </center>
 <p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Holger Metzler (Orcid ID: 0000-0002-8239-1601) on 09/03/2016, and was last modified on <em>lm</em>.</p>
 <h2 id="about-the-model">About the model</h2>
-<p>The model depicted in this document considers soil organic matter decomposition. It was originally described by <span class="citation" data-cites="Henin1945Annalesagronomiques">Hénin &amp; Dupuis (1945)</span>.</p>
+<p>The model depicted in this document considers soil organic matter decomposition. It was originally described by <span class="citation">Hénin &amp; Dupuis (1945)</span>.</p>
 <h3 id="keywords">Keywords</h3>
 <p>differential equations, linear, time invariant, analytic</p>
 <h3 id="principles">Principles</h3>
@@ -39,21 +31,21 @@
 <caption>Information on State Variables</caption>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Units</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Units</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(A\)</span></td>
-<td style="text-align: left;">labile pool</td>
-<td style="text-align: center;"><span class="math inline">\(MgC\cdot ha^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">labile pool</td>
+<td align="center"><span class="math inline">\(MgC\cdot ha^{-1}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(B\)</span></td>
-<td style="text-align: left;">stable pool</td>
-<td style="text-align: center;"><span class="math inline">\(MgC\cdot ha^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(B\)</span></td>
+<td align="left">stable pool</td>
+<td align="center"><span class="math inline">\(MgC\cdot ha^{-1}\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -63,24 +55,24 @@
 <caption>Information on Decomposition Rates</caption>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Type</th>
-<th style="text-align: center;">Units</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(\alpha\)</span></td>
-<td style="text-align: left;">annual decomposition rate of labile pool</td>
-<td style="text-align: center;">parameter</td>
-<td style="text-align: center;"><span class="math inline">\(yr^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(\alpha\)</span></td>
+<td align="left">annual decomposition rate of labile pool</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(yr^{-1}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(\beta\)</span></td>
-<td style="text-align: left;">annual decomposition rate of stable pool</td>
-<td style="text-align: center;">parameter</td>
-<td style="text-align: center;"><span class="math inline">\(yr^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(\beta\)</span></td>
+<td align="left">annual decomposition rate of stable pool</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(yr^{-1}\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -90,18 +82,18 @@
 <caption>Information on Input Components</caption>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Type</th>
-<th style="text-align: center;">Units</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(m\)</span></td>
-<td style="text-align: left;">annual organic matter input</td>
-<td style="text-align: center;">parameter</td>
-<td style="text-align: center;"><span class="math inline">\(MgC yr^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(m\)</span></td>
+<td align="left">annual organic matter input</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(MgC yr^{-1}\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -111,55 +103,55 @@
 <caption>Information on Transfer Coefficients</caption>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Type</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(K\)</span></td>
-<td style="text-align: left;">isohumic coefficient</td>
-<td style="text-align: center;">parameter</td>
+<td align="center"><span class="math inline">\(K\)</span></td>
+<td align="left">isohumic coefficient</td>
+<td align="center">parameter</td>
 </tr>
 </tbody>
 </table>
 <h1 id="components">Components</h1>
 <p>The following table contains the available information regarding this section:</p>
-<table style="width:100%;">
+<table style="width:32%;">
 <caption>Information on Components</caption>
 <colgroup>
-<col style="width: 35%" />
-<col style="width: 30%" />
-<col style="width: 35%" />
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Expressions</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(C\)</span></td>
-<td style="text-align: left;">carbon content</td>
-<td style="text-align: center;"><span class="math inline">\(C=\left[\begin{matrix}A\\B\end{matrix}\right]\)</span></td>
+<td align="center"><span class="math inline">\(C\)</span></td>
+<td align="left">carbon content</td>
+<td align="center"><span class="math inline">\(C=\left[\begin{matrix}A\\B\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(I\)</span></td>
-<td style="text-align: left;">input vector</td>
-<td style="text-align: center;"><span class="math inline">\(I=\left[\begin{matrix}m\\0\end{matrix}\right]\)</span></td>
+<td align="center"><span class="math inline">\(I\)</span></td>
+<td align="left">input vector</td>
+<td align="center"><span class="math inline">\(I=\left[\begin{matrix}m\\0\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(A_{GeM}\)</span></td>
-<td style="text-align: left;">decomposition operator</td>
-<td style="text-align: center;"><span class="math inline">\(A_{GeM}=\left[\begin{matrix}-\alpha &amp; 0\\K\cdot\alpha &amp; -\beta\end{matrix}\right]\)</span></td>
+<td align="center"><span class="math inline">\(A_{GeM}\)</span></td>
+<td align="left">decomposition operator</td>
+<td align="center"><span class="math inline">\(A_{GeM}=\left[\begin{matrix}-\alpha &amp; 0\\K\cdot\alpha &amp; -\beta\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(f_{s}\)</span></td>
-<td style="text-align: left;">the right hand side of the ode</td>
-<td style="text-align: center;"><span class="math inline">\(f_{s}=I+A_{GeM}\cdot C\)</span></td>
+<td align="center"><span class="math inline">\(f_{s}\)</span></td>
+<td align="left">the right hand side of the ode</td>
+<td align="center"><span class="math inline">\(f_{s}=I+A_{GeM}\cdot C\)</span></td>
 </tr>
 </tbody>
 </table>

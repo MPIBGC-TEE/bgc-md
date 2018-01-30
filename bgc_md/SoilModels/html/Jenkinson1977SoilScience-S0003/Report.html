@@ -1,26 +1,18 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Report of the model: RothC-26.3, version: 1</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <link rel="stylesheet" href="buttondown.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 </head>
 <body>
-<header>
+<div id="header">
 <h1 class="title">Report of the model: RothC-26.3, version: 1</h1>
-</header>
+</div>
 <h1 id="general-overview">General Overview</h1>
 <br>
 <center>
@@ -28,7 +20,7 @@
 </center>
 <p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Holger Metzler (Orcid ID: 0000-0002-8239-1601) on 10/03/2016, and was last modified on <em>lm</em>.</p>
 <h2 id="about-the-model">About the model</h2>
-<p>The model depicted in this document considers soil organic matter decomposition. It was originally described by <span class="citation" data-cites="Jenkinson1977SoilScience">D. S. Jenkinson &amp; Rayner (1977)</span>.</p>
+<p>The model depicted in this document considers soil organic matter decomposition. It was originally described by <span class="citation">D. S. Jenkinson &amp; Rayner (1977)</span>.</p>
 <h3 id="abstract">Abstract</h3>
 <p>Data are assembled from the Rothamsted classical field experiments on the effects of long-continued cropping and manuring on the amount of organic matter in soil, on the age of this soil organic matter, on the amount of microbial biomass in the soil, and on the rate at which plant residues decompose in these soils. These data were then fitted to a model in which soil organic matter was separated into five compartments: decomposable plant material (DPM, half-life 0.165 years); resistant plant material (RPM, 2.31 years); soil biomass (BIO, 1.69 years); physically stabilized organic matter (POM, 49.5 years) and chemically stabilized organic matter (COM, 1980 years). For unitary input of plant material (1 t fresh plant <span class="math inline">\(C ha^{-1} year^{-1}\)</span>) under steady-state conditions, after 10,000 years, the model predicts that the soil will contain 0.01 t C in DPM, 0.47 t in RPM, 0.28 t in BIO, 11.3 t in POM, and 12.2 t in COM. The predicted radiocarbon age is 1240 years (equivalent age). The fit between predicted and measured data is sufficiently good to suggest that the model is a useful representation of the turnover of organic matter in cropped soils.</p>
 <h3 id="keywords">Keywords</h3>
@@ -38,25 +30,25 @@
 <h3 id="space-scale">Space Scale</h3>
 <p>plot, field, catchment, regional, national, global</p>
 <h3 id="available-parameter-values">Available parameter values</h3>
-<table>
+<table style="width:29%;">
 <caption>Information on given parameter sets</caption>
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Abbreviation</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Source</th>
+<th align="left">Abbreviation</th>
+<th align="left">Description</th>
+<th align="left">Source</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Set1</td>
-<td style="text-align: left;">original values without effects of temperature and soil moisture</td>
-<td style="text-align: left;"><span class="citation" data-cites="Coleman1996">Coleman &amp; Jenkinson (1996)</span></td>
+<td align="left">Set1</td>
+<td align="left">original values without effects of temperature and soil moisture</td>
+<td align="left"><span class="citation">Coleman &amp; Jenkinson (1996)</span></td>
 </tr>
 </tbody>
 </table>
@@ -66,36 +58,36 @@
 <caption>Information on State Variables</caption>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Units</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Units</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(C_{1}\)</span></td>
-<td style="text-align: left;">decomposable plant material pool (DPM)</td>
-<td style="text-align: center;"><span class="math inline">\(t C\cdot ha^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(C_{1}\)</span></td>
+<td align="left">decomposable plant material pool (DPM)</td>
+<td align="center"><span class="math inline">\(t C\cdot ha^{-1}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(C_{2}\)</span></td>
-<td style="text-align: left;">resistant plant material pool (RPM)</td>
-<td style="text-align: center;"><span class="math inline">\(t C\cdot ha^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(C_{2}\)</span></td>
+<td align="left">resistant plant material pool (RPM)</td>
+<td align="center"><span class="math inline">\(t C\cdot ha^{-1}\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(C_{3}\)</span></td>
-<td style="text-align: left;">microbial biomass pool (BIO)</td>
-<td style="text-align: center;"><span class="math inline">\(t C\cdot ha^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(C_{3}\)</span></td>
+<td align="left">microbial biomass pool (BIO)</td>
+<td align="center"><span class="math inline">\(t C\cdot ha^{-1}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(C_{4}\)</span></td>
-<td style="text-align: left;">humified organic matter pool (HUM)</td>
-<td style="text-align: center;"><span class="math inline">\(t C\cdot ha^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(C_{4}\)</span></td>
+<td align="left">humified organic matter pool (HUM)</td>
+<td align="center"><span class="math inline">\(t C\cdot ha^{-1}\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(C_{5}\)</span></td>
-<td style="text-align: left;">inert organic matter pool (IOM)</td>
-<td style="text-align: center;"><span class="math inline">\(t C\cdot ha^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(C_{5}\)</span></td>
+<td align="left">inert organic matter pool (IOM)</td>
+<td align="center"><span class="math inline">\(t C\cdot ha^{-1}\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -105,41 +97,41 @@
 <caption>Information on Decomposition Rates</caption>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Type</th>
-<th style="text-align: center;">Units</th>
-<th style="text-align: center;">Values <br> <br>Set1</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+<th align="center">Values <br> <br>Set1</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(k_{1}\)</span></td>
-<td style="text-align: left;">decomposition rate of DPM</td>
-<td style="text-align: center;">parameter</td>
-<td style="text-align: center;"><span class="math inline">\(yr^{-1}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(10\)</span></td>
+<td align="center"><span class="math inline">\(k_{1}\)</span></td>
+<td align="left">decomposition rate of DPM</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(yr^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(10\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(k_{2}\)</span></td>
-<td style="text-align: left;">decomposition rate of RPM</td>
-<td style="text-align: center;">parameter</td>
-<td style="text-align: center;"><span class="math inline">\(yr^{-1}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(0.3\)</span></td>
+<td align="center"><span class="math inline">\(k_{2}\)</span></td>
+<td align="left">decomposition rate of RPM</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(yr^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(0.3\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(k_{3}\)</span></td>
-<td style="text-align: left;">decomposition rate of BIO</td>
-<td style="text-align: center;">parameter</td>
-<td style="text-align: center;"><span class="math inline">\(yr^{-1}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(0.66\)</span></td>
+<td align="center"><span class="math inline">\(k_{3}\)</span></td>
+<td align="left">decomposition rate of BIO</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(yr^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(0.66\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(k_{4}\)</span></td>
-<td style="text-align: left;">decomposition rate of HUM</td>
-<td style="text-align: center;">parameter</td>
-<td style="text-align: center;"><span class="math inline">\(yr^{-1}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(0.02\)</span></td>
+<td align="center"><span class="math inline">\(k_{4}\)</span></td>
+<td align="left">decomposition rate of HUM</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(yr^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(0.02\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -149,57 +141,57 @@
 <caption>Information on Additional Parameters</caption>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Type</th>
-<th style="text-align: center;">Values <br> <br>Set1</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Set1</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(pClay\)</span></td>
-<td style="text-align: left;">percentage of clay in mineral soil</td>
-<td style="text-align: center;">parameter</td>
-<td style="text-align: center;"><span class="math inline">\(23.4\)</span></td>
+<td align="center"><span class="math inline">\(pClay\)</span></td>
+<td align="left">percentage of clay in mineral soil</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(23.4\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(DR\)</span></td>
-<td style="text-align: left;">ratio of DPM to RPM</td>
-<td style="text-align: center;">parameter</td>
-<td style="text-align: center;"><span class="math inline">\(1.44\)</span></td>
+<td align="center"><span class="math inline">\(DR\)</span></td>
+<td align="left">ratio of DPM to RPM</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(1.44\)</span></td>
 </tr>
 </tbody>
 </table>
 <h1 id="auxiliary-variables">Auxiliary Variables</h1>
 <p>The following table contains the available information regarding this section:</p>
-<table>
+<table style="width:43%;">
 <caption>Information on Auxiliary Variables</caption>
 <colgroup>
-<col style="width: 25%" />
-<col style="width: 22%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Expressions</th>
-<th style="text-align: center;">Values <br> <br>Set1</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Values <br> <br>Set1</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(x\)</span></td>
-<td style="text-align: left;">CO<span class="math inline">\(_{2}\)</span> to (BIO+HUM) ratio</td>
-<td style="text-align: center;"><span class="math inline">\(x=1.67\cdot \left(1.85+1.6\cdot \operatorname{exp}\left(- 0.0786\cdot pClay\right)\right)\)</span></td>
-<td style="text-align: center;">-</td>
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="left">CO<span class="math inline">\(_{2}\)</span> to (BIO+HUM) ratio</td>
+<td align="center"><span class="math inline">\(x=1.67\cdot \left(1.85+1.6\cdot \operatorname{exp}\left(- 0.0786\cdot pClay\right)\right)\)</span></td>
+<td align="center">-</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(\gamma\)</span></td>
-<td style="text-align: left;">litter input partitioning coefficient</td>
-<td style="text-align: center;"><span class="math inline">\(\gamma=\frac{DR}{1+DR}\)</span></td>
-<td style="text-align: center;">-</td>
+<td align="center"><span class="math inline">\(\gamma\)</span></td>
+<td align="left">litter input partitioning coefficient</td>
+<td align="center"><span class="math inline">\(\gamma=\frac{DR}{1+DR}\)</span></td>
+<td align="center">-</td>
 </tr>
 </tbody>
 </table>
@@ -209,20 +201,20 @@
 <caption>Information on Input Components</caption>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Type</th>
-<th style="text-align: center;">Units</th>
-<th style="text-align: center;">Values <br> <br>Set1</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+<th align="center">Values <br> <br>Set1</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(J\)</span></td>
-<td style="text-align: left;">mean annual carbon input</td>
-<td style="text-align: center;">parameter</td>
-<td style="text-align: center;"><span class="math inline">\(t C ha^{-1}yr^{-1}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(1.7\)</span></td>
+<td align="center"><span class="math inline">\(J\)</span></td>
+<td align="left">mean annual carbon input</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(t C ha^{-1}yr^{-1}\)</span></td>
+<td align="center"><span class="math inline">\(1.7\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -232,24 +224,24 @@
 <caption>Information on Transfer Coefficients</caption>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Expressions</th>
-<th style="text-align: center;">Values <br> <br>Set1</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Values <br> <br>Set1</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(a\)</span></td>
-<td style="text-align: left;">flux coefficient to BIO</td>
-<td style="text-align: center;"><span class="math inline">\(a=\frac{0.46}{1+x}\)</span></td>
-<td style="text-align: center;">-</td>
+<td align="center"><span class="math inline">\(a\)</span></td>
+<td align="left">flux coefficient to BIO</td>
+<td align="center"><span class="math inline">\(a=\frac{0.46}{1+x}\)</span></td>
+<td align="center">-</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(b\)</span></td>
-<td style="text-align: left;">flux coefficient to HUM</td>
-<td style="text-align: center;"><span class="math inline">\(b=\frac{0.54}{1+x}\)</span></td>
-<td style="text-align: center;">-</td>
+<td align="center"><span class="math inline">\(b\)</span></td>
+<td align="left">flux coefficient to HUM</td>
+<td align="center"><span class="math inline">\(b=\frac{0.54}{1+x}\)</span></td>
+<td align="center">-</td>
 </tr>
 </tbody>
 </table>
@@ -259,65 +251,65 @@
 <caption>Information on Environmental Coefficients</caption>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Values <br> <br>Set1</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Values <br> <br>Set1</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(f_{T}\)</span></td>
-<td style="text-align: left;">function of temperature</td>
-<td style="text-align: center;">-</td>
+<td align="center"><span class="math inline">\(f_{T}\)</span></td>
+<td align="left">function of temperature</td>
+<td align="center">-</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(f_{W}\)</span></td>
-<td style="text-align: left;">function of soil moisture</td>
-<td style="text-align: center;">-</td>
+<td align="center"><span class="math inline">\(f_{W}\)</span></td>
+<td align="left">function of soil moisture</td>
+<td align="center">-</td>
 </tr>
 </tbody>
 </table>
 <h1 id="components">Components</h1>
 <p>The following table contains the available information regarding this section:</p>
-<table style="width:100%;">
+<table style="width:32%;">
 <caption>Information on Components</caption>
 <colgroup>
-<col style="width: 35%" />
-<col style="width: 30%" />
-<col style="width: 35%" />
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Expressions</th>
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(C\)</span></td>
-<td style="text-align: left;">carbon content</td>
-<td style="text-align: center;"><span class="math inline">\(C=\left[\begin{matrix}C_{1}\\C_{2}\\C_{3}\\C_{4}\\C_{5}\end{matrix}\right]\)</span></td>
+<td align="center"><span class="math inline">\(C\)</span></td>
+<td align="left">carbon content</td>
+<td align="center"><span class="math inline">\(C=\left[\begin{matrix}C_{1}\\C_{2}\\C_{3}\\C_{4}\\C_{5}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(I\)</span></td>
-<td style="text-align: left;">input vector</td>
-<td style="text-align: center;"><span class="math inline">\(I=\left[\begin{matrix}J\cdot\gamma\\J\cdot\left(-\gamma + 1\right)\\0\\0\\0\end{matrix}\right]\)</span></td>
+<td align="center"><span class="math inline">\(I\)</span></td>
+<td align="left">input vector</td>
+<td align="center"><span class="math inline">\(I=\left[\begin{matrix}J\cdot\gamma\\J\cdot\left(-\gamma + 1\right)\\0\\0\\0\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(\xi\)</span></td>
-<td style="text-align: left;">environmental effects multiplier</td>
-<td style="text-align: center;"><span class="math inline">\(\xi=f_{T}\cdot f_{W}\)</span></td>
+<td align="center"><span class="math inline">\(\xi\)</span></td>
+<td align="left">environmental effects multiplier</td>
+<td align="center"><span class="math inline">\(\xi=f_{T}\cdot f_{W}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(A\)</span></td>
-<td style="text-align: left;">decomposition operator</td>
-<td style="text-align: center;"><span class="math inline">\(A=\left[\begin{matrix}- k_{1} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; - k_{2} &amp; 0 &amp; 0 &amp; 0\\a\cdot k_{1} &amp; a\cdot k_{2} &amp; a\cdot k_{3} - k_{3} &amp; a\cdot k_{4} &amp; 0\\b\cdot k_{1} &amp; b\cdot k_{2} &amp; b\cdot k_{3} &amp; b\cdot k_{4} - k_{4} &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\end{matrix}\right]\)</span></td>
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">decomposition operator</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}- k_{1} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; - k_{2} &amp; 0 &amp; 0 &amp; 0\\a\cdot k_{1} &amp; a\cdot k_{2} &amp; a\cdot k_{3} - k_{3} &amp; a\cdot k_{4} &amp; 0\\b\cdot k_{1} &amp; b\cdot k_{2} &amp; b\cdot k_{3} &amp; b\cdot k_{4} - k_{4} &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(f_{s}\)</span></td>
-<td style="text-align: left;">the right hand side of the ode</td>
-<td style="text-align: center;"><span class="math inline">\(f_{s}=I+\xi\cdot A\cdot C\)</span></td>
+<td align="center"><span class="math inline">\(f_{s}\)</span></td>
+<td align="left">the right hand side of the ode</td>
+<td align="center"><span class="math inline">\(f_{s}=I+\xi\cdot A\cdot C\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -359,7 +351,7 @@ Flux description
 <p><span class="math inline">\(C_{1} = \frac{DR\cdot J}{f_{T}\cdot f_{W}\cdot k_{1}\cdot\left(DR + 1.0\right)}\)</span> <br><span class="math inline">\(C_{2} = \frac{J}{f_{T}\cdot f_{W}\cdot k_{2}\cdot\left(DR + 1.0\right)}\)</span> <br><span class="math inline">\(C_{3} = \frac{5.50898203592814\cdot J\cdot\left(4.35845179839506\cdot 10^{18}\cdot e^{0.0786\cdot pClay} + 3.26027527396786\cdot 10^{19}\cdot e^{0.1572\cdot pClay} + 9.75003544221277\cdot 10^{19}\cdot e^{0.2358\cdot pClay} + 1.45709229508337\cdot 10^{20}\cdot e^{0.3144\cdot pClay} + 1.08814080708274\cdot 10^{20}\cdot e^{0.393\cdot pClay} + 3.24846079083974\cdot 10^{19}\cdot e^{0.4716\cdot pClay}\right)}{f_{T}\cdot f_{W}\cdot k_{3}\cdot\left(1.20455080421033\cdot 10^{21}\cdot e^{0.0786\cdot pClay} + 4.32631319287619\cdot 10^{21}\cdot e^{0.1572\cdot pClay} + 8.2702084578855\cdot 10^{21}\cdot e^{0.2358\cdot pClay} + 8.87329207447322\cdot 10^{21}\cdot e^{0.3144\cdot pClay} + 5.06562843927484\cdot 10^{21}\cdot e^{0.393\cdot pClay} + 1.20193049261071\cdot 10^{21}\cdot e^{0.4716\cdot pClay} + 1.39470457548642\cdot 10^{20}\right)}\)</span> <br><span class="math inline">\(C_{4} = \frac{6.46706586826347\cdot J\cdot\left(152615747584.0\cdot e^{0.0786\cdot pClay} + 700735890432.0\cdot e^{0.1572\cdot pClay} + 1072477329312.0\cdot e^{0.2358\cdot pClay} + 547142719339.0\cdot e^{0.3144\cdot pClay}\right)}{f_{T}\cdot f_{W}\cdot k_{4}\cdot\left(28070331154432.0\cdot e^{0.0786\cdot pClay} + 60246502483968.0\cdot e^{0.1572\cdot pClay} + 57190228203392.0\cdot e^{0.2358\cdot pClay} + 20244280615543.0\cdot e^{0.3144\cdot pClay} + 4883703922688.0\right)}\)</span> <br><span class="math inline">\(C_{5} = C_{5}\)</span> <br> <br></p>
 <h2 id="steady-states-potentially-incomplete-according-jacobian-eigenvalues-damping-ratio">Steady states (potentially incomplete), according jacobian eigenvalues, damping ratio</h2>
 <h3 id="parameter-set-set1">Parameter set: Set1</h3>
-<p><span class="math inline">\(C_1: \frac{0.100327868852459}{f_{T}\cdot f_{W}}\)</span>, <span class="math inline">\(C_2: \frac{2.3224043715847}{f_{T}\cdot f_{W}}\)</span>, <span class="math inline">\(C_3: \frac{0.337161881627308}{f_{T}\cdot f_{W}}\)</span>, <span class="math inline">\(C_4: \frac{13.061358109997}{f_{T}\cdot f_{W}}\)</span>, <span class="math inline">\(C_5: C_{5}\)</span> <br> <br><span class="math inline">\(\lambda_{1}: 0\)</span> <br><span class="math inline">\(\lambda_{2}: - 0.3\cdot f_{T}\cdot f_{W}\)</span> <br><span class="math inline">\(\lambda_{3}: - 10.0\cdot f_{T}\cdot f_{W}\)</span> <br><span class="math inline">\(\lambda_{4}: - 0.593\cdot f_{T}\cdot f_{W}\)</span> <br><span class="math inline">\(\lambda_{5}: - 0.01733\cdot f_{T}\cdot f_{W}\)</span> <br></p>
+<p><span class="math inline">\(C_1: \frac{0.100327868852459}{f_{T}\cdot f_{W}}\)</span>, <span class="math inline">\(C_2: \frac{2.3224043715847}{f_{T}\cdot f_{W}}\)</span>, <span class="math inline">\(C_3: \frac{0.337161881627308}{f_{T}\cdot f_{W}}\)</span>, <span class="math inline">\(C_4: \frac{13.061358109997}{f_{T}\cdot f_{W}}\)</span>, <span class="math inline">\(C_5: C_{5}\)</span> <br> <br><span class="math inline">\(\lambda_{1}: 0\)</span> <br><span class="math inline">\(\lambda_{2}: - 10.0\cdot f_{T}\cdot f_{W}\)</span> <br><span class="math inline">\(\lambda_{3}: - 0.593\cdot f_{T}\cdot f_{W}\)</span> <br><span class="math inline">\(\lambda_{4}: - 0.3\cdot f_{T}\cdot f_{W}\)</span> <br><span class="math inline">\(\lambda_{5}: - 0.01733\cdot f_{T}\cdot f_{W}\)</span> <br></p>
 <h1 id="references" class="unnumbered">References</h1>
 <div id="refs" class="references">
 <div id="ref-Coleman1996">
