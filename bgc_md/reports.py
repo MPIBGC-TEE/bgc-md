@@ -28,6 +28,65 @@ from CompartmentalSystems.bins.TimeStepIterator import TimeStepIterator
 
 #import mpld3 # interesting functionality for interactive web figures
 
+def generate_model_run_report(com=None):
+    if com==None:
+        com = parse_args()
+    if com.t:
+    # a target dir is given
+        target_dir = com.t
+        for yaml_file_name in com.f:
+            print("Creating report from " + yaml_file_name + " to " + target_dir)
+            create_single_report(yaml_file_name, target_dir)
+        sys.exit(0)
+
+    else:
+        #print(com.f)
+        #infer targetdirs from filenames
+        for yaml_file_name in com.f:
+            target_dir_path=Path(yaml_file_name).parent
+            html_dir_path = target_dir_path.joinpath("html")
+            create_single_report(yaml_file_name, html_dir_path.as_posix())
+        sys.exit(0)
+
+def defaults():
+    this=Path(__file__).parents[0] #the package dir
+    soilModelPath=this.joinpath("SoilModels")
+    soilModelDir=soilModelPath.as_posix()
+    vegModelPath=this.joinpath("VegetationModels") 
+    vegModelDir=vegModelPath.as_posix()
+    soilMsg='generating soil model website to '
+    vegMsg='generating vegetation model website to '
+    return {
+         "dirs":{"veg":vegModelDir,"soil":soilModelDir}
+        ,"msgs":{"veg":vegMsg,"soil":soilMsg}
+        }
+def generate_model_run_reports(com):
+    if com==None:
+        com = parse_args()
+
+    if com.v:
+        print(defaults()['msgs']['veg'])
+        generate_html_dir(defaults()['dirs']["veg"],com.t)
+        sys.exit(0)
+
+    if com.s: 
+         print(defaults()['msgs']['soil'])
+         generate_html_dir(defaults()['dirs']['soil'],com.t)
+         sys.exit(0)
+    
+    if not(com.s or com.v): 
+    # the default: if neither -v or -s is specified build the whole website
+        print(defaults()['msgs']['veg'])
+        generate_html_dir(defaults()['dirs']['veg'],com.t)
+        print(defaults()['msgs']['soil'])
+        generate_html_dir(defaults()['dirs']['soil'],com.t)
+        sys.exit(0)
+
+def generate_miniaml_model_reports(com):
+   pass 
+def generate_miniaml_model_report(com):
+   pass 
+    
 def read_models_from_directory(input_dir):
     input_path = Path(input_dir)
 
@@ -1063,7 +1122,7 @@ def exprs_to_element(exprs, symbols_by_type):
     return subl
 
 
-def generate_website(source_dir, target_dir = None):
+def generate_html_dir(source_dir, target_dir = None):
     if not target_dir:
         target_dir_path = Path(source_dir)
     else:
@@ -1106,57 +1165,22 @@ def create_single_report(yaml_file_name, target_dir):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Create model database websites.")
+    parser.add_argument('-sd', action="store_true",help="create modeldir website from <srcdir> to optional -t <target_dir>")
     parser.add_argument('-s', action="store_true",help="create soil model website to optional -t <target_dir> , default=SoilModels")
     parser.add_argument('-v', action="store_true",help="create vegetation model website to optional -t <target_dir>, default=VegetationModels")
     parser.add_argument('-f', nargs='+', default=None, help="create particular model report/reports to <target_dir> given by the -t option\n Example: generate_website -f Henin1945Annalesagronomiques -t SoilModels/html")
 
     parser.add_argument('-t', default=None, help="where to generate the html files. \nExample: generate_website -f Henin1945Annalesagronomiques.yaml -t SoilModels/html")
 
-    com = parser.parse_args()
-    this=Path(__file__).parents[0] #the package dir
-    soilModelPath=this.joinpath("SoilModels")
-    soilModelDir=soilModelPath.as_posix()
-    vegModelPath=this.joinpath("VegetationModels") ### Fix me!!! Temporarily changed Vegetation for Test
-    vegModelDir=vegModelPath.as_posix()
-    soilMsg='generating soil model website to '
-    vegMsg='generating vegetation model website to '
+    return parser.parse_args()
+
+def generate_website():
+    com = parse_args()
     
     if com.f:
-        if com.t:
-        # a target dir is given
-            target_dir = com.t
-            for yaml_file_name in com.f:
-                print("Creating report from " + yaml_file_name + " to " + target_dir)
-                create_single_report(yaml_file_name, target_dir)
-            sys.exit(0)
-
-        else:
-            #print(com.f)
-            #infer targetdirs from filenames
-            for yaml_file_name in com.f:
-                target_dir_path=Path(yaml_file_name).parent
-                html_dir_path = target_dir_path.joinpath("html")
-                create_single_report(yaml_file_name, html_dir_path.as_posix())
-            sys.exit(0)
+        generate_model_run_report(com)
         
-
-    if com.v:
-        print(soilMsg)
-        generate_website(vegModelDir,com.t)
-        sys.exit(0)
-
-    if com.s: 
-         print(soilMsg)
-         generate_website(soilModelDir,com.t)
-         sys.exit(0)
-    
-    if not(com.s or com.v): 
-    # the default: if neither -v or -s is specified build the whole website
-        print(vegMsg)
-        generate_website(vegModelDir,com.t)
-        print(soilMsg)
-        generate_website(soilModelDir,com.t)
-        sys.exit(0)
+    generate_model_run_reports(com)
 
 
 
@@ -1174,58 +1198,8 @@ if __name__ == '__main__':
     from anywhere now.""")
     parse_args()
 
-
-    vegModelDir=vegModelPath.as_posix()
-    soilMsg='generating soil model website to '
-    vegMsg='generating vegetation model website to '
-    
-    if com.f:
-        if len(com.f) < 2:
-            print("-f option needs to be given at least one source file and exaclty one target directory.")
-            sys.exit(1)
-
-        target_dir = com.f[-1]
-        for yaml_file_name in com.f[:-1]:
-            print("Creating report from " + yaml_file_name + " to " + target_dir)
-            create_single_report(yaml_file_name, target_dir)
-
-        sys.exit(0)
-
-    if com.s==None and com.v==None:
-        print(vegMsg)
-        generate_website(vegModelDir)
-        print(soilMsg)
-        generate_website(soilModelDir)
-
-    if com.v != None:
-        if com.v == '':
-            print(vegMsg)
-            generate_website(vegModelDir)
-        else:
-            print(soilMsg)
-            generate_website(vegModelDir, com.v)
-
-    if com.s != None:
-        if com.s == '':
-            print(soilMsg)
-            generate_website(soilModelDir)
-        else:
-            print(vegMsg)
-            generate_website(soilModelDir, com.s)
-    
-
-
-    
-
-######################################################################################
-
-#fixme: improve to also use optional input directories?
-if __name__ == '__main__':
-    print("""
-    There is a commandline tool to use directly now. Just run: 
-   
-    $generate_website 
-   
-    from anywhere now.""")
-    parse_args()
+#lachs
+#brot
+#brotbelag
+#bastikaese
 
