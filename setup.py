@@ -48,6 +48,7 @@ setup(name='bgc_md',
            # ,"CacheControl"
             ,"CompartmentalSystems"
             ,"testinfrastructure"
+            ,"concurrencytest"
            # ,"future == 0.14.3"
            # ,"arrow == 0.5.0"
            # ,"memoized_property == 1.0.2"
