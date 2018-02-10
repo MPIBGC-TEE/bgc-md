@@ -29,9 +29,9 @@ class TestReportGeneration(InDirTest):
         vp=d['paths']['veg']
         here=Path('.')
         targetPath=here.joinpath('veg')
-        here.mkdir('veg')
+        targetPath.mkdir()
         for rec in  vp.iterdir():
-            print(vd)
+            print(rec)
 
         #dir_names=[Model.from_str(ys) for ys in self.yaml_str_list]
         # fixme
