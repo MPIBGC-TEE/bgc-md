@@ -6,6 +6,8 @@ from pathlib import Path
 from os.path import relpath, dirname
 import subprocess
 import os
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 #imports from own package
 from .helpers import remove_indentation

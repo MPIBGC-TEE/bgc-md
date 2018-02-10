@@ -15,3 +15,4 @@ pip3 install -rrequirements.txt -e .
 #jupyter nbextensions_configurator enable --user
 #jupyter nbextension enable python-markdown/main
 
+ 

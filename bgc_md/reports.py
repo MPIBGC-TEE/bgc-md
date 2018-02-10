@@ -59,6 +59,7 @@ def defaults():
     return {
          "dirs":{"veg":vegModelDir,"soil":soilModelDir}
         ,"msgs":{"veg":vegMsg,"soil":soilMsg}
+        ,"paths":{"veg":vegModelPath,"soil":soilModelPath}
         }
 def generate_model_run_reports(com):
     if com==None:
