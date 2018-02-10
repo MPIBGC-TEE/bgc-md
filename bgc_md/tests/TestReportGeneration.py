@@ -22,7 +22,7 @@ class TestReportGeneration(InDirTest):
    #         yaml_input_file_name = "testfile" + str(index) + ".yaml"
    #         with open(yaml_input_file_name, "w") as f:
    #             f.write(yaml_str)
-        
+
     #@unittest.skip("takes too long")
     def test_commandline_tools(self):
         d=defaults() 
@@ -31,14 +31,12 @@ class TestReportGeneration(InDirTest):
         targetPath=here.joinpath('veg')
         here.mkdir('veg')
         for rec in  vp.iterdir():
-             
         print(vd)
-        
 
         #dir_names=[Model.from_str(ys) for ys in self.yaml_str_list]
         # fixme
         #to be continued
-        
+
     @unittest.skip("function under test calls report_from_yaml_str which is commented out")
     def test_report_html_presence(self):
     # fixme
