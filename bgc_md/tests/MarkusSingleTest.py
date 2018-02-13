@@ -4,16 +4,16 @@ import unittest
 #from run_tests import *
 #from bgc_md.tests.TestCompleteModelList import TestCompleteModelList
 #from bgc_md.tests.TestModel import TestModel
-from bgc_md.tests.TestStoichiometricModel import TestStoichiometricModel
+#from bgc_md.tests.TestStoichiometricModel import TestStoichiometricModel
 #from bgc_md.tests.TestTsTpField import TestTsTpField
 #from bgc_md.tests.TestTsTpMassFieldsPerPoolPerTimeStep import TestTsTpMassFieldsPerPoolPerTimeStep 
-#from bgc_md.tests.TestReportElements import TestReportElements, TestWriteReportElements
+from bgc_md.tests.TestWriteReportElements import  TestWriteReportElements
 #from bgc_md.tests.TestReportGeneration import TestReportGeneration
 
 def suite():
     s=unittest.TestSuite()
     #s.addTest(Test(""))
-    #s.addTest(TestWriteReportElements("test_write_html_with_bibliography"))
+    s.addTest(TestWriteReportElements("test_write_html_with_bibliography"))
     #s.addTest(TestWriteReportElements("test_write_html_with_picture"))
     #s.addTest(TestReportElements("test_Report"))
     #s.addTest(TestReportElements("test_TableRow"))
@@ -32,7 +32,7 @@ def suite():
     #s.addTest(TestModel("test_plot_model_key_dependencies_scatter_plot"))
     #s.addTest(TestModel("test_meta_data"))
     #s.addTest(TestModel("test_reservoir_model"))
-    s.addTest(TestStoichiometricModel("test_rhs"))
+    #s.addTest(TestStoichiometricModel("test_rhs"))
     #s.addTest(TestSmoothReservoirModel("test_matrix_to_fluxes_and_back"))
     #s.addTest(TestModel("test_dependencies"))
     #s.addTest(TestTsTpField("test_plot"))

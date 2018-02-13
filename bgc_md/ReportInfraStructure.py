@@ -3,6 +3,7 @@
 from string import Template
 from copy import copy,deepcopy 
 from pathlib import Path
+import shutil
 from os.path import relpath, dirname
 import subprocess
 import os
@@ -123,6 +124,7 @@ class ReportElementList(list):
         self.write_pandoc_markdown(md_file_name)   
         cmd = ["pandoc"]
         cmd += [md_file_name,"-s","--mathjax", "-o", html_file_name]        
+        cmd += ["--metadata=title:Test"]
         cmd += ["--filter=pandoc-citeproc", "--bibliography="+bibtex_file_name]
         if css_file_name: 
             rel_css_folder = relpath(dirname(css_file_name), dirname(html_file_name))
@@ -140,19 +142,23 @@ class ReportElementList(list):
             # where md_file should have TeX math embedded.
 
         try:
+            html_file_path=Path(html_file_name)
+
             subprocess.check_call(["rm","-rf", html_file_name])
-            #print(cmd)
+            #print(" ".join(cmd))
             
             subprocess.check_output(cmd)
     
             # copy css file
             copy_cmd = ["cp"]
             copy_cmd += [css_file_name]
-            copy_cmd += [dirname(html_file_name)]
+            dn = html_file_path.parent.as_posix()
+            copy_cmd += [dn]
 
             # comment in if copying buttondown.css is needed
+            print(" ".join(copy_cmd))
             subprocess.check_call(copy_cmd)
-            #print(copy_cmd)
+            print('#######################################')
 
         except subprocess.CalledProcessError as e:
            out=e.output
