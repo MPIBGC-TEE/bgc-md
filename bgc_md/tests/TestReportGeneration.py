@@ -2,6 +2,7 @@
 # vim:set ff=unix expandtab ts=4 sw=4:
 import unittest
 import sys
+from subprocess import run
 from concurrencytest import ConcurrentTestSuite, fork_for_tests
 from pathlib import Path
 from shutil import copytree
@@ -26,12 +27,13 @@ class TestReportGeneration(InDirTest):
     #@unittest.skip("takes too long")
     def test_commandline_tools(self):
         d=defaults() 
-        vp=d['paths']['veg']
+        sp=d['paths']['soil']
         here=Path('.')
-        targetPath=here.joinpath('veg')
+        targetPath=here.joinpath('soil')
         targetPath.mkdir()
-        for rec in  vp.iterdir():
-            print(rec)
+        for rec in  sp.glob('*.yaml'):
+            print(rec.as_posix())
+            res=run(['generate_model_run_report',rec.as_posix()], check=True)
 
         #dir_names=[Model.from_str(ys) for ys in self.yaml_str_list]
         # fixme

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3 
 # vim: set expandtab ts=4
-import unittest 
+import unittest
 #from run_tests import *
 #from bgc_md.tests.TestCompleteModelList import TestCompleteModelList
 #from bgc_md.tests.TestModel import TestModel
@@ -8,7 +8,7 @@ import unittest
 #from bgc_md.tests.TestTsTpField import TestTsTpField
 #from bgc_md.tests.TestTsTpMassFieldsPerPoolPerTimeStep import TestTsTpMassFieldsPerPoolPerTimeStep 
 from bgc_md.tests.TestWriteReportElements import  TestWriteReportElements
-#from bgc_md.tests.TestReportGeneration import TestReportGeneration
+from bgc_md.tests.TestReportGeneration import TestReportGeneration
 
 def suite():
     s=unittest.TestSuite()
@@ -29,6 +29,7 @@ def suite():
     #s.addTest(TestModel("test_jacobian"))
     #s.addTest(TestModel("test_key_relations"))
     #s.addTest(TestReportGeneration("test_histogram"))
+    s.addTest(TestReportGeneration("test_commandline_tools"))
     #s.addTest(TestModel("test_plot_model_key_dependencies_scatter_plot"))
     #s.addTest(TestModel("test_meta_data"))
     #s.addTest(TestModel("test_reservoir_model"))

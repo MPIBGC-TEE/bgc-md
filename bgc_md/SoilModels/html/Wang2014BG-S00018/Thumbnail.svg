@@ -19,7 +19,7 @@ z
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path clip-path="url(#paa7cfe0324)" d="M 18.7992 28.385885 
+    <path clip-path="url(#p4f841ecd4f)" d="M 18.7992 28.385885 
 C 19.582328 28.385885 20.333486 28.076752 20.887241 27.52657 
 C 21.440996 26.976387 21.752136 26.230075 21.752136 25.452 
 C 21.752136 24.673925 21.440996 23.927613 20.887241 23.37743 
@@ -32,17 +32,17 @@ z
 " style="fill:#0000ff;opacity:0.3;stroke:#0000ff;stroke-linejoin:miter;"/>
    </g>
    <g id="patch_3">
-    <path clip-path="url(#paa7cfe0324)" d="M 15.351069 23.622766 
+    <path clip-path="url(#p4f841ecd4f)" d="M 15.351069 23.622766 
 Q 15.781148 23.830632 16.241882 23.985058 
 " style="fill:none;opacity:0.5;stroke:#0000ff;stroke-linecap:round;"/>
    </g>
    <g id="patch_4">
-    <path clip-path="url(#paa7cfe0324)" d="M 14.447017 27.799821 
+    <path clip-path="url(#p4f841ecd4f)" d="M 14.447017 27.799821 
 Q 14.050464 28.066133 13.684565 28.385885 
 " style="fill:none;opacity:0.5;stroke:#008000;stroke-linecap:round;"/>
    </g>
    <g id="patch_5">
-    <path clip-path="url(#paa7cfe0324)" d="M 32.8608 28.385885 
+    <path clip-path="url(#p4f841ecd4f)" d="M 32.8608 28.385885 
 C 33.643928 28.385885 34.395086 28.076752 34.948841 27.52657 
 C 35.502596 26.976387 35.813736 26.230075 35.813736 25.452 
 C 35.813736 24.673925 35.502596 23.927613 34.948841 23.37743 
@@ -55,19 +55,19 @@ z
 " style="fill:#0000ff;opacity:0.3;stroke:#0000ff;stroke-linejoin:miter;"/>
    </g>
    <g id="patch_6">
-    <path clip-path="url(#paa7cfe0324)" d="M 23.689343 26.240381 
+    <path clip-path="url(#p4f841ecd4f)" d="M 23.689343 26.240381 
 Q 25.834495 26.49518 27.986136 26.30241 
 " style="fill:none;opacity:0.5;stroke:#008000;stroke-linecap:round;"/>
    </g>
    <g id="patch_7">
-    <path clip-path="url(#paa7cfe0324)" d="M 27.970657 24.663619 
+    <path clip-path="url(#p4f841ecd4f)" d="M 27.970657 24.663619 
 Q 25.825505 24.40882 23.673864 24.60159 
 " style="fill:none;opacity:0.5;stroke:#0000ff;stroke-linecap:round;"/>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="paa7cfe0324">
+  <clipPath id="p4f841ecd4f">
    <rect height="38.808" width="39.06" x="6.3" y="6.048"/>
   </clipPath>
  </defs>

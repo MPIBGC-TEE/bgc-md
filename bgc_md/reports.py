@@ -1,4 +1,6 @@
 # vim:set ff=unix expandtab ts=4 sw=4:
+import logging
+import inspect
 import numpy as np
 import multiprocessing
 import yaml
@@ -29,24 +31,16 @@ from CompartmentalSystems.bins.TimeStepIterator import TimeStepIterator
 #import mpld3 # interesting functionality for interactive web figures
 
 def generate_model_run_report(com=None):
-    if com==None:
-        com = parse_args()
-    if com.t:
-    # a target dir is given
-        target_dir = com.t
-        for yaml_file_name in com.f:
-            print("Creating report from " + yaml_file_name + " to " + target_dir)
-            create_single_report(yaml_file_name, target_dir)
-        sys.exit(0)
+    #example_string="\nExample: %s Henin1945Annalesagronomiques.yaml" % inspect.getframeinfo(inspect.currentframe()).function
+    parser = argparse.ArgumentParser(description="Create an html report of a singel yaml file.\\n")
 
-    else:
-        #print(com.f)
-        #infer targetdirs from filenames
-        for yaml_file_name in com.f:
-            target_dir_path=Path(yaml_file_name).parent
-            html_dir_path = target_dir_path.joinpath("html")
-            create_single_report(yaml_file_name, html_dir_path.as_posix())
-        sys.exit(0)
+    parser.add_argument('path', default=None, help="The path to the yaml file containing the description of the record." )
+    parser.add_argument('-t','--target_dir', type=str,default=".", help="where to generate the html files." )
+    parser.epilog= "Example: %s Henin1945Annalesagronomiques.yaml-t SoilModels/html" % parser.prog
+    com=parser.parse_args()
+    print("Creating report from " + com.path + " to " + com.target_dir)
+    create_single_report(com.path, com.target_dir)
+    sys.exit(0)
 
 def defaults():
     this=Path(__file__).parents[0] #the package dir
@@ -1166,10 +1160,8 @@ def create_single_report(yaml_file_name, target_dir):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Create model database websites.")
-    parser.add_argument('-sd', action="store_true",help="create modeldir website from <srcdir> to optional -t <target_dir>")
     parser.add_argument('-s', action="store_true",help="create soil model website to optional -t <target_dir> , default=SoilModels")
     parser.add_argument('-v', action="store_true",help="create vegetation model website to optional -t <target_dir>, default=VegetationModels")
-    parser.add_argument('-f', nargs='+', default=None, help="create particular model report/reports to <target_dir> given by the -t option\n Example: generate_website -f Henin1945Annalesagronomiques -t SoilModels/html")
 
     parser.add_argument('-t', default=None, help="where to generate the html files. \nExample: generate_website -f Henin1945Annalesagronomiques.yaml -t SoilModels/html")
 
@@ -1178,9 +1170,6 @@ def parse_args():
 def generate_website():
     com = parse_args()
     
-    if com.f:
-        generate_model_run_report(com)
-        
     generate_model_run_reports(com)
 
 

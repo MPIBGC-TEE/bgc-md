@@ -115,7 +115,7 @@ $S = S$ <br>$D = 0$ <br>$M = 0$ <br>$E = 0$ <br> <br>
 ## Steady states (potentially incomplete), according jacobian eigenvalues, damping ratio
 
 ### Parameter set: Set 1
-$S: S$, $D: 0.0$, $M: 0.0$, $E: 0.0$ <br> <br>$\lambda_{1}: 0.000$ <br>$\lambda_{2}: -0.022+0.000j$ <br>$\rho_{2}: 1.000000$ <br>$\lambda_{3}: 0.010+0.000j$ <br>$\rho_{3}: -1.000000$ <br>$\lambda_{4}: -1.054+0.000j$ <br>$\rho_{4}: 1.000000$ <br>
+$S: S$, $D: 0.0$, $M: 0.0$, $E: 0.0$ <br> <br>$\lambda_{1}: 0.010+0.000j$ <br>$\rho_{1}: -1.000000$ <br>$\lambda_{2}: 0.000$ <br>$\lambda_{3}: -1.054+0.000j$ <br>$\rho_{3}: 1.000000$ <br>$\lambda_{4}: -0.022+0.000j$ <br>$\rho_{4}: 1.000000$ <br>
 
 
 
