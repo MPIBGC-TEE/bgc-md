@@ -1132,8 +1132,9 @@ def generate_html_dir(source_dir, target_dir = None):
     for model in models:
         print(model.name)
         dir_name = model.bibtex_entry.key
-        if model.modelID: dir_name += "-" + model.modelID
-
+        #if model.modelID: dir_name += "-" + model.modelID
+        #fixme mm: I think we should avoid the modelID property
+        #and ensure uniqe filenames by requesting them
         sub_dir = html_dir_path.joinpath(dir_name).as_posix()
         rel = report_from_model(model) 
         rel.create_pandoc_dir(sub_dir)
@@ -1151,7 +1152,9 @@ def create_single_report(yaml_file_name, target_dir):
     
     model = Model.from_file(yaml_file_name)
     dir_name = model.bibtex_entry.key
-    if model.modelID: dir_name += "-" + model.modelID
+    #if model.modelID: dir_name += "-" + model.modelID
+    #fixme mm: I think we should avoid the modelID property
+    #and ensure uniqe filenames by requesting them
 
     sub_dir = target_dir_path.joinpath(dir_name).as_posix()
     rel = report_from_model(model) 

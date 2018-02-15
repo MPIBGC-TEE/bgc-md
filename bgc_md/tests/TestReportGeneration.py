@@ -31,10 +31,21 @@ class TestReportGeneration(InDirTest):
         here=Path('.')
         targetPath=here.joinpath('soil')
         targetPath.mkdir()
-        for rec in  sp.glob('*.yaml'):
-            print(rec.as_posix())
-            res=run(['generate_model_run_report',rec.as_posix()], check=True)
-
+        rec_list=[ rec  for rec in sp.glob('*.yaml')]
+        first_rec= rec_list[0]
+        #print(first_rec.as_posix())
+        res=run(['generate_model_run_report',first_rec.as_posix()], check=True)
+        print('##########################')
+        print(res)
+        print('##########################')
+        for f in here.iterdir():
+            print(f)
+        html_dir_path=Path(first_rec.stem)
+        for f in html_dir_path.iterdir():
+            print(f)
+        html_file_path=html_dir_path.joinpath('Report.html')
+            
+        self.assertTrue(html_file_path.exists())
         #dir_names=[Model.from_str(ys) for ys in self.yaml_str_list]
         # fixme
         #to be continued

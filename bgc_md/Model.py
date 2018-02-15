@@ -551,7 +551,7 @@ def load_model_run_combinations(model_run_data, parameter_sets, initial_values, 
             
 ######### Class #############
 class Model:
-
+    
     @classmethod
     def from_str(cls, yaml_str, yaml_file_name = None):
         try:
@@ -573,6 +573,7 @@ class Model:
         model = cls.from_str(yaml_str, yaml_file_name=yaml_file_name)
         return model
     
+
     @property
     def state_variables(self):
         return(self.section_vars("state_variables").get_column("name"))

@@ -13,7 +13,7 @@ from bgc_md.tests.TestReportGeneration import TestReportGeneration
 def suite():
     s=unittest.TestSuite()
     #s.addTest(Test(""))
-    s.addTest(TestWriteReportElements("test_write_html_with_bibliography"))
+    #s.addTest(TestWriteReportElements("test_write_html_with_bibliography"))
     #s.addTest(TestWriteReportElements("test_write_html_with_picture"))
     #s.addTest(TestReportElements("test_Report"))
     #s.addTest(TestReportElements("test_TableRow"))
