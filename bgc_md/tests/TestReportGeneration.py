@@ -16,39 +16,25 @@ import bgc_md.gv as gv
 
 class TestReportGeneration(InDirTest):
 
-   # def setUp(self):
-   #     self.yaml_str_list = example_yaml_string_list2() 
-   #     self.yaml_file_names=[]
-   #     for index, yaml_str in enumerate(self.yaml_str_list):
-   #         yaml_input_file_name = "testfile" + str(index) + ".yaml"
-   #         with open(yaml_input_file_name, "w") as f:
-   #             f.write(yaml_str)
-
-    #@unittest.skip("takes too long")
     def test_commandline_tools(self):
         d=defaults() 
         sp=d['paths']['soil']
         here=Path('.')
-        targetPath=here.joinpath('soil')
-        targetPath.mkdir()
         rec_list=[ rec  for rec in sp.glob('*.yaml')]
         first_rec= rec_list[0]
         #print(first_rec.as_posix())
         res=run(['generate_model_run_report',first_rec.as_posix()], check=True)
-        print('##########################')
-        print(res)
-        print('##########################')
-        for f in here.iterdir():
-            print(f)
         html_dir_path=Path(first_rec.stem)
-        for f in html_dir_path.iterdir():
-            print(f)
         html_file_path=html_dir_path.joinpath('Report.html')
-            
         self.assertTrue(html_file_path.exists())
-        #dir_names=[Model.from_str(ys) for ys in self.yaml_str_list]
-        # fixme
-        #to be continued
+        
+        targetDirName='output'
+        targetPath=here.joinpath(targetDirName)
+        targetPath.mkdir()
+        res=run(["generate_model_run_report","-t", targetDirName  ,first_rec.as_posix()], check=True)
+        html_dir_path=targetPath.joinpath(first_rec.stem)
+        html_file_path=html_dir_path.joinpath('Report.html')
+        self.assertTrue(html_file_path.exists())
 
     @unittest.skip("function under test calls report_from_yaml_str which is commented out")
     def test_report_html_presence(self):
