@@ -2,3 +2,4 @@ include README.rst
 recursive-include bgc_md/VegetationModels *.yaml
 recursive-include bgc_md/SoilModels *.yaml
 recursive-include bgc_md/Resources *
+recursive-include bgc_md/data/tested_records/ *

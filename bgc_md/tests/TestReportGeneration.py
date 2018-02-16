@@ -2,7 +2,7 @@
 # vim:set ff=unix expandtab ts=4 sw=4:
 import unittest
 import sys
-from subprocess import run
+from subprocess import run,CalledProcessError
 from concurrencytest import ConcurrentTestSuite, fork_for_tests
 from pathlib import Path
 from shutil import copytree
@@ -18,23 +18,56 @@ class TestReportGeneration(InDirTest):
 
     def test_commandline_tools(self):
         d=defaults() 
-        sp=d['paths']['soil']
+        sp=d['paths']['tested_records']
         here=Path('.')
         rec_list=[ rec  for rec in sp.glob('*.yaml')]
-        first_rec= rec_list[0]
-        #print(first_rec.as_posix())
-        res=run(['generate_model_run_report',first_rec.as_posix()], check=True)
-        html_dir_path=Path(first_rec.stem)
-        html_file_path=html_dir_path.joinpath('Report.html')
-        self.assertTrue(html_file_path.exists())
+        test_list= rec_list
+        #test_list= sorted(rec_list)[0]
+        def runProtected(rec,command_list,targetPath=Path('.')):
+            file_name=rec.as_posix()
+            result=dict()
+            res=run(command_list+[file_name])
+            result['file']=file_name
+            result['returnValue']=res.returncode
+            html_dir_path=targetPath.joinpath(rec.stem)
+            html_file_path=html_dir_path.joinpath('Report.html')
+            result['fileExists']=html_file_path.exists()
+            return(result)
+       
+        result_list=[
+            runProtected(rec,['generate_model_run_report'] ) 
+            for rec in test_list]
+        print(result_list)
         
+        failure_list=[
+            r  for r in result_list 
+            if r['returnValue']!=0 or r['fileExists']==False
+        ]
+        
+        self.assertEqual(
+            len(failure_list)
+            ,0
+            ,msg="The following files caused problems %s" % str(failure_list)
+            )
+        
+        # test the -t option for a smaller selection of yaml file
         targetDirName='output'
         targetPath=here.joinpath(targetDirName)
-        targetPath.mkdir()
-        res=run(["generate_model_run_report","-t", targetDirName  ,first_rec.as_posix()], check=True)
-        html_dir_path=targetPath.joinpath(first_rec.stem)
-        html_file_path=html_dir_path.joinpath('Report.html')
-        self.assertTrue(html_file_path.exists())
+        targetPath.mkdir(exist_ok=True)
+        test_list= sorted(rec_list)[0:1]
+        result_list=[
+            runProtected(
+                rec
+                ,['generate_model_run_report',"-t", targetDirName]
+                ,targetPath
+            ) for rec in test_list
+        ]
+        failure_list=[r  for r in result_list if r['returnValue']!=0 or r['fileExists']==False]
+        self.assertEqual(
+            len(failure_list)
+            ,0
+            ,msg="The following files caused problems %s" % str(failure_list)
+        )
 
     @unittest.skip("function under test calls report_from_yaml_str which is commented out")
     def test_report_html_presence(self):

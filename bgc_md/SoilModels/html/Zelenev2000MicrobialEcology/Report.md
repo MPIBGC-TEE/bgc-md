@@ -45,7 +45,7 @@ Table:  Information on given sets of initial values
 # State Variables
 The following table contains the available information regarding this section:
 
-Name|Description|Units|Low|Medium|Values <br> <br>High
+Name|Description|Units| <br> <br>Low| <br> <br>Medium|Values <br> <br>High
 :-----:|:-----|:-----:|:-----:|:-----:|:-----:
 $X$|microbial biomass pool|$\mu gC cm^{-3}$|$0.5$|$1.0$|$1.5$
 $S$|substrate pool|$\mu gC cm^{-3}$|$1.5$|$2.5$|$4.0$
@@ -73,24 +73,24 @@ Table: Information on Parameters
 # Additional Variables
 The following table contains the available information regarding this section:
 
-Name|Description|Expressions|key|Type|Units|Values <br> <br>Set 1
-:-----:|:-----|:-----:|:-----:|:-----:|:-----:|:-----:
-$t$|time|-|time_symbol|variable|$hr$|-
-$\mu_{S}$|relative growth rate of bacteria (dependent on substrate concentration)|$\mu_{S}=\frac{\mu_{max}\cdot S}{K_{s}\cdot \theta+S}$|-|variable|$hr^{-1}$|-
-$Exu$|exudation rate (dependent on time)|$Exu=ExuM\cdot \operatorname{exp}\left(- ExuT\cdot t\right)$|-|variable|$hr^{-1}$|-
+Name|Description|Expressions|Type|Units|Values <br> <br>Set 1
+:-----:|:-----|:-----:|:-----:|:-----:|:-----:
+$t$|time|-|variable|$hr$|-
+$\mu_{S}$|relative growth rate of bacteria (dependent on substrate concentration)|$\mu_{S}=\frac{\mu_{max}\cdot S}{K_{s}\cdot \theta+S}$|variable|$hr^{-1}$|-
+$Exu$|exudation rate (dependent on time)|$Exu=ExuM\cdot \operatorname{exp}\left(- ExuT\cdot t\right)$|variable|$hr^{-1}$|-
 
 Table: Information on Additional Variables
 
 # Components
 The following table contains the available information regarding this section:
 
-Name|Description|Expressions|Values <br> <br>key
-:-----:|:-----|:-----:|:-----:
-$C$|carbon content|$C=\left[\begin{matrix}X\\S\end{matrix}\right]$|state_vector
-$I$|input vector|$I=\left[\begin{matrix}0\\BGF + Exu\end{matrix}\right]$|input_vector
-$T$|transition operator|$T=\left[\begin{matrix}-1 & Y\\K_{r} & -1\end{matrix}\right]$|trans_op
-$N$|decomposition operator|$N=\left[\begin{matrix}\frac{D_{max}\cdot K_{d}}{K_{d} +\frac{S}{\theta}} & 0\\0 &\frac{X\cdot\mu_{max}}{Y\cdot\left(K_{s}\cdot\theta + S\right)}\end{matrix}\right]$|decomp_op_nonlin
-$f_{s}$|the right hand side of the ode|$f_{s}=I+T\cdot N\cdot C$|state_vector_derivative
+Name|Description|Expressions
+:-----:|:-----|:-----:
+$C$|carbon content|$C=\left[\begin{matrix}X\\S\end{matrix}\right]$
+$I$|input vector|$I=\left[\begin{matrix}0\\BGF + Exu\end{matrix}\right]$
+$T$|transition operator|$T=\left[\begin{matrix}-1 & Y\\K_{r} & -1\end{matrix}\right]$
+$N$|decomposition operator|$N=\left[\begin{matrix}\frac{D_{max}\cdot K_{d}}{K_{d} +\frac{S}{\theta}} & 0\\0 &\frac{X\cdot\mu_{max}}{Y\cdot\left(K_{s}\cdot\theta + S\right)}\end{matrix}\right]$
+$f_{s}$|the right hand side of the ode|$f_{s}=I+T\cdot N\cdot C$
 
 Table: Information on Components
 
@@ -109,12 +109,29 @@ $S: BGF + ExuM\cdot e^{- ExuT\cdot t}$ <br>
 $X: -\frac{D_{max}\cdot K_{d}\cdot X\cdot\theta}{K_{d}\cdot\theta + S}\cdot\left(K_{r} - 1\right)$ <br>$S: -\frac{S\cdot X\cdot\mu_{max}\cdot\left(Y - 1\right)}{Y\cdot\left(K_{s}\cdot\theta + S\right)}$ <br>
 
 #### Internal fluxes
-$X > S: \frac{D_{max}\cdot K_{d}\cdot K_{r}\cdot X\cdot\theta}{K_{d}\cdot\theta + S}$ <br>$S > X: \frac{S\cdot X\cdot\mu_{max}}{K_{s}\cdot\theta + S}$ <br></td></tr></tbody></table>
+$X \rightarrow S: \frac{D_{max}\cdot K_{d}\cdot K_{r}\cdot X\cdot\theta}{K_{d}\cdot\theta + S}$ <br>$S \rightarrow X: \frac{S\cdot X\cdot\mu_{max}}{K_{s}\cdot\theta + S}$ <br></td></tr></tbody></table>
 ## The right hand side of the ODE
 $\left[\begin{matrix}-\frac{D_{max}\cdot K_{d}\cdot X}{K_{d} +\frac{S}{\theta}} +\frac{S\cdot X\cdot\mu_{max}}{K_{s}\cdot\theta + S}\\BGF +\frac{D_{max}\cdot K_{d}\cdot K_{r}}{K_{d} +\frac{S}{\theta}}\cdot X + ExuM\cdot e^{- ExuT\cdot t} -\frac{S\cdot X\cdot\mu_{max}}{Y\cdot\left(K_{s}\cdot\theta + S\right)}\end{matrix}\right]$
 
 ## The Jacobian (derivative of the ODE w.r.t. state variables)
 $\left[\begin{matrix}-\frac{D_{max}\cdot K_{d}}{K_{d} +\frac{S}{\theta}} +\frac{S\cdot\mu_{max}}{K_{s}\cdot\theta + S} &\frac{D_{max}\cdot K_{d}\cdot X}{\theta\cdot\left(K_{d} +\frac{S}{\theta}\right)^{2}} -\frac{S\cdot X\cdot\mu_{max}}{\left(K_{s}\cdot\theta + S\right)^{2}} +\frac{X\cdot\mu_{max}}{K_{s}\cdot\theta + S}\\\frac{D_{max}\cdot K_{d}\cdot K_{r}}{K_{d} +\frac{S}{\theta}} -\frac{S\cdot\mu_{max}}{Y\cdot\left(K_{s}\cdot\theta + S\right)} & -\frac{D_{max}\cdot K_{d}\cdot K_{r}\cdot X}{\theta\cdot\left(K_{d} +\frac{S}{\theta}\right)^{2}} +\frac{S\cdot X\cdot\mu_{max}}{Y\cdot\left(K_{s}\cdot\theta + S\right)^{2}} -\frac{X\cdot\mu_{max}}{Y\cdot\left(K_{s}\cdot\theta + S\right)}\end{matrix}\right]$
+
+## Steady state formulas
+$X = -\frac{Y\cdot e^{- ExuT\cdot t}}{2\cdot D_{max}\cdot K_{d}\cdot\mu_{max}\cdot\left(K_{r}\cdot Y - 1\right)}\cdot\left(BGF\cdot D_{max}\cdot K_{d}\cdot e^{ExuT\cdot t} + BGF\cdot K_{d}\cdot\mu_{max}\cdot e^{ExuT\cdot t} - BGF\cdot\sqrt{K_{d}\cdot\left(D_{max}^{2}\cdot K_{d} - 2\cdot D_{max}\cdot K_{d}\cdot\mu_{max} + 4\cdot D_{max}\cdot K_{s}\cdot\mu_{max} + K_{d}\cdot\mu_{max}^{2}\right)}\cdot e^{ExuT\cdot t} + D_{max}\cdot ExuM\cdot K_{d} + ExuM\cdot K_{d}\cdot\mu_{max} - ExuM\cdot\sqrt{K_{d}\cdot\left(D_{max}^{2}\cdot K_{d} - 2\cdot D_{max}\cdot K_{d}\cdot\mu_{max} + 4\cdot D_{max}\cdot K_{s}\cdot\mu_{max} + K_{d}\cdot\mu_{max}^{2}\right)}\right)$ <br>$S = \frac{\theta}{2\cdot\mu_{max}}\cdot\left(D_{max}\cdot K_{d} - K_{d}\cdot\mu_{max} -\sqrt{K_{d}\cdot\left(D_{max}^{2}\cdot K_{d} - 2\cdot D_{max}\cdot K_{d}\cdot\mu_{max} + 4\cdot D_{max}\cdot K_{s}\cdot\mu_{max} + K_{d}\cdot\mu_{max}^{2}\right)}\right)$ <br> <br>$X = -\frac{Y\cdot e^{- ExuT\cdot t}}{2\cdot D_{max}\cdot K_{d}\cdot\mu_{max}\cdot\left(K_{r}\cdot Y - 1\right)}\cdot\left(BGF\cdot D_{max}\cdot K_{d}\cdot e^{ExuT\cdot t} + BGF\cdot K_{d}\cdot\mu_{max}\cdot e^{ExuT\cdot t} + BGF\cdot\sqrt{K_{d}\cdot\left(D_{max}^{2}\cdot K_{d} - 2\cdot D_{max}\cdot K_{d}\cdot\mu_{max} + 4\cdot D_{max}\cdot K_{s}\cdot\mu_{max} + K_{d}\cdot\mu_{max}^{2}\right)}\cdot e^{ExuT\cdot t} + D_{max}\cdot ExuM\cdot K_{d} + ExuM\cdot K_{d}\cdot\mu_{max} + ExuM\cdot\sqrt{K_{d}\cdot\left(D_{max}^{2}\cdot K_{d} - 2\cdot D_{max}\cdot K_{d}\cdot\mu_{max} + 4\cdot D_{max}\cdot K_{s}\cdot\mu_{max} + K_{d}\cdot\mu_{max}^{2}\right)}\right)$ <br>$S = \frac{\theta}{2\cdot\mu_{max}}\cdot\left(D_{max}\cdot K_{d} - K_{d}\cdot\mu_{max} +\sqrt{K_{d}\cdot\left(D_{max}^{2}\cdot K_{d} - 2\cdot D_{max}\cdot K_{d}\cdot\mu_{max} + 4\cdot D_{max}\cdot K_{s}\cdot\mu_{max} + K_{d}\cdot\mu_{max}^{2}\right)}\right)$ <br> <br>
+
+## Steady states (potentially incomplete), according jacobian eigenvalues, damping ratio
+
+### Parameter set: Set 1
+
+Taken limit $X(t)$ for $t$ to infinity.
+
+$X: 0.23$, <font color="FF0000">$S: -0.843$</font> <br> <br>$\lambda_{1}: -0.495+0.237j$ <br>$\rho_{1}: 0.902095$ <br>$\lambda_{2}: -0.495-0.237j$ <br>$\rho_{2}: 0.902095$ <br>
+
+
+Taken limit $X(t)$ for $t$ to infinity.
+
+$X: 1.349$, $S: 11.271$ <br> <br>$\lambda_{1}: -0.002+0.026j$ <br>$\rho_{1}: 0.061045$ <br>$\lambda_{2}: -0.002-0.026j$ <br>$\rho_{2}: 0.061045$ <br>
+
 
 ## Model simulations
 
@@ -130,7 +147,7 @@ $\left[\begin{matrix}-\frac{D_{max}\cdot K_{d}}{K_{d} +\frac{S}{\theta}} +\frac{
 
 <br>
 <center>
-![Model run 1 - system-age-distributions](Model run 1 - system-age-distributions.svg)<br>**Model run 1 - system-age-distributions:** *Initial values: Low, Parameter set: Set 1, Start: 0, End: 2000, Time step: 0.1*<br>
+![Model run 1 - system-age-distributions](Model run 1 - system-age-distributions.svg)<br>**Model run 1 - system-age-distributions:** *Initial values: Low, Parameter set: Set 1*<br>
 </center>
 
 <br>
@@ -145,7 +162,7 @@ $\left[\begin{matrix}-\frac{D_{max}\cdot K_{d}}{K_{d} +\frac{S}{\theta}} +\frac{
 
 <br>
 <center>
-![Model run 2 - system-age-distributions](Model run 2 - system-age-distributions.svg)<br>**Model run 2 - system-age-distributions:** *Initial values: Medium, Parameter set: Set 1, Start: 0, End: 2000, Time step: 0.1*<br>
+![Model run 2 - system-age-distributions](Model run 2 - system-age-distributions.svg)<br>**Model run 2 - system-age-distributions:** *Initial values: Medium, Parameter set: Set 1*<br>
 </center>
 
 <br>
@@ -160,7 +177,7 @@ $\left[\begin{matrix}-\frac{D_{max}\cdot K_{d}}{K_{d} +\frac{S}{\theta}} +\frac{
 
 <br>
 <center>
-![Model run 3 - system-age-distributions](Model run 3 - system-age-distributions.svg)<br>**Model run 3 - system-age-distributions:** *Initial values: High, Parameter set: Set 1, Start: 0, End: 2000, Time step: 0.1*<br>
+![Model run 3 - system-age-distributions](Model run 3 - system-age-distributions.svg)<br>**Model run 3 - system-age-distributions:** *Initial values: High, Parameter set: Set 1*<br>
 </center>
 
 

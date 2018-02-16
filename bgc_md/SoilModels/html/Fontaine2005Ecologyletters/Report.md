@@ -41,7 +41,7 @@ The following table contains the available information regarding this section:
 Name|Description|Type|Units
 :-----:|:-----|:-----:|:-----:
 $A$|decomposers consumption rate of SOM|parameter|$\text{time}^{-1}$
-$r$|fraction of decomposer biomass released as CO$_2$|parameter|$\text{time}^{-1}$
+$r$|fraction of decomposer biomass released as CO$_{2}$|parameter|$\text{time}^{-1}$
 $s$|decomposers production rate of soil organic matter|parameter|$\text{time}^{-1}$
 $k$|rate of fresh organic matter decomposition under substrate limitation ($N$ excess)|parameter|$\text{time}^{-1}$
 $y$|soil organic matter decomposer consumption rate of fresh organic matter under substrate limitations|parameter|$\text{time}^{-1}$
@@ -74,12 +74,12 @@ Table: Information on Input Components
 # Components
 The following table contains the available information regarding this section:
 
-Name|Description|Expressions|key
-:-----:|:-----|:-----:|:-----:
-$I$|input vector|$I=\left[\begin{matrix}0\\\Phi_{l}\\0\\0\\\Phi_{i} -\Phi_{o} -\Phi_{up}\end{matrix}\right]$|input_vector
-$C$|carbon content|$C=\left[\begin{matrix}C_{s}\\C_{f}\\C_{ds}\\C_{df}\\N\end{matrix}\right]$|state_vector
-$A_{GeM}$|decomposition operator|$A_{GeM}=\left[\begin{matrix}0 & 0 & - A + s & s & 0\\0 & - y & 0 & -\frac{\alpha\cdot r}{\alpha -\beta} & -\frac{i}{\alpha -\beta}\\0 & y & A - r - s & 0 & 0\\0 & 0 & 0 &\frac{\alpha\cdot r}{\alpha -\beta} - r - s &\frac{i}{\alpha -\beta}\\0 & y\cdot\left(-\alpha +\beta\right) &\alpha\cdot r & 0 & - i\end{matrix}\right]$|decomp_op_lin
-$f_{s}$|the right hand side of the ode|$f_{s}=I+A_{GeM}\cdot C$|state_vector_derivative
+Name|Description|Expressions
+:-----:|:-----|:-----:
+$I$|input vector|$I=\left[\begin{matrix}0\\\Phi_{l}\\0\\0\\\Phi_{i} -\Phi_{o} -\Phi_{up}\end{matrix}\right]$
+$C$|carbon content|$C=\left[\begin{matrix}C_{s}\\C_{f}\\C_{ds}\\C_{df}\\N\end{matrix}\right]$
+$A_{GM}$|decomposition operator|$A_{GM}=\left[\begin{matrix}-\frac{A}{C_{s}}\cdot C_{ds} & 0 & s & s & 0\\0 & - y & 0 & -\frac{\alpha\cdot r}{\alpha -\beta} & -\frac{i}{\alpha -\beta}\\\frac{A}{C_{s}}\cdot C_{ds} & y & - r - s & 0 & 0\\0 & 0 & 0 &\frac{\alpha\cdot r}{\alpha -\beta} - r - s &\frac{i}{\alpha -\beta}\\0 & y\cdot\left(-\alpha +\beta\right) &\alpha\cdot r & 0 & - i\end{matrix}\right]$
+$f_{s}$|the right hand side of the ode|$f_{s}=I+A_{GM}\cdot C$
 
 Table: Information on Components
 
@@ -98,9 +98,9 @@ $C_{f}: \Phi_{l}$ <br>$N: \Phi_{i} -\Phi_{o} -\Phi_{up}$ <br>
 $C_{f}: C_{f}\cdot y\cdot\left(\alpha -\beta\right)$ <br>$C_{ds}: C_{ds}\cdot r\cdot\left(-\alpha + 1\right)$ <br>$C_{df}: C_{df}\cdot r$ <br>$N: N\cdot i$ <br>
 
 #### Internal fluxes
-$C_{f} > C_{ds}: C_{f}\cdot y$ <br>$C_{f} > N: C_{f}\cdot y\cdot\left(-\alpha +\beta\right)$ <br>$C_{ds} > C_{s}: C_{ds}\cdot\left(- A + s\right)$ <br>$C_{ds} > N: C_{ds}\cdot\alpha\cdot r$ <br>$C_{df} > C_{s}: C_{df}\cdot s$ <br>$C_{df} > C_{f}: -\frac{C_{df}\cdot\alpha\cdot r}{\alpha -\beta}$ <br>$N > C_{f}: -\frac{N\cdot i}{\alpha -\beta}$ <br>$N > C_{df}: \frac{N\cdot i}{\alpha -\beta}$ <br></td></tr></tbody></table>
+$C_{s} \rightarrow C_{ds}: A\cdot C_{ds}$ <br>$C_{f} \rightarrow C_{ds}: C_{f}\cdot y$ <br>$C_{f} \rightarrow N: C_{f}\cdot y\cdot\left(-\alpha +\beta\right)$ <br>$C_{ds} \rightarrow C_{s}: C_{ds}\cdot s$ <br>$C_{ds} \rightarrow N: C_{ds}\cdot\alpha\cdot r$ <br>$C_{df} \rightarrow C_{s}: C_{df}\cdot s$ <br>$C_{df} \rightarrow C_{f}: -\frac{C_{df}\cdot\alpha\cdot r}{\alpha -\beta}$ <br>$N \rightarrow C_{f}: -\frac{N\cdot i}{\alpha -\beta}$ <br>$N \rightarrow C_{df}: \frac{N\cdot i}{\alpha -\beta}$ <br></td></tr></tbody></table>
 ## The right hand side of the ODE
-$\left[\begin{matrix}C_{df}\cdot s + C_{ds}\cdot\left(- A + s\right)\\-\frac{C_{df}\cdot\alpha\cdot r}{\alpha -\beta} - C_{f}\cdot y -\frac{N\cdot i}{\alpha -\beta} +\Phi_{l}\\C_{ds}\cdot\left(A - r - s\right) + C_{f}\cdot y\\C_{df}\cdot\left(\frac{\alpha\cdot r}{\alpha -\beta} - r - s\right) +\frac{N\cdot i}{\alpha -\beta}\\C_{ds}\cdot\alpha\cdot r + C_{f}\cdot y\cdot\left(-\alpha +\beta\right) - N\cdot i +\Phi_{i} -\Phi_{o} -\Phi_{up}\end{matrix}\right]$
+$\left[\begin{matrix}- A\cdot C_{ds} + C_{df}\cdot s + C_{ds}\cdot s\\-\frac{C_{df}\cdot\alpha\cdot r}{\alpha -\beta} - C_{f}\cdot y -\frac{N\cdot i}{\alpha -\beta} +\Phi_{l}\\A\cdot C_{ds} + C_{ds}\cdot\left(- r - s\right) + C_{f}\cdot y\\C_{df}\cdot\left(\frac{\alpha\cdot r}{\alpha -\beta} - r - s\right) +\frac{N\cdot i}{\alpha -\beta}\\C_{ds}\cdot\alpha\cdot r + C_{f}\cdot y\cdot\left(-\alpha +\beta\right) - N\cdot i +\Phi_{i} -\Phi_{o} -\Phi_{up}\end{matrix}\right]$
 
 ## The Jacobian (derivative of the ODE w.r.t. state variables)
 $\left[\begin{matrix}0 & 0 & - A + s & s & 0\\0 & - y & 0 & -\frac{\alpha\cdot r}{\alpha -\beta} & -\frac{i}{\alpha -\beta}\\0 & y & A - r - s & 0 & 0\\0 & 0 & 0 &\frac{\alpha\cdot r}{\alpha -\beta} - r - s &\frac{i}{\alpha -\beta}\\0 & y\cdot\left(-\alpha +\beta\right) &\alpha\cdot r & 0 & - i\end{matrix}\right]$

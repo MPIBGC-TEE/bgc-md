@@ -6,7 +6,7 @@
   <meta name="generator" content="pandoc" />
   <title>Report of the model: The C-N model of SOM dynamics, two decomposer types (FB2005 (4)), version: SOM decomposers C limited, FOM composers N limited (case 4)</title>
   <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="../../../Resources/buttondown.css" type="text/css" />
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 </head>
 <body>
@@ -29,8 +29,13 @@
 <p>substrate dependence of decomposition, heterogeneity of speed of decay, internal transformations of organic matter, substrate interactions</p>
 <h1 id="state-variables">State Variables</h1>
 <p>The following table contains the available information regarding this section:</p>
-<table>
+<table style="width:32%;">
 <caption>Information on State Variables</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="center">Name</th>
@@ -68,8 +73,14 @@
 </table>
 <h1 id="decomposition-coefficients">Decomposition Coefficients</h1>
 <p>The following table contains the available information regarding this section:</p>
-<table>
+<table style="width:43%;">
 <caption>Information on Decomposition Coefficients</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="center">Name</th>
@@ -87,7 +98,7 @@
 </tr>
 <tr class="even">
 <td align="center"><span class="math inline">\(r\)</span></td>
-<td align="left">fraction of decomposer biomass released as CO<span class="math inline">\(_2\)</span></td>
+<td align="left">fraction of decomposer biomass released as CO<span class="math inline">\(_{2}\)</span></td>
 <td align="center">parameter</td>
 <td align="center"><span class="math inline">\(\text{time}^{-1}\)</span></td>
 </tr>
@@ -146,8 +157,14 @@
 </table>
 <h1 id="input-components">Input Components</h1>
 <p>The following table contains the available information regarding this section:</p>
-<table>
+<table style="width:43%;">
 <caption>Information on Input Components</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="center">Name</th>
@@ -185,14 +202,18 @@
 </table>
 <h1 id="components">Components</h1>
 <p>The following table contains the available information regarding this section:</p>
-<table>
+<table style="width:32%;">
 <caption>Information on Components</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="center">Name</th>
 <th align="left">Description</th>
 <th align="center">Expressions</th>
-<th align="center">key</th>
 </tr>
 </thead>
 <tbody>
@@ -200,25 +221,21 @@
 <td align="center"><span class="math inline">\(I\)</span></td>
 <td align="left">input vector</td>
 <td align="center"><span class="math inline">\(I=\left[\begin{matrix}0\\\Phi_{l}\\0\\0\\\Phi_{i} -\Phi_{o} -\Phi_{up}\end{matrix}\right]\)</span></td>
-<td align="center">input_vector</td>
 </tr>
 <tr class="even">
 <td align="center"><span class="math inline">\(C\)</span></td>
 <td align="left">carbon content</td>
 <td align="center"><span class="math inline">\(C=\left[\begin{matrix}C_{s}\\C_{f}\\C_{ds}\\C_{df}\\N\end{matrix}\right]\)</span></td>
-<td align="center">state_vector</td>
 </tr>
 <tr class="odd">
-<td align="center"><span class="math inline">\(A_{GeM}\)</span></td>
+<td align="center"><span class="math inline">\(A_{GM}\)</span></td>
 <td align="left">decomposition operator</td>
-<td align="center"><span class="math inline">\(A_{GeM}=\left[\begin{matrix}0 &amp; 0 &amp; - A + s &amp; s &amp; 0\\0 &amp; - y &amp; 0 &amp; -\frac{\alpha\cdot r}{\alpha -\beta} &amp; -\frac{i}{\alpha -\beta}\\0 &amp; y &amp; A - r - s &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp;\frac{\alpha\cdot r}{\alpha -\beta} - r - s &amp;\frac{i}{\alpha -\beta}\\0 &amp; y\cdot\left(-\alpha +\beta\right) &amp;\alpha\cdot r &amp; 0 &amp; - i\end{matrix}\right]\)</span></td>
-<td align="center">decomp_op_lin</td>
+<td align="center"><span class="math inline">\(A_{GM}=\left[\begin{matrix}-\frac{A}{C_{s}}\cdot C_{ds} &amp; 0 &amp; s &amp; s &amp; 0\\0 &amp; - y &amp; 0 &amp; -\frac{\alpha\cdot r}{\alpha -\beta} &amp; -\frac{i}{\alpha -\beta}\\\frac{A}{C_{s}}\cdot C_{ds} &amp; y &amp; - r - s &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp;\frac{\alpha\cdot r}{\alpha -\beta} - r - s &amp;\frac{i}{\alpha -\beta}\\0 &amp; y\cdot\left(-\alpha +\beta\right) &amp;\alpha\cdot r &amp; 0 &amp; - i\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
 <td align="center"><span class="math inline">\(f_{s}\)</span></td>
 <td align="left">the right hand side of the ode</td>
-<td align="center"><span class="math inline">\(f_{s}=I+A_{GeM}\cdot C\)</span></td>
-<td align="center">state_vector_derivative</td>
+<td align="center"><span class="math inline">\(f_{s}=I+A_{GM}\cdot C\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -247,18 +264,20 @@ Flux description
 <h4 id="output-fluxes">Output fluxes</h4>
 <p><span class="math inline">\(C_{f}: C_{f}\cdot y\cdot\left(\alpha -\beta\right)\)</span> <br><span class="math inline">\(C_{ds}: C_{ds}\cdot r\cdot\left(-\alpha + 1\right)\)</span> <br><span class="math inline">\(C_{df}: C_{df}\cdot r\)</span> <br><span class="math inline">\(N: N\cdot i\)</span> <br></p>
 <h4 id="internal-fluxes">Internal fluxes</h4>
-<span class="math inline">\(C_{f} &gt; C_{ds}: C_{f}\cdot y\)</span> <br><span class="math inline">\(C_{f} &gt; N: C_{f}\cdot y\cdot\left(-\alpha +\beta\right)\)</span> <br><span class="math inline">\(C_{ds} &gt; C_{s}: C_{ds}\cdot\left(- A + s\right)\)</span> <br><span class="math inline">\(C_{ds} &gt; N: C_{ds}\cdot\alpha\cdot r\)</span> <br><span class="math inline">\(C_{df} &gt; C_{s}: C_{df}\cdot s\)</span> <br><span class="math inline">\(C_{df} &gt; C_{f}: -\frac{C_{df}\cdot\alpha\cdot r}{\alpha -\beta}\)</span> <br><span class="math inline">\(N &gt; C_{f}: -\frac{N\cdot i}{\alpha -\beta}\)</span> <br><span class="math inline">\(N &gt; C_{df}: \frac{N\cdot i}{\alpha -\beta}\)</span> <br>
+<span class="math inline">\(C_{s} \rightarrow C_{ds}: A\cdot C_{ds}\)</span> <br><span class="math inline">\(C_{f} \rightarrow C_{ds}: C_{f}\cdot y\)</span> <br><span class="math inline">\(C_{f} \rightarrow N: C_{f}\cdot y\cdot\left(-\alpha +\beta\right)\)</span> <br><span class="math inline">\(C_{ds} \rightarrow C_{s}: C_{ds}\cdot s\)</span> <br><span class="math inline">\(C_{ds} \rightarrow N: C_{ds}\cdot\alpha\cdot r\)</span> <br><span class="math inline">\(C_{df} \rightarrow C_{s}: C_{df}\cdot s\)</span> <br><span class="math inline">\(C_{df} \rightarrow C_{f}: -\frac{C_{df}\cdot\alpha\cdot r}{\alpha -\beta}\)</span> <br><span class="math inline">\(N \rightarrow C_{f}: -\frac{N\cdot i}{\alpha -\beta}\)</span> <br><span class="math inline">\(N \rightarrow C_{df}: \frac{N\cdot i}{\alpha -\beta}\)</span> <br>
 </td>
 </tr>
 </tbody>
 </table>
 <h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
-<p><span class="math inline">\(\left[\begin{matrix}C_{df}\cdot s + C_{ds}\cdot\left(- A + s\right)\\-\frac{C_{df}\cdot\alpha\cdot r}{\alpha -\beta} - C_{f}\cdot y -\frac{N\cdot i}{\alpha -\beta} +\Phi_{l}\\C_{ds}\cdot\left(A - r - s\right) + C_{f}\cdot y\\C_{df}\cdot\left(\frac{\alpha\cdot r}{\alpha -\beta} - r - s\right) +\frac{N\cdot i}{\alpha -\beta}\\C_{ds}\cdot\alpha\cdot r + C_{f}\cdot y\cdot\left(-\alpha +\beta\right) - N\cdot i +\Phi_{i} -\Phi_{o} -\Phi_{up}\end{matrix}\right]\)</span></p>
+<p><span class="math inline">\(\left[\begin{matrix}- A\cdot C_{ds} + C_{df}\cdot s + C_{ds}\cdot s\\-\frac{C_{df}\cdot\alpha\cdot r}{\alpha -\beta} - C_{f}\cdot y -\frac{N\cdot i}{\alpha -\beta} +\Phi_{l}\\A\cdot C_{ds} + C_{ds}\cdot\left(- r - s\right) + C_{f}\cdot y\\C_{df}\cdot\left(\frac{\alpha\cdot r}{\alpha -\beta} - r - s\right) +\frac{N\cdot i}{\alpha -\beta}\\C_{ds}\cdot\alpha\cdot r + C_{f}\cdot y\cdot\left(-\alpha +\beta\right) - N\cdot i +\Phi_{i} -\Phi_{o} -\Phi_{up}\end{matrix}\right]\)</span></p>
 <h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
 <p><span class="math inline">\(\left[\begin{matrix}0 &amp; 0 &amp; - A + s &amp; s &amp; 0\\0 &amp; - y &amp; 0 &amp; -\frac{\alpha\cdot r}{\alpha -\beta} &amp; -\frac{i}{\alpha -\beta}\\0 &amp; y &amp; A - r - s &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp;\frac{\alpha\cdot r}{\alpha -\beta} - r - s &amp;\frac{i}{\alpha -\beta}\\0 &amp; y\cdot\left(-\alpha +\beta\right) &amp;\alpha\cdot r &amp; 0 &amp; - i\end{matrix}\right]\)</span></p>
-<h1 id="references" class="references unnumbered">References</h1>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
 <div id="ref-Fontaine2005Ecologyletters">
 <p>Fontaine, S., &amp; Barot, S. (2005). Size and functional diversity of microbe populations control plant persistence and long‐term soil carbon accumulation. <em>Ecology Letters</em>, <em>8</em>(10), 1075–1087. <a href="http://doi.org/10.1111/j.1461-0248.2005.00813.x" class="uri">http://doi.org/10.1111/j.1461-0248.2005.00813.x</a></p>
+</div>
 </div>
 </body>
 </html>

@@ -44,16 +44,21 @@ def generate_model_run_report(com=None):
 
 def defaults():
     this=Path(__file__).parents[0] #the package dir
+    tested_record_path=this.joinpath('data','tested_records')
+    # fixme mm 
+    # I would like to get rid of the Subdirectories 
+    # and rather put the information is something is a soil or 
+    # vegetation model in the yaml file.
     soilModelPath=this.joinpath("SoilModels")
-    soilModelDir=soilModelPath.as_posix()
     vegModelPath=this.joinpath("VegetationModels") 
-    vegModelDir=vegModelPath.as_posix()
-    soilMsg='generating soil model website to '
-    vegMsg='generating vegetation model website to '
+    path_dict={"veg":vegModelPath,"soil":soilModelPath,"tested_records":tested_record_path}
+    
+    dir_dict={key:value.as_posix() for key,value in path_dict.items()}
+    msg_dict={key:"generating %s model website to" % key for key in path_dict.keys()}
     return {
-         "dirs":{"veg":vegModelDir,"soil":soilModelDir}
-        ,"msgs":{"veg":vegMsg,"soil":soilMsg}
-        ,"paths":{"veg":vegModelPath,"soil":soilModelPath}
+         "dirs":dir_dict
+        ,"paths":path_dict
+        ,"msgs":msg_dict
         }
 def generate_model_run_reports(com):
     if com==None:
@@ -1151,7 +1156,8 @@ def create_single_report(yaml_file_name, target_dir):
     target_dir_path = Path(target_dir)
     
     model = Model.from_file(yaml_file_name)
-    dir_name = model.bibtex_entry.key
+    dir_name = Path(yaml_file_name).stem
+    #dir_name = model.bibtex_entry.key
     #if model.modelID: dir_name += "-" + model.modelID
     #fixme mm: I think we should avoid the modelID property
     #and ensure uniqe filenames by requesting them
