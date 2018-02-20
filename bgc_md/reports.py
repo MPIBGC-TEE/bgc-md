@@ -27,19 +27,27 @@ from bgc_md.plot_helpers import add_xhist_data_to_scatter
 from bgc_md.gv import indexcolors, filled_markers
 from CompartmentalSystems.bins.TsTpMassFieldsPerPoolPerTimeStep import TsTpMassFieldsPerPoolPerTimeStep
 from CompartmentalSystems.bins.TimeStepIterator import TimeStepIterator
-
+def common_parser():
+    parser= argparse.ArgumentParser(add_help=False)
+    parser.add_argument(
+        '-t'
+        ,'--target_dir'
+        ,type=str
+        ,default='.'
+        ,help="where to generate the html files" 
+    )
+    return parser
 #import mpld3 # interesting functionality for interactive web figures
 
-def generate_model_run_report(com=None):
-    #example_string="\nExample: %s Henin1945Annalesagronomiques.yaml" % inspect.getframeinfo(inspect.currentframe()).function
-    parser = argparse.ArgumentParser(description="Create an html report of a singel yaml file.\\n")
-
+def generate_model_run_report():
+    parser = argparse.ArgumentParser(parents=[common_parser()])
+    parser.description="Create an html report of a singel yaml file.\\n"
     parser.add_argument('path', default=None, help="The path to the yaml file containing the description of the record." )
-    parser.add_argument('-t','--target_dir', type=str,default=".", help="where to generate the html files." )
     parser.epilog= "Example: %s Henin1945Annalesagronomiques.yaml-t SoilModels/html" % parser.prog
+
     com=parser.parse_args()
     print("Creating report from " + com.path + " to " + com.target_dir)
-    create_single_report(com.path, com.target_dir)
+    create_single_report(Path(com.path), com.target_dir)
     sys.exit(0)
 
 def defaults():
@@ -60,46 +68,38 @@ def defaults():
         ,"paths":path_dict
         ,"msgs":msg_dict
         }
-def generate_model_run_reports(com):
-    if com==None:
-        com = parse_args()
+def generate_model_run_reports():
+    parser = argparse.ArgumentParser(parents=[common_parser()])
+    parser.add_argument(
+        '-s'
+        ,'--src_dir'
+        ,type=str
+        ,help="create the model website from a directory  <src_dir> containing the yaml files"
+        ,default=defaults()['dirs']['tested_records']
+    )
+    parser.description="Create model database websites."
 
-    if com.v:
-        print(defaults()['msgs']['veg'])
-        generate_html_dir(defaults()['dirs']["veg"],com.t)
-        sys.exit(0)
-
-    if com.s: 
-         print(defaults()['msgs']['soil'])
-         generate_html_dir(defaults()['dirs']['soil'],com.t)
-         sys.exit(0)
-    
-    if not(com.s or com.v): 
-    # the default: if neither -v or -s is specified build the whole website
-        print(defaults()['msgs']['veg'])
-        generate_html_dir(defaults()['dirs']['veg'],com.t)
-        print(defaults()['msgs']['soil'])
-        generate_html_dir(defaults()['dirs']['soil'],com.t)
-        sys.exit(0)
+    com = parser.parse_args()
+    generate_html_dir(com.src_dir,com.target_dir)
 
 def generate_miniaml_model_reports(com):
    pass 
 def generate_miniaml_model_report(com):
    pass 
     
-def read_models_from_directory(input_dir):
-    input_path = Path(input_dir)
-
-    if not input_path.exists():
-        raise(Exception("The input path " + input_path.as_posix() + " does not exist."))
-    
-    yaml_file_list = [f for f in input_path.iterdir() if f.suffix == ".yaml"]
-    yaml_file_name_list = [str(f) for f in yaml_file_list]
-    # fixme check if str(f) yields some os dependent path string representation
-    # if so fix it 
-    
-    model_list = [Model.from_file(yaml_file_name)  for yaml_file_name in yaml_file_name_list]
-    return(model_list)
+#def read_models_from_directory(input_dir):
+#    input_path = Path(input_dir)
+#
+#    if not input_path.exists():
+#        raise(Exception("The input path " + input_path.as_posix() + " does not exist."))
+#    
+#    yaml_file_list = [f for f in input_path.iterdir() if f.suffix == ".yaml"]
+#    yaml_file_name_list = [str(f) for f in yaml_file_list]
+#    # fixme check if str(f) yields some os dependent path string representation
+#    # if so fix it 
+#    
+#    model_list = [Model.from_file(yaml_file_name)  for yaml_file_name in yaml_file_name_list]
+#    return(model_list)
 
 
 def report_from_model(model):
@@ -716,8 +716,6 @@ def depth(expr):
 
 
 def create_model_list_report_html(model_list, output_file_name, html_dir_path):
-    # vegetation or soil models?
-    model_type = model_list[0].model_type
 
     output_path = Path(dirname(output_file_name))
     if not output_path.exists():
@@ -1122,41 +1120,35 @@ def exprs_to_element(exprs, symbols_by_type):
     return subl
 
 
-def generate_html_dir(source_dir, target_dir = None):
-    if not target_dir:
-        target_dir_path = Path(source_dir)
-    else:
-        target_dir_path = Path(target_dir)
+def generate_html_dir(src_dir, target_dir):
+
+    target_dir_path = Path(target_dir)
+    src_dir_path= Path(src_dir)
     print("Targetdirectory: "+target_dir_path.as_posix())
     
     html_dir_path = target_dir_path.joinpath("html")
     html_dir = html_dir_path.as_posix()
     
-    models = read_models_from_directory(source_dir)
-    models.sort(key=lambda m: m.bibtex_entry.entry['year'])
-    for model in models:
-        print(model.name)
-        dir_name = model.bibtex_entry.key
-        #if model.modelID: dir_name += "-" + model.modelID
-        #fixme mm: I think we should avoid the modelID property
-        #and ensure uniqe filenames by requesting them
-        sub_dir = html_dir_path.joinpath(dir_name).as_posix()
-        rel = report_from_model(model) 
-        rel.create_pandoc_dir(sub_dir)
+    #models.sort(key=lambda m: m.bibtex_entry.entry['year'])
+    rec_list=[ rec  for rec in src_dir_path.glob('*.yaml')]
+    for rec in rec_list:
+        create_single_report(rec,target_dir)
+    
+    list_file = html_dir_path.joinpath('list_report.html').as_posix()
 
-    if models[0].model_type == 'vegetation_model':
-        list_file = html_dir_path.joinpath('list_report_v.html').as_posix()
-    if models[0].model_type == 'soil_model':
-        list_file = html_dir_path.joinpath('list_report_s.html').as_posix()
+    ml=ModelList.from_dir_path(src_dir_path)
+
+    # fixme the following lines should be reimplemented in 
+    # Model list.
+    #models = read_models_from_directory(source_dir)
 
     create_model_list_report_html(models, list_file, html_dir_path)
 
 
-def create_single_report(yaml_file_name, target_dir):
+def create_single_report(yaml_file_path, target_dir):
     target_dir_path = Path(target_dir)
-    
-    model = Model.from_file(yaml_file_name)
-    dir_name = Path(yaml_file_name).stem
+    model = Model.from_path(yaml_file_path)
+    dir_name = yaml_file_path.stem
     #dir_name = model.bibtex_entry.key
     #if model.modelID: dir_name += "-" + model.modelID
     #fixme mm: I think we should avoid the modelID property
@@ -1167,21 +1159,8 @@ def create_single_report(yaml_file_name, target_dir):
     rel.create_pandoc_dir(sub_dir)
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Create model database websites.")
-    parser.add_argument('-s', action="store_true",help="create soil model website to optional -t <target_dir> , default=SoilModels")
-    parser.add_argument('-v', action="store_true",help="create vegetation model website to optional -t <target_dir>, default=VegetationModels")
-
-    parser.add_argument('-t', default=None, help="where to generate the html files. \nExample: generate_website -f Henin1945Annalesagronomiques.yaml -t SoilModels/html")
-
-    return parser.parse_args()
-
 def generate_website():
-    com = parse_args()
-    
-    generate_model_run_reports(com)
-
-
+    generate_model_run_reports()
 
     
 

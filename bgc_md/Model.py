@@ -573,6 +573,15 @@ class Model:
         model = cls.from_str(yaml_str, yaml_file_name=yaml_file_name)
         return model
     
+    @classmethod
+    def from_path(cls, yaml_file_path): 
+        with yaml_file_path.open() as f:
+            yaml_str = f.read()
+
+        model = cls.from_str(yaml_str, yaml_file_name=yaml_file_path.as_posix())
+        # fixme rather store the path object in Model instance than the filename since the path object is platform independent
+        return model
+    
 
     @property
     def state_variables(self):

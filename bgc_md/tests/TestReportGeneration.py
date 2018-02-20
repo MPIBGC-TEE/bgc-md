@@ -5,7 +5,7 @@ import sys
 from subprocess import run,CalledProcessError
 from concurrencytest import ConcurrentTestSuite, fork_for_tests
 from pathlib import Path
-from shutil import copytree
+import shutil 
 from bgc_md.Model import Model
 from testinfrastructure.InDirTest import InDirTest
 from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory, create_html_from_pandoc_md, create_html_from_pandoc_md_directory,generate_website
@@ -16,7 +16,7 @@ import bgc_md.gv as gv
 
 class TestReportGeneration(InDirTest):
 
-    def test_commandline_tools(self):
+    def test_commandline_gnerate_model_run_report(self):
         d=defaults() 
         sp=d['paths']['tested_records']
         here=Path('.')
@@ -69,43 +69,61 @@ class TestReportGeneration(InDirTest):
             ,msg="The following files caused problems %s" % str(failure_list)
         )
 
-    @unittest.skip("function under test calls report_from_yaml_str which is commented out")
-    def test_report_html_presence(self):
-    # fixme
-    # to be deprecated
-        for index, yaml_str in enumerate(self.yaml_str_list):
-            trunk = "testfile" + str(index)
-            yaml_file_name = trunk + ".yaml"
-            markdown_file_name = trunk + ".md"
-            html_file_name = trunk + ".html"
-            csl_file_name = gv.resources_path.joinpath('apa.csl').as_posix()
-            css_file_name = gv.resources_path.joinpath('buttondown.css').as_posix()
-
-            # yaml -> md, bibtex -> html
-            produce_model_report_markdown(yaml_file_name, markdown_file_name)
-            create_html_from_pandoc_md(markdown_file_name, html_file_name,
-                                        csl_file_name=csl_file_name, css_file_name=css_file_name, slide_show=False)
-            #check if the result has been produced where we expected 
-            self.assertTrue(Path(html_file_name).exists())
-
-            # yaml -> md, bibtex -> html (slide show)
-            html_file_name = trunk + "_ss.html"
-            produce_model_report_markdown(yaml_file_name, markdown_file_name)
-            create_html_from_pandoc_md(markdown_file_name, html_file_name,
-                                        csl_file_name=csl_file_name, css_file_name=css_file_name, slide_show=True)
-            #check if the result has been produced where we expected 
-            self.assertTrue(Path(html_file_name).exists())
-
-    @unittest.skip("function under test calls report_from_yaml_str which is commented out")
-    def test_report_html_presence_directory(self):
-    # fixme
-    # to be deprecated
-        csl_file_name = gv.resources_path.joinpath('apa.csl').as_posix()
-        css_file_name = gv.resources_path.joinpath('buttondown.css').as_posix()
-        produce_model_report_markdown_directory("", "md")
-        create_html_from_pandoc_md_directory("md", "html", csl_file_name=csl_file_name, css_file_name=css_file_name)
+    def test_commandline_gnerate_website(self):
+        # we create a target directory populated with only a few files and create a website from it
+        d=defaults() 
+        sp=d['paths']['tested_records']
+        src_dir_name='localDataBase'
+        src_dir_path=Path(src_dir_name)
+        src_dir_path.mkdir()
+        rec_list=[ rec  for rec in sp.glob('*.yaml')][0:1]
         
-
+        print('##################################################')
+        for rec in rec_list:
+            src=(sp.joinpath(rec)).as_posix()
+            target=(src_dir_name)
+            shutil.copy(src,src_dir_name)
+        
+        res=run(['generate_website','-s',src_dir_name],check=True )
+    
+#    @unittest.skip("function under test calls report_from_yaml_str which is commented out")
+#    def test_report_html_presence(self):
+#    # fixme
+#    # to be deprecated
+#
+#        for index, yaml_str in enumerate(self.yaml_str_list):
+#            trunk = "testfile" + str(index)
+#            yaml_file_name = trunk + ".yaml"
+#            markdown_file_name = trunk + ".md"
+#            html_file_name = trunk + ".html"
+#            csl_file_name = gv.resources_path.joinpath('apa.csl').as_posix()
+#            css_file_name = gv.resources_path.joinpath('buttondown.css').as_posix()
+#
+#            # yaml -> md, bibtex -> html
+#            produce_model_report_markdown(yaml_file_name, markdown_file_name)
+#            create_html_from_pandoc_md(markdown_file_name, html_file_name,
+#                                        csl_file_name=csl_file_name, css_file_name=css_file_name, slide_show=False)
+#            #check if the result has been produced where we expected 
+#            self.assertTrue(Path(html_file_name).exists())
+#
+#            # yaml -> md, bibtex -> html (slide show)
+#            html_file_name = trunk + "_ss.html"
+#            produce_model_report_markdown(yaml_file_name, markdown_file_name)
+#            create_html_from_pandoc_md(markdown_file_name, html_file_name,
+#                                        csl_file_name=csl_file_name, css_file_name=css_file_name, slide_show=True)
+#            #check if the result has been produced where we expected 
+#            self.assertTrue(Path(html_file_name).exists())
+#
+#    @unittest.skip("function under test calls report_from_yaml_str which is commented out")
+#    def test_report_html_presence_directory(self):
+#    # fixme
+#    # to be deprecated
+#        csl_file_name = gv.resources_path.joinpath('apa.csl').as_posix()
+#        css_file_name = gv.resources_path.joinpath('buttondown.css').as_posix()
+#        produce_model_report_markdown_directory("", "md")
+#        create_html_from_pandoc_md_directory("md", "html", csl_file_name=csl_file_name, css_file_name=css_file_name)
+#        
+#
 ####################################################################################################
 if __name__ == '__main__':
     suite=unittest.defaultTestLoader.discover(".",pattern=__file__)
