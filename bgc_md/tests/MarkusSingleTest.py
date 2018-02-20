@@ -4,6 +4,7 @@ import unittest
 #from run_tests import *
 #from bgc_md.tests.TestCompleteModelList import TestCompleteModelList
 #from bgc_md.tests.TestModel import TestModel
+from bgc_md.tests.TestModelList import TestModelList
 #from bgc_md.tests.TestStoichiometricModel import TestStoichiometricModel
 #from bgc_md.tests.TestTsTpField import TestTsTpField
 #from bgc_md.tests.TestTsTpMassFieldsPerPoolPerTimeStep import TestTsTpMassFieldsPerPoolPerTimeStep 
@@ -31,7 +32,8 @@ def suite():
     #s.addTest(TestReportGeneration("test_histogram"))
     #s.addTest(TestReportGeneration("test_commandline_tools"))
     #s.addTest(TestReportGeneration("test_commandline_gnerate_model_run_report"))
-    s.addTest(TestReportGeneration("test_commandline_gnerate_website"))
+    #s.addTest(TestReportGeneration("test_commandline_gnerate_website"))
+    s.addTest(TestModelList("test_create_overview_table"))
     #s.addTest(TestModel("test_plot_model_key_dependencies_scatter_plot"))
     #s.addTest(TestModel("test_meta_data"))
     #s.addTest(TestModel("test_reservoir_model"))

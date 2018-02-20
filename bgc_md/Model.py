@@ -553,24 +553,23 @@ def load_model_run_combinations(model_run_data, parameter_sets, initial_values, 
 class Model:
     
     @classmethod
-    def from_str(cls, yaml_str, yaml_file_name = None):
+    def from_str(cls, yaml_str, yaml_file_path= None):
         try:
              complete_dict = yaml.load(yaml_str)
         except yaml.YAMLError as ye:
             print("---------------------")
-            print(yaml_file_name)
+            print(yaml_file_path)
             print("---------------------")
             raise(ye)
             
-        model = cls(complete_dict, yaml_file_name) # call to __init__
+        model = cls(complete_dict, yaml_file_path) # call to __init__
         return(model)
 
     @classmethod
     def from_file(cls, yaml_file_name): 
-        with open(yaml_file_name) as f:
-            yaml_str = f.read()
-
-        model = cls.from_str(yaml_str, yaml_file_name=yaml_file_name)
+        yaml_file_path=Path(yaml_file_name)
+        odel = cls.from_path(yaml_str,yaml_file_path)
+    
         return model
     
     @classmethod
@@ -578,7 +577,7 @@ class Model:
         with yaml_file_path.open() as f:
             yaml_str = f.read()
 
-        model = cls.from_str(yaml_str, yaml_file_name=yaml_file_path.as_posix())
+        model = cls.from_str(yaml_str, yaml_file_path)
         # fixme rather store the path object in Model instance than the filename since the path object is platform independent
         return model
     
@@ -687,8 +686,8 @@ class Model:
         return(selected_names)
 	
 
-    def __init__(self, complete_dict, yaml_file_name = None):
-        self.yaml_file_name = yaml_file_name
+    def __init__(self, complete_dict, yaml_file_path= None):
+        self.yaml_file_path= yaml_file_path
         try:
             self.complete_dict, self.modelID = load_complete_dict_and_id(complete_dict)
             self.bibtex_entry = load_bibtex_entry(self.complete_dict)

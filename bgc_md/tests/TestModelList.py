@@ -5,11 +5,13 @@ import sys
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-
+import shutil
+from pathlib import Path
 from concurrencytest import ConcurrentTestSuite, fork_for_tests
 from bgc_md.IncompleteModel import IncompleteModel
 from bgc_md.Model import Model, load_complete_dict_and_id, load_bibtex_entry, load_abstract, load_further_references, load_reviews, load_sections_and_titles, load_df, load_expressions_and_symbols, section_subdict, load_model_run_data, load_parameter_sets, load_initial_values, check_parameter_set_valid, check_parameter_sets_valid, check_parameter_set_complete, check_initial_values_set_valid, check_initial_values_complete, load_run_times, load_model_run_combinations, YamlException
 from bgc_md.ModelList import ModelList
+from bgc_md.reports import  defaults
 
 from testinfrastructure.InDirTest import InDirTest
 class TestModelList(InDirTest):
@@ -101,6 +103,29 @@ class TestModelList(InDirTest):
         #self.assertEqual(ref,res)
 
 
+    def test_create_overview_table(self):
+        # we create a target directory populated with only a few files and create a website from it
+        d=defaults() 
+        sp=d['paths']['tested_records']
+        src_dir_name='localDataBase'
+        src_dir_path=Path(src_dir_name)
+        src_dir_path.mkdir()
+        rec_list=[ rec  for rec in sp.glob('*.yaml')][0:1]
+        
+        for rec in rec_list:
+            print(rec)
+            src=(sp.joinpath(rec)).as_posix()
+            target=(src_dir_name)
+            shutil.copy(src,src_dir_name)
+         
+        ml=ModelList.from_dir_path(src_dir_path)
+        target_dir_path=Path('.').joinpath('html')
+        targetFileName='table.html'
+        ml.create_overview_report(target_dir_path,targetFileName)
+        targetPath=target_dir_path.joinpath(targetFileName)
+        print(targetPath)
+        self.assertTrue(targetPath.exists())
+        
 
 
 ####################################################################################################

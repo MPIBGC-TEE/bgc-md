@@ -80,6 +80,7 @@ class TestReportGeneration(InDirTest):
         
         print('##################################################')
         for rec in rec_list:
+            print(rec)
             src=(sp.joinpath(rec)).as_posix()
             target=(src_dir_name)
             shutil.copy(src,src_dir_name)
