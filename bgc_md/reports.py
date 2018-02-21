@@ -104,7 +104,7 @@ def report_from_model(model):
         #plt.show(logofig)
         #print('Logo printed')
 
-    rel+= Text(r"This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by $curator (Orcid ID: $Oid) on $entryDate, and was last modified on $modDate." + "\n",
+    rel+= Text(r"This report is the result of the use of the python package bgc_md , as means to translate published models to a common language. It was created by $curator (Orcid ID: $Oid) on $entryDate, and was last modified on $modDate." + "\n",
             curator=model.entryAuthor,
             entryDate=model.entry_creation_date,
             modDate=model.last_modification_date,
@@ -659,38 +659,7 @@ def create_html_from_pandoc_md_directory(input_dir, output_dir, csl_file_name = 
     create_html_from_pandoc_md(md_file_name_list, html_file_name_list, csl_file_name=csl_file_name, css_file_name=css_file_name, slide_show=slide_show)
 
 
-#fixme: probably working through side effects
-def nice_hist(ax, data):
-    bins = [i for i in range(min(data),max(data)+2,1)]
-    his = np.histogram(data,bins=bins)
-    ax.bar(his[1][:-1],his[0], width=1.0, align='center', color='g', alpha=0.75)
-    ax.set_xticks(bins[:-1])
-#    plt.xticks(bins[:-1], bins[:-1])
-    ax.set_yticks(range(max(his[0])+1))
-#    ax.hist(data, number_of_bins, normed=0, histtype='bar', facecolor='g', alpha=0.75)
-    ax.set_xlim([bins[0]-0.5, bins[-1]-0.5])
-    locator = MaxNLocator(nbins=10, integer=True)
-    ax.xaxis.set_major_locator(locator)
 
-
-def add_yhist_data_to_scatter(plot_ax, data, label, fontsize, show_grid = True):
-    # add right y-axis with histogram data
-
-    # add second y-axis at the right
-    ax = plot_ax.twinx()
-    ax.set_position(plot_ax.get_position())
-    ax.set_ylim(plot_ax.get_ylim())
-
-    # prepare data
-    bins = [i for i in range(min(data),max(data)+2,1)]
-    hisy = np.histogram(data,bins=bins)
-
-    y2_ticks = [hisy[1][i] for i in range(len(hisy[0])) if hisy[0][i] != 0]
-    y2_ticklabels = [hisy[0][i] for i in range (len(hisy[0])) if hisy[0][i] !=0]
-    ax.set_yticks(y2_ticks)
-    ax.set_yticklabels(y2_ticklabels, fontsize=fontsize)
-    ax.set_ylabel(label, fontsize=fontsize)
-    ax.grid(show_grid)
 
 
 

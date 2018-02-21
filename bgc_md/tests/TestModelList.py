@@ -74,6 +74,7 @@ class TestModelList(InDirTest):
         
         self.ml=ModelList([model_0,model_1])
 
+####################################################################################################
     def test_plot_model_key_dependencies_scatter_plot(self):
         ml=self.ml
         fig = plt.figure()
@@ -84,6 +85,7 @@ class TestModelList(InDirTest):
         fig.savefig("plot.pdf")
         plt.close(fig.number)
         
+####################################################################################################
     @unittest.skip("the Models are too small and lack information needed for the plots")
     def test_scatter_plus_hist_nr_vars_vs_nr_ops(self):
         ml=self.ml
@@ -103,8 +105,34 @@ class TestModelList(InDirTest):
         #self.assertEqual(ref,res)
 
 
+####################################################################################################
+    def test_create_overview_report(self):
+        # we create a target directory populated with only a few files and create a overview html from it
+        d=defaults() 
+        sp=d['paths']['tested_records']
+        src_dir_name='localDataBase'
+        src_dir_path=Path(src_dir_name)
+        src_dir_path.mkdir()
+        rec_list=[ rec  for rec in sp.glob('*.yaml')][0:2]
+        
+        for rec in rec_list:
+            print(rec)
+            src=(sp.joinpath(rec)).as_posix()
+            target=(src_dir_name)
+            shutil.copy(src,src_dir_name)
+         
+        ml=ModelList.from_dir_path(src_dir_path)
+        target_dir_path=Path('.').joinpath('html')
+        targetFileName='overview.html'
+        ml.create_overview_report(target_dir_path,targetFileName)
+        targetPath=target_dir_path.joinpath(targetFileName)
+        print(targetPath)
+        self.assertTrue(targetPath.exists())
+        
+
+####################################################################################################
     def test_create_overview_table(self):
-        # we create a target directory populated with only a few files and create a website from it
+        # we create a target directory populated with only a few files and create a overview html from it
         d=defaults() 
         sp=d['paths']['tested_records']
         src_dir_name='localDataBase'
@@ -121,12 +149,10 @@ class TestModelList(InDirTest):
         ml=ModelList.from_dir_path(src_dir_path)
         target_dir_path=Path('.').joinpath('html')
         targetFileName='table.html'
-        ml.create_overview_report(target_dir_path,targetFileName)
+        ml.create_overview_table(target_dir_path,targetFileName)
         targetPath=target_dir_path.joinpath(targetFileName)
         print(targetPath)
         self.assertTrue(targetPath.exists())
-        
-
 
 ####################################################################################################
 if __name__ == '__main__':

@@ -583,6 +583,14 @@ class Model:
     
 
     @property
+    def nr_state_v(self):
+        nr_state_v = 0
+        for sec in self.sections:
+            if sec == "state_variables":
+                nr_state_v = self.section_vars('state_variables').nrow
+        return nr_state_v
+
+    @property
     def state_variables(self):
         return(self.section_vars("state_variables").get_column("name"))
 

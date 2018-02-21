@@ -17,7 +17,7 @@ from . import bibtexc
 from . import gv
 
 class ReportElementList(list):
-    def __init__(self,ListOfObjects):
+    def __init__(self,ListOfObjects=[]):
         #use the init method of list to initialize an empty ReportElementList
         super().__init__()
         for obj in ListOfObjects:

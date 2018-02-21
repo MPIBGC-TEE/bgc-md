@@ -16,6 +16,39 @@ from bgc_md.helpers import py2tex_silent, key_from_dict_by_value
 
 from .DataFrame import DataFrame
 
+def add_yhist_data_to_scatter(plot_ax, data, label, fontsize, show_grid = True):
+    # add right y-axis with histogram data
+
+    # add second y-axis at the right
+    ax = plot_ax.twinx()
+    ax.set_position(plot_ax.get_position())
+    ax.set_ylim(plot_ax.get_ylim())
+
+    # prepare data
+    bins = [i for i in range(min(data),max(data)+2,1)]
+    hisy = np.histogram(data,bins=bins)
+
+    y2_ticks = [hisy[1][i] for i in range(len(hisy[0])) if hisy[0][i] != 0]
+    y2_ticklabels = [hisy[0][i] for i in range (len(hisy[0])) if hisy[0][i] !=0]
+    ax.set_yticks(y2_ticks)
+    ax.set_yticklabels(y2_ticklabels, fontsize=fontsize)
+    ax.set_ylabel(label, fontsize=fontsize)
+    ax.grid(show_grid)
+
+
+#fixme: probably working through side effects
+def nice_hist(ax, data):
+    bins = [i for i in range(min(data),max(data)+2,1)]
+    his = np.histogram(data,bins=bins)
+    ax.bar(his[1][:-1],his[0], width=1.0, align='center', color='g', alpha=0.75)
+    ax.set_xticks(bins[:-1])
+#    plt.xticks(bins[:-1], bins[:-1])
+    ax.set_yticks(range(max(his[0])+1))
+#    ax.hist(data, number_of_bins, normed=0, histtype='bar', facecolor='g', alpha=0.75)
+    ax.set_xlim([bins[0]-0.5, bins[-1]-0.5])
+    locator = MaxNLocator(nbins=10, integer=True)
+    ax.xaxis.set_major_locator(locator)
+
 def dict_plot(hist_dict,ax):
     x=np.arange(len(hist_dict))
     y=hist_dict.values()
@@ -207,22 +240,30 @@ class ModelList(list):
         add_xhist_data_to_scatter(ax, xdata, '# models', fontsize=xhist_fs)
     #    add_yhist_data_to_scatter(ax, ydata, '# models')
         
+    
+    
     def create_overview_table(self, target_dir_path):
         # fixme mm:
-        # this method offensively misuses the class ReportElementList by 
-        # putting html code directly into the report elements 
-        # which defeats their purpose  of creating transformable output.
+        #   This method offensively misuses the class ReportElementList by 
+        #   putting html code directly into the report elements 
+        #   which defeats their purpose  of creating transformable output.
+        #   It also writes files directly so it works throu side effects
 
-        # Either 
-        # 1.) 
-        # we abandon the proposed multiformat approach by creating 
-        # html only and do not use the ReportElementList here or we  
+        #   Either 
+        #   1.) 
+        #   we abandon the proposed multiformat approach by creating 
+        #   html only and do not use the ReportElementList here or we  
         #
-        # 2.)
-        # implement a table reportElement that is rich enough 
-        # to show what we want. In this case the html goes into the
-        # write_html method of the table and is replaced here by 
-        # the general format of the reportElement syntax.
+        #   2.)
+        #   implement a table reportElement that is rich enough 
+        #   to show what we want. In this case the html goes into the
+        #   write_html method of the table and is replaced here by 
+        #   the general format of the reportElement syntax.
+        #
+        # fixme mm:
+        #  This method links to the Model reports and assumes that they live in
+        #  directories named after the models and contain a Report.html
+        #  this information is duplicated in the per Model report code.
 
         header = [Text(""), Text("Model"), Text("# Variables"), Text("# Parameters"), Text("# Constants"), Text("Component"), Text("Description"), Text("Expressions"), Text("fv/fs"), Text("Right hand side of ODE"), Text("Source")]
         table_format = list("lcccclcccl")
@@ -245,18 +286,14 @@ class ModelList(list):
         T = Table("Summary of the models in the database of Carbon Allocation in Vegetation models", header_row, table_format)
     
         compar_keys=["state_vector_derivative"]
-        plot_data = DataFrame([['name', 'nr_sv', 'nr_sym', 'nr_exprs', 'nr_ops', 'depth','nr_vars','nr_parms','part_scheme','s_scale','t_resol']+compar_keys])
+        #plot_data = DataFrame([['name', 'nr_sv', 'nr_sym', 'nr_exprs', 'nr_ops', 'depth','nr_vars','nr_parms','part_scheme','s_scale','t_resol']+compar_keys])
         print('##################################################')
         for index, model in enumerate(self):
             print(type(model))
             print(model.name)
             # collect data for plots
-            data_list = [model.name]
+            #data_list = [model.name]
     
-            nr_state_v = 0
-            for sec in model.sections:
-                if sec == "state_variables":
-                    nr_state_v = model.section_vars('state_variables').nrow
             
             ops = 0
             d = 0
@@ -272,13 +309,14 @@ class ModelList(list):
                 boolean_part_scheme = 1
             state_vector_derivative_dep_set={"faked_key","another_faked_key"}
     
-            data_list += [nr_state_v, len(model.syms_dict), len(model.exprs_dict), ops, d,len(model.variables),len(model.parameters),boolean_part_scheme,model.space_scale,model.time_resolution,state_vector_derivative_dep_set]
-            plot_data.append_row(data_list)
+            #data_list += [nr_state_v, len(model.syms_dict), len(model.exprs_dict), ops, d,len(model.variables),len(model.parameters),boolean_part_scheme,model.space_scale,model.time_resolution,state_vector_derivative_dep_set]
+            #plot_data.append_row(data_list)
             
             # create table
             dir_name = model.yaml_file_path.stem
             dir_path =target_dir_path.joinpath(dir_name)
-            report_link = dir_path.joinpath("Report.html").as_posix()
+            # the link is relative to target dir since this file is created there 
+            report_link = str(dir_path.relative_to(target_dir_path).joinpath("Report.html"))
     
             l = [Text(model.name)]         
             rel2 += Text('<tbody>\n')
@@ -290,11 +328,13 @@ class ModelList(list):
             if reservoir_model:
                 if not dir_path.exists():
                     dir_path.mkdir()
-                image_file_path = dir_path.joinpath("Thumbnail.svg")
+                image_file_name="Thumbnail.svg"
+                image_file_path = dir_path.joinpath(image_file_name)
                 fig = reservoir_model.figure(thumbnail=True)
                 fig.savefig(image_file_path.as_posix(), transparent=True)
                 plt.close(fig)
-                image_string = '<img src="' + image_file_path.as_posix() + '"> '
+                # the link is relative to target dir since thi file is created there 
+                image_string = '<img src="' + str(image_file_path.relative_to(target_dir_path)) + '"> '
     
             rel2 += Text('<td align="left">$image_string</td>', image_string=image_string)
             rel2 += Text('<td align="left"><a href="$rl" target="_blank">$mn</a></td>\n', rl=report_link, mn=model.name)
@@ -363,7 +403,167 @@ class ModelList(list):
         rel2 += Text("</tbody>\n</table>\n")
         return rel2
     
+    def create_scatter_plot_symbols_operations(self):
+        rel=ReportElementList()
+        fig = plt.figure(figsize=(15,10))
     
+        ax = fig.add_subplot(1,1,1)
+        self.scatter_plus_hist_nr_vars_vs_nr_ops(ax)
+        #if model_type == 'soil_model':
+        #    ax.set_ylabel(' operations to calculate $\mathbf{f}_s(\mathbf{C},t)$', fontsize = 22)
+        ax.set_ylabel(' operations to calculate Right hand side of ODE', fontsize = 22)
+        rel += MatplotlibFigure(fig,"Figure 4b", "# variables & # operations")
+        return rel
+    
+
+    def create_scatter_plot_symbols_depth_of_operations(self):
+        
+        fig = plt.figure(figsize=(10,10)) # figure size including legend
+    
+        ax = fig.add_subplot(1,1,1)
+        xdata = np.array(plot_data[:,'nr_vars'])
+        ydata = np.array(plot_data[:,'depth'])
+    
+        for i in range(plot_data.nrow):
+            ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
+    
+        box = ax.get_position()
+        ax.set_position([box.x0, box.y0+box.height*0.4, box.width, box.height*0.6])
+        ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
+    #    ax.legend(loc='lower center', scatterpoints=1, frameon = False, ncol = 2)
+        ax.set_xlabel("# variables", fontsize = "22",  labelpad=20)
+        if model_type == 'vegetation_model':
+            ax.set_ylabel('cascading depth of operations\n' + r'to calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = 22)
+        if model_type == 'soil_model':
+            ax.set_ylabel('cascading depth of operations\n' + r'to calculate $\mathbf{f}_s(\mathbf{C},t)$', fontsize = 22)
+    
+        ax.set_ylim((0,max(ydata)+1))
+    
+        # change font size for the tick labels
+        for tick in ax.xaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+        for tick in ax.yaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+    
+        add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=xhist_fs)
+        add_yhist_data_to_scatter(ax, ydata, ' models', fontsize=yhist_fs)
+        plt.rcdefaults()
+        rel += MatplotlibFigure(fig,"Figure 5", "# variables & cascading depth of operations")
+        return rel
+
+    def create_scatter_plot_variables_parameters(self):
+        rel=ReportElementList()
+        plot_data = DataFrame([['name','nr_vars','nr_parms']])
+        for index, model in enumerate(self):
+            data_list = [model.name,len(model.variables),len(model.parameters)]
+            plot_data.append_row(data_list)
+        
+        xhist_fs = 16
+        yhist_fs = 16
+    
+        # variables vs. parameters
+        fig = plt.figure(figsize=(10,10))
+    
+        ax = fig.add_subplot(1,1,1)
+        xdata = np.array(plot_data[:,'nr_vars'])
+        ydata = np.array(plot_data[:,'nr_parms'])
+    
+        for i in range(plot_data.nrow):
+            #ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], c=indexcolors[i+20])
+            ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
+    
+        box = ax.get_position()
+        ax.set_position([box.x0, box.y0+box.height*0.4, box.width, box.height*0.6])
+        ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
+        ax.set_xlabel("# variables", fontsize = "22",  labelpad=20)
+        ax.set_ylabel("# parameters", fontsize = "22",  labelpad=20)
+        ax.set_ylim((0,max(ydata)+1))
+    
+        # change font size for the tick labels
+        for tick in ax.xaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+        for tick in ax.yaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+    
+        add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=xhist_fs)
+        add_yhist_data_to_scatter(ax, ydata, ' models', fontsize=yhist_fs)
+    
+        rel += MatplotlibFigure(fig,"Figure 4", "# variables & parameters")
+        return rel
+    
+    def create_state_variable_parameter_variable_histograms(self):
+        rel=ReportElementList()
+        # first line of histograms
+        nr_hist = 3
+        fig1 = plt.figure(figsize=(15,5), tight_layout=True)
+        plot_data = DataFrame([['name', 'nr_sv', 'nr_vars','nr_parms']])
+        for index, model in enumerate(self):
+            data_list = [model.name,model.nr_state_v,len(model.variables),len(model.parameters)]
+            plot_data.append_row(data_list)
+        # state variables and models
+        ax = fig1.add_subplot(1, nr_hist, 1)
+        data = np.array(plot_data[:,'nr_sv'])
+        nice_hist(ax, data)
+        ax.set_xlabel("# state variables", fontsize = "22",  labelpad=20)
+        ax.set_ylabel("# models", fontsize = "22",  labelpad=20)
+        # change font size for the tick labels
+        for tick in ax.xaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+        for tick in ax.yaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+    
+        # parameters and models
+        ax = fig1.add_subplot(1, nr_hist, 2)
+        data = np.array(plot_data[:,'nr_parms'])
+        nice_hist(ax, data)
+        ax.set_xlabel("# parameters", fontsize = "22",  labelpad=20)
+        ax.set_ylabel("# models", fontsize = "22",  labelpad=20)
+         
+        for tick in ax.xaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+        for tick in ax.yaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+    
+        # variables and models
+        ax = fig1.add_subplot(1, nr_hist, 3)
+        data = np.array(plot_data[:,'nr_vars'])
+        nice_hist(ax, data)
+        ax.set_xlabel("# variables", fontsize = "22",  labelpad=20)
+        ax.set_ylabel("# models", fontsize = "22",  labelpad=20)
+    
+        for tick in ax.xaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+        for tick in ax.yaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+    
+        # variables and models
+        #rel += Text(mpld3.fig_to_html(fig1))
+        rel += MatplotlibFigure(fig1,"Figure 1","Histograms, # variables") 
+    
+        # # second line 
+        # target_key="state_vector_derivative"
+        # sublist=ModelList([m for m in model_list if m.has_key(target_key)])
+        # nr_hist = 2
+        # fig1 = plt.figure(figsize=(30,15), tight_layout=True)
+        # ax = fig1.add_subplot(nr_hist,1,1)
+        # # first check wich models actually provide the target_key we are looking for
+        # sublist.plot_dependencies(target_key,ax)
+        # ax = fig1.add_subplot(nr_hist,1,2)
+        # sublist.plot_model_key_dependencies_scatter_plot(target_key,ax)
+        #
+        # rel += MatplotlibFigure(fig1,"Figure 2","Dependencies of the right hand side of the ODEs") 
+        #
+        # fig1 = plt.figure(figsize=(30,1), tight_layout=True) 
+        # plt.rcdefaults()
+        # # note that the second argument 1 in figsize is required by matplotlib 
+        # # but ignored by the following method because the 
+        # # height will be adapted inside the method
+        #
+        # ModelList(model_list).denpendency_plots_from_keys_in_compartments(fig1)
+        # rel += MatplotlibFigure(fig1,"Figure 3","dependency plots of compartment variables") 
+        return rel
+    #
+        
     def create_overview_report(self, target_dir_path=Path('.'),output_file_name='list_report.html'):
         output_path = target_dir_path.joinpath(output_file_name)
         if not target_dir_path.exists():
@@ -371,153 +571,28 @@ class ModelList(list):
     
         rel = Header('Overview of the models', 1)
     
+        #fixme mm:
+        # the fact thet the following mehtod has a target_dir_path argument
+        # points to it having side effects
         rel += self.create_overview_table(target_dir_path)
     
         ## create the plots
     
-        #rel += Header("Figures", 1)
+        rel += Header("Figures", 1)
+        rel += self.create_state_variable_parameter_variable_histograms()
     
-        ## first line of histograms
-        #nr_hist = 3
-        #fig1 = plt.figure(figsize=(15,5), tight_layout=True)
+        #plot_data = DataFrame([['name', 'nr_sv', 'nr_sym', 'nr_exprs', 'nr_ops', 'depth','nr_vars','nr_parms','part_scheme','s_scale','t_resol']+compar_keys])
     
-        ## state variables and models
-        #ax = fig1.add_subplot(1, nr_hist, 1)
-        #data = np.array(plot_data[:,'nr_sv'])
-        #nice_hist(ax, data)
-        #ax.set_xlabel("# state variables", fontsize = "22",  labelpad=20)
-        #ax.set_ylabel("# models", fontsize = "22",  labelpad=20)
-        ## change font size for the tick labels
-        #for tick in ax.xaxis.get_major_ticks():
-        #    tick.label.set_fontsize(20) 
-        #for tick in ax.yaxis.get_major_ticks():
-        #    tick.label.set_fontsize(20) 
-    
-        ## parameters and models
-        #ax = fig1.add_subplot(1, nr_hist, 2)
-        #data = np.array(plot_data[:,'nr_parms'])
-        #nice_hist(ax, data)
-        #ax.set_xlabel("# parameters", fontsize = "22",  labelpad=20)
-        #ax.set_ylabel("# models", fontsize = "22",  labelpad=20)
-        # 
-        #for tick in ax.xaxis.get_major_ticks():
-        #    tick.label.set_fontsize(20) 
-        #for tick in ax.yaxis.get_major_ticks():
-        #    tick.label.set_fontsize(20) 
-    
-        ## variables and models
-        #ax = fig1.add_subplot(1, nr_hist, 3)
-        #data = np.array(plot_data[:,'nr_vars'])
-        #nice_hist(ax, data)
-        #ax.set_xlabel("# variables", fontsize = "22",  labelpad=20)
-        #ax.set_ylabel("# models", fontsize = "22",  labelpad=20)
-    
-        #for tick in ax.xaxis.get_major_ticks():
-        #    tick.label.set_fontsize(20) 
-        #for tick in ax.yaxis.get_major_ticks():
-        #    tick.label.set_fontsize(20) 
-    
-        ## variables and models
-        ##rel += Text(mpld3.fig_to_html(fig1))
-        #rel += MatplotlibFigure(fig1,"Figure 1","Histograms, # variables") 
-    
-    #   # # second line 
-    #   # target_key="state_vector_derivative"
-    #   # sublist=ModelList([m for m in model_list if m.has_key(target_key)])
-    #   # nr_hist = 2
-    #   # fig1 = plt.figure(figsize=(30,15), tight_layout=True)
-    #   # ax = fig1.add_subplot(nr_hist,1,1)
-    #   # # first check wich models actually provide the target_key we are looking for
-    #   # sublist.plot_dependencies(target_key,ax)
-    #   # ax = fig1.add_subplot(nr_hist,1,2)
-    #   # sublist.plot_model_key_dependencies_scatter_plot(target_key,ax)
-    #
-    #   # rel += MatplotlibFigure(fig1,"Figure 2","Dependencies of the right hand side of the ODEs") 
-    #
-    #   # fig1 = plt.figure(figsize=(30,1), tight_layout=True) 
-    #   # plt.rcdefaults()
-    #   # # note that the second argument 1 in figsize is required by matplotlib 
-    #   # # but ignored by the following method because the 
-    #   # # height will be adapted inside the method
-    #
-    #   # ModelList(model_list).denpendency_plots_from_keys_in_compartments(fig1)
-    #   # rel += MatplotlibFigure(fig1,"Figure 3","dependency plots of compartment variables") 
-    #
-    
-        ## scatter plots
-        #xhist_fs = 16
-        #yhist_fs = 16
-    
-        ## variables vs. parameters
-        #fig = plt.figure(figsize=(10,10))
-    
-        #ax = fig.add_subplot(1,1,1)
-        #xdata = np.array(plot_data[:,'nr_vars'])
-        #ydata = np.array(plot_data[:,'nr_parms'])
-    
-        #for i in range(plot_data.nrow):
-        #    #ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], c=indexcolors[i+20])
-        #    ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
-    
-        #box = ax.get_position()
-        #ax.set_position([box.x0, box.y0+box.height*0.4, box.width, box.height*0.6])
-        #ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
-        #ax.set_xlabel("# variables", fontsize = "22",  labelpad=20)
-        #ax.set_ylabel("# parameters", fontsize = "22",  labelpad=20)
-        #ax.set_ylim((0,max(ydata)+1))
-    
-        ## change font size for the tick labels
-        #for tick in ax.xaxis.get_major_ticks():
-        #    tick.label.set_fontsize(20) 
-        #for tick in ax.yaxis.get_major_ticks():
-        #    tick.label.set_fontsize(20) 
-    
-        #add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=xhist_fs)
-        #add_yhist_data_to_scatter(ax, ydata, ' models', fontsize=yhist_fs)
-    
-        #rel += MatplotlibFigure(fig,"Figure 4", "# variables & parameters")
+            #data_list += [nr_state_v, len(model.syms_dict), len(model.exprs_dict), ops, d,len(model.variables),len(model.parameters),boolean_part_scheme,model.space_scale,model.time_resolution,state_vector_derivative_dep_set]
+
+        # scatter plots
+        rel +=self.create_scatter_plot_variables_parameters()
     
         ## symbols and operations
-        #fig = plt.figure(figsize=(15,10))
-    
-        #ax = fig.add_subplot(1,1,1)
-        #ModelList(model_list).scatter_plus_hist_nr_vars_vs_nr_ops(ax)
-        #if model_type == 'soil_model':
-        #    ax.set_ylabel(' operations to calculate $\mathbf{f}_s(\mathbf{C},t)$', fontsize = 22)
-        #rel += MatplotlibFigure(fig,"Figure 4b", "# variables & # operations")
+        rel +=self.create_scatter_plot_symbols_operations()
     
         ## symbols and depth of operations
-        #fig = plt.figure(figsize=(10,10)) # figure size including legend
-    
-        #ax = fig.add_subplot(1,1,1)
-        #xdata = np.array(plot_data[:,'nr_vars'])
-        #ydata = np.array(plot_data[:,'depth'])
-    
-        #for i in range(plot_data.nrow):
-        #    ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
-    
-        #box = ax.get_position()
-        #ax.set_position([box.x0, box.y0+box.height*0.4, box.width, box.height*0.6])
-        #ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
-    #   # ax.legend(loc='lower center', scatterpoints=1, frameon = False, ncol = 2)
-        #ax.set_xlabel("# variables", fontsize = "22",  labelpad=20)
-        #if model_type == 'vegetation_model':
-        #    ax.set_ylabel('cascading depth of operations\n' + r'to calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = 22)
-        #if model_type == 'soil_model':
-        #    ax.set_ylabel('cascading depth of operations\n' + r'to calculate $\mathbf{f}_s(\mathbf{C},t)$', fontsize = 22)
-    
-        #ax.set_ylim((0,max(ydata)+1))
-    
-        ## change font size for the tick labels
-        #for tick in ax.xaxis.get_major_ticks():
-        #    tick.label.set_fontsize(20) 
-        #for tick in ax.yaxis.get_major_ticks():
-        #    tick.label.set_fontsize(20) 
-    
-        #add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=xhist_fs)
-        #add_yhist_data_to_scatter(ax, ydata, ' models', fontsize=yhist_fs)
-        #plt.rcdefaults()
-        #rel += MatplotlibFigure(fig,"Figure 5", "# variables & cascading depth of operations")
+        rel +=self.create_scatter_plot_symbols_depth_of_operations()
     
        
         ## number of operations and depth of operations

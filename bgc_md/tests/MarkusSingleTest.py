@@ -33,7 +33,7 @@ def suite():
     #s.addTest(TestReportGeneration("test_commandline_tools"))
     #s.addTest(TestReportGeneration("test_commandline_gnerate_model_run_report"))
     #s.addTest(TestReportGeneration("test_commandline_gnerate_website"))
-    s.addTest(TestModelList("test_create_overview_table"))
+    s.addTest(TestModelList("test_create_overview_report"))
     #s.addTest(TestModel("test_plot_model_key_dependencies_scatter_plot"))
     #s.addTest(TestModel("test_meta_data"))
     #s.addTest(TestModel("test_reservoir_model"))
