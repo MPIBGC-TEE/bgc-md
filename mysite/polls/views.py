@@ -4,9 +4,19 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
+from django.views import generic
 from django.shortcuts import render,get_object_or_404
 from .models import Choice,Question
 
+class IndexView(generic.ListView):
+    #template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+    def get_queryset(self):
+        """Return the last five puplished questions."""
+        return Question.objects.order_by('-pub_date')[:5]
+
+def model_table(request):
+   return HttpResponse('Test') 
 
 def index(request):
 	latest_question_list=Question.objects.order_by('-pub_date')[:5]
