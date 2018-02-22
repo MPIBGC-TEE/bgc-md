@@ -47,7 +47,7 @@ def generate_model_run_report():
 
     com=parser.parse_args()
     print("Creating report from " + com.path + " to " + com.target_dir)
-    create_single_report(Path(com.path), com.target_dir)
+    create_single_report(Path(com.path), Path(com.target_dir))
     sys.exit(0)
 
 def defaults():
