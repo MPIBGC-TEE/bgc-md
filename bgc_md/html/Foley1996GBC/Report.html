@@ -1,0 +1,553 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: IBIS, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: IBIS, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 26/1/2016, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Foley et al. (1996)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>Here we present a new terrestrial biosphere model (the Integrate BIosphere Simulator - IBIS) which demonstrates how land surface biophysics, terrestrial carson fluxes, and global vegetation dynamics can be represented in a single, physically consistent modeling framework. In order to integreate a wide range of biophysical, physiological, and ecological processes, the model is designed around a hierachical, modular structure and uses a common state description throughout. First a coupled simulation of the surface water, energy, and carbon fluxes is performed on hourly timesteps and is integrated over the year to estimate the annual water and carbon balance. Next, the annual carbon balance is used to predict changes in the leaf area index and biomass for each of nine plant functional types, which compete for light and water using different ecological strategies. The resulting patterns of annual evapotranspiration, runoff and net primary productivity are in good agreement with obeservations. I naddition, the model simulates patterns of vegetation dynamics that qualitatively agree with features of te natural processes of secondary succession. Comparison of the model's inferred near-equilibrium vegetation categories with a potential natural vegetation map shows a fair degree of agreement. This integrated modeling framework provides a means simulating both rapid biophysical processes and long-term ecosystem dynamics that can be directly incroporated within atmospheric models.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global</p>
+<h3 id="available-parameter-values">Available parameter values</h3>
+<table>
+<caption>Information on given parameter sets</caption>
+<thead>
+<tr class="header">
+<th align="left">Abbreviation</th>
+<th align="left">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Tropical evergreen trees</td>
+<td align="left"><span class="citation">Foley et al. (1996)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{il}\)</span></td>
+<td align="left">Carbon in leaves of plant functional type (PFT) i</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{is}\)</span></td>
+<td align="left">Carbon in transport tissue (mainly stems) of PFT<span class="math inline">\(_{i}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{ir}\)</span></td>
+<td align="left">Carbon in fine roots of PFT<span class="math inline">\(_{i}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="photosynthesis-and-respiration">Photosynthesis And Respiration</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:65%;">
+<caption>Information on Photosynthesis And Respiration</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+<th align="center">Values <br> <br>Tropical evergreen trees</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(t\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(s?\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(Q_{p}\)</span></td>
+<td align="left">Flux density of photosynthetically acive radiation absorbed by the leaf</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(Einstein\cdot m^{-2}\cdot s^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\alpha_{3}\)</span></td>
+<td align="left">Intrinsic quantum efficiency for CO_2 uptake in C_3 plants</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(mol CO_2\cdot Einstein^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\alpha_{4}\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(O_{2}\)</span></td>
+<td align="left">Atmospheric [O_2] (value: 0.209)</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(mol\cdot mol^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\tau\)</span></td>
+<td align="left">Ratio of kinetic parameters decribing the partitioning of enzyme activity to carboxylase or oxygenase function</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\Gamma\)</span></td>
+<td align="left">Gamma^* is the compensation point for gross photosynthesis</td>
+<td align="center"><span class="math inline">\(\Gamma=\frac{O_{2}}{2\cdot \tau}\)</span></td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(mol\cdot mol^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{i}\)</span></td>
+<td align="left">[CO_2] in the intercellular air spaces of the leaf</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(mol\cdot mol^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(J_{e}\)</span></td>
+<td align="left">Light-limited rate of photoynthesis</td>
+<td align="center"><span class="math inline">\(J_{e}=\alpha_{3}\cdot Q_{p}\cdot \frac{C_{i}-\Gamma}{C_{i}+2\cdot \Gamma}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(J_{e4}\)</span></td>
+<td align="left">Rubisco-limited rate of photosynthesis (C4 plants)</td>
+<td align="center"><span class="math inline">\(J_{e4}=V_{m}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(V_{m}\)</span></td>
+<td align="left">Maximum capacity of Rubisco to perform the carboxylase fuction</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(mol CO_2\cdot m^{-2}\cdot s^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(K_{c}\)</span></td>
+<td align="left">Michaelis-Menten coefficient for CO_2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(mol\cdot mol^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(K_{o}\)</span></td>
+<td align="left">Michaelis-Menten coefficient for O_2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(mol\cdot mol^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(J_{c}\)</span></td>
+<td align="left">Rubisco-limited rate of photosynthesis</td>
+<td align="center"><span class="math inline">\(J_{c}=\frac{V_{m}\cdot \left(C_{i}-\Gamma\right)}{C_{i}+K_{c}\cdot \left(1+\frac{O_{2}}{K_{o}}\right)}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(k\)</span></td>
+<td align="left">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(J_{c4}\)</span></td>
+<td align="left">CO_2-limited rate of photosynthesis at low [CO_2] (C4 plants)</td>
+<td align="center"><span class="math inline">\(J_{c4}=k\cdot C_{i}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(T\)</span></td>
+<td align="left">Rate of triose phosphate utilization</td>
+<td align="center"><span class="math inline">\(T=\frac{V_{m}}{8.2}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(J_{p}\)</span></td>
+<td align="left">see section 6a</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(J_{s}\)</span></td>
+<td align="left">Triose phosphate-limited rate of photosynthesis</td>
+<td align="center"><span class="math inline">\(J_{s}=3\cdot T\cdot \left(1-\frac{\Gamma}{C_{i}}\right)+\frac{J_{p}\cdot \Gamma}{C_{i}}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(J_{i}\)</span></td>
+<td align="left">Light-limited rate of photosynthesis (C4 plants)</td>
+<td align="center"><span class="math inline">\(J_{i}=\alpha_{4}\cdot Q_{p}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(A_{g}\)</span></td>
+<td align="left">Gross photosynthesis rate per unit of area</td>
+<td align="center"><span class="math inline">\(A_{g}=\operatorname{Min}\left(J_{e}, J_{c}, J_{s}\right)\)</span></td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(mol CO_2\cdot m^{-2}\cdot s^{-2}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\gamma\)</span></td>
+<td align="left">Leaf respiration cost of Rubisco acivity</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(B_{stem}\)</span></td>
+<td align="left">Maintenance respiration coefficient defined at 15°C</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(B_{root}\)</span></td>
+<td align="left">Maintenance respiration coefficient defined at 15°C</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\lambda_{sapwood}\)</span></td>
+<td align="left">Sapwood fraction of the total stem biomass (estimated from an assumed sap velocity and the maximum rate of transpiration experienced during the previous year)</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(E_{0}\)</span></td>
+<td align="left">Temperature sensitivity factor</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(T_{0}\)</span></td>
+<td align="left">Set to absolute zero (-273.16 °C)</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(T_{stem}\)</span></td>
+<td align="left">Stem temperature</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(°C\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(T_{soil}\)</span></td>
+<td align="left">Temperature of the soil in the rooting zone</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(°C\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(fT_{stem}\)</span></td>
+<td align="left">f(T) is the Arrenhius temperature function</td>
+<td align="center"><span class="math inline">\(fT_{stem}=\operatorname{exp}\left(E_{0}\cdot \left(\frac{1}{15-T_{0}}-\frac{1}{T_{stem}-T_{0}}\right)\right)\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(fT_{soil}\)</span></td>
+<td align="left">f(T) is the Arrenhius temperature function</td>
+<td align="center"><span class="math inline">\(fT_{soil}=\operatorname{exp}\left(E_{0}\cdot \left(\frac{1}{15-T_{0}}-\frac{1}{T_{soil}-T_{0}}\right)\right)\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(R_{leaf}\)</span></td>
+<td align="left">Leaf maintenance respiration</td>
+<td align="center"><span class="math inline">\(R_{leaf}=\gamma\cdot V_{m}\)</span></td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(mol CO_2\cdot m^{-2}\cdot s^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(R_{stem}\)</span></td>
+<td align="left">Stem maintenance respiration</td>
+<td align="center"><span class="math inline">\(R_{stem}=B_{stem}\cdot \lambda_{sapwood}\cdot C_{is}\cdot fT_{stem}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(R_{root}\)</span></td>
+<td align="left">Root maintenance respiration</td>
+<td align="center"><span class="math inline">\(R_{root}=B_{root}\cdot C_{ir}\cdot fT_{soil}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(A_{n}\)</span></td>
+<td align="left">Net leaf assimilation rate</td>
+<td align="center"><span class="math inline">\(A_{n}=A_{g}-R_{leaf}\)</span></td>
+<td align="center">-</td>
+<td align="center"><span class="math inline">\(mol CO_2\cdot m^{-2}\cdot s^{-1}\)</span></td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(GPP - i\)</span></td>
+<td align="left">Gross primary productivity</td>
+<td align="center"><span class="math inline">\(GPP_{i}=\operatorname{integrate}\left(A_{g}, t\right)\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\eta\)</span></td>
+<td align="left">Fraction of carbon lost in the construction of net plant material because of growth respiration (value 0.33)</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(NPP_{i}\)</span></td>
+<td align="left">Net Primary Production for PFT<span class="math inline">\(_{i}\)</span></td>
+<td align="center"><span class="math inline">\(NPP_{i}=\left(1-\eta\right)\cdot \operatorname{integrate}\left(A_{g}-R_{leaf}-R_{stem}-R_{root}, t\right)\)</span></td>
+<td align="center">variable</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="allocation-coefficients">Allocation Coefficients</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:43%;">
+<caption>Information on Allocation Coefficients</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Tropical evergreen trees</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{il}\)</span></td>
+<td align="left">Fraction of annual NPP allocated to leaves for PFT<span class="math inline">\(_{i}\)</span></td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.25\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(a_{is}\)</span></td>
+<td align="left">Fraction of annual NPP allocated to stem for PFT<span class="math inline">\(_{i}\)</span></td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.5\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(a_{ir}\)</span></td>
+<td align="left">Fraction of annual NPP allocated to roots for PFT<span class="math inline">\(_{i}\)</span></td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(0.25\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="cycling-rates">Cycling Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Cycling Rates</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Values <br> <br>Tropical evergreen trees</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\tau_{il}\)</span></td>
+<td align="left">Residence time of carbon in leaves for PFT<span class="math inline">\(_{i}\)</span></td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\tau_{is}\)</span></td>
+<td align="left">Residence time of carbon in stem for PFT<span class="math inline">\(_{i}\)</span></td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\tau_{ir}\)</span></td>
+<td align="left">Residence time of carbon in roots for PFT<span class="math inline">\(_{i}\)</span></td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:32%;">
+<caption>Information on Components</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{il}\\C_{is}\\C_{ir}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=NPP_{i}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}a_{il}\\a_{is}\\a_{ir}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of turnover (cycling) rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\frac{1}{\tau_{il}} &amp; 0 &amp; 0\\0 &amp; -\frac{1}{\tau_{is}} &amp; 0\\0 &amp; 0 &amp; -\frac{1}{\tau_{ir}}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{il}: a_{il}\cdot t\cdot\left(-\eta + 1\right)\cdot\left(- B_{root}\cdot C_{ir}\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{soil}} +\frac{1}{- T_{0} + 15}\right)} - B_{stem}\cdot C_{is}\cdot\lambda_{sapwood}\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{stem}} +\frac{1}{- T_{0} + 15}\right)} - V_{m}\cdot\gamma +\min\left(\frac{V_{m}\cdot\left(C_{i} -\frac{O_{2}}{2\cdot\tau}\right)}{C_{i} + K_{c}\cdot\left(1 +\frac{O_{2}}{K_{o}}\right)},\frac{Q_{p}\cdot\alpha_{3}}{C_{i} +\frac{O_{2}}{\tau}}\cdot\left(C_{i} -\frac{O_{2}}{2\cdot\tau}\right), 0.365853658536585\cdot V_{m}\cdot\left(1 -\frac{O_{2}}{2\cdot C_{i}\cdot\tau}\right) +\frac{J_{p}\cdot O_{2}}{2\cdot C_{i}\cdot\tau}\right)\right)\)</span> <br><span class="math inline">\(C_{is}: a_{is}\cdot t\cdot\left(-\eta + 1\right)\cdot\left(- B_{root}\cdot C_{ir}\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{soil}} +\frac{1}{- T_{0} + 15}\right)} - B_{stem}\cdot C_{is}\cdot\lambda_{sapwood}\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{stem}} +\frac{1}{- T_{0} + 15}\right)} - V_{m}\cdot\gamma +\min\left(\frac{V_{m}\cdot\left(C_{i} -\frac{O_{2}}{2\cdot\tau}\right)}{C_{i} + K_{c}\cdot\left(1 +\frac{O_{2}}{K_{o}}\right)},\frac{Q_{p}\cdot\alpha_{3}}{C_{i} +\frac{O_{2}}{\tau}}\cdot\left(C_{i} -\frac{O_{2}}{2\cdot\tau}\right), 0.365853658536585\cdot V_{m}\cdot\left(1 -\frac{O_{2}}{2\cdot C_{i}\cdot\tau}\right) +\frac{J_{p}\cdot O_{2}}{2\cdot C_{i}\cdot\tau}\right)\right)\)</span> <br><span class="math inline">\(C_{ir}: a_{ir}\cdot t\cdot\left(-\eta + 1\right)\cdot\left(- B_{root}\cdot C_{ir}\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{soil}} +\frac{1}{- T_{0} + 15}\right)} - B_{stem}\cdot C_{is}\cdot\lambda_{sapwood}\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{stem}} +\frac{1}{- T_{0} + 15}\right)} - V_{m}\cdot\gamma +\min\left(\frac{V_{m}\cdot\left(C_{i} -\frac{O_{2}}{2\cdot\tau}\right)}{C_{i} + K_{c}\cdot\left(1 +\frac{O_{2}}{K_{o}}\right)},\frac{Q_{p}\cdot\alpha_{3}}{C_{i} +\frac{O_{2}}{\tau}}\cdot\left(C_{i} -\frac{O_{2}}{2\cdot\tau}\right), 0.365853658536585\cdot V_{m}\cdot\left(1 -\frac{O_{2}}{2\cdot C_{i}\cdot\tau}\right) +\frac{J_{p}\cdot O_{2}}{2\cdot C_{i}\cdot\tau}\right)\right)\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<span class="math inline">\(C_{il}: \frac{C_{il}}{\tau_{il}}\)</span> <br><span class="math inline">\(C_{is}: \frac{C_{is}}{\tau_{is}}\)</span> <br><span class="math inline">\(C_{ir}: \frac{C_{ir}}{\tau_{ir}}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\frac{C_{il}}{\tau_{il}} + a_{il}\cdot t\cdot\left(-\eta + 1\right)\cdot\left(- B_{root}\cdot C_{ir}\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{soil}} +\frac{1}{- T_{0} + 15}\right)} - B_{stem}\cdot C_{is}\cdot\lambda_{sapwood}\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{stem}} +\frac{1}{- T_{0} + 15}\right)} - V_{m}\cdot\gamma +\min\left(\frac{V_{m}\cdot\left(C_{i} -\frac{O_{2}}{2\cdot\tau}\right)}{C_{i} + K_{c}\cdot\left(1 +\frac{O_{2}}{K_{o}}\right)},\frac{Q_{p}\cdot\alpha_{3}}{C_{i} +\frac{O_{2}}{\tau}}\cdot\left(C_{i} -\frac{O_{2}}{2\cdot\tau}\right), 0.365853658536585\cdot V_{m}\cdot\left(1 -\frac{O_{2}}{2\cdot C_{i}\cdot\tau}\right) +\frac{J_{p}\cdot O_{2}}{2\cdot C_{i}\cdot\tau}\right)\right)\\-\frac{C_{is}}{\tau_{is}} + a_{is}\cdot t\cdot\left(-\eta + 1\right)\cdot\left(- B_{root}\cdot C_{ir}\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{soil}} +\frac{1}{- T_{0} + 15}\right)} - B_{stem}\cdot C_{is}\cdot\lambda_{sapwood}\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{stem}} +\frac{1}{- T_{0} + 15}\right)} - V_{m}\cdot\gamma +\min\left(\frac{V_{m}\cdot\left(C_{i} -\frac{O_{2}}{2\cdot\tau}\right)}{C_{i} + K_{c}\cdot\left(1 +\frac{O_{2}}{K_{o}}\right)},\frac{Q_{p}\cdot\alpha_{3}}{C_{i} +\frac{O_{2}}{\tau}}\cdot\left(C_{i} -\frac{O_{2}}{2\cdot\tau}\right), 0.365853658536585\cdot V_{m}\cdot\left(1 -\frac{O_{2}}{2\cdot C_{i}\cdot\tau}\right) +\frac{J_{p}\cdot O_{2}}{2\cdot C_{i}\cdot\tau}\right)\right)\\-\frac{C_{ir}}{\tau_{ir}} + a_{ir}\cdot t\cdot\left(-\eta + 1\right)\cdot\left(- B_{root}\cdot C_{ir}\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{soil}} +\frac{1}{- T_{0} + 15}\right)} - B_{stem}\cdot C_{is}\cdot\lambda_{sapwood}\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{stem}} +\frac{1}{- T_{0} + 15}\right)} - V_{m}\cdot\gamma +\min\left(\frac{V_{m}\cdot\left(C_{i} -\frac{O_{2}}{2\cdot\tau}\right)}{C_{i} + K_{c}\cdot\left(1 +\frac{O_{2}}{K_{o}}\right)},\frac{Q_{p}\cdot\alpha_{3}}{C_{i} +\frac{O_{2}}{\tau}}\cdot\left(C_{i} -\frac{O_{2}}{2\cdot\tau}\right), 0.365853658536585\cdot V_{m}\cdot\left(1 -\frac{O_{2}}{2\cdot C_{i}\cdot\tau}\right) +\frac{J_{p}\cdot O_{2}}{2\cdot C_{i}\cdot\tau}\right)\right)\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\frac{1}{\tau_{il}} &amp; - B_{stem}\cdot a_{il}\cdot\lambda_{sapwood}\cdot t\cdot\left(-\eta + 1\right)\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{stem}} +\frac{1}{- T_{0} + 15}\right)} &amp; - B_{root}\cdot a_{il}\cdot t\cdot\left(-\eta + 1\right)\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{soil}} +\frac{1}{- T_{0} + 15}\right)}\\0 &amp; - B_{stem}\cdot a_{is}\cdot\lambda_{sapwood}\cdot t\cdot\left(-\eta + 1\right)\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{stem}} +\frac{1}{- T_{0} + 15}\right)} -\frac{1}{\tau_{is}} &amp; - B_{root}\cdot a_{is}\cdot t\cdot\left(-\eta + 1\right)\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{soil}} +\frac{1}{- T_{0} + 15}\right)}\\0 &amp; - B_{stem}\cdot a_{ir}\cdot\lambda_{sapwood}\cdot t\cdot\left(-\eta + 1\right)\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{stem}} +\frac{1}{- T_{0} + 15}\right)} &amp; - B_{root}\cdot a_{ir}\cdot t\cdot\left(-\eta + 1\right)\cdot e^{E_{0}\cdot\left(-\frac{1}{- T_{0} + T_{soil}} +\frac{1}{- T_{0} + 15}\right)} -\frac{1}{\tau_{ir}}\end{matrix}\right]\)</span></p>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
+<div id="ref-Foley1996GlobalBiogeochemicalCycles">
+<p>Foley, J. A., Prentice, I. C., Ramankutty, N., Levis, S., Pollard, D., Sitch, S., &amp; Haxeltine, A. (1996). An integrated biosphere model of land surface processes, terrestrial carbon balance, and vegetation dynamics. <em>Global Biogeochemical Cycles</em>, <em>10</em>(4), 603–628. <a href="http://doi.org/10.1029/96GB02692" class="uri">http://doi.org/10.1029/96GB02692</a></p>
+</div>
+</div>
+</body>
+</html>
