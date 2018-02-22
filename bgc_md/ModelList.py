@@ -592,7 +592,7 @@ class ModelList(list):
         rel +=self.create_scatter_plot_symbols_operations()
     
         ## symbols and depth of operations
-        rel +=self.create_scatter_plot_symbols_depth_of_operations()
+        #rel +=self.create_scatter_plot_symbols_depth_of_operations()
     
        
         ## number of operations and depth of operations
