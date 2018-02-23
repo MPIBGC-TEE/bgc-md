@@ -39,10 +39,9 @@
 
 
 ## Install the package for development:
-    The package depends on other packages (LAPM, CompartmentalSystems, testinfrastructure) by the same group of people  
-    which will often be edited and tested at the same time.
-    If you develop those packages it is recommended to install also LAPM, CompartmentalSystems, testinfrastructure 
-    in development mode.
+    The package depends on other packagesthat will often be edited and tested at the same time:
+    (testinfrastructure, LAPM, CompartmentalSystems)
+    If you develop those packages it is recommended to install them also in development mode.
     If you do that for the first time it means to go to run setup.py (or the install script ) 
     in the respective directories of th packages on your system in the following order: 
     testinfrastructure, 
@@ -56,14 +55,12 @@
     or run the script 
 ```bash    
     $ ./install_developer.sh 
-```
-    which does the same.
+``` which does the same.
     All the changes you make to the source code of either package will then be immidiately visible in your 
     virtualenv since 
 ```bash    
     $ python setup.py develop 
-```
-    does not copy files to the virtual environment (or any other environment) .
+``` does not copy files to the virtual environment (or any other environment) .
     It just links them there, so that source code changes take immediate effect in the *installed* package.
     No reinstallation after source changes is necessary.
     It is possible that this already does the trick since the setup script tries to install
