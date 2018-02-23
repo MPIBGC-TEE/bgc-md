@@ -1,5 +1,6 @@
 # vim:set ff=unix expandtab ts=4 sw=4:
 from copy import copy, deepcopy
+from pathlib import Path
 from sympy import sympify, Symbol, flatten, Matrix, diff, MatrixSymbol, simplify, Eq, zeros, eye, diag
 
 import re
@@ -568,7 +569,7 @@ class Model:
     @classmethod
     def from_file(cls, yaml_file_name): 
         yaml_file_path=Path(yaml_file_name)
-        odel = cls.from_path(yaml_str,yaml_file_path)
+        model = cls.from_path(yaml_file_path)
     
         return model
     

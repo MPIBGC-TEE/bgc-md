@@ -30,7 +30,7 @@ import string
 import unicodedata
 import bibtexparser
 from bibtexparser.bparser import BibTexParser 
-from bibtexparser.customization import homogeneize_latex_encoding 
+from bibtexparser.customization import homogenize_latex_encoding 
 from bibtexparser.customization import convert_to_unicode
 import requests
 from pathlib import Path
@@ -180,7 +180,7 @@ class BibtexEntry():
         if self.entry:
             entry_str = _entry_to_str(self.entry)
             parser = BibTexParser()
-            parser.customization = homogeneize_latex_encoding
+            parser.customization = homogenize_latex_encoding
             bib_database = bibtexparser.loads(entry_str, parser = parser)
             return bib_database.entries[0]
         else:
