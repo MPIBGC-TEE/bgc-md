@@ -39,9 +39,15 @@
 
 
 ## Install the package for development:
-    The package depends on other packages by the same group of people LAPM, CompartmentalSystems, testinfrastructure which will often be edited and tested at the same time.
-    If you want to do this it is recommended to install also those packages in development mode.
-    If you do that for the first time it means to go to run setup.py (or the install script ) in the respective packages in the following order: testinfrastructure, LAPM , CompartmentalSystems.
+    The package depends on other packages (LAPM, CompartmentalSystems, testinfrastructure) by the same group of people  
+    which will often be edited and tested at the same time.
+    If you develop those packages it is recommended to install also LAPM, CompartmentalSystems, testinfrastructure 
+    in development mode.
+    If you do that for the first time it means to go to run setup.py (or the install script ) 
+    in the respective directories of th packages on your system in the following order: 
+    testinfrastructure, 
+    LAPM , 
+    CompartmentalSystems.
     After this you can type.
 ```bash    
     pip install -r requirements.developer
