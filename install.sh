@@ -1,10 +1,10 @@
 # This script calls pip to perform package installation and adds some packages that we usually use 
 # in conjuntion with our package
 
-pip3 install --upgrade pip setuptools wheel
+pip3 install --upgrade pip setuptools wheel setuptools_git
 
-pip3 install -rrequirements.txt -e .
-#python3 setup.py develop
+pip3 install -rrequirements.txt 
+python3 setup.py develop
 
 ## enable jupyter notebook nbextensions
 pip3 install tox #testtool to chech the lib against different python versions

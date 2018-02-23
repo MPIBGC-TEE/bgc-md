@@ -27,8 +27,11 @@ def runProtected(rec,command_list,targetPath=Path('.')):
     return(result)
 
 def f(rec):
-    file_name=str(rec)
-    result=dict()
+    command_list=['generate_model_run_report']
+    result=runProtected(rec,command_list)
+    return result
+
+def f2(rec):
     command_list=['generate_model_run_report']
     result=runProtected(rec,command_list)
     return result
@@ -43,7 +46,7 @@ class TestReportGeneration(InDirTest):
         here=Path('.')
         rec_list=[ rec  for rec in sp.glob('*.yaml')]
         test_list= rec_list
-        #test_list= sorted(rec_list)[0]
+        #test_list= sorted(rec_list)[2:3]
 
         pool=Pool(processes=32)
         result_list=pool.map(f,test_list)
@@ -55,24 +58,26 @@ class TestReportGeneration(InDirTest):
             r  for r in result_list 
             if r['returnValue']!=0 or r['fileExists']==False
         ]
-        
         self.assertEqual(
             len(failure_list)
             ,0
             ,msg="The following files caused problems %s" % str(failure_list)
             )
-        
+
+
+    def test_commandline_generate_model_run_report_with_targetdir(self):
         # test the -t option for a smaller selection of yaml file
+        d=defaults() 
+        sp=d['paths']['tested_records']
+        here=Path('.')
+        rec_list=[ rec  for rec in sp.glob('*.yaml')]
+        #test_list= rec_list
+        test_list= sorted(rec_list)[2:3]
         targetDirName='output'
         targetPath=here.joinpath(targetDirName)
-        targetPath.mkdir(exist_ok=True)
+        targetPath.mkdir(parents=True,exist_ok=True)
         test_list= sorted(rec_list)[0:1]
-        result_list=[
-            runProtected(
-                rec
-                ,['generate_model_run_report',"-t", targetDirName]
-                ,targetPath
-            ) for rec in test_list
+        result_list=[ runProtected( rec ,['generate_model_run_report',"-t", targetDirName] ,targetPath) for rec in test_list
         ]
         failure_list=[r  for r in result_list if r['returnValue']!=0 or r['fileExists']==False]
         self.assertEqual(

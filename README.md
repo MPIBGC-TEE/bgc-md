@@ -23,24 +23,48 @@
 ```
     (from now on python3 and pip commands will operate in this virtual environment and install everything
      that is needed there)
-## Install the package in development mode:
-    Since the package will be used (tested) and edited at the same time we recommend to install it in
-    development mode. This makes all the dependencies available but does not copy files to the virtual environment (or any other environment) .
+## Install the package in user only mode:
+    Assuming that you just want to use the package and are not going to change any of the packages it depends on
+    you can just type the following commands:
+```bash
+    $pip install -r requirements.txt
+    $python setup.py develop
+```
+    You can also run the script 
+```bash
+    $./install.sh 
+```
+    which does the same but installs some additional software that is
+    usefull in connection with the package.
+
+
+## Install the package for development:
+    The package depends on other packages by the same group of people LAPM, CompartmentalSystems, testinfrastructure which will often be edited and tested at the same time.
+    If you want to do this it is recommended to install also those packages in development mode.
+    If you do that for the first time it means to go to run setup.py (or the install script ) in the respective packages in the following order: testinfrastructure, LAPM , CompartmentalSystems.
+    After this you can type.
+```bash    
+    pip install -r requirements.developer
+    $ python setup.py develop
+```
+    or run the script 
+```bash    
+    $ ./install_developer.sh 
+```
+    which does the same.
+    All the changes you make to the source code of either package will then be immidiately visible in your 
+    virtualenv since 
+```bash    
+    $ python setup.py develop 
+```
+    does not copy files to the virtual environment (or any other environment) .
     It just links them there, so that source code changes take immediate effect in the *installed* package.
     No reinstallation after source changes is necessary.
-```bash    
-    $ cd to_the_directory_of_this_file
-    $ python3 setup.py develop
-```
     It is possible that this already does the trick since the setup script tries to install
     missing dependencies automatically. Depending on your system some of those dependencies
     may have problems. We describe some workarounds in the next paragraph
 
 ## Troubleshooting:
-    You can try to install the requirement beforehand (separately from the actual bgc_md package) by
-```bash    
-    $ pip3 install -r requirements.txt
-```
     likely troublemakers are (due to their complex buildprocess)
     matplotlib ,numpy and scipy
 
