@@ -55,12 +55,14 @@
     or run the script 
 ```bash    
     $ ./install_developer.sh 
-``` which does the same.
+``` 
+    which does the same.
     All the changes you make to the source code of either package will then be immidiately visible in your 
     virtualenv since 
 ```bash    
     $ python setup.py develop 
-``` does not copy files to the virtual environment (or any other environment) .
+``` 
+    does not copy files to the virtual environment (or any other environment) .
     It just links them there, so that source code changes take immediate effect in the *installed* package.
     No reinstallation after source changes is necessary.
     It is possible that this already does the trick since the setup script tries to install
@@ -68,7 +70,7 @@
     may have problems. We describe some workarounds in the next paragraph
 
 ## Troubleshooting:
-    likely troublemakers are (due to their complex buildprocess)
+    Likely troublemakers are (due to their complex buildprocess)
     matplotlib ,numpy and scipy
 
     to identify the problems you can also try to install them separately
