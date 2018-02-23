@@ -109,7 +109,8 @@ class TestModelList(InDirTest):
     def test_create_overview_report(self):
         # we create a target directory populated with only a few files and create a overview html from it
         d=defaults() 
-        sp=d['paths']['tested_records']
+        # sp=d['paths']['tested_records']
+        sp=d['paths']['tested_records'].parent.joinpath('VerosTestModels')
         src_dir_name='localDataBase'
         src_dir_path=Path(src_dir_name)
         src_dir_path.mkdir()

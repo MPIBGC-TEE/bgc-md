@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: Three-pool microbial, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: Three-pool microbial, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the Python 3.4 package Sympy (for symbolic mathematics), as means to translate published models to a common language. It was created by Holger Metzler (Orcid ID: 0000-0002-8239-1601) on 22/01/2018, and was last modified on <em>lm</em>.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers soil organic matter decomposition. It was originally described by <span class="citation">Wang et al. (2014)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>r&quot;A number of nonlinear models have recently been proposed for simulating soil carbon decomposition. Their predictions of soil carbon responses to fresh litter input and warming differ significantly from conventional linear models. Using both stability analysis and numerical simulations, we showed that two of those nonlinear models (a two-pool model and a three-pool model) exhibit damped oscillatory re-sponses to small perturbations. Stability analysis showed the frequency of oscillation is proportional to <span class="math inline">\(\sqrt{(\varepsilon^{-1}-1)\,K_{s/V_s}}\)</span> in the two-pool model, and to <span class="math inline">\(\sqrt{(\varepsilon^{-1}-1)\,K_{l/V_l}}\)</span> in the three-pool model, where <span class="math inline">\(\varepsilon\)</span> is microbial growth efficiency, <span class="math inline">\(K_{s}\)</span> and <span class="math inline">\(K_{l}\)</span> are the half saturation constants of soil and litter carbon, respectively, and <span class="math inline">\(V_{s}\)</span> and <span class="math inline">\(V_{l}\)</span> are the maximal rates of carbon decomposition per unit of microbial biomass for soil and litter carbon, respectively. For both models, the oscillation has a period of between 5 and 15 years depending on other parameter values, and has smaller amplitude at soil temperatures between 0 and 15 C. In addition, the equilibrium pool sizes of litter or soil carbon are insensitive to carbon inputs in the nonlinear model, but are proportional to carbon input in the conventional linear model. Under warming, the microbial biomass and litter carbon pools simulated by the nonlinear models can increase or decrease, depending whether <span class="math inline">\(\varepsilon\)</span> varies with temperature. In contrast, the conventional linear models always simulate a decrease in both microbial and litter carbon pools with warming. Based on the evidence available, we concluded that the oscillatory behavior and insensitivity of soil carbon to carbon input are notable features in these nonlinear models that are somewhat unrealistic. We recommend that a better model for capturing the soil carbon dynamics over decadal to centennial timescales would combine the sensitivity of the conventional models to carbon influx with the flexible response to warming of the nonlinear model.&quot;</p>
+<h3 id="keywords">Keywords</h3>
+<p>differential equations, nonlinear, time invariant</p>
+<h3 id="principles">Principles</h3>
+<p>mass balance, substrate dependence of decomposition, heterogeneity of speed of decay, internal transformations of organic matter, substrate interaction</p>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{l}\)</span></td>
+<td align="left">litter carbon</td>
+<td align="center"><span class="math inline">\(g C m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(C_{s}\)</span></td>
+<td align="left">soil organic matter</td>
+<td align="center"><span class="math inline">\(g C m^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C_{b}\)</span></td>
+<td align="left">microbial biomass</td>
+<td align="center"><span class="math inline">\(g C m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="additional-parameters">Additional Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:43%;">
+<caption>Information on Additional Parameters</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\alpha\)</span></td>
+<td align="left">fraction of carbon influx that directly enters the soil organic matter pool</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\epsilon\)</span></td>
+<td align="left">microbial growth efficiency</td>
+<td align="center">parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(V_{l}\)</span></td>
+<td align="left">maximum rate of litter carbon assimilation per unit microbial biomass per year</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(year^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(K_{l}\)</span></td>
+<td align="left">half-saturation constant for litter carbon assimilation by microbial biomass</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(g C\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(V_{s}\)</span></td>
+<td align="left">maximum rate of soil carbon assimilation per unit microbial biomass per year</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(year^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(K_{s}\)</span></td>
+<td align="left">half-saturation constant for soil carbon assimilation by microbial biomass</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(g C\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="decomposition-rates">Decomposition Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:54%;">
+<caption>Information on Decomposition Rates</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\lambda_{l}\)</span></td>
+<td align="left">litter carbon decomposition rate</td>
+<td align="center"><span class="math inline">\(\lambda_{l}=\frac{C_{b}\cdot V_{l}}{C_{l}+K_{l}}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\lambda_{s}\)</span></td>
+<td align="left">soil organic matter decomposition rate</td>
+<td align="center"><span class="math inline">\(\lambda_{s}=\frac{C_{b}\cdot V_{s}}{C_{s}+K_{s}}\)</span></td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\mu_{b}\)</span></td>
+<td align="left">turnover rate of microbial biomass per year</td>
+<td align="center">-</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(year^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="input-components">Input Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Input Components</caption>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Type</th>
+<th align="center">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(F_{NPP}\)</span></td>
+<td align="left">carbon influx into soil</td>
+<td align="center">parameter</td>
+<td align="center"><span class="math inline">\(g C\cdot m^{-2}\cdot year^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:32%;">
+<caption>Information on Components</caption>
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Name</th>
+<th align="left">Description</th>
+<th align="center">Expressions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(C\)</span></td>
+<td align="left">carbon content</td>
+<td align="center"><span class="math inline">\(C=\left[\begin{matrix}C_{l}\\C_{s}\\C_{b}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(I\)</span></td>
+<td align="left">input vector</td>
+<td align="center"><span class="math inline">\(I=\left[\begin{matrix}F_{NPP}\cdot\left(-\alpha + 1\right)\\F_{NPP}\cdot\alpha\\0\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(A\)</span></td>
+<td align="left">decomposition operator</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\lambda_{l} &amp; 0 &amp; 0\\0 &amp; -\lambda_{s} &amp;\mu_{b}\\\epsilon\cdot\lambda_{l} &amp;\epsilon\cdot\lambda_{s} &amp; -\mu_{b}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(f_{s}\)</span></td>
+<td align="left">the right hand side of the ode</td>
+<td align="center"><span class="math inline">\(f_{s}=I+A\cdot C\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{l}: F_{NPP}\cdot\left(-\alpha + 1\right)\)</span> <br><span class="math inline">\(C_{s}: F_{NPP}\cdot\alpha\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(C_{l}: -\frac{C_{b}\cdot C_{l}\cdot V_{l}}{C_{l} + K_{l}}\cdot\left(\epsilon - 1\right)\)</span> <br><span class="math inline">\(C_{s}: -\frac{C_{b}\cdot C_{s}\cdot V_{s}}{C_{s} + K_{s}}\cdot\left(\epsilon - 1\right)\)</span> <br></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<span class="math inline">\(C_{l} \rightarrow C_{b}: \frac{C_{b}\cdot C_{l}\cdot V_{l}}{C_{l} + K_{l}}\cdot\epsilon\)</span> <br><span class="math inline">\(C_{s} \rightarrow C_{b}: \frac{C_{b}\cdot C_{s}\cdot V_{s}}{C_{s} + K_{s}}\cdot\epsilon\)</span> <br><span class="math inline">\(C_{b} \rightarrow C_{s}: C_{b}\cdot\mu_{b}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}-\frac{C_{b}\cdot C_{l}\cdot V_{l}}{C_{l} + K_{l}} + F_{NPP}\cdot\left(-\alpha + 1\right)\\-\frac{C_{b}\cdot C_{s}\cdot V_{s}}{C_{s} + K_{s}} + C_{b}\cdot\mu_{b} + F_{NPP}\cdot\alpha\\\frac{C_{b}\cdot C_{l}\cdot V_{l}}{C_{l} + K_{l}}\cdot\epsilon +\frac{C_{b}\cdot C_{s}\cdot V_{s}}{C_{s} + K_{s}}\cdot\epsilon - C_{b}\cdot\mu_{b}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}\frac{C_{b}\cdot C_{l}\cdot V_{l}}{\left(C_{l} + K_{l}\right)^{2}} -\frac{C_{b}\cdot V_{l}}{C_{l} + K_{l}} &amp; 0 &amp; -\frac{C_{l}\cdot V_{l}}{C_{l} + K_{l}}\\0 &amp;\frac{C_{b}\cdot C_{s}\cdot V_{s}}{\left(C_{s} + K_{s}\right)^{2}} -\frac{C_{b}\cdot V_{s}}{C_{s} + K_{s}} &amp; -\frac{C_{s}\cdot V_{s}}{C_{s} + K_{s}} +\mu_{b}\\-\frac{C_{b}\cdot C_{l}\cdot V_{l}}{\left(C_{l} + K_{l}\right)^{2}}\cdot\epsilon +\frac{C_{b}\cdot V_{l}\cdot\epsilon}{C_{l} + K_{l}} &amp; -\frac{C_{b}\cdot C_{s}\cdot V_{s}}{\left(C_{s} + K_{s}\right)^{2}}\cdot\epsilon +\frac{C_{b}\cdot V_{s}\cdot\epsilon}{C_{s} + K_{s}} &amp;\frac{C_{l}\cdot V_{l}\cdot\epsilon}{C_{l} + K_{l}} +\frac{C_{s}\cdot V_{s}\cdot\epsilon}{C_{s} + K_{s}} -\mu_{b}\end{matrix}\right]\)</span></p>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(C_{l} = \frac{K_{l}\cdot\mu_{b}\cdot\left(\alpha - 1\right)\cdot\left(\epsilon - 1\right)}{V_{l}\cdot\epsilon -\alpha\cdot\epsilon\cdot\mu_{b} +\alpha\cdot\mu_{b} +\epsilon\cdot\mu_{b} -\mu_{b}}\)</span> <br><span class="math inline">\(C_{s} = \frac{K_{s}\cdot\mu_{b}\cdot\left(-\alpha\cdot\epsilon +\alpha +\epsilon\right)}{V_{s}\cdot\epsilon +\alpha\cdot\epsilon\cdot\mu_{b} -\alpha\cdot\mu_{b} -\epsilon\cdot\mu_{b}}\)</span> <br><span class="math inline">\(C_{b} = -\frac{F_{NPP}\cdot\epsilon}{\mu_{b}\cdot\left(\epsilon - 1\right)}\)</span> <br> <br></p>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
+<div id="ref-Wang2014BG">
+<p>Wang, Y. P., Chen, B. C., Wieder, W. R., Leite, M., Medlyn, B. E., Rasmussen, M., … Luo, Y. Q. (2014). Oscillatory behavior of two nonlinear microbial models of soil carbon decomposition. <em>Biogeosciences</em>, <em>11</em>(7), 1817–1831. <a href="http://doi.org/10.5194/bg-11-1817-2014" class="uri">http://doi.org/10.5194/bg-11-1817-2014</a></p>
+</div>
+</div>
+</body>
+</html>
