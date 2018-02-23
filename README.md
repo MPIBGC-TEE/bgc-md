@@ -65,10 +65,7 @@
     does not copy files to the virtual environment (or any other environment) .
     It just links them there, so that source code changes take immediate effect in the *installed* package.
     No reinstallation after source changes is necessary.
-    It is possible that this already does the trick since the setup script tries to install
-    missing dependencies automatically. Depending on your system some of those dependencies
-    may have problems. We describe some workarounds in the next paragraph
-
+    
 ## Troubleshooting:
     Likely troublemakers are (due to their complex buildprocess)
     matplotlib ,numpy and scipy
