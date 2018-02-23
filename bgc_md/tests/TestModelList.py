@@ -149,9 +149,10 @@ class TestModelList(InDirTest):
          
         ml=ModelList.from_dir_path(src_dir_path)
         target_dir_path=Path('.').joinpath('html')
+        rel=ml.create_overview_table(target_dir_path)
         targetFileName='table.html'
-        ml.create_overview_table(target_dir_path,targetFileName)
         targetPath=target_dir_path.joinpath(targetFileName)
+        rel.write_pandoc_html(str(targePath))
         print(targetPath)
         self.assertTrue(targetPath.exists())
 
