@@ -4,6 +4,7 @@ from functools import reduce
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
+matplotlib.rcParams.update({'figure.max_open_warning': 0})
 import matplotlib.pyplot as plt
 from sympy import sympify, solve, Symbol, limit, oo, ceiling, simplify, Matrix
 from sympy.core import Atom
@@ -146,7 +147,7 @@ class ModelList(list):
                 if dep in model.find_keys_or_symbols_used_in_key(target_key):
                     hist[dep]+=1
         dict_plot(hist,ax)   
-        ax.set_ylabel("# models")
+        ax.set_ylabel("models")
         
     def plot_model_key_dependencies_scatter_plot(self,target_key,ax):
        #print(target_key)
@@ -237,8 +238,8 @@ class ModelList(list):
         #ax.legend(loc='center left', bbox_to_anchor=(1.05, 0.5), scatterpoints=1, frameon=False)
         ax.set_xlabel("# variables", fontsize = "22",  labelpad=20)
         ax.set_ylabel(r'# operations to calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22",  labelpad=20)
-        add_xhist_data_to_scatter(ax, xdata, '# models', fontsize=xhist_fs)
-    #    add_yhist_data_to_scatter(ax, ydata, '# models')
+        add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=xhist_fs)
+    #    add_yhist_data_to_scatter(ax, ydata, ' models')
         
     
     
@@ -265,7 +266,7 @@ class ModelList(list):
         #  directories named after the models and contain a Report.html
         #  this information is duplicated in the per Model report code.
 
-        header = [Text(""), Text("Model"), Text("# Variables"), Text("# Parameters"), Text("# Constants"), Text("Component"), Text("Description"), Text("Expressions"), Text("fv/fs"), Text("Right hand side of ODE"), Text("Source")]
+        header = [Text(""), Text("Model"), Text(" Variables"), Text(" Parameters"), Text(" Constants"), Text("Component"), Text("Description"), Text("Expressions"), Text("fv/fs"), Text("Right hand side of ODE"), Text("Source")]
         table_format = list("lcccclcccl")
         rel2 = Text('''<script language="javascript">
         function ausklappen(id)
@@ -280,7 +281,7 @@ class ModelList(list):
             }
         }\n</script>\n''')
     
-        rel2 += Text('<table>\n<thead><tr class="header">\n<th></th><th align="left">Model</th>\n<th align="center"># Variables</th>\n<th align="center"># Parameters</th>\n<th align="center"># Constants</th>\n<th align="center">Structure</th>\n<th align="center">Right hand side of ODE</th>\n<th align="left">Source</th>\n</tr>\n</thead>\n')
+        rel2 += Text('<table>\n<thead><tr class="header">\n<th></th><th align="left">Model</th>\n<th align="center">Variables</th>\n<th align="center"># Parameters</th>\n<th align="center"># Constants</th>\n<th align="center">Structure</th>\n<th align="center">Right hand side of ODE</th>\n<th align="left">Source</th>\n</tr>\n</thead>\n')
            
         header_row = TableRow(header)
         T = Table("Summary of the models in the database of Carbon Allocation in Vegetation models", header_row, table_format)
@@ -326,8 +327,7 @@ class ModelList(list):
             image_string = ""
             reservoir_model = model.reservoir_model
             if reservoir_model:
-                if not dir_path.exists():
-                    dir_path.mkdir()
+                dir_path.mkdir(parents=True,exist_ok=True)
                 image_file_name="Thumbnail.svg"
                 image_file_path = dir_path.joinpath(image_file_name)
                 fig = reservoir_model.figure(thumbnail=True)
@@ -504,8 +504,8 @@ class ModelList(list):
         ax = fig1.add_subplot(1, nr_hist, 1)
         data = np.array(plot_data[:,'nr_sv'])
         nice_hist(ax, data)
-        ax.set_xlabel("# state variables", fontsize = "22",  labelpad=20)
-        ax.set_ylabel("# models", fontsize = "22",  labelpad=20)
+        ax.set_xlabel(" state variables", fontsize = "22",  labelpad=20)
+        ax.set_ylabel(" models", fontsize = "22",  labelpad=20)
         # change font size for the tick labels
         for tick in ax.xaxis.get_major_ticks():
             tick.label.set_fontsize(20) 
@@ -516,8 +516,8 @@ class ModelList(list):
         ax = fig1.add_subplot(1, nr_hist, 2)
         data = np.array(plot_data[:,'nr_parms'])
         nice_hist(ax, data)
-        ax.set_xlabel("# parameters", fontsize = "22",  labelpad=20)
-        ax.set_ylabel("# models", fontsize = "22",  labelpad=20)
+        ax.set_xlabel(" parameters", fontsize = "22",  labelpad=20)
+        ax.set_ylabel(" models", fontsize = "22",  labelpad=20)
          
         for tick in ax.xaxis.get_major_ticks():
             tick.label.set_fontsize(20) 
@@ -528,8 +528,8 @@ class ModelList(list):
         ax = fig1.add_subplot(1, nr_hist, 3)
         data = np.array(plot_data[:,'nr_vars'])
         nice_hist(ax, data)
-        ax.set_xlabel("# variables", fontsize = "22",  labelpad=20)
-        ax.set_ylabel("# models", fontsize = "22",  labelpad=20)
+        ax.set_xlabel(" variables", fontsize = "22",  labelpad=20)
+        ax.set_ylabel(" models", fontsize = "22",  labelpad=20)
     
         for tick in ax.xaxis.get_major_ticks():
             tick.label.set_fontsize(20) 
@@ -538,7 +538,7 @@ class ModelList(list):
     
         # variables and models
         #rel += Text(mpld3.fig_to_html(fig1))
-        rel += MatplotlibFigure(fig1,"Figure 1","Histograms, # variables") 
+        rel += MatplotlibFigure(fig1,"Figure 1","Histograms,  variables") 
     
         # # second line 
         # target_key="state_vector_derivative"

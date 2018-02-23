@@ -2,7 +2,7 @@
 # vim: set expandtab ts=4
 import unittest
 #from run_tests import *
-#from bgc_md.tests.TestCompleteModelList import TestCompleteModelList
+from bgc_md.tests.TestCompleteModelList import TestCompleteModelList
 #from bgc_md.tests.TestModel import TestModel
 from bgc_md.tests.TestModelList import TestModelList
 #from bgc_md.tests.TestStoichiometricModel import TestStoichiometricModel
@@ -13,6 +13,12 @@ from bgc_md.tests.TestReportGeneration import TestReportGeneration
 
 def suite():
     s=unittest.TestSuite()
+    s.addTest(TestCompleteModelList("test_scatter_plus_hist_nr_vars_vs_nr_ops"))
+    #s.addTest(TestReportGeneration("test_commandline_generate_model_run_report"))
+    #s.addTest(TestReportGeneration("test_commandline_gnerate_website"))
+    #s.addTest(TestCompleteModelList("test_scatter_plus_hist_nr_vars_vs_nr_ops"))
+    #s.addTest(TestModelList("test_create_overview_report"))
+    #s.addTest(TestModelList("test_create_overview_table"))
     #s.addTest(Test(""))
     #s.addTest(TestWriteReportElements("test_write_html_with_bibliography"))
     #s.addTest(TestWriteReportElements("test_write_html_with_picture"))
@@ -31,9 +37,6 @@ def suite():
     #s.addTest(TestModel("test_key_relations"))
     #s.addTest(TestReportGeneration("test_histogram"))
     #s.addTest(TestReportGeneration("test_commandline_tools"))
-    #s.addTest(TestReportGeneration("test_commandline_gnerate_model_run_report"))
-    #s.addTest(TestReportGeneration("test_commandline_gnerate_website"))
-    s.addTest(TestModelList("test_create_overview_report"))
     #s.addTest(TestModel("test_plot_model_key_dependencies_scatter_plot"))
     #s.addTest(TestModel("test_meta_data"))
     #s.addTest(TestModel("test_reservoir_model"))

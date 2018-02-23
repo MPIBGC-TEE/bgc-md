@@ -12,21 +12,16 @@ from pathlib import Path
 from bgc_md.IncompleteModel import IncompleteModel
 from bgc_md.Model import Model, load_complete_dict_and_id, load_bibtex_entry, load_abstract, load_further_references, load_reviews, load_sections_and_titles, load_df, load_expressions_and_symbols, section_subdict, load_model_run_data, load_parameter_sets, load_initial_values, check_parameter_set_valid, check_parameter_sets_valid, check_parameter_set_complete, check_initial_values_set_valid, check_initial_values_complete, load_run_times, load_model_run_combinations, YamlException
 from bgc_md.ModelList import ModelList
-from bgc_md.reports import read_models_from_directory
+from bgc_md.reports import defaults
 
 class TestCompleteModelList(InDirTest):
     def setUp(self):
         this=Path(__file__).parents[1] #the package dir
-        soilModelPath=this.joinpath("SoilModels")
-        soilModelDir=soilModelPath.as_posix()
-        vegModelPath=this.joinpath("VegetationModels") ### Fix me!!! Temporarily changed Vegetation for Test
-        vegModelDir=vegModelPath.as_posix()
-        self.vl=ModelList(read_models_from_directory(vegModelDir))
-        self.sl=ModelList(read_models_from_directory(vegModelDir))
-        self.ml=ModelList(self.vl+self.sl)
+        vegModelPath=defaults()['paths']['veg'] ### Fix me!!! Temporarily changed Vegetation for Test
+        self.ml=ModelList.from_dir_path(vegModelPath)
 
     def test_plot_model_key_dependencies_scatter_plot(self):
-        ml=self.vl #only veg
+        ml=self.ml #only veg
         target_key="scalar_func_phot"
         sublist=ModelList([el for el in ml if el.has_key(target_key)])
         fig = plt.figure()
@@ -47,7 +42,7 @@ class TestCompleteModelList(InDirTest):
 
     def test_denpendency_plots_from_keys_in_compartments(self):
         fig = plt.figure(figsize=(30,30),tight_layout=True)
-        self.vl.denpendency_plots_from_keys_in_compartments(fig)
+        self.ml.denpendency_plots_from_keys_in_compartments(fig)
         fig.savefig("plot.pdf")
         plt.close(fig.number)
 

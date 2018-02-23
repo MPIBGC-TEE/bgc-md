@@ -16,7 +16,8 @@ sys.path.append(p.as_posix())
 import bgc_md.tests
 print("################################### running tests ################################")
 
-s=unittest.defaultTestLoader.discover(bgc_md.tests.__path__[0],pattern="Test*")
+s=unittest.defaultTestLoader.discover(bgc_md.tests.__path__[0],pattern="Test*.py")
+# for the purpose of quick testing we delete the longrunning tests:
 concurrent_suite = ConcurrentTestSuite(s, fork_for_tests(16))
 ##concurrent_suite = ConcurrentTestSuite(s, fork_for_tests(1))
 r=unittest.TextTestRunner()

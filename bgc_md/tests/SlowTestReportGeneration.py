@@ -2,6 +2,7 @@
 # vim:set ff=unix expandtab ts=4 sw=4:
 import unittest
 import sys
+from multiprocessing import Pool
 from subprocess import run,CalledProcessError
 from concurrencytest import ConcurrentTestSuite, fork_for_tests
 from pathlib import Path
@@ -14,31 +15,42 @@ from bgc_md.helpers import remove_indentation
 from bgc_md.reports import defaults
 import bgc_md.gv as gv
 
+def runProtected(rec,command_list,targetPath=Path('.')):
+    file_name=str(rec)
+    result=dict()
+    res=run(command_list+[file_name])
+    result['file']=file_name
+    result['returnValue']=res.returncode
+    html_dir_path=targetPath.joinpath(rec.stem)
+    html_file_path=html_dir_path.joinpath('Report.html')
+    result['fileExists']=html_file_path.exists()
+    return(result)
+
+def f(rec):
+    file_name=str(rec)
+    result=dict()
+    command_list=['generate_model_run_report']
+    result=runProtected(rec,command_list)
+    return result
+
+#print(f(test_list[1]))
+
 class TestReportGeneration(InDirTest):
 
-    def test_commandline_gnerate_model_run_report(self):
+    def test_commandline_generate_model_run_report(self):
         d=defaults() 
         sp=d['paths']['tested_records']
         here=Path('.')
         rec_list=[ rec  for rec in sp.glob('*.yaml')]
         test_list= rec_list
         #test_list= sorted(rec_list)[0]
-        def runProtected(rec,command_list,targetPath=Path('.')):
-            file_name=rec.as_posix()
-            result=dict()
-            res=run(command_list+[file_name])
-            result['file']=file_name
-            result['returnValue']=res.returncode
-            html_dir_path=targetPath.joinpath(rec.stem)
-            html_file_path=html_dir_path.joinpath('Report.html')
-            result['fileExists']=html_file_path.exists()
-            return(result)
-       
-        result_list=[
-            runProtected(rec,['generate_model_run_report'] ) 
-            for rec in test_list]
-        print(result_list)
-        
+
+        pool=Pool(processes=32)
+        result_list=pool.map(f,test_list)
+        #for res in result_list:
+        #    print(res)
+        ## result_list=[ runProtected(rec,['generate_model_run_report'] ) for rec in test_list]
+       # 
         failure_list=[
             r  for r in result_list 
             if r['returnValue']!=0 or r['fileExists']==False
@@ -76,7 +88,7 @@ class TestReportGeneration(InDirTest):
         src_dir_name='localDataBase'
         src_dir_path=Path(src_dir_name)
         src_dir_path.mkdir()
-        rec_list=[ rec  for rec in sp.glob('*.yaml')][0:1]
+        rec_list=sorted([ rec  for rec in sp.glob('*.yaml')])[2:3]
         
         print('##################################################')
         for rec in rec_list:
