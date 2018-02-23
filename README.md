@@ -27,12 +27,12 @@
     Assuming that you just want to use the package and are not going to change any of the packages it depends on
     you can just type the following commands:
 ```bash
-    $pip install -r requirements.txt
-    $python setup.py develop
+     $ pip install -r requirements.txt
+     $ python setup.py develop
 ```
     You can also run the script 
 ```bash
-    $./install.sh 
+     $ ./install.sh 
 ```
     which does the same but installs some additional software that is
     usefull in connection with the package.
@@ -49,8 +49,8 @@
     CompartmentalSystems.
     After this you can type.
 ```bash    
-    pip install -r requirements.developer
-    $ python setup.py develop
+     $ pip install -r requirements.developer
+     $ python setup.py develop
 ```
     or run the script 
 ```bash    
