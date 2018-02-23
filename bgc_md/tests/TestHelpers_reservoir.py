@@ -97,26 +97,6 @@ class TestHelpers_reservoir(unittest.TestCase):
         ref = np.array(a_ref).reshape((24,4))
         self.assertTrue(np.all(melted==ref))
 
-    def test_MH_sampling(self):
-        # uniform distribution on [0,1]
-        PDF = lambda x: 1 if x>=0 and x<=1 else 0
-        rvs = MH_sampling(100000, PDF)
-        self.assertTrue(abs(np.mean(rvs)-0.5) < 0.01)
-        self.assertTrue(abs(np.std(rvs, ddof=1)-np.sqrt(1/12)) < 0.01)
-
-        # exponential distribution
-        l = 2
-        PDF = lambda x: l*np.exp(-l*x)
-        rvs = MH_sampling(100000, PDF, start = 1/l)
-        #print(rvs)
-        #print(np.mean(rvs))
-        #count, bins, ignored = plt.hist(rvs, 100, normed=True)
-        #ts = np.linspace(0, 5, 101)
-        #plt.plot(ts, [PDF(t) for t in ts], color='red')
-        #plt.show()
-        self.assertTrue(abs(np.mean(rvs)-1/l) < 0.01)
-        self.assertTrue(abs(np.std(rvs, ddof=1)-1/l) < 0.01)
-
 
     def test_stride(self):
         data = np.array([i*10+np.linspace(0,9,10) for i in range(20)])
