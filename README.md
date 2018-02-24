@@ -1,13 +1,19 @@
+# bgc_md: biogeochemical model database
+This package consists of two components:
+- A folder with yaml files which encode several soil, vegetation, and ecosystem models in a unified way.
+- A python package that can be used (and extended) to run queries against single models or subsets of the encoded models.
+
+
 # INSTALLATION
 ## Prerequisites:
-  - venv
-    To install we recommend using a virtual python environment.
+  - To install we recommend using a virtual python environment.
     The python3 standard library provides the module *venv* already, so there is no need for third party
     software.
     Some distributions do not install it by default
     E.g. for ubuntu you have to say:
     *sudo apt-get install python3.4-venv*
   - pandoc
+  
     E.g. for ubuntu you have to say:
     *sudo apt-get install pandoc*
 
@@ -24,7 +30,7 @@
     (from now on python3 and pip commands will operate in this virtual environment and install everything
      that is needed there)
 ## Install the package in user only mode:
-    Assuming that you just want to use the package and are not going to change any of the packages it depends on
+   - Assuming that you just want to use the package and are not going to change any of the packages it depends on
     you can just type the following commands:
 ```bash
      $ pip install -r requirements.txt
