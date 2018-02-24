@@ -13,7 +13,6 @@ This package consists of two components:
     E.g. for ubuntu you have to say:
     *sudo apt-get install python3.4-venv*
   - pandoc
-  
     E.g. for ubuntu you have to say:
     *sudo apt-get install pandoc*
 
@@ -36,7 +35,7 @@ This package consists of two components:
      $ pip install -r requirements.txt
      $ python setup.py develop
 ```
-    You can also run the script 
+   - You can also run the script 
 ```bash
      $ ./install.sh 
 ```
