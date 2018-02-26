@@ -123,7 +123,7 @@ class TestModelList(InDirTest):
             shutil.copy(src,src_dir_name)
          
         ml=ModelList.from_dir_path(src_dir_path)
-        target_dir_path=Path('.').joinpath('html')
+        target_dir_path=Path('.').joinpath('htmlmm')
         targetFileName='overview.html'
         ml.create_overview_report(target_dir_path,targetFileName)
         targetPath=target_dir_path.joinpath(targetFileName)

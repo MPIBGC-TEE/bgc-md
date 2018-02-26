@@ -1,7 +1,8 @@
 # vim:set ff=unix expandtab ts=4 sw=4:
 from copy import copy, deepcopy
 from pathlib import Path
-from sympy import sympify, Symbol, flatten, Matrix, diff, MatrixSymbol, simplify, Eq, zeros, eye, diag
+from sympy import sympify, Symbol, flatten, Matrix, diff, MatrixSymbol, simplify, Eq, zeros, eye, diag 
+from sympy.core import Atom
 
 import re
 import string
@@ -28,6 +29,16 @@ class YamlException(Exception):
 
 
 ######### helper functions #############
+# fixme: what does this function really count?
+def depth(expr):
+    expr = sympify(expr)
+
+    if isinstance(expr, Atom):
+        return 1
+    else:
+        if len(expr.args) == 0:
+            return 0
+        return 1 + max([depth(arg) for arg in expr.args])
 
 def load_complete_dict_and_id(complete_dict):
     if ('model' not in complete_dict) or (not complete_dict['model']):
@@ -864,6 +875,21 @@ class Model:
         return retrieve_this_or_that("name", self.bibtex_entry.key, self.complete_dict)
         # fixme 
         # avoid complete_dict references outside init
+
+    @property
+    def nr_ops(self):
+        ops = 0
+        for i in range(self.rhs.rows):
+            #for j in range(self.rhs.cols):
+            ops += self.rhs[i,0].count_ops()
+        return ops
+
+    @property
+    def max_depth(self):
+        d = 0
+        for i in range(self.rhs.rows):
+            d = max([d, depth(self.rhs[i,0])])
+        return d
 
     @property
     def version(self):

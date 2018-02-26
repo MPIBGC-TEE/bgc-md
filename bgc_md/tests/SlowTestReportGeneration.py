@@ -48,7 +48,7 @@ class TestReportGeneration(InDirTest):
         test_list= rec_list
         #test_list= sorted(rec_list)[2:3]
 
-        pool=Pool(processes=32)
+        pool=Pool(processes=1)
         result_list=pool.map(f,test_list)
         #for res in result_list:
         #    print(res)
@@ -64,6 +64,29 @@ class TestReportGeneration(InDirTest):
             ,msg="The following files caused problems %s" % str(failure_list)
             )
 
+
+    def test_commandline_generate_model_run_report_single_file(self):
+        # This function is more of a tool to test a 
+        # specific selectable yaml file 
+        # than an active automatic test. 
+        # Usually the specific file will be tested by one of the 
+        # more comprehensive tests that iterate over all our model files.
+        d=defaults() 
+        sp=d['paths']['tested_records']
+        here=Path('.')
+        test_list=['Allison2010NatureGeoscience.yaml']
+        targetDirName='output'
+        targetPath=here.joinpath(targetDirName)
+        targetPath.mkdir(parents=True,exist_ok=True)
+        
+        result_list=[ runProtected( rec ,['generate_model_run_report',"-t", targetDirName] ,targetPath) for rec in test_list
+        ]
+        failure_list=[r  for r in result_list if r['returnValue']!=0 or r['fileExists']==False]
+        self.assertEqual(
+            len(failure_list)
+            ,0
+            ,msg="The following files caused problems %s" % str(failure_list)
+        )
 
     def test_commandline_generate_model_run_report_with_targetdir(self):
         # test the -t option for a smaller selection of yaml file

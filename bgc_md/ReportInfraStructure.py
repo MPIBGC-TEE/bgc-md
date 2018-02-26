@@ -102,7 +102,7 @@ class ReportElementList(list):
             csl_file_name = gv.resources_path.joinpath('apa.csl').as_posix()
         if not css_file_name:
             css_file_name = gv.resources_path.joinpath('buttondown.css').as_posix()
-
+        html_file_path=Path(html_file_name)
         trunk = Path(html_file_name).stem
         md_file_name = os.path.join(os.path.dirname(html_file_name), trunk + ".md")
         bibtex_file_name = os.path.join(os.path.dirname(html_file_name), trunk + ".bibtex")
@@ -118,7 +118,12 @@ class ReportElementList(list):
             #plt.show(fig_el.fig)
 #            plt.rc('text', usetex=True)
             plt.rc('font', family='serif')
-            fig_el.fig.savefig(os.path.join(os.path.dirname(html_file_name), fig_el.label+".svg"), transparent=fig_el.transparent)
+            file_name=os.path.join(os.path.dirname(html_file_name), fig_el.label+".svg")
+            print('####################################################33')
+            print('file_name')
+            print(file_name)
+            print('####################################################33')
+            fig_el.fig.savefig(file_name, transparent=fig_el.transparent)
             plt.close(fig_el.fig)
 
         self.write_pandoc_markdown(md_file_name)   

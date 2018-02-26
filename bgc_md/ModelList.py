@@ -7,7 +7,7 @@ matplotlib.use("Agg")
 matplotlib.rcParams.update({'figure.max_open_warning': 0})
 import matplotlib.pyplot as plt
 from sympy import sympify, solve, Symbol, limit, oo, ceiling, simplify, Matrix
-from sympy.core import Atom
+#from sympy.core import Atom
 from matplotlib.ticker import MaxNLocator
 from .gv import indexed_color,indexed_filled_marker,filled_markers,indexcolors
 from bgc_md.plot_helpers import add_xhist_data_to_scatter,xhist_fs,yhist_fs
@@ -100,16 +100,6 @@ def exprs_to_element(exprs, symbols_by_type):
     return subl
 
 
-# fixme: what does this function really count?
-def depth(expr):
-    expr = sympify(expr)
-
-    if isinstance(expr, Atom):
-        return 1
-    else:
-        if len(expr.args) == 0:
-            return 0
-        return 1 + max([depth(arg) for arg in expr.args])
 
 class ModelList(list):
     # the class should become the place where comparisons of Models are made
@@ -218,12 +208,8 @@ class ModelList(list):
         #collect data
         plot_data = DataFrame([['name', 'nr_ops','nr_vars']])
         for index, model in enumerate(self):
-            ops = 0
-            for i in range(model.rhs.rows):
-                for j in range(model.rhs.cols):
-                    ops += model.rhs[i,j].count_ops()
 
-            data_list = [model.name, ops,len(model.variables)]
+            data_list = [model.name, model.nr_ops,len(model.variables)]
             plot_data.append_row(data_list)
         
         xdata = np.array(plot_data[:,'nr_vars'])
@@ -287,8 +273,6 @@ class ModelList(list):
         T = Table("Summary of the models in the database of Carbon Allocation in Vegetation models", header_row, table_format)
     
         compar_keys=["state_vector_derivative"]
-        #plot_data = DataFrame([['name', 'nr_sv', 'nr_sym', 'nr_exprs', 'nr_ops', 'depth','nr_vars','nr_parms','part_scheme','s_scale','t_resol']+compar_keys])
-        print('##################################################')
         for index, model in enumerate(self):
             print(type(model))
             print(model.name)
@@ -296,22 +280,6 @@ class ModelList(list):
             #data_list = [model.name]
     
             
-            ops = 0
-            d = 0
-            for i in range(model.rhs.rows):
-                for j in range(model.rhs.cols):
-                    ops += model.rhs[i,j].count_ops()
-                    d = max([d, depth(model.rhs[i,j])])
-    
-            
-            if model.partitioning_scheme == "fixed": 
-                boolean_part_scheme = 0
-            else:
-                boolean_part_scheme = 1
-            state_vector_derivative_dep_set={"faked_key","another_faked_key"}
-    
-            #data_list += [nr_state_v, len(model.syms_dict), len(model.exprs_dict), ops, d,len(model.variables),len(model.parameters),boolean_part_scheme,model.space_scale,model.time_resolution,state_vector_derivative_dep_set]
-            #plot_data.append_row(data_list)
             
             # create table
             dir_name = model.yaml_file_path.stem
@@ -417,7 +385,12 @@ class ModelList(list):
     
 
     def create_scatter_plot_symbols_depth_of_operations(self):
-        
+        rel=ReportElementList()
+        plot_data = DataFrame([['name','nr_vars','depth']])
+        for index, model in enumerate(self):
+            data_list = [model.name,len(model.variables),model.max_depth]
+            plot_data.append_row(data_list)
+
         fig = plt.figure(figsize=(10,10)) # figure size including legend
     
         ax = fig.add_subplot(1,1,1)
@@ -432,11 +405,7 @@ class ModelList(list):
         ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
     #    ax.legend(loc='lower center', scatterpoints=1, frameon = False, ncol = 2)
         ax.set_xlabel("# variables", fontsize = "22",  labelpad=20)
-        if model_type == 'vegetation_model':
-            ax.set_ylabel('cascading depth of operations\n' + r'to calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = 22)
-        if model_type == 'soil_model':
-            ax.set_ylabel('cascading depth of operations\n' + r'to calculate $\mathbf{f}_s(\mathbf{C},t)$', fontsize = 22)
-    
+        ax.set_ylabel('cascading depth of operations\n' + r'to calculate the rhs', fontsize = 22)
         ax.set_ylim((0,max(ydata)+1))
     
         # change font size for the tick labels
@@ -551,7 +520,7 @@ class ModelList(list):
         # ax = fig1.add_subplot(nr_hist,1,2)
         # sublist.plot_model_key_dependencies_scatter_plot(target_key,ax)
         #
-        # rel += MatplotlibFigure(fig1,"Figure 2","Dependencies of the right hand side of the ODEs") 
+        # rel += MatplotlibFigure(fig1,"Figure 2","Dependencies of the rhss") 
         #
         # fig1 = plt.figure(figsize=(30,1), tight_layout=True) 
         # plt.rcdefaults()
@@ -563,6 +532,92 @@ class ModelList(list):
         # rel += MatplotlibFigure(fig1,"Figure 3","dependency plots of compartment variables") 
         return rel
     #
+    def create_scatter_plot_depth_of_operations_number_of_operations(self):
+        rel=ReportElementList()
+        fig = plt.figure(figsize=(10,10))
+    
+        plot_data = DataFrame([['name','depth','nr_ops']])
+        for index, model in enumerate(self):
+            data_list = [model.name,model.max_depth,model.nr_ops]
+            plot_data.append_row(data_list)
+        ax = fig.add_subplot(1,1,1)
+        xdata = np.array(plot_data[:,'nr_ops'])
+        ydata = np.array(plot_data[:,'depth'])
+    
+    
+        for i in range(plot_data.nrow):
+            #ax.scatter(xdata[i]+(0.5-np.random.rand(1))*0.75,ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], c=indexcolors[i+20])
+            ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
+    
+        box = ax.get_position()
+        ax.set_position([box.x0, box.y0+box.height*0.4, box.width, box.height*0.6])
+        ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
+        #if model_type == 'vegetation_model':
+        #    ax.set_xlabel(r' operations to calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22",  labelpad=20)
+        #    ax.set_ylabel('cascading depth of operations\n' + r'to calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22",  labelpad=20)
+        #if model_type == 'soil_model':
+        ax.set_xlabel(r' operations to calculate the rhs', fontsize = "22",  labelpad=20)
+        ax.set_ylabel('cascading depth of operations\n' + r'to calculate the rhs', fontsize = "22",  labelpad=20)
+        ax.yaxis.labelpad = 0
+    
+        # change font size for the tick labels
+        for tick in ax.xaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+        for tick in ax.yaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+        ax.set_ylim((0,max(ydata)+1))
+        ax.set_xlim((0,max(xdata)+50))
+    
+    #    add_xhist_data_to_scatter(ax, xdata, ' models')
+        add_yhist_data_to_scatter(ax, ydata, ' models', fontsize=yhist_fs)
+        rel += MatplotlibFigure(fig,"Figure 6", "cascading depth and # operations")
+        return rel
+
+    def create_scatter_plot_partitioning_scheme_and_number_of_operations(self):
+        plot_data = DataFrame([['name', 'nr_ops', 'part_scheme']])
+        rel=ReportElementList()
+        for index, model in enumerate(self):
+            if model.partitioning_scheme:
+                if model.partitioning_scheme == "fixed": 
+                    boolean_part_scheme = 0
+                else:
+                    boolean_part_scheme = 1
+
+                data_list = [model.name,model.nr_ops,boolean_part_scheme]
+                plot_data.append_row(data_list)
+            fig = plt.figure(figsize=(8,5))
+            fig.subplots_adjust(bottom=0.2, top=0.8, left=0.2)
+        
+            ax = fig.add_subplot(1,1,1)
+            xdata = np.array(plot_data[:,'part_scheme'])
+            ydata = np.array(plot_data[:,'nr_ops'])
+        
+            for i in range(plot_data.nrow):
+            
+                ax.scatter(xdata[i]+(0.5-np.random.rand(1))*0.1,ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], c=indexcolors[i+20])
+                #ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
+        
+            box = ax.get_position()
+            ax.set_position([box.x0, box.y0, box.width * 0.4, box.height])
+            ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), scatterpoints=1, frameon=False)
+            ax.set_xlabel("partitioning scheme", fontsize = "22", labelpad=25)
+            ax.set_ylabel(' operations to\n' + r'calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22", labelpad=25)
+        #    ax.yaxis.label.set_position([-0.2,0])
+            ax.set_ylim((0,max(ydata)+10))
+            ax.set_xlim((-0.2,max(xdata)+0.2))
+            ax.set_xticks([0,1])
+            ax.set_xticklabels(['fixed','dynamic'])
+        
+            for tick in ax.xaxis.get_major_ticks():
+                tick.label.set_fontsize(16) 
+            for tick in ax.yaxis.get_major_ticks():
+                tick.label.set_fontsize(16) 
+        
+            add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=16)
+        
+            rel += MatplotlibFigure(fig,"Figure 7", "Type of carbon partitioning scheme among pools and # operations")
+            return rel
+
         
     def create_overview_report(self, target_dir_path=Path('.'),output_file_name='list_report.html'):
         output_path = target_dir_path.joinpath(output_file_name)
@@ -570,20 +625,22 @@ class ModelList(list):
             target_dir_path.mkdir()
     
         rel = Header('Overview of the models', 1)
-    
+        
+        rel +=self.create_scatter_plot_partitioning_scheme_and_number_of_operations()
+        
+        ## number of operations and depth of operations
+        rel +=self.create_scatter_plot_depth_of_operations_number_of_operations()
         #fixme mm:
-        # the fact thet the following mehtod has a target_dir_path argument
-        # points to it having side effects
+        # the fact thet the following mehtod has 
+        # a target_dir_path argument
+        # points to it having side effects, which are to be avoided
         rel += self.create_overview_table(target_dir_path)
     
         ## create the plots
     
         rel += Header("Figures", 1)
+        
         rel += self.create_state_variable_parameter_variable_histograms()
-    
-        #plot_data = DataFrame([['name', 'nr_sv', 'nr_sym', 'nr_exprs', 'nr_ops', 'depth','nr_vars','nr_parms','part_scheme','s_scale','t_resol']+compar_keys])
-    
-            #data_list += [nr_state_v, len(model.syms_dict), len(model.exprs_dict), ops, d,len(model.variables),len(model.parameters),boolean_part_scheme,model.space_scale,model.time_resolution,state_vector_derivative_dep_set]
 
         # scatter plots
         rel +=self.create_scatter_plot_variables_parameters()
@@ -592,77 +649,10 @@ class ModelList(list):
         rel +=self.create_scatter_plot_symbols_operations()
     
         ## symbols and depth of operations
-        #rel +=self.create_scatter_plot_symbols_depth_of_operations()
+        rel +=self.create_scatter_plot_symbols_depth_of_operations()
     
-       
-        ## number of operations and depth of operations
-        #fig = plt.figure(figsize=(10,10))
-    
-        #ax = fig.add_subplot(1,1,1)
-        #xdata = np.array(plot_data[:,'nr_ops'])
-        #ydata = np.array(plot_data[:,'depth'])
-    
-    
-        #for i in range(plot_data.nrow):
-        #    #ax.scatter(xdata[i]+(0.5-np.random.rand(1))*0.75,ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], c=indexcolors[i+20])
-        #    ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
-    
-        #box = ax.get_position()
-        #ax.set_position([box.x0, box.y0+box.height*0.4, box.width, box.height*0.6])
-        #ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
-        #if model_type == 'vegetation_model':
-        #    ax.set_xlabel(r' operations to calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22",  labelpad=20)
-        #    ax.set_ylabel('cascading depth of operations\n' + r'to calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22",  labelpad=20)
-        #if model_type == 'soil_model':
-        #    ax.set_xlabel(r' operations to calculate $\mathbf{f}_s(\mathbf{C},t)$', fontsize = "22",  labelpad=20)
-        #    ax.set_ylabel('cascading depth of operations\n' + r'to calculate $\mathbf{f}_s(\mathbf{C},t)$', fontsize = "22",  labelpad=20)
-        #ax.yaxis.labelpad = 0
-    
-        ## change font size for the tick labels
-        #for tick in ax.xaxis.get_major_ticks():
-        #    tick.label.set_fontsize(20) 
-        #for tick in ax.yaxis.get_major_ticks():
-        #    tick.label.set_fontsize(20) 
-        #ax.set_ylim((0,max(ydata)+1))
-        #ax.set_xlim((0,max(xdata)+50))
-    
-    #   # add_xhist_data_to_scatter(ax, xdata, ' models')
-        #add_yhist_data_to_scatter(ax, ydata, ' models', fontsize=yhist_fs)
-        #rel += MatplotlibFigure(fig,"Figure 6", "cascading depth and # operations")
-    
-        ## partitioning scheme and number of operations
-        #if model_type == 'vegetation_model':
-        #    fig = plt.figure(figsize=(8,5))
-        #    fig.subplots_adjust(bottom=0.2, top=0.8, left=0.2)
-        #
-        #    ax = fig.add_subplot(1,1,1)
-        #    xdata = np.array(plot_data[:,'part_scheme'])
-        #    ydata = np.array(plot_data[:,'nr_ops'])
-        #
-        #    for i in range(plot_data.nrow):
-        #        #ax.scatter(xdata[i]+(0.5-np.random.rand(1))*0.1,ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], c=indexcolors[i+20])
-        #        ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
-        #
-        #    box = ax.get_position()
-        #    ax.set_position([box.x0, box.y0, box.width * 0.4, box.height])
-        #    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), scatterpoints=1, frameon=False)
-        #    ax.set_xlabel("partitioning scheme", fontsize = "22", labelpad=25)
-        #    ax.set_ylabel(' operations to\n' + r'calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22", labelpad=25)
-        ##    ax.yaxis.label.set_position([-0.2,0])
-        #    ax.set_ylim((0,max(ydata)+10))
-        #    ax.set_xlim((-0.2,max(xdata)+0.2))
-        #    ax.set_xticks([0,1])
-        #    ax.set_xticklabels(['fixed','dynamic'])
-        #
-        #    for tick in ax.xaxis.get_major_ticks():
-        #        tick.label.set_fontsize(16) 
-        #    for tick in ax.yaxis.get_major_ticks():
-        #        tick.label.set_fontsize(16) 
-        #
-        #    add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=16)
-        #
-        #    rel += MatplotlibFigure(fig,"Figure 7", "Type of carbon partitioning scheme among pools and # operations")
-    
+        rel +=self.create_scatter_plot_depth_of_operations_number_of_operations()
+
         rel += Header("Bibliography", 1)
         rel.write_pandoc_html(output_path.as_posix())
 
