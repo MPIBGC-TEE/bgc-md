@@ -701,9 +701,17 @@ class Model:
         return(selected_names+self.state_variables)
 
     @property
+    def nr_variables(self):
+        return(len(self.variables))
+
+    @property
     def parameters(self):
         selected_names=self._varlist_by_type("parameter")
         return(selected_names)
+
+    @property
+    def nr_parameters(self):
+        return(len(self.parameters))
 	
 
     def __init__(self, complete_dict, yaml_file_path= None):
@@ -789,6 +797,18 @@ class Model:
         if part == "partitioningScheme":
             part = None
         return part
+    
+    @property
+    def partitioning_scheme_nr(self):
+        # This is a service for the scatterplots
+        if self.partitioning_scheme:
+            if self.partitioning_scheme == "fixed": 
+                part_scheme_nr = 0
+            else:
+                part_scheme_nr = 1
+        else:
+            part_scheme_nr=None
+        return part_scheme_nr
 
     @property
     def space_scale(self):

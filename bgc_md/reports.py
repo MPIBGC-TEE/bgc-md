@@ -661,6 +661,104 @@ def create_html_from_pandoc_md_directory(input_dir, output_dir, csl_file_name = 
 
 
 
+def create_overview_report(model_list, target_dir_path=Path('.'),output_file_name='list_report.html'):
+        output_path = target_dir_path.joinpath(output_file_name)
+        if not target_dir_path.exists():
+            target_dir_path.mkdir()
+    
+        rel = Header('Overview of the models', 1)
+        
+        
+        
+        #fixme mm:
+        # the fact thet the following mehtod has 
+        # a target_dir_path argument
+        # points to it having side effects, which are to be avoided
+        rel += model_list.create_overview_table(target_dir_path)
+    
+        rel += Header("Figures", 1)
+##########################################################################
+        rel += model_list.create_state_variable_parameter_variable_histograms("Figure 1")
+##########################################################################
+        # scatter plots
+        fig = plt.figure(figsize=(10,10))
+        ax = fig.add_subplot(1,1,1)
+        ax= model_list.create_scatter_plot(
+            ax
+            ,x='nr_variables'
+            ,y='nr_parameters'
+            ,x_label='No. variables'
+            ,y_label='No. parameters'
+        )
+            
+        rel += MatplotlibFigure(fig,"Figure 2","No. variables & parameters" )
+
+##########################################################################
+        fig = plt.figure(figsize=(10,10))
+        ax = fig.add_subplot(1,1,1)
+        ax = model_list.create_scatter_plot(
+            ax
+            ,x='nr_variables'
+            ,y='nr_ops'
+            ,x_label='No. variables'
+            ,y_label='No. operations to calculate rhs'
+        )
+            
+        rel += MatplotlibFigure(fig,"Figure 3","No. variables & operations" )
+     
+##########################################################################
+        fig = plt.figure(figsize=(10,10))
+        ax = fig.add_subplot(1,1,1)
+        ax = model_list.create_scatter_plot(
+            ax
+            ,x='nr_variables'
+            ,y='max_depth'
+            ,x_label='No. variables'
+            ,y_label='Cascading depth of operations\n to calculate the rhs'
+        )
+            
+        rel += MatplotlibFigure(fig,"Figure 4","No. variables & cascading depth of operations" )
+        
+##########################################################################
+        fig = plt.figure(figsize=(10,10))
+        ax = fig.add_subplot(1,1,1)
+        ax = model_list.create_scatter_plot(
+            ax
+            ,x='nr_ops'
+            ,y='max_depth'
+            ,x_label='No. operations to calculate the rhs'
+            ,y_label='Cascading depth of operations\n to calculate the rhs'
+        )
+            
+        rel += MatplotlibFigure(fig,"Figure 5","No. variables & cascading depth of operations" )
+
+##########################################################################
+        models_with_partitioning_scheme = ModelList(
+            m for m in model_list 
+            if m.partitioning_scheme
+        )
+        fig = plt.figure(figsize=(10,10))
+        ax = fig.add_subplot(1,1,1)
+        ax = models_with_partitioning_scheme.create_scatter_plot(
+            ax
+            ,x='partitioning_scheme_nr'
+            ,y='nr_ops'
+            ,x_label='Partitioning scheme'
+            ,y_label='No. operations to calculate the rhs'
+        )
+            
+        ax.set_xticks([0,1])
+        ax.set_xticklabels(['fixed','dynamic'])
+        
+        rel += MatplotlibFigure(fig,"Figure 6","Type of carbon partitioning scheme among pools and No.  operations" )
+
+##########################################################################
+##########################################################################
+        
+
+        rel += Header("Bibliography", 1)
+        rel.write_pandoc_html(output_path.as_posix())
+
 
 
 

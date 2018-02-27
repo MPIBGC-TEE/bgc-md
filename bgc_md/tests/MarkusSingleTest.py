@@ -9,17 +9,17 @@ from bgc_md.tests.TestModelList import TestModelList
 #from bgc_md.tests.TestTsTpField import TestTsTpField
 #from bgc_md.tests.TestTsTpMassFieldsPerPoolPerTimeStep import TestTsTpMassFieldsPerPoolPerTimeStep 
 from bgc_md.tests.TestWriteReportElements import  TestWriteReportElements
-from bgc_md.tests.SlowTestReportGeneration import TestReportGeneration
+from bgc_md.tests.TestReportGeneration import TestReportGeneration
 
 def suite():
     s=unittest.TestSuite()
     #s.addTest(TestCompleteModelList("test_scatter_plus_hist_nr_vars_vs_nr_ops"))
     #s.addTest(TestReportGeneration("test_commandline_generate_model_run_report_with_targetdir"))
     #s.addTest(TestReportGeneration("test_commandline_gnerate_website"))
-    s.addTest(TestReportGeneration("test_commandline_generate_model_run_report_single_file"))
+    #s.addTest(TestReportGeneration("test_commandline_generate_model_run_report_single_file"))
 
     #s.addTest(TestCompleteModelList("test_scatter_plus_hist_nr_vars_vs_nr_ops"))
-    #s.addTest(TestModelList("test_create_overview_report"))
+    s.addTest(TestReportGeneration("test_create_overview_report"))
     #s.addTest(TestModelList("test_create_overview_table"))
     #s.addTest(Test(""))
     #s.addTest(TestWriteReportElements("test_write_html_with_bibliography"))
