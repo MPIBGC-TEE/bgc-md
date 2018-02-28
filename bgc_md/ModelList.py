@@ -209,31 +209,6 @@ class ModelList(list):
             ax = fig.add_subplot(nr_rows,nr_columns, count) 
             sublist.plot_model_key_dependencies_scatter_plot(target_key,ax)
     
-#    def scatter_plus_hist_nr_vars_vs_nr_ops(self,ax):
-#        #collect data
-#        plot_data = DataFrame([['name', 'nr_ops','nr_vars']])
-#        for index, model in enumerate(self):
-#
-#            data_list = [model.name, model.nr_ops,len(model.variables)]
-#            plot_data.append_row(data_list)
-#        
-#        xdata = np.array(plot_data[:,'nr_vars'])
-#        ydata = np.array(plot_data[:,'nr_ops'])
-#        
-#        for i in range(plot_data.nrow):
-##            ax.scatter(xdata[i]+(0.5-np.random.rand(1))*0.75,ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], c=indexed_color(i+20))
-#            ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=indexed_filled_marker(i), c=indexed_color(i+20))
-#
-#        box = ax.get_position()
-#        ax.set_position([box.x0, box.y0, box.width*0.4, box.height*0.6])
-#        #ax.legend(loc='center left', bbox_to_anchor=(1.05, 0.5), scatterpoints=1, frameon=False)
-#        ax.set_xlabel("# variables", fontsize = "22",  labelpad=20)
-#        ax.set_ylabel(r'# operations to calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22",  labelpad=20)
-#        add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=xhist_fs)
-#    #    add_yhist_data_to_scatter(ax, ydata, ' models')
-#        
-#    
-#    
     def create_overview_table(self, target_dir_path):
         # fixme mm:
         #   This method offensively misuses the class ReportElementList by 
@@ -376,133 +351,13 @@ class ModelList(list):
         rel2 += Text("</tbody>\n</table>\n")
         return rel2
     
-#    def create_scatter_plot_symbols_depth_of_operations(self):
-#        rel=ReportElementList()
-#        plot_data = DataFrame([['name','nr_vars','depth']])
-#        for index, model in enumerate(self):
-#            data_list = [model.name,len(model.variables),model.max_depth]
-#            plot_data.append_row(data_list)
-#
-#        fig = plt.figure(figsize=(10,10)) # figure size including legend
-#    
-#        ax = fig.add_subplot(1,1,1)
-#        xdata = np.array(plot_data[:,'nr_vars'])
-#        ydata = np.array(plot_data[:,'depth'])
-#    
-#        for i in range(plot_data.nrow):
-#            ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
-#    
-#        box = ax.get_position()
-#        print("############################")
-#        print(type(ax))
-#        print("############################")
-#        ax.set_position([box.x0, box.y0+box.height*0.4, box.width, box.height*0.6])
-#        ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
-#    #    ax.legend(loc='lower center', scatterpoints=1, frameon = False, ncol = 2)
-#        ax.set_xlabel("# variables", fontsize = "22",  labelpad=20)
-#        ax.set_ylabel('cascading depth of operations\n' + r'to calculate the rhs', fontsize = 22)
-#        ax.set_ylim((0,max(ydata)+1))
-#    
-#        # change font size for the tick labels
-#        for tick in ax.xaxis.get_major_ticks():
-#            tick.label.set_fontsize(20) 
-#        for tick in ax.yaxis.get_major_ticks():
-#            tick.label.set_fontsize(20) 
-#    
-#        add_xhist_data_to_scatter(ax, xdata, ' models',fontsize=20)
-#        add_yhist_data_to_scatter(ax, ydata, ' models',fontsize=20)
-#        plt.rcdefaults()
-#        rel += MatplotlibFigure(fig,"Figure 5", "# variables & cascading depth of operations")
-#        return rel
 
-#    def create_scatter_plot_variables_parameters(self):
-#        rel=ReportElementList()
-#        plot_data = DataFrame([['name','nr_vars','nr_parms']])
-#        for index, model in enumerate(self):
-#            data_list = [model.name,len(model.variables),len(model.parameters)]
-#            plot_data.append_row(data_list)
-#        
-#        xhist_fs = 16
-#        yhist_fs = 16
-#    
-#        # variables vs. parameters
-#        fig = plt.figure(figsize=(10,10))
-#    
-#        ax = fig.add_subplot(1,1,1)
-#        xdata = np.array(plot_data[:,'nr_vars'])
-#        ydata = np.array(plot_data[:,'nr_parms'])
-#    
-#        for i in range(plot_data.nrow):
-#            #ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], c=indexcolors[i+20])
-#            ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
-#    
-#        box = ax.get_position()
-#        ax.set_position([box.x0, box.y0+box.height*0.4, box.width, box.height*0.6])
-#        ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
-#        ax.set_xlabel("# variables", fontsize = "22",  labelpad=20)
-#        ax.set_ylabel("# parameters", fontsize = "22",  labelpad=20)
-#        ax.set_ylim((0,max(ydata)+1))
-#    
-#        # change font size for the tick labels
-#        for tick in ax.xaxis.get_major_ticks():
-#            tick.label.set_fontsize(20) 
-#        for tick in ax.yaxis.get_major_ticks():
-#            tick.label.set_fontsize(20) 
-#    
-#        add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=xhist_fs)
-#        add_yhist_data_to_scatter(ax, ydata, ' models', fontsize=yhist_fs)
-#    
-#        rel += MatplotlibFigure(fig,"Figure 4", "# variables & parameters")
-#        return rel
-    
-    def create_state_variable_parameter_variable_histograms(self,figureName):
-        rel=ReportElementList()
-        # first line of histograms
-        nr_hist = 3
-        fig1 = plt.figure(figsize=(15,5), tight_layout=True)
-        plot_data = DataFrame([['name', 'nr_sv', 'nr_vars','nr_parms']])
-        for index, model in enumerate(self):
-            data_list = [model.name,model.nr_state_v,len(model.variables),len(model.parameters)]
-            plot_data.append_row(data_list)
-        # state variables and models
-        ax = fig1.add_subplot(1, nr_hist, 1)
-        data = np.array(plot_data[:,'nr_sv'])
-        nice_hist(ax, data)
-        ax.set_xlabel(" state variables", fontsize = "22",  labelpad=20)
-        ax.set_ylabel(" models", fontsize = "22",  labelpad=20)
-        # change font size for the tick labels
-        for tick in ax.xaxis.get_major_ticks():
-            tick.label.set_fontsize(20) 
-        for tick in ax.yaxis.get_major_ticks():
-            tick.label.set_fontsize(20) 
-    
-        # parameters and models
-        ax = fig1.add_subplot(1, nr_hist, 2)
-        data = np.array(plot_data[:,'nr_parms'])
-        nice_hist(ax, data)
-        ax.set_xlabel(" parameters", fontsize = "22",  labelpad=20)
-        ax.set_ylabel(" models", fontsize = "22",  labelpad=20)
-         
-        for tick in ax.xaxis.get_major_ticks():
-            tick.label.set_fontsize(20) 
-        for tick in ax.yaxis.get_major_ticks():
-            tick.label.set_fontsize(20) 
-    
-        # variables and models
-        ax = fig1.add_subplot(1, nr_hist, 3)
-        data = np.array(plot_data[:,'nr_vars'])
-        nice_hist(ax, data)
-        ax.set_xlabel(" variables", fontsize = "22",  labelpad=20)
-        ax.set_ylabel(" models", fontsize = "22",  labelpad=20)
-    
-        for tick in ax.xaxis.get_major_ticks():
-            tick.label.set_fontsize(20) 
-        for tick in ax.yaxis.get_major_ticks():
-            tick.label.set_fontsize(20) 
-    
+
+
+
+#    def create_state_variable_parameter_variable_histograms(self,fig1):
         # variables and models
         #rel += Text(mpld3.fig_to_html(fig1))
-        rel += MatplotlibFigure(fig1,figureName,"Histograms,  variables") 
     
         # # second line 
         # target_key="state_vector_derivative"
@@ -525,93 +380,14 @@ class ModelList(list):
         #
         # ModelList(model_list).denpendency_plots_from_keys_in_compartments(fig1)
         # rel += MatplotlibFigure(fig1,"Figure 3","dependency plots of compartment variables") 
-        return rel
-    #
-#    def create_scatter_plot_depth_of_operations_number_of_operations(self):
-#        rel=ReportElementList()
-#        fig = plt.figure(figsize=(10,10))
-#    
-#        plot_data = DataFrame([['name','depth','nr_ops']])
-#        for index, model in enumerate(self):
-#            data_list = [model.name,model.max_depth,model.nr_ops]
-#            plot_data.append_row(data_list)
-#        ax = fig.add_subplot(1,1,1)
-#        xdata = np.array(plot_data[:,'nr_ops'])
-#        ydata = np.array(plot_data[:,'depth'])
-#    
-#    
-#        for i in range(plot_data.nrow):
-#            #ax.scatter(xdata[i]+(0.5-np.random.rand(1))*0.75,ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], c=indexcolors[i+20])
-#            ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
-#    
-#        box = ax.get_position()
-#        ax.set_position([box.x0, box.y0+box.height*0.4, box.width, box.height*0.6])
-#        ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
-#        ax.set_xlabel(r' operations to calculate the rhs', fontsize = "22",  labelpad=20)
-#        ax.set_ylabel('cascading depth of operations\n' + r'to calculate the rhs', fontsize = "22",  labelpad=20)
-#        ax.yaxis.labelpad = 0
-#    
-#        # change font size for the tick labels
-#        for tick in ax.xaxis.get_major_ticks():
-#            tick.label.set_fontsize(20) 
-#        for tick in ax.yaxis.get_major_ticks():
-#            tick.label.set_fontsize(20) 
-#        ax.set_ylim((0,max(ydata)+1))
-#        ax.set_xlim((0,max(xdata)+50))
-#    
-#    #    add_xhist_data_to_scatter(ax, xdata, ' models')
-#        add_yhist_data_to_scatter(ax, ydata, ' models', fontsize=yhist_fs)
-#        rel += MatplotlibFigure(fig,"Figure 6", "cascading depth and # operations")
-#        return rel
+#        return fig1 
 
-#    def create_scatter_plot_partitioning_scheme_and_number_of_operations(self):
-        
-        #plot_data = DataFrame([['name', 'nr_ops', 'part_scheme']])
-        #rel=ReportElementList()
-        #for index, model in enumerate(self):
-        #    if model.partitioning_scheme:
-        #        if model.partitioning_scheme == "fixed": 
-        #            boolean_part_scheme = 0
-        #        else:
-        #            boolean_part_scheme = 1
 
-        #        data_list = [model.name,model.nr_ops,boolean_part_scheme]
-        #        plot_data.append_row(data_list)
-        #    fig = plt.figure(figsize=(8,5))
-        #    fig.subplots_adjust(bottom=0.2, top=0.8, left=0.2)
-        #
-        #    ax = fig.add_subplot(1,1,1)
-        #    xdata = np.array(plot_data[:,'part_scheme'])
-        #    ydata = np.array(plot_data[:,'nr_ops'])
-        #
-        #    for i in range(plot_data.nrow):
-        #    
-        #        ax.scatter(xdata[i]+(0.5-np.random.rand(1))*0.1,ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], c=indexcolors[i+20])
-        #        #ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
-        #
-        #    box = ax.get_position()
-        #    ax.set_position([box.x0, box.y0, box.width * 0.4, box.height])
-        #    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), scatterpoints=1, frameon=False)
-        #    ax.set_xlabel("partitioning scheme", fontsize = "22", labelpad=25)
-        #    ax.set_ylabel(' operations to\n' + r'calculate $\mathbf{f}_v(\mathbf{x}_v,t)$', fontsize = "22", labelpad=25)
-        ##    ax.yaxis.label.set_position([-0.2,0])
-        #    ax.set_ylim((0,max(ydata)+10))
-        #    ax.set_xlim((-0.2,max(xdata)+0.2))
-        #    ax.set_xticks([0,1])
-        #    ax.set_xticklabels(['fixed','dynamic'])
-        #
-        #    for tick in ax.xaxis.get_major_ticks():
-        #        tick.label.set_fontsize(16) 
-        #    for tick in ax.yaxis.get_major_ticks():
-        #        tick.label.set_fontsize(16) 
-        #
-        #    add_xhist_data_to_scatter(ax, xdata, ' models', fontsize=16)
-        #
-        #    rel += MatplotlibFigure(fig,"Figure 7", "Type of carbon partitioning scheme among pools and # operations")
-        #    return rel
+
+
 
         
-    def create_scatter_plot(self,ax,x,y,x_label,y_label):
+    def create_scatter_plot(self,ax,x,y,x_label,y_label,model_symbol_mapping):
         plot_data = DataFrame([['name','x','y']])
         for index, model in enumerate(self):
             data_list = [model.name,getattr(model,x),getattr(model,y)]
@@ -620,9 +396,15 @@ class ModelList(list):
     
         xdata = np.array(plot_data[:,'x'])
         ydata = np.array(plot_data[:,'y'])
-    
+        print('##################################################') 
+        print(plot_data[:,'name'])
         for i in range(plot_data.nrow):
-            ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=filled_markers[i], c=indexcolors[i+20])
+            name=plot_data[i,'name']
+            print(name)
+            ps=model_symbol_mapping[name]
+            ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker , c=ps.color)
+
+        print('##################################################') 
     
         box = ax.get_position()
 
@@ -645,3 +427,23 @@ class ModelList(list):
 
         #plt.rcdefaults()
         return ax 
+        
+    def create_histogram(self,ax,x,x_label,y_label):
+        plot_data = DataFrame([['name','x']])
+        for index, model in enumerate(self):
+            data_list = [model.name,getattr(model,x)]
+            plot_data.append_row(data_list)
+
+
+        data = np.array(plot_data[:,'x'])
+        nice_hist(ax, data)
+        ax.set_xlabel(x_label, fontsize = "22",  labelpad=20)
+        ax.set_ylabel(y_label, fontsize = "22",  labelpad=20)
+        # change font size for the tick labels
+        for tick in ax.xaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+        for tick in ax.yaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+        
+        return ax 
+

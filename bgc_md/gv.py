@@ -37,8 +37,34 @@ def indexed_filled_marker(index):
 def indexed_color(index):
     return(rotated_access(indexcolors,index))
 
-myDirPath = Path(__file__).absolute().parent
+myDirPath = Path(__file__).absolute().parent 
 
 resources_path = myDirPath.joinpath('Resources')
 
+# create the list of colored markers where a colored marker 
+# is a tuple of the form (symbol,color)
+class PlotSymbol():
+    def __init__(self,marker,color):
+        self.marker=marker
+        self.color=color
+
+symbol_list=[
+    # we produce this list in a very weird way
+    # actually the algorithm producing the 
+    # (marker,color) tuples does not guarantee
+    # that we have enough combinations to give every
+    # model a unique combination even if the 
+    # product of the number of markers and the number of 
+    # colors far exceeds the number of models.
+    # In consequence we have to check the number
+    # of available symbols and compare them to the length
+    # of the model list we want to apply them to,
+    # before we do so.
+    PlotSymbol(
+        rotated_access(filled_markers,i_m),
+        rotated_access(indexcolors,i_m+20)
+    ) 
+    for i_m in range(len(indexcolors)*len(filled_markers)) 
+]
+symbol_list=list(set(symbol_list))
 
