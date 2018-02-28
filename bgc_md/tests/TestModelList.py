@@ -86,27 +86,6 @@ class TestModelList(InDirTest):
         plt.close(fig.number)
         
 ####################################################################################################
-    @unittest.skip("the Models are too small and lack information needed for the plots")
-    def test_scatter_plus_hist_nr_vars_vs_nr_ops(self):
-        ml=self.ml
-        fig = plt.figure()
-        ax=fig.add_subplot(1,1,1)
-        ml.scatter_plus_hist_nr_vars_vs_nr_ops(ax)
-        plt.close(fig.number)
-        fig.savefig("plot.pdf")
-        plt.close(fig.number)
-
-        
-        
-        #res=model.depends_on_keyless_symbols("scalar_func_phot")
-
-        #print(res)
-        #ref={Symbol("C_2")}
-        #self.assertEqual(ref,res)
-
-
-####################################################################################################
-####################################################################################################
     def test_create_overview_table(self):
         # we create a target directory populated with only a few files and create a overview html from it
         d=defaults() 
