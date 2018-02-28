@@ -686,104 +686,129 @@ def create_overview_report(model_list, target_dir_path=Path('.'),output_file_nam
 #    
 #        rel += Header("Figures", 1)
 ###########################################################################
-
-        fig = plt.figure(figsize=(15,10), tight_layout=True)
-        # Attention: The help of figure.add_subplot is wrong!
-        nr_col = 3
-        nr_row = 2
-        ax = fig.add_subplot(nr_row, nr_col, 1)
-        ax = model_list.create_histogram(ax,x='nr_state_v',x_label='No. state variables',y_label='No. models')
-    
-        # parameters and models
-        ax = fig.add_subplot(nr_row, nr_col, 2)
-        ax = model_list.create_histogram(ax,x='nr_parameters',x_label='No. parameters',y_label='No. models')
-    
-        # variables and models
-        ax = fig.add_subplot(nr_row, nr_col, 3)
-        ax = model_list.create_histogram(ax,x='nr_variables',x_label='No. variables',y_label='No. models')
-        rel += MatplotlibFigure(fig,'Figure 1',"Histograms,  variables") 
-
-
-
+#
+#        fig = plt.figure(figsize=(15,10), tight_layout=True)
+#        # Attention: The help of figure.add_subplot is wrong!
+#        nr_col = 3
+#        nr_row = 2
+#        ax = fig.add_subplot(nr_row, nr_col, 1)
+#        ax = model_list.create_histogram(ax,x='nr_state_v',x_label='No. state variables',y_label='No. models')
+#    
+#        # parameters and models
+#        ax = fig.add_subplot(nr_row, nr_col, 2)
+#        ax = model_list.create_histogram(ax,x='nr_parameters',x_label='No. parameters',y_label='No. models')
+#    
+#        # variables and models
+#        ax = fig.add_subplot(nr_row, nr_col, 3)
+#        ax = model_list.create_histogram(ax,x='nr_variables',x_label='No. variables',y_label='No. models')
+#        rel += MatplotlibFigure(fig,'Figure 1',"Histograms,  variables") 
+#
+#
+#
+###########################################################################
+#        # scatter plots
+#        fig = plt.figure(figsize=(10,10))
+#        ax = fig.add_subplot(1,1,1)
+#        ax= model_list.create_scatter_plot(
+#            ax
+#            ,x='nr_variables'
+#            ,y='nr_parameters'
+#            ,x_label='No. variables'
+#            ,y_label='No. parameters'
+#            ,model_symbol_mapping=mapping
+#        )
+#            
+#        rel += MatplotlibFigure(fig,"Figure 2","No. variables & parameters" )
+#
+###########################################################################
+#        fig = plt.figure(figsize=(10,10))
+#        ax = fig.add_subplot(1,1,1)
+#        ax = model_list.create_scatter_plot(
+#            ax
+#            ,x='nr_variables'
+#            ,y='nr_ops'
+#            ,x_label='No. variables'
+#            ,y_label='No. operations to calculate rhs'
+#            ,model_symbol_mapping=mapping
+#        )
+#            
+#        rel += MatplotlibFigure(fig,"Figure 3","No. variables & operations" )
+#     
+###########################################################################
+#        fig = plt.figure(figsize=(10,10))
+#        ax = fig.add_subplot(1,1,1)
+#        ax = model_list.create_scatter_plot(
+#            ax
+#            ,x='nr_variables'
+#            ,y='max_depth'
+#            ,x_label='No. variables'
+#            ,y_label='Cascading depth of operations\n to calculate the rhs'
+#            ,model_symbol_mapping=mapping
+#        )
+#            
+#        rel += MatplotlibFigure(fig,"Figure 4","No. variables & cascading depth of operations" )
+#        
+###########################################################################
+#        fig = plt.figure(figsize=(10,10))
+#        ax = fig.add_subplot(1,1,1)
+#        ax = model_list.create_scatter_plot(
+#            ax
+#            ,x='nr_ops'
+#            ,y='max_depth'
+#            ,x_label='No. operations to calculate the rhs'
+#            ,y_label='Cascading depth of operations\n to calculate the rhs'
+#            ,model_symbol_mapping=mapping
+#        )
+#            
+#        rel += MatplotlibFigure(fig,"Figure 5","No. variables & cascading depth of operations" )
+#
+###########################################################################
+#        models_with_partitioning_scheme = ModelList(
+#            m for m in model_list 
+#            if m.partitioning_scheme
+#        )
+#        fig = plt.figure(figsize=(10,10))
+#        ax = fig.add_subplot(1,1,1)
+#        ax = models_with_partitioning_scheme.create_scatter_plot(
+#            ax
+#            ,x='partitioning_scheme_nr'
+#            ,y='nr_ops'
+#            ,x_label='Partitioning scheme'
+#            ,y_label='No. operations to calculate the rhs'
+#            ,model_symbol_mapping=mapping
+#        )
+#            
+#        ax.set_xticks([0,1])
+#        ax.set_xticklabels(['fixed','dynamic'])
+#        
+#        rel += MatplotlibFigure(fig,"Figure 6","Type of carbon partitioning scheme among pools and No.  operations" )
+#
 ##########################################################################
-        # scatter plots
-        fig = plt.figure(figsize=(10,10))
-        ax = fig.add_subplot(1,1,1)
-        ax= model_list.create_scatter_plot(
-            ax
-            ,x='nr_variables'
-            ,y='nr_parameters'
-            ,x_label='No. variables'
-            ,y_label='No. parameters'
-            ,model_symbol_mapping=mapping
-        )
-            
-        rel += MatplotlibFigure(fig,"Figure 2","No. variables & parameters" )
+#The following code might let us get rid of the function:
+#    def create_state_variable_parameter_variable_histograms(self,fig1):
+# in ModelList.py
+# @Markus: please add TestReportGeneration.py
 
-##########################################################################
-        fig = plt.figure(figsize=(10,10))
-        ax = fig.add_subplot(1,1,1)
-        ax = model_list.create_scatter_plot(
-            ax
-            ,x='nr_variables'
-            ,y='nr_ops'
-            ,x_label='No. variables'
-            ,y_label='No. operations to calculate rhs'
-            ,model_symbol_mapping=mapping
-        )
-            
-        rel += MatplotlibFigure(fig,"Figure 3","No. variables & operations" )
-     
-##########################################################################
-        fig = plt.figure(figsize=(10,10))
-        ax = fig.add_subplot(1,1,1)
-        ax = model_list.create_scatter_plot(
-            ax
-            ,x='nr_variables'
-            ,y='max_depth'
-            ,x_label='No. variables'
-            ,y_label='Cascading depth of operations\n to calculate the rhs'
-            ,model_symbol_mapping=mapping
-        )
-            
-        rel += MatplotlibFigure(fig,"Figure 4","No. variables & cascading depth of operations" )
-        
-##########################################################################
-        fig = plt.figure(figsize=(10,10))
-        ax = fig.add_subplot(1,1,1)
-        ax = model_list.create_scatter_plot(
-            ax
-            ,x='nr_ops'
-            ,y='max_depth'
-            ,x_label='No. operations to calculate the rhs'
-            ,y_label='Cascading depth of operations\n to calculate the rhs'
-            ,model_symbol_mapping=mapping
-        )
-            
-        rel += MatplotlibFigure(fig,"Figure 5","No. variables & cascading depth of operations" )
+ #       target_key="state_vector_derivative"
+ #       # first check wich models actually provide the target_key we are looking for
+ #       models_with_target_key = ModelList(
+ #          m for m in model_list
+ #          if m.has_key(target_key)
+ #       )
 
-##########################################################################
-        models_with_partitioning_scheme = ModelList(
-            m for m in model_list 
-            if m.partitioning_scheme
-        )
-        fig = plt.figure(figsize=(10,10))
-        ax = fig.add_subplot(1,1,1)
-        ax = models_with_partitioning_scheme.create_scatter_plot(
-            ax
-            ,x='partitioning_scheme_nr'
-            ,y='nr_ops'
-            ,x_label='Partitioning scheme'
-            ,y_label='No. operations to calculate the rhs'
-            ,model_symbol_mapping=mapping
-        )
-            
-        ax.set_xticks([0,1])
-        ax.set_xticklabels(['fixed','dynamic'])
-        
-        rel += MatplotlibFigure(fig,"Figure 6","Type of carbon partitioning scheme among pools and No.  operations" )
+ #       # fig = plt.figure(figsize=(10,10))
+ #       fig = plt.figure(figsize=(30,15), tight_layout=True)
+ #       # note that the second argument 1 in figsize is required by matplotlib 
+ #       # but ignored by the following method because the 
+ #       # height will be adapted inside the method
+ #       nr_row = 2
+ #       ax = fig.add_subplot(nr_row,1,1)
+ #       models_with_target_key.plot_dependencies(target_key,ax)
+ #       ax = fig.add_subplot(nr_row,1,2)
+ #       models_with_target_key.plot_model_key_dependencies_scatter_plot(target_key,ax)
+ #       # ModelList(model_list).denpendency_plots_from_keys_in_compartments(fig1)
 
-##########################################################################
+ #       rel += MatplotlibFigure(fig,"Figure 7","Dependency plots of compartment variables" )
 ##########################################################################
         
 
