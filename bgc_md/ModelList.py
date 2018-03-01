@@ -351,42 +351,7 @@ class ModelList(list):
         rel2 += Text("</tbody>\n</table>\n")
         return rel2
     
-
-
-
-
-#    def create_state_variable_parameter_variable_histograms(self,fig1):
-        # variables and models
-        #rel += Text(mpld3.fig_to_html(fig1))
-    
-        # # second line 
-        # target_key="state_vector_derivative"
-        # sublist=ModelList([m for m in model_list if m.has_key(target_key)])
-        # nr_hist = 2
-        # fig1 = plt.figure(figsize=(30,15), tight_layout=True)
-        # ax = fig1.add_subplot(nr_hist,1,1)
-        # # first check wich models actually provide the target_key we are looking for
-        # sublist.plot_dependencies(target_key,ax)
-        # ax = fig1.add_subplot(nr_hist,1,2)
-        # sublist.plot_model_key_dependencies_scatter_plot(target_key,ax)
-        #
-        # rel += MatplotlibFigure(fig1,"Figure 2","Dependencies of the rhss") 
-        #
-        # fig1 = plt.figure(figsize=(30,1), tight_layout=True) 
-        # plt.rcdefaults()
-        # # note that the second argument 1 in figsize is required by matplotlib 
-        # # but ignored by the following method because the 
-        # # height will be adapted inside the method
-        #
-        # ModelList(model_list).denpendency_plots_from_keys_in_compartments(fig1)
-        # rel += MatplotlibFigure(fig1,"Figure 3","dependency plots of compartment variables") 
-#        return fig1 
-
-
-
-
-
-        
+      
     def create_scatter_plot(self,ax,x,y,x_label,y_label,model_symbol_mapping):
         plot_data = DataFrame([['name','x','y']])
         for index, model in enumerate(self):
