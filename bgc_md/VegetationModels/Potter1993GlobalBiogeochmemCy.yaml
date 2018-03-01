@@ -20,6 +20,11 @@ doi: 10.1029/93GB02725
 # 10.2307/1313568 1999 paper
 model:
     - state_variables:
+        - t:
+            desc: time step
+            unit: "year"
+            type: variable
+            key: time_symbol
         - C_f:
             desc: Carbon in foliage
             key: "foliage"
@@ -87,7 +92,7 @@ model:
         # you are required to provide at least expressions for f u x and A
         # you are allowed to use as many helper expressions as you want to arrive there
         # e.g.
-        # p= x**2 # allowed just for conviniece
+        # p= x**2 # allowed just for convenience
         # f =p**2.. #required
         - x: 
             key: state_vector 
