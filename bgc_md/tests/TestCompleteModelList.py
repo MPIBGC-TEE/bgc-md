@@ -30,15 +30,15 @@ class TestCompleteModelList(InDirTest):
         fig.savefig("plot.pdf")
         ax=fig.add_subplot(1,1,1)
 
-    
-    def test_scatter_plus_hist_nr_vars_vs_nr_ops(self):
-        ml=self.ml
-        fig = plt.figure()
-        ax=fig.add_subplot(1,1,1)
-        ml.scatter_plus_hist_nr_vars_vs_nr_ops(ax)
-        plt.close(fig.number)
-        fig.savefig("plot.pdf")
-        plt.close(fig.number)
+# The following function no longer exists:    
+#    def test_scatter_plus_hist_nr_vars_vs_nr_ops(self):
+#        ml=self.ml
+#        fig = plt.figure()
+#        ax=fig.add_subplot(1,1,1)
+#        ml.scatter_plus_hist_nr_vars_vs_nr_ops(ax)
+#        plt.close(fig.number)
+#        fig.savefig("plot.pdf")
+#        plt.close(fig.number)
 
     def test_denpendency_plots_from_keys_in_compartments(self):
         fig = plt.figure(figsize=(30,30),tight_layout=True)
