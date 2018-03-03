@@ -11,6 +11,7 @@ entryCreationDate: 15/3/2016 # cahngeset: 3312
 lastModification: _lm_
 modApproach: process based
 partitioningScheme: fixed
+claimedDynamicPart: yes
 spaceScale: global 
 #    unit: "1°"
 timeResolution: monthly 

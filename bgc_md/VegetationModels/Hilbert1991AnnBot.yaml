@@ -11,6 +11,7 @@ lastModification: _lm_
 modApproach: process based
 partitioningScheme: dynamic # Based on Balanced Exponential Growth (BEG): partitioning fractions must sum up to 1. THey came up with P and Q, that depend on W_r. However, if we factorize, P = 1.
 # Comment: No wood, no C release from plant compartments, and C and N inputs are also state variables: W_C, W_N. Here we will consider they aren't (to comply with our constraints-system boundaries).
+claimedDynamicPart: yes
 spaceScale: global 
 #    unit: "1°"
 timeResolution: monthly 

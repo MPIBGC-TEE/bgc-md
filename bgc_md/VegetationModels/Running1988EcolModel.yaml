@@ -10,6 +10,7 @@ entryCreationDate: 17/7/2015 # changeset 2200 (.py)
 lastModification: _lm_
 modApproach: process based
 partitioningScheme: fixed
+claimedDynamicPart: no
 spaceScale: site 
 #    unit: "1°"
 timeResolution: monthly 

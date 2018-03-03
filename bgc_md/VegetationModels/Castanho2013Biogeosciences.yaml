@@ -11,6 +11,7 @@ entryCreationDate: 22/3/2016 # changeset 3354
 lastModification: _lm_
 modApproach: process based
 partitioningScheme: dynamic #fixed
+claimedDynamicPart: no
 spaceScale: Amazon region 
 #    unit: "1°*1°"
 timeResolution: monthly 

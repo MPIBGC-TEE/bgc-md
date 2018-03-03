@@ -801,14 +801,35 @@ class Model:
     @property
     def partitioning_scheme_nr(self):
         # This is a service for the scatterplots
+        # Caution: do not use values = 0 because then it will asumme that it is None.
         if self.partitioning_scheme:
             if self.partitioning_scheme == "fixed": 
-                part_scheme_nr = 0
-            else:
                 part_scheme_nr = 1
+            else:
+                part_scheme_nr = 2
         else:
             part_scheme_nr=None
         return part_scheme_nr
+
+    @property
+    def claimed_dyn_part(self):
+        claim = retrieve_or_default(self.complete_dict, "claimedDynamicPart")
+        if claim == "claimedDynamicPart":
+            claim = None
+        return claim
+    
+    @property
+    def claimed_dyn_part_nr(self):
+        # This is a service for the scatterplots to ask the model object 
+        # whether the publication claimed to have a dynamic partitioning scheme or not.
+        if self.claimed_dyn_part:
+            if self.claimed_dyn_part == "no": 
+               claim_nr = 1
+            else:
+               claim_nr = 2
+        else:
+            claim_nr=3
+        return claim_nr
 
     @property
     def space_scale(self):

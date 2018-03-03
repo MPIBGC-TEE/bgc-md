@@ -351,8 +351,44 @@ class ModelList(list):
         rel2 += Text("</tbody>\n</table>\n")
         return rel2
     
-      
     def create_scatter_plot(self,ax,x,y,x_label,y_label,model_symbol_mapping):
+        plot_data = DataFrame([['name','x','y']])
+        for index, model in enumerate(self):
+            data_list = [model.name,getattr(model,x),getattr(model,y)]
+            plot_data.append_row(data_list)
+        
+    
+        xdata = np.array(plot_data[:,'x'])
+        ydata = np.array(plot_data[:,'y'])
+        for i in range(plot_data.nrow):
+            name=plot_data[i,'name']
+            print(name)
+            ps=model_symbol_mapping[name]
+            ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker , c=ps.color)
+
+        box = ax.get_position()
+
+        ax.set_position([box.x0, box.y0+box.height*0.4, box.width, box.height*0.6])
+        ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
+        #ax.set_xlabel(x_label, fontsize = "22",  labelpad=20)
+        #ax.set_ylabel(y_label, fontsize = "22",  labelpad=20)
+        ax.set_xlabel(x_label, fontsize = "22")
+        ax.set_ylabel(y_label, fontsize = "22")
+        ax.set_ylim((min(ydata)*1.10,max(ydata)*1.05))
+    
+        # change font size for the tick labels
+        for tick in ax.xaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+        for tick in ax.yaxis.get_major_ticks():
+            tick.label.set_fontsize(20) 
+    
+        add_xhist_data_to_scatter(ax, xdata, ' models',fontsize=20)
+        add_yhist_data_to_scatter(ax, ydata, ' models',fontsize=20)
+
+        #plt.rcdefaults()
+        return ax 
+      
+    def create_scatter_plot_plus_rand(self,ax,x,y,x_label,y_label,model_symbol_mapping):
         plot_data = DataFrame([['name','x','y']])
         for index, model in enumerate(self):
             data_list = [model.name,getattr(model,x),getattr(model,y)]
@@ -367,28 +403,30 @@ class ModelList(list):
             name=plot_data[i,'name']
             print(name)
             ps=model_symbol_mapping[name]
-            ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker , c=ps.color)
+            #ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker , c=ps.color)
+            ax.scatter(xdata[i]+(0.5-np.random.rand(1))*0.1,ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker , c=ps.color)
 
         print('##################################################') 
     
         box = ax.get_position()
 
-        ax.set_position([box.x0, box.y0+box.height*0.4, box.width, box.height*0.6])
-        ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height*0.8), scatterpoints=1, frameon = False, ncol = 2)
+        ax.set_position([box.x0, box.y0+box.height*0.2, box.width, box.height])
+        #ax.legend(loc='lower center', bbox_to_anchor=(0.5, -box.height), scatterpoints=1, frameon = False, ncol = 2)
+        ax.legend(loc='lower center', bbox_to_anchor=[0.45, -len(self)*0.036], ncol = 2)
         #ax.set_xlabel(x_label, fontsize = "22",  labelpad=20)
         #ax.set_ylabel(y_label, fontsize = "22",  labelpad=20)
-        ax.set_xlabel(x_label, fontsize = "22")
-        ax.set_ylabel(y_label, fontsize = "22")
+        ax.set_xlabel(x_label, fontsize = "14")
+        ax.set_ylabel(y_label, fontsize = "14")
         ax.set_ylim((0,max(ydata)*1.05))
     
         # change font size for the tick labels
         for tick in ax.xaxis.get_major_ticks():
-            tick.label.set_fontsize(20) 
+            tick.label.set_fontsize(14) 
         for tick in ax.yaxis.get_major_ticks():
-            tick.label.set_fontsize(20) 
+            tick.label.set_fontsize(14) 
     
-        add_xhist_data_to_scatter(ax, xdata, ' models',fontsize=20)
-        add_yhist_data_to_scatter(ax, ydata, ' models',fontsize=20)
+        add_xhist_data_to_scatter(ax, xdata, ' models',fontsize=14)
+        add_yhist_data_to_scatter(ax, ydata, ' models',fontsize=14)
 
         #plt.rcdefaults()
         return ax 
