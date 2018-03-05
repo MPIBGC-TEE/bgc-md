@@ -404,7 +404,7 @@ class ModelList(list):
             print(name)
             ps=model_symbol_mapping[name]
             #ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker , c=ps.color)
-            ax.scatter(xdata[i]+(0.5-np.random.rand(1))*0.1,ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker , c=ps.color)
+            ax.scatter(xdata[i]+(0.6-np.random.rand(1))*0.1,ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker , c=ps.color)
 
         print('##################################################') 
     
@@ -415,18 +415,18 @@ class ModelList(list):
         ax.legend(loc='lower center', bbox_to_anchor=[0.45, -len(self)*0.036], ncol = 2)
         #ax.set_xlabel(x_label, fontsize = "22",  labelpad=20)
         #ax.set_ylabel(y_label, fontsize = "22",  labelpad=20)
-        ax.set_xlabel(x_label, fontsize = "14")
-        ax.set_ylabel(y_label, fontsize = "14")
+        ax.set_xlabel(x_label, fontsize = "18")
+        ax.set_ylabel(y_label, fontsize = "18")
         ax.set_ylim((0,max(ydata)*1.05))
     
         # change font size for the tick labels
         for tick in ax.xaxis.get_major_ticks():
-            tick.label.set_fontsize(14) 
+            tick.label.set_fontsize(18) 
         for tick in ax.yaxis.get_major_ticks():
-            tick.label.set_fontsize(14) 
+            tick.label.set_fontsize(18) 
     
-        add_xhist_data_to_scatter(ax, xdata, ' models',fontsize=14)
-        add_yhist_data_to_scatter(ax, ydata, ' models',fontsize=14)
+        add_xhist_data_to_scatter(ax, xdata, ' models',fontsize=18)
+        add_yhist_data_to_scatter(ax, ydata, ' models',fontsize=18)
 
         #plt.rcdefaults()
         return ax 

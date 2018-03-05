@@ -11,7 +11,7 @@ entryCreationDate: 16/9/2016
 lastModification: _lm_
 modApproach: process based
 partitioningScheme: dynamic
-claimedDynamicPart: yes
+claimedDynamicPart: "yes"
 spaceScale: deciduous forest 
 #    unit: "1°"
 timeResolution: daily

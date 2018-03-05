@@ -762,73 +762,42 @@ def create_overview_report(model_list, target_dir_path=Path('.'),output_file_nam
 #            
 #        rel += MatplotlibFigure(fig,"Figure 5","No. variables & cascading depth of operations" )
 #
-##########################################################################
-#        models_with_partitioning_scheme = ModelList(
-#            m for m in model_list 
-#            if m.partitioning_scheme
-#        )
-#        fig = plt.figure(figsize=(6,len(models_with_partitioning_scheme)*0.48))
-#        fig.subplots_adjust(bottom=0.2, top=0.8, left=0.2)
-#        ax = fig.add_subplot(1,1,1)
-#        ax.set_xlim(0,3)
-#        ax = models_with_partitioning_scheme.create_scatter_plot_plus_rand(
-#            ax
-#            ,x='partitioning_scheme_nr'
-#            ,y='nr_ops'
-#            ,x_label='Partitioning scheme'
-#            ,y_label='No. operations to calculate the rhs'
-#            ,model_symbol_mapping=mapping
-#        )
-#        ax.set_xticks([1,2])
-#        ax.set_xticklabels(['fixed','dynamic'], fontsize = "14")
-#        
-#        rel += MatplotlibFigure(fig,"Figure 6","Type of carbon partitioning scheme among pools and No.  operations" )
-#
-##########################################################################
-#        models_part_scheme_and_claim = ModelList(
-#            m for m in model_list 
-#            if m.partitioning_scheme and m.yaml_file_provides("claimedDynamicPart")
-#        )
-#        #fig = plt.figure()
-#        fig = plt.figure(figsize=(6,len(models_part_scheme_and_claim)*0.48))
-#        fig.subplots_adjust(bottom=0.2, top=0.8, left=0.2)
-#        ax = fig.add_subplot(1,1,1)
-#        ax.set_xlim(0,3)
-#        ax = models_part_scheme_and_claim.create_scatter_plot_plus_rand(
-#            ax
-#            ,x='partitioning_scheme_nr'
-#            ,y='claimed_dyn_part_nr'
-#            ,x_label='Partitioning scheme'
-#            ,y_label='Claimed to have a \n dynamic partitioning scheme?'
-#            ,model_symbol_mapping=mapping
-#        )
-#        ax.set_xticks([1,2])
-#        ax.set_xticklabels(['fixed','dynamic'])
-#        ax.set_yticks([1,2])
-#        ax.set_yticklabels(['No','Yes'])
-#        
-#        rel += MatplotlibFigure(fig,"Figure 7","Type of carbon partitioning scheme among pools and claim to have a dynamic partitionings" )
-#
-##########################################################################
-        # fixme:
-        # the models in the model_list should be selected by whether they have a cycling matrix or not (Vegetation Models)
-        models_list= ModelList(
+#########################################################################
+        model_list = ModelList(
             m for m in model_list 
-            if m.partitioning_scheme and hasattr(m,"cyc_matrix")
+            if m.partitioning_scheme
         )
-        for m in model_list:
-            print('##########')
-            print(m.name)
-            print(m.cyc_matrix_diagonal_nr)
-        #fig = plt.figure()
-        fig = plt.figure(figsize=(6,len(models_list)*0.48))
+        fig = plt.figure(figsize=(6,len(model_list)*0.48))
         fig.subplots_adjust(bottom=0.2, top=0.8, left=0.2)
         ax = fig.add_subplot(1,1,1)
         ax.set_xlim(0,3)
-        ax = models_list.create_scatter_plot_plus_rand(
+        ax = model_list.create_scatter_plot_plus_rand(
             ax
             ,x='partitioning_scheme_nr'
-            ,y='cyc_matrix_diagonal_nr'
+            ,y='nr_ops'
+            ,x_label='Partitioning scheme'
+            ,y_label='No. operations to calculate the rhs'
+            ,model_symbol_mapping=mapping
+        )
+        ax.set_xticks([1,2])
+        ax.set_xticklabels(['fixed','dynamic'], fontsize = "14")
+        
+        rel += MatplotlibFigure(fig,"Figure 6","Type of carbon partitioning scheme among pools and No.  operations" )
+
+#########################################################################
+        model_list = ModelList(
+            m for m in model_list 
+            if m.partitioning_scheme and m.yaml_file_provides("claimedDynamicPart")
+        )
+        #fig = plt.figure()
+        fig = plt.figure(figsize=(7,len(model_list)*0.49))
+        fig.subplots_adjust(bottom=0.2, top=0.8, left=0.2)
+        ax = fig.add_subplot(1,1,1)
+        ax.set_xlim(0,3)
+        ax = model_list.create_scatter_plot_plus_rand(
+            ax
+            ,x='partitioning_scheme_nr'
+            ,y='claimed_dyn_part_nr'
             ,x_label='Partitioning scheme'
             ,y_label='Claimed to have a \n dynamic partitioning scheme?'
             ,model_symbol_mapping=mapping
@@ -839,6 +808,29 @@ def create_overview_report(model_list, target_dir_path=Path('.'),output_file_nam
         ax.set_yticklabels(['No','Yes'])
         
         rel += MatplotlibFigure(fig,"Figure 7","Type of carbon partitioning scheme among pools and claim to have a dynamic partitionings" )
+
+#########################################################################
+        # fixme:
+        # the models in the model_list should be selected by whether they have a cycling matrix or not (Vegetation Models)
+        model_list= ModelList(
+            m for m in model_list 
+            if hasattr(m,"cyc_matrix")
+        )
+        fig = plt.figure(figsize=(7,len(model_list)*0.49))
+        fig.subplots_adjust(bottom=0.2, top=0.8, left=0.2)
+        ax = fig.add_subplot(1,1,1)
+        ax = model_list.create_scatter_plot_plus_rand(
+            ax
+            ,x='nr_state_v'
+            ,y='cyc_matrix_diagonal_nr'
+            ,x_label='No. state variables'
+            ,y_label='Diagonal matrix?'
+            ,model_symbol_mapping=mapping
+        )
+        ax.set_yticks([1,2])
+        ax.set_yticklabels(['No','Yes'])
+        
+        rel += MatplotlibFigure(fig,"Figure 8","Number of state variables and C cycling among compartments" )
 
 ##########################################################################
 #
