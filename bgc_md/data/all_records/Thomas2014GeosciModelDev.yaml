@@ -11,7 +11,7 @@ entryCreationDate: 29/3/2016
 lastModification: _lm_
 modApproach: process based
 partitioningScheme: fixed
-claimedDynamicPart: "no"
+claimedDynamicPart: no
 # Seasonal resolution of global climatic and edaphic controlson patterns of terrestrial ecosystem production and soil microbial respiration.
 spaceScale: global 
 #    unit: "1°"

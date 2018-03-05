@@ -58,8 +58,8 @@ def defaults():
     # I would like to get rid of the Subdirectories 
     # and rather put the information is something is a soil or 
     # vegetation model in the yaml file.
-    soilModelPath=this.joinpath("SoilModels")
-    vegModelPath=this.joinpath("VegetationModels") 
+    soilModelPath=this.joinpath("data","SoilModels")
+    vegModelPath=this.joinpath("data","VegetationModels") 
     path_dict={"veg":vegModelPath,"soil":soilModelPath,"tested_records":tested_record_path}
     
     dir_dict={key:value.as_posix() for key,value in path_dict.items()}

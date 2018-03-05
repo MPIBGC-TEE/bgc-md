@@ -1,0 +1,172 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: Jenkinson1977SoilScience
+name: RothC-26.3
+version: 1
+model-id: S0003
+entryAuthor: "Holger Metzler"
+entryAuthorOrcid: 0000-0002-8239-1601
+entryCreationDate: 10/03/2016
+lastModification: _lm_
+#modApproach: 
+#timeScale: "30 years"
+spaceScale: [plot, field, catchment, regional, national, global]
+timeResolution: annual # ??? parameters are yearly, but it is run on monthly basis
+doi:
+abstract: "Data are assembled from the Rothamsted classical field experiments on the effects of long-continued cropping and manuring on the amount of organic matter in soil, on the age of this soil organic matter, on the amount of microbial biomass in the soil, and on the rate at which plant residues decompose in these soils. These data were then fitted to a model in which soil organic matter was separated into five compartments: decomposable plant material (DPM, half-life 0.165 years); resistant plant material (RPM, 2.31 years); soil biomass (BIO, 1.69 years); physically stabilized organic matter (POM, 49.5 years) and chemically stabilized organic matter (COM, 1980 years). For unitary input of plant material (1 t fresh plant $C ha^{-1} year^{-1}$) under steady-state conditions, after 10,000 years, the model predicts that the soil will contain 0.01 t C in DPM, 0.47 t in RPM, 0.28 t in BIO, 11.3 t in POM, and 12.2 t in COM. The predicted radiocarbon age is 1240 years (equivalent age). The fit between predicted and measured data is sufficiently good to suggest that the model is a useful representation of the turnover of organic matter in cropped soils."
+
+keywords: 
+    - "differential equations"
+    - "linear"
+    - "time variant"
+#    - "analytic"
+
+principles:
+    - "mass balance"
+    - "substrate dependence of decomposition"
+    - "heterogeneity of speed of decay"
+    - "internal transformations of organic matter"
+    - "environmental variability effects"
+
+
+bibtex: "@article{Jenkinson1977SoilScience,
+             author = {Jenkinson, D S and Rayner, J H},
+             doi = {10.1097/00010694-197705000-00005},
+             journal = {Soil Science},
+             number = {5},
+             pages = {298--305},
+             title = {The turnover of soil organic matter in some of the {Rothamsted} classical expermiments},
+             volume = {123},
+             year = {1977}
+        }"
+
+model:
+    - state_variables:
+        - C_1:
+            desc: decomposable plant material pool (DPM)
+#            key: "foliage"
+            unit: "t C*ha^{-1}"
+        - C_2: 
+            desc: resistant plant material pool (RPM)
+#            key: "wood"
+            unit: "t C*ha^{-1}"
+        - C_3:
+            desc: microbial biomass pool (BIO)
+            unit: "t C*ha^{-1}"
+        - C_4:
+            desc: humified organic matter pool (HUM)
+            unit: "t C*ha^{-1}"
+        - C_5:
+            desc: inert organic matter pool (IOM)
+            unit: "t C*ha^{-1}"
+    
+    - decomposition_rates:
+        - k_1:
+            desc: decomposition rate of DPM
+            unit: "yr^{-1}"
+            type: parameter
+        - k_2:
+            desc: decomposition rate of RPM
+            unit: "yr^{-1}"
+            type: parameter
+        - k_3:
+            desc: decomposition rate of BIO
+            unit: "yr^{-1}"
+            type: parameter
+        - k_4:
+            desc: decomposition rate of HUM
+            unit: "yr^{-1}"
+            type: parameter        
+
+    - additional_parameters:          
+        - pClay:
+            desc: percentage of clay in mineral soil
+            type: parameter
+        - DR:
+            desc: ratio of DPM to RPM
+            type: parameter
+
+    - auxiliary_variables:
+        - x:
+            desc: "CO$_2$ to (BIO+HUM) ratio"
+            exprs: "x = 1.67 * (1.85 + 1.60 * exp(-0.0786 * pClay))"
+#            type: auxiliary variable
+        - gamma:
+            desc: litter input partitioning coefficient
+            exprs: "gamma = DR/(1+DR)"
+#            type: auxiliary variable
+
+    - input_components:
+        - J:
+            desc: mean annual carbon input
+            unit: "t C ha^{-1}yr^{-1}"
+            type: parameter
+
+    - transfer_coefficients:
+        - a:
+            desc: flux coefficient to BIO
+            exprs: "a = 0.46/(1+x)"
+#            type: auxiliary variable
+        - b:
+            desc: flux coefficient to HUM
+            exprs: "b = 0.54/(1+x)"
+#            type: auxiliary variable
+
+    - environmental_coefficients:
+        - f_T:
+            desc: function of temperature
+#            type: variable ???
+        - f_W:
+            desc: function of soil moisture
+#            type: variable ???
+
+    - components:
+        - C:
+            desc: carbon content
+            exprs: "C = Matrix(5, 1, [C_1, C_2, C_3, C_4, C_5])"
+            key: state_vector
+        - I:
+            desc: input vector
+            exprs: "I = J * Matrix(5, 1, [gamma, 1-gamma, 0, 0, 0])"
+            key: input_vector
+        - xi:
+            desc: environmental effects multiplier
+            exprs: "xi = f_T * f_W"
+            key: env_eff_mult
+        - A:
+            desc: decomposition operator
+            exprs: "A = Matrix([[  -k_1,    0 ,          0,         0, 0],
+                                [     0,  -k_2,          0,         0, 0],
+                                [ a*k_1, a*k_2, -k_3+a*k_3,     a*k_4, 0],
+                                [ b*k_1, b*k_2,      b*k_3,-k_4+b*k_4, 0],
+                                [     0,     0,          0,         0, 0]])"
+            key: decomp_op_lin
+        - f_s: 
+            exprs: "f_s = I + xi * A * C"
+            desc: the right hand side of the ode
+            key: state_vector_derivative
+
+model_run_data:
+    parameter_sets:
+        - Set1:
+            values:
+                k_1: 10
+                k_2: 0.3
+                k_3: 0.66
+                k_4: 0.02
+                pClay: 23.4
+                DR: 1.44
+                J: 1.7
+                xi: 1
+            desc: original values without effects of temperature and soil moisture
+            bibtex: "@Inbook{Coleman1996,
+                        author = {Coleman, K. and Jenkinson, D. S.},
+                         chapter = {{RothC-26.3 - A} model for the turnover of carbon in soil},
+                         title = {Evaluation of Soil Organic Matter Models: Using Existing Long-Term Datasets},
+                         year = {1996},
+                         publisher = {Springer Berlin Heidelberg},
+                         pages = {237--246},
+                         doi = {10.1007/978-3-642-61094-3_17},
+                         url = {http://dx.doi.org/10.1007/978-3-642-61094-3_17}
+                    }"
+
+

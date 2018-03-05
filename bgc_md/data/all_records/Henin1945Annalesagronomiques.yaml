@@ -1,0 +1,89 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: Henin1945Annalesagronomiques
+name: Henin's model
+version: 1
+model-id: S0001
+entryAuthor: "Holger Metzler"
+entryAuthorOrcid: 0000-0002-8239-1601
+entryCreationDate: 09/03/2016
+lastModification: _lm_
+#modApproach: 
+#partitioningScheme: 
+#spaceScale: global 
+#    unit: "1°"
+timeResolution: annual
+doi:
+abstract: 
+keywords: 
+    - "differential equations"
+    - "linear"
+    - "time invariant"
+    - "analytic"
+
+principles:
+    - "mass balance"
+    - "substrate dependence of decomposition"
+    - "heterogeneity of speed of decay"
+    - "internal transformations of organic matter"
+
+bibtex: "@inproceedings{Henin1945Annalesagronomiques,
+             author = {H\\'{e}nin, S and Dupuis, M},
+             booktitle = {Annales agronomiques},
+             pages = {17--29},
+             title = {{Essai de bilan de la mati\\`{e}re organique du sol}},
+             volume = {15},
+             year = {1945}
+            }"
+
+model:
+    - state_variables:
+        - A:
+            desc: labile pool
+#            key: "foliage"
+            unit: "MgC*ha^{-1}" 
+        - B: 
+            desc: stable pool
+#            key: "wood"
+            unit: "MgC*ha^{-1}" 
+    
+    - decomposition_rates:
+        - alpha:
+            desc: annual decomposition rate of labile pool
+            unit: "yr^{-1}"
+            type: parameter
+        - beta:
+            desc: annual decomposition rate of stable pool
+            unit: "yr^{-1}"
+            type: parameter
+
+    - input_components:
+        - m:
+            desc: annual organic matter input
+            unit: "MgC yr^{-1}"
+            type: parameter
+
+    - transfer_coefficients:
+        - K:
+            desc: isohumic coefficient
+            type: parameter
+
+    - components:
+        - C:
+            desc: carbon content
+            exprs: "C = Matrix(2, 1, [A, B])"
+            key: state_vector
+        - I:
+            desc: input vector
+            exprs: "I = Matrix(2, 1, [m,0])"
+            key: input_vector
+        - A_GeM:
+            desc: decomposition operator
+            exprs: "A_GeM = Matrix(2, 2, [-alpha, 0, alpha*K, -beta])"
+            key: decomp_op_lin
+        - f_s: 
+            exprs: "f_s = I+A_GeM*C"
+            desc: the right hand side of the ode
+            key: state_vector_derivative
+
+#    - parameter_sets:
+# there are some in the paper, but at first glance I don't see how to translate them to this model structure

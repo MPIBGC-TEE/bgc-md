@@ -1,0 +1,90 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+
+citationKey: Fontaine2005Ecologyletters
+name: FB2005 - The model of SOM decomposition (model 1)
+version: 1
+model-id: S0011
+entryAuthor: "Holger Metzler"
+entryAuthorOrcid: 0000-0002-8239-1601
+entryCreationDate: 22/03/2016
+lastModification: _lm_
+#modApproach: 
+#timeScale: "up to 3000 years"
+#spaceScale: [plot, field, regional, national, global]
+#timeResolution: hourly
+doi: 10.1111/j.1461-0248.2005.00813.x
+
+abstract: "Soil organic matter (SOM) models are based on the equation $dC/dt = −kC$ which states that the decomposition rate of a particular carbon (C) pool is proportional to the size of the pool and the decomposition constant $k$. However, this equation does not adequately describe the decomposition of recalcitrant SOM compounds. We present an alternative theory of SOM dynamics in which SOM decay rate is controlled by the size and the diversity of microbe populations and by the supply of energy-rich litter compounds. We show that the SOM pool does not necessarily reach equilibrium and may increase continuously, which explains how SOM can accumulate over thousands of years. However, the simulated SOM accumulation involves the sequestration of available nutrients. How can plants persist? This question is explored with two models that couple the C cycle with a limiting nutrient. The first model considers a single type of microbe whereas the second includes two functional types in competition for energy and nutrient acquisition. The condition for plant persistence is the presence of these two competing microbial types."
+
+keywords: 
+    - "differential equations"
+    - "linear"
+    - "time invariant"
+    - "analytic"
+#    - "Michaelis-Menten"
+
+principles:
+#    - "mass balance"
+#    - "substrate dependence of decomposition"
+    - "heterogeneity of speed of decay"
+    - "internal transformations of organic matter"
+#    - "environmental variability effects"
+#    - "substrate interactions"
+
+
+bibtex: "@article{Fontaine2005Ecologyletters,
+             author = {Fontaine, S\\'{e}bastien and Barot, S\\'{e}bastien},
+             isbn = {1461-0248},
+             journal = {Ecology letters},
+             number = {10},
+             pages = {1075--1087},
+             title = {Size and functional diversity of microbe populations control plant persistence and long‐term soil carbon accumulation},
+             volume = {8},
+             year = {2005},
+             doi = {10.1111/j.1461-0248.2005.00813.x}
+        }"
+
+#further_references:
+#    - bibtex: 
+#      desc: 
+
+model:
+    - state_variables:
+        - C_s:
+            desc: carbon stock in soil organic matter
+            unit: "\\text{quantitiy of carbon}"
+        - C_ds:
+            desc: carbon stock in soil organic matter decomposers
+            unit: "\\text{quantitiy of carbon}"
+
+    - decomposition_coefficients:          
+        - A:
+            desc: decomposers consumption rate of SOM
+            unit: "\\text{time}^{-1}"
+            type: parameter
+        - r:
+            desc: "fraction of decomposer biomass released as CO$_2$"
+            unit: "\\text{time}^{-1}"
+            type: parameter
+
+    - input_components:
+        - Phi_l:
+            desc: fresh organic matter carbon flux
+            unit: "(\\text{quantity of carbon})(\\text{time}))^{-1}"
+            type: parameter
+                   
+    - components:
+        - I:
+            desc: input vector
+            exprs: "I = Matrix(2, 1, [0, Phi_l])"
+        - C:
+            desc: carbon content
+            exprs: "C = Matrix(2, 1, [C_s, C_ds])"
+        - A: 
+            desc: decomposition operator
+            exprs: "A_GeM = Matrix([[0,  -A],
+                                [0, A-r]])"
+        - f_s: 
+            exprs: "f_s = I + A_GeM * C"
+            desc: the right hand side of the ode
+

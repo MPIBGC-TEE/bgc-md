@@ -1,0 +1,80 @@
+
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: Sitch2003GlobChangBiol
+name: LPJ
+version: 1
+model-id: V0010
+basedOn: "BIOME"
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+entryCreationDate: 28/1/2016
+lastModification: _lm_
+modApproach: process based
+doi: 10.1046/j.1365-2486.2003.00569.x 
+model:
+    - additional_variables[Functional Balance]:
+        - lr_max:
+            desc: Maximum leaf-to-root mass ratio
+        - E_supply:
+            desc: Product of plant root-weighted soil moisture availability and a maximum transpiration rate E_max
+        - E_demand:
+            desc: Calculated following Monteith's empirical relation between evaporation efficiency and surface conductance
+            #exprs: see pg 7 of paper
+        - omega:
+            desc: Current degree of water stress that the average individual plant is facing. Range 0-1
+            epxrs: "omega=Min(1,(E_supply/E_demand))"
+        - D:
+            desc: Stem diameter
+        - k_lasa:
+            desc: Constant k_la:sa
+        - k_rp:
+            desc: Constant
+        - k_allom1:
+            desc: Constant
+        - k_allom2:
+            desc: Constant
+        - k_allom3:
+            desc: Constant
+        - H:
+            desc: Vegetation height
+            exprs: "H=k_allom2*D^k_allom3"
+        - CA:
+            desc: Crown area. Constrain not to exceed the constant CA_max
+            key: canopy_area
+            exprs: "CA=k_allom1*D^k_rp"
+
+    - pipe_model:
+        - SA:
+            desc: Sapwood cross sectional area
+            unit: m^2
+        - LA:
+            desc: Average individual leaf area
+            unit: m^2
+            exprs: "LA=k_lasa*SA"
+
+    - state_variables:
+        - C_r: 
+            desc: Carbon in roots 
+        - C_f:
+            desc: Carbon in foliage
+            exprs: "C_f=lr_max*omega*C_r" # Functional balance
+        - C_w:
+            desc: Carbon in woody tissue
+    
+    - photosynthetic_parameters:
+        - NPP:
+            desc: Net Primary Production
+            unit: 
+
+# SEE allocation in pg 8. No ODEs. Biomass increment is allocated to the tissue pools while satisfying the functional balance difference equations and the following equation:
+# deltaC (biomass increment) = deltaC_leaf + deltaC_sapwood + deltaC_root
+model_run_data:
+    parameter_sets:
+        - "Original dataset of the publication":
+            values: {k_allom1: 100,k_allom2: 40,k_allom3: 0.5,k_lasa: 8000,k_rp: 1.6,CA: 15,lr_max: 1,omega: 0.35}
+            desc: "Value for \\omega corresponds to \\omega$_min$, which is the minimum water stress factor for drought deciduous PFTs. Likewise, the value for CA corresponds to CA$_max$ (maximum woody PFT crown area)"
+            doi: 10.1046/j.1365-2486.2003.00569.x 
+        - "Original dataset of the publication (herbaceous)":
+            values: {k_allom1: 100,k_allom2: 40,k_allom3: 0.5,k_lasa: 8000,k_rp: 1.6,CA: 15,lr_max: 0.75,omega: 0.35}
+            desc: "Value for lr$_max$ is for herbaceous"
+            doi: 10.1046/j.1365-2486.2003.00569.x 

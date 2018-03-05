@@ -11,7 +11,7 @@ entryCreationDate: 27/1/2016 # changeset 3056
 lastModification: _lm_
 modApproach: process based
 partitioningScheme: fixed
-claimedDynamicPart: "no"
+claimedDynamicPart: no
 spaceScale: global 
 #    unit: "1°"
 timeResolution: monthly 

@@ -1,0 +1,119 @@
+\documentclass[american, 12pt]{article}
+%------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[american]{babel}
+\usepackage{csquotes}
+\usepackage[natbib=true,backend=biber, sorting=nyt,style=apa]{biblatex}
+\DeclareLanguageMapping{american}{american-apa}
+\addbibresource{soilmodels.bib}
+\usepackage{subscript}
+\newcommand\mathplus{+}
+\newcommand{\red}[1]{{\color{red}#1}}
+
+\usepackage{color}
+\usepackage{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{bbm}
+
+\begin{document}
+\title{Remarks on the soil models in the database}
+\author{Holger Metzler\footnote{Theoretical Ecosystem Ecology, Department of Biogeochemical Processes, Max Planck Institute for Biogeochemistry, Hans-Kn\"oll-Str. 10, 07745 Jena, Germany}\\{\footnotesize \texttt{hmetzler@bgc-jena.mpg.de}}}
+\date{\today}
+\maketitle
+
+\section{HD-1945 - S0001}
+\citep{Henin1945Annalesagronomiques}
+\begin{itemize}
+  \item \red{There are parameter sets in the paper, but I don't know how to transfer them to our scheme.}
+  \item \red{How to include steady-state equations?}
+\end{itemize}
+
+
+\section{Introductory Carbon Balance Model (ICBM) - S0002}
+\citep{Andren1997EcologicalApplications}\\
+Offspring of HD-1945
+\begin{itemize}
+  \item If there were to be no C input to the soil throughout the period, 30 x 0.208 = 6.24 kg would be saved compared with the input needed to maintain steady state. This, and the small gain in soil carbon obtained by doubling the annual input (Fig. 3F), illustrates that it may be better from an atmospheric C balance viewpoint to replace fossil fuels with, e.g., straw instead of trying to sequester C in the soil.
+  \item It is perhaps fortunate that we have no Swedish experimental field data supporting this, but it is common for soils in hot and humid climates to have low C contents. Although we believe that the ICBM model can easily be parameterized for these soils, we do not think that the prediction in Fig. 4B is fully valid in this extreme case. To deal with changes of this magnitude, two pools probably not are sufficient, and a model using a more detailed approximation of the soil organic matter’s continuum of decomposability would be needed, e.g., the multicompartment approach of the Rothamsted model (Jenkinson et al. 1987), the CENTURY model (Parton et al. 1988), or the continuous-quality-change approach of Agren and Bosatta (1996).
+  \item A 1-yr time step is only a coarse approximation of the amount of Y present—this fraction is fairly dynamic. In Fig. 2, the initial part of the Fallow curve is a sloping straight line, but this is most likely an over-simplification. It is possible to divide k 1 and k 2 by 365 and run the model with daily time steps and only  have input on the first day of an arbitrary 365-d period (Fig. 5A). This reveals that Y, assuming C input only at plowing, will follow an exponential decomposition function, in spite of being at a steady state on an annual basis.
+  \item A more realistic example, using measured climate data and assuming plowing in early April (Fig. 5B), shows that the decomposition rate of the Y fraction is highly variable during the year. The within-year dynamics can probably be disregarded from the 30-yr perspective, but one, nevertheless, has to take it into account when sampling to obtain estimates of Y, e.g., by soil coring and fractionation through sieving and/or flotation.
+  \item \red{How to include steady-state equations and initial values?}
+  \item \red{There are steady state initial values, include them?}
+\end{itemize}
+
+\section{RothC-26.3 - S0003}
+\citep{Jenkinson1977SoilScience}\\
+\begin{itemize}
+  \item The parameters are given on annual basis, but the model is usual run with monthly steps.
+  \item \red{There are ways given to calculate $f_T$ and $f_W$ in \cite{Coleman1996}, how to use them to run the model as time-variant?}
+  \item \red{Bibliography entry for \cite{Coleman1996} (@Inbook) looks strange on the report page.}
+\end{itemize}
+
+\section{Century model - S0004}
+\citep{Parton1987SoilSciSocAmJ}
+\begin{itemize}
+  \item Regional trends in SOM can be predicted using four site specific variables, temperature, moisture, soil texture, and plant lignin content. Nitrogen inputs must also be known. Grazing intensity during soil development is also a significant control over steady-state levels of SOM, and since few data are available on presettlement grazing, some uncertainty is inherent in the model predictions.
+  \item The structure and concepts used in our model are similar to those used by Paul and Van Veen (1978); however, we do not explicitly use the concept of physically protected and nonphysically protected organic matter. In recent years, Pastor and Post (1986) and Aber et al. (1982) have used a modeling approach similar to ours for representing soil C and N dynamics in forest systems.
+  \item The environmental modifier $\xi(t) = f_T(t) \cdot f_W(t)$ is called \emph{DEFAG}.
+  \item \red{How to include the time-dependent functions $f_T$ and $f_W$?}
+  \item \red{Can we then find useful parameter sets?}
+\end{itemize}
+
+\section{Exoenzyme model - S0005-S0007}
+\citep{Schimel2003SoilBiologyandBiochemistry}\\
+This paper leads to three versions of the model, the first one with first order dependence of decomposition on exoenzymes, the second one with a reverse Michaelis-Menton approach, and the third one being an improved version taking substrate dependence into account \citep{Sierra2015EM}.
+\begin{itemize}
+  \item The flaw is that, biochemically, SOM decomposition is not simply first order. SOM does not break down spontaneously by itself. Rather, its breakdown is catalyzed by extracellular enzymes that are produced by microorganisms.
+  \item As long as catalyst concentration is a term in the reaction rate equation, recalcitrance, in terms of a low K value, cannot by itself induce C limitation.
+  \item However, we postulate that on the microbial time scale, the SOM pool is large and relatively unchanging. Thus the decomposition kinetics become effectively zero order on SOC, and so the term $K_d\cdot SOC$ can be collapsed into a single decomposition constant $K_d^\ast$.
+\end{itemize}
+
+\section{Bacwave model - S0008}
+\citep{Zelenev2000MicrobialEcology}
+\begin{itemize}
+  \item This is the first report of wavelike dynamics of microorganisms in soil along a root resulting from the interaction of a single organism group with its substrate.
+\end{itemize}
+
+\section{AWB model - S0009}
+\citep{Allison2010NatureGeoscience, Li2014Biogeochemistry}
+\begin{itemize}
+  \item More complex version of \red{GER model}.
+  \item \red{\cite{Li2014Biogeochemistry} contains more interesting models to include.}
+  \item Microbial biomass and extracellular enzymes catalyse the conversion of polymeric SOC to dissolved organic carbon (DOC), which is presumed to be the rate-limiting step in SOC decomposition. Microbial-enzyme models could prove powerful tools for investigating feedbacks between warming and SOC, because temperature directly affects enzyme activity and microbial physiology.
+  \item Enzyme production is directly proportional to microbial biomass.
+  \item Temperature sensitivity of enzyme activity is represented according to the Arrhenius relationship and established biochemical theory.
+  \item Temperature sensitivity of microbial carbon-use efficiency ($E_C$).
+  \item There are initial values in the original supplementary material. What does ``spinup'' and ``default'' exactly mean?
+	``Spinup'' means the values after the spinup, ``default'' means values taken from literature.
+\end{itemize}
+
+\section{Microbial-Enzyme-Mediated Decomposition model (MEND) - S0010}
+\citep{Wang2013EcologicalApplications, Li2014Biogeochemistry}
+\begin{itemize}
+  \item Traditional fast/slow/passive pools based on decay rates are empirical and difficult to relate to measurements (Schmidt et al. 2011).
+  \item Almost no estimates of the half-saturation constant for enzyme pools in the RM-M-SW (reverse Michaelis-Menten Schimel-Weintraub model) have been reported (Moorhead and Sinsabaugh 2006, Lawrence et al. 2009). Thus it is more difficult to parameterize a RM-M-SW model than a M-M model.
+  \item The transformation of DOC is one of the rate-limiting steps in decomposition and respiration (Conant et al. 2011).
+  \item Equilibrium models are not enough to account for the role of mineral-organic interactions in stabilizing SOC, since they assume that exchange between the adsorbed and dissolved phases equilibrates rapidly (Yurova et al. 2008). In addition, the utilization of equilibrium models means that only net adsorption occurs even at low DOC concentration and would result in continuous augmentation of adsorbed C, which is inconsistent with the existence of a maximum sorption capacity denoted by $Q_{max}$ (Kothawala et al. 2008, Mayes et al. 2012).
+  \item Wang and Post (2012) conducted a theoretical reassessment of microbial maintenance and proposed a new model scheme to quantify growth respiration rate, maintenance respiration rate, enzyme production rate, plus microbial mortality rate, where the maintenance respiration was considered to depend on both DOC and MBC. This representation of microbial maintenance respiration is adopted in MEND developed here.
+  \item \red{There are parameter sets in the pdf document, including a reference to the supplementary material for completeness!}
+  \item \red{In \cite{Li2014Biogeochemistry} there are parameter sets as well.}
+\end{itemize}
+
+\section{FB2005 - S0011}
+\cite{Fontaine2005Ecologyletters}
+\begin{itemize}
+  \item versions of all the submodels can be found in th archive folder
+  \item \red{Carlos had a mistake in the decomposition operator, this might have led to a wrong eigenvalue analysis!}
+  \item Very interesting introduction, e.g.,: ``Soil organic matter (SOM) represents the major carbon reservoir of the biosphere–atmosphere system and the main nutrient source for plant growth (Falkowski et al. 2000). Consequently, predicting carbon (C) and nitrogen (N) cycling through SOM is crucial in order to predict global changes and to allow for the adoption of alternative agricultural practices that enable a decrease in the use of mineral fertilizers.''
+  \item Increased rates of SOM mineralization persist in soil for several months after the complete decomposition of FOM, which leads with time to important C losses (Fontaine et al. 2004a).
+  \item There are two microbial functional types that compete for FOM, one degrading exclusively FOM (the r-strategy FOM decomposers) and the other, while being able to breakdown FOM, nevertheless mainly lives on SOM (the K-strategy SOM decomposers).
+  \item We present a theory of SOM dynamics in which SOM decay rate is controlled by the size and diversity of microbe populations and by the supply of FOM.
+  \item As SOM decomposition is limited by the amount of enzymes, the overproduction of enzymes by stimulated decomposers accelerates SOM decomposition.
+  \item The C:N ratio of FOM (plant litter) is larger than that of decomposers (Agren and Bosatta, 1996).
+  \item \red{Depending on whether substrate or nitrogen is the limiting factor, fluxes change and reshape the decomposition operator. The fluxes are easily describable with minima, whereas we need completely different matrices for the different cases. This leads to a problem when the model has to decide dynamically whether it is substrate or nitrogen limited (Liebig's law of the minimum)--> workaround with piecewise functions?}
+\end{itemize}
+ 
+\printbibliography
+\end{document}
+
+

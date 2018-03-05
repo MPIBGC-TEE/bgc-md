@@ -1,0 +1,224 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+
+citationKey: Wang2013EcologicalApplications
+name: MEND
+longName: Microbial-Enzyme-Mediated Decomposition model
+version: 1
+model-id: S0010
+entryAuthor: "Holger Metzler"
+entryAuthorOrcid: 0000-0002-8239-1601
+entryCreationDate: 21/03/2016
+lastModification: _lm_
+#modApproach: 
+#timeScale: "up to 3000 years"
+#spaceScale: [plot, field, regional, national, global]
+timeResolution: hourly
+doi: 10.1890/12-0681.1
+
+abstract: "We developed a microbial-enzyme-mediated decomposition (MEND) model, based on the Michaelis-Menten kinetics, that describes the dynamics of physically defined pools of soil organic matter (SOC). These include particulate, mineral-associated, dissolved organic matter (POC, MOC, and DOC, respectively), microbial biomass, and associated exoenzymes. The ranges and/or distributions of parameters were determined by both analytical steady-state and dynamic analyses with SOC data from the literature. We used an improved multi-objective parameter sensitivity analysis (MOPSA) to identify the most important parameters for the full model: maintenance of microbial biomass, turnover and synthesis of enzymes, and carbon use efficiency (CUE). The model predicted that an increase of 2°C (baseline temperature 12°C) caused the pools of POC-cellulose, MOC, and total SOC to increase with dynamic CUE and decrease with constant CUE, as indicated by the 50% confidence intervals. Regardless of dynamic or constant CUE, the changes in pool size of POC, MOC, and total SOC varied from −8% to 8% under +2°C. The scenario analysis using a single parameter set indicates that higher temperature with dynamic CUE might result in greater net increases in both POC-cellulose and MOC pools. Different dynamics of various SOC pools reflected the catalytic functions of specific enzymes targeting specific substrates and the interactions between microbes, enzymes, and SOC. With the feasible parameter values estimated in this study, models incorporating fundamental principles of microbial-enzyme dynamics can lead to simulation results qualitatively different from traditional models with fast/slow/passive pools."
+
+keywords: 
+    - "differential equations"
+    - "nonlinear"
+    - "time invariant"
+#    - "analytic"
+    - "Michaelis-Menten"
+
+principles:
+    - "mass balance"
+    - "substrate dependence of decomposition"
+    - "heterogeneity of speed of decay"
+    - "internal transformations of organic matter"
+#    - "environmental variability effects"
+    - "substrate interactions"
+
+
+bibtex: "@article{Wang2013EcologicalApplications,
+          author = {Wang, Gangsheng and Post, Wilfred M and Mayes, Melanie A},
+          title = {Development of microbial-enzyme-mediated decomposition model parameters through steady-state and dynamic analyses},
+          journal = {Ecological Applications},
+          volume = {23},
+          number = {1},
+          pages = {255--272},
+          year = {2013},
+          doi = {10.1890/12-0681.1},
+          publisher = {Eco Soc America}
+        }"
+
+further_references:
+    - bibtex: "@article{Li2014Biogeochemistry,
+                 author = {Li, Jianwei and Wang, Gangsheng and Allison, Steven D and Mayes, Melanie A and Luo, Yiqi},
+                 title = {Soil carbon sensitivity to temperature and carbon use efficiency compared across microbial-ecosystem models of varying complexity},
+                 journal = {Biogeochemistry},
+                 volume = {119},
+                 number = {1-3},
+                 pages = {67--84},
+                 year = {2014},
+                 publisher = {Springer}
+                }"
+      desc: 
+
+model:
+    - state_variables:
+        - P:
+            desc: particulate organic carbon pool
+            unit: "mgC g^{-1}\\text{ soil}"
+        - M:
+            desc: mineral associated organic carbon pool
+            unit: "mgC g^{-1}\\text{ soil}"
+        - Q:
+            desc: "active layer of $M$ interacting with dissolved organic carbon through adsorption and desorption"
+            unit: "mgC g^{-1}\\text{ soil}"
+        - B:
+            desc: microbial biomass pool
+            unit: "mgC g^{-1}\\text{ soil}"
+        - D:
+            desc: dissolved organic carbon pool
+            unit: "mgC g^{-1}\\text{ soil}"
+        - EP:
+            desc: "enzymes for the decomposition of $P$"
+            unit: "mgC g^{-1}\\text{ soil}"
+        - EM:
+            desc: "enzymes for the decompsotion of $M$"
+            unit: "mgC g^{-1}\\text{ soil}"
+
+    - parameters:          
+        - V_P:
+            desc: "maximum specific decomposition rate for $P$ by $EP$"
+            unit: "h^{-1}"
+            type: parameter
+        - K_P:
+            desc: "half-saturation constant for decomposition of $P$"
+            unit: "mgC g^{-1}\\text{ soil}"
+            type: parameter
+        - V_M:
+            desc: "maximum specific decomposition rate for $M$ by $EM$"
+            unit: "h^{-1}"
+            type: parameter
+        - K_M:
+            desc: "half-saturation constant for decomposition of $M$"
+            unit: "mgC g^{-1}\\text{ soil}"
+            type: parameter
+        - V_D:
+            desc: "maximum specific uptake rate of $D$ for growth of $B$"
+            unit: "h^{-1}"
+            type: parameter
+        - K_D:
+            desc: "half-saturation constant for uptake of $D$ for growth of $B$"
+            unit: "mgC g^{-1}\\text{ soil}"
+            type: parameter
+        - m_R:
+            desc: specific maintenance factor or rate
+            unit: "h^{-1}"
+            type: parameter
+        - E_C:
+            desc: carbon use efficiency
+            unit:
+            type: parameter
+        - Q_max:
+            desc: maximum dissolved organic carbon sorption capacity
+            unit: "mgC g^{-1}\\text{ soil}"
+            type: parameter
+        - K_ads:
+            desc: specific adsorption rate
+            unit: "h^{-1}"
+            type: parameter
+        - K_des:
+            desc: desorption rate
+            unit: "h^{-1}"
+            type: parameter
+        - r_EP:
+            desc: "turnover rate of $EP$"
+            unit: "h^{-1}"
+            type: parameter
+        - r_EM:
+            desc: "turnover rate of $EM$"
+            unit: "h^{-1}"
+            type: parameter
+        - g_D:
+            desc: "fraction of dead $B$ allocated to $D$"
+            unit: 
+            type: parameter
+        - p_EP:
+            desc: "fraction of $m_R$ for production of $EP$"
+            unit:
+            type: parameter
+        - p_EM:
+            desc: "fraction of $m_R$ for production of $EM$"
+            unit:
+            type: parameter
+        - f_D:
+            desc: "fraction of decomposed $P$ allocated to $D$"
+            unit: 
+            type: parameter
+
+    - additional_variables:
+        - F_E:
+            desc: enzyme production rate
+            exprs: "F_E = m_R"
+            unit: "h^{-1}"   
+#            type: auxiliary variable
+        - F_R:
+            desc: microbial respiration rate
+            exprs: "F_R = (1/E_C-1)*(V_D+m_R)*D/(K_D+D)"
+            unit: "h^{-1}"
+#            type: auxiliary variable    
+        - F_U:
+            desc: dissolved organic matter uptakte rate
+            exprs: "F_U = 1/E_C*(V_D+m_R)*B/(K_D+D)"
+            unit: "h^{-1}"
+#            type: auxiliary variable    
+        - F_A:
+            desc: adsorption rate of dissolved organic matter
+            exprs: "F_A = K_ads*(1-Q/Q_max)"
+            unit: "h^{-1}"
+#            type: auxiliary variable    
+
+    - input_components:
+        - I_P:
+            desc: soil organic carbon input rate
+            type: parameter
+            unit: "mgC g^{-1}\\text{ soil } h^{-1}"
+        - I_D:
+            desc: dissolved organic carbon input rate
+            unit: "mgC g^{-1}\\text{ soil } h^{-1}"
+            type: parameter
+                   
+    - components:
+        - C:
+            desc: carbon content
+            exprs: "C = Matrix(7, 1, [P, M, Q, B, D, EP, EM])"
+            key: state_vector
+        - I:
+            desc: input vector
+            exprs: "I = Matrix(7, 1, [I_P, 0, 0, 0, I_D, 0, 0])"
+            key: input_vector
+        - T:
+            desc: transition operator
+            exprs: "T = Matrix([[   -1,  0,  0, (1-g_D)*(1-p_EP-p_EM)*F_E/(F_E+F_R),             0,  0,  0],
+                                [1-f_D, -1,  0,                                   0,             0,  0,  0],
+                                [    0,  0, -1,                                   0, F_A/(F_U+F_A),  0,  0],
+                                [    0,  0,  0,                                  -1, F_U/(F_U+F_A),  0,  0],
+                                [  f_D,  1,  1,     g_D*(1-p_EP-p_EM)*F_E/(F_E+F_R),            -1,  1,  1],
+                                [    0,  0,  0,                  p_EP*F_E/(F_E+F_R),             0, -1,  0],
+                                [    0,  0,  0,                  p_EM*F_E/(F_E+F_R),             0,  0, -1]])"
+            key: trans_op
+        - N: 
+            desc: decomposition operator
+            exprs: "N = Matrix([[V_P*EP/(K_P+P),              0,           0,        0,       0,    0,    0],
+                                [             0, V_M*EM/(K_M+M),           0,        0,       0,    0,    0],
+                                [             0,              0, K_des/Q_max,        0,       0,    0,    0],
+                                [             0,              0,           0,  F_E+F_R,       0,    0,    0],
+                                [             0,              0,           0,        0, F_U+F_A,    0,    0],
+                                [             0,              0,           0,        0,       0, r_EP,    0],
+                                [             0,              0,           0,        0,       0,    0, r_EM]])"
+            key: decomp_op_nonlin
+        - f_s: 
+            exprs: "f_s = I + T * N * C"
+            desc: the right hand side of the ode
+            key: state_vector_derivative
+
+######################################################################
+
+# include model run information
+
