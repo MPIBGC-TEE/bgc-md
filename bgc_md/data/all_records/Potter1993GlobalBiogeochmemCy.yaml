@@ -1,0 +1,154 @@
+
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: Potter1993GlobalBiogeochemCy
+name: CASA
+longName: Carnegie-Ames-Stanford approach
+version: 1
+model-id: V0002
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+entryCreationDate: 17/7/2015 # changeset 2200 (.py)
+lastModification: _lm_
+modApproach: process based
+partitioningScheme: fixed
+claimedDynamicPart: "no"
+# Seasonal resolution of global climatic and edaphic controlson patterns of terrestrial ecosystem production and soil microbial respiration.
+spaceScale: global 
+#    unit: "1°"
+timeResolution: monthly 
+#    unit: month^{-1}
+doi: 10.1029/93GB02725
+# 10.2307/1313568 1999 paper
+model:
+    - state_variables:
+        - t:
+            desc: time step
+            unit: "year"
+            type: variable
+            key: time_symbol
+        - C_f:
+            desc: Carbon in foliage
+            key: "foliage"
+        - C_r: 
+            desc: Carbon in roots 
+            key: "fine_roots"
+        - C_w:
+            desc: Carbon in woody tissue
+            key: "wood"
+    
+    - photosynthetic_parameters:
+# The model estimate of global terrestrianet primary production is 48 PgC yr -1 with a maximum light use efficiency of 0.39 g C MJ -1 PAR.
+        - SOL: 
+            desc: Total solar radiation (SOL(x,t))
+            type: variable
+        - FPAR:
+            desc: Fraction of incoming PAR intercerpted by green vegetation (FPAR(x,t))
+            type: variable
+#            exprs: FPAR is function of NDVI and SR (see page 6 of Potter1993GlobalBiogeochemCy)
+        - IPAR:
+            desc: "Intercepted photosynthetically active radiation(IPAR(x,t)). The factor of 0.5 accounts for the fact that approx. half of SOL is in PAR waveband (0.4-0.7 $\\mu$m)"
+            type: variable
+            exprs: "IPAR = SOL*FPAR*0.5"
+        - epsilon:
+            desc: "PAR use efficiency ($\\epsilon(x,t)$). Function that depends on effects of temperature and water stress"
+#            exprs: epsilon is function of other functions that depend on soil module (see pages 6-10 of Potter1993GlobalBiogeochemCy)
+            type: variable
+#            unit: km^2     ?
+            key: light_use_eff
+        - NPP:
+            desc: New production of plant biomass (NPP(x,t)) at a grid cell ($x$) in month $t$
+            exprs: "NPP = IPAR * epsilon"
+            type: variable
+            key: NPP
+    - allocation_coefficients:
+        - alpha_f:
+            desc: Proportional allocation constant of available carbon allocated to foliage
+            type: parameter
+            key: "part_foliage"
+        - alpha_r:
+            desc: Proportional allocation constant of available carbon allocated to roots
+            type: parameter
+            key: "part_roots"
+        - alpha_w:
+            desc: Proportional allocation constant of available carbon allocated to wood
+            type: parameter
+            key: "part_wood"
+    - cycling_rates:
+        - tau_f: 
+            desc: Residence time of carbon in foliage 
+            unit: years
+            type: parameter
+            key: "cyc_foliage"
+        - tau_r:
+            desc: Residence time of carbon in roots
+            unit: years
+            type: parameter
+            key: "cyc_roots"
+        - tau_w:
+            desc: Residence time of carbon in wood
+            unit: years
+            type: parameter
+            key: "cyc_wood"
+    - components:
+        # you are required to provide at least expressions for f u x and A
+        # you are allowed to use as many helper expressions as you want to arrive there
+        # e.g.
+        # p= x**2 # allowed just for convenience
+        # f =p**2.. #required
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(3,1,[C_f, C_r, C_w])"
+            desc: vector of states for vegetation
+        - u: 
+            key: scalar_func_phot    
+            exprs: "u=NPP"
+            desc: scalar function of photosynthetic inputs
+        - b: 
+            key: part_coeff    
+            exprs: "b=Matrix(3,1,[alpha_f, alpha_r, alpha_w])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - A: 
+            key: cyc_matrix    
+            exprs: "A=diag(-tau_f, -tau_r, -tau_w)"
+            desc: matrix of turnover (cycling) rates 
+        - f_v: 
+            key: state_vector_derivative  
+            exprs: "f_v = u*b + A*x"
+            desc: the righthandside of the ode
+
+model_run_data:
+    parameter_sets:
+        - "Original dataset of the publication":
+            values: {alpha_f: 'Rational(1,3)',alpha_r: 'Rational(1,3)',alpha_w: 'Rational(1,3)'}
+# epsilon varies from 1.1 - 1.4 gC*MJ^{-1}PAR in crop ecosystems.
+            doi: 10.1029/93GB02725
+        - "Tundra":
+            values: {alpha_f: 0.25, alpha_r: 0.25, alpha_w: 0.5, tau_f: 1.5, tau_r: 3, tau_w: 50}
+            doi: 10.2307/1313568
+        - "High-latitude forest":
+            values: {alpha_f: 0.30, alpha_r: 0.25, alpha_w: 0.45, tau_f: 1, tau_r: 3, tau_w: 50}
+            doi: 10.2307/1313568
+        - "Boreal coniferous forest":
+            values: {alpha_f: 0.25, alpha_r: 0.25, alpha_w: 0.5, tau_f: 2.5, tau_r: 3, tau_w: 50}
+            doi: 10.2307/1313568
+        - "Temperate grassland":
+            values: {alpha_f: 0.45, alpha_r: 0.55, tau_f: 1.5, tau_r: 5}
+            doi: 10.2307/1313568
+        - "Mixed coniferous forest":
+            values: {alpha_f: 0.25, alpha_r: 0.25, alpha_w: 0.5, tau_f: 1.5, tau_r: 3, tau_w: 40}
+            doi: 10.2307/1313568
+        - "Temperate deciduous forest":
+            values: {alpha_f: 0.30, alpha_r: 0.25, alpha_w: 0.45, tau_f: 1, tau_r: 3, tau_w: 40}
+            doi: 10.2307/1313568
+        - "Desert and bare ground":
+            values: {alpha_f: 0.25, alpha_r: 0.25, alpha_w: 0.5, tau_f: 1.5, tau_r: 3, tau_w: 50}
+            doi: 10.2307/1313568
+        - "Semi-arid shrubland":
+            values: {alpha_f: 0.25, alpha_r: 0.25, alpha_w: 0.5, tau_f: 1.5, tau_r: 3, tau_w: 50}
+            doi: 10.2307/1313568
+        - "Savanna and woody grassland":
+            values: {alpha_f: 0.30, alpha_r: 0.25, alpha_w: 0.45, tau_f: 1, tau_r: 5, tau_w: 25}
+            doi: 10.2307/1313568
+        - "Tropical evergreen rain forest":
+            values: {alpha_f: 0.25, alpha_r: 0.25, alpha_w: 0.5, tau_f: 1.5, tau_r: 2, tau_w: 25}
+            doi: 10.2307/1313568

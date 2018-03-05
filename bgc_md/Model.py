@@ -811,25 +811,44 @@ class Model:
             part_scheme_nr=None
         return part_scheme_nr
 
+    def yaml_file_provides(self,target_key):
+        # the function checks if the Model defines target key
+        # (was defined in the yaml file) or not
+        return (target_key in self.complete_dict.keys())
+    
     @property
     def claimed_dyn_part(self):
-        claim = retrieve_or_default(self.complete_dict, "claimedDynamicPart")
-        if claim == "claimedDynamicPart":
-            claim = None
-        return claim
+        return self.yaml_file_provides("claimedDynamicPart")
     
     @property
     def claimed_dyn_part_nr(self):
         # This is a service for the scatterplots to ask the model object 
         # whether the publication claimed to have a dynamic partitioning scheme or not.
+        scdp= self.complete_dict["claimedDynamicPart"]
         if self.claimed_dyn_part:
-            if self.claimed_dyn_part == "no": 
+            if scdp == "no": 
                claim_nr = 1
             else:
                claim_nr = 2
         else:
-            claim_nr=3
+            claim_nr=None
         return claim_nr
+
+    @property
+    def cyc_matrix_diagonal_nr(self):
+        # As a service to the scatterplot methods
+        # we translate the  2 possible boolean values
+        # true and false into integers 1, 2 or None
+        if hasattr(self,"cyc_matrix"):
+            scdp= self.cyc_matrix['expr'].is_diagonal()
+            if not(scdp): 
+               claim_nr = 1
+            else:
+               claim_nr = 2
+        else:
+            claim_nr=None
+        return claim_nr
+
 
     @property
     def space_scale(self):

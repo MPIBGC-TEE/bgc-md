@@ -1,0 +1,217 @@
+
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: Murty2000EcolModell
+name: 
+version:
+model-id: V0013
+basedOn: "G'DAY"
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+entryCreationDate: 16/3/2016 # cahngeset: 3315
+lastModification: _lm_
+modApproach: process based
+# Age-dependent
+partitioningScheme: fixed
+#partitioningScheme: semi_dynamic
+claimedDynamicPart: "no"
+spaceScale: global 
+#    unit: "1°"
+timeResolution: yearly
+doi: 10.1016/S0304-3800(00)00345-8
+model:
+    - time:
+        - t:
+            desc: Age of the stand
+            key: stand_age
+        - t_1:
+            desc: "Age of the stand at which $\\epsilon_{0}$ begins to decline"
+            key: stand_age # fixme: should t_1 and t_2 have the same key as t?
+        - t_2:
+            desc: "Age of the stand at which $\\epsilon_{0}$ reaches a minimum"
+            key: stand_age
+
+    - state_variables:
+        - C_f:
+            desc: Foliar carbon mass
+            key: "foliage"
+            unit: "kgC*m^{-2}"
+        - C_r: 
+            desc: Root carbon
+            key: "fine_roots"
+            unit: "kgC*m^{-2}"
+        - C_w:
+            desc: Carbon in woody tissue
+            key: "wood"
+            unit: "kgC*m^{-2}"
+    - additional_variables:
+        - C_sw:
+            desc: Sapwood carbon content
+            exprs: "C_sw = 1.11*C_w**0.77"
+            unit: "kgC*m^{-2}"
+            key: sapwood
+        - N_f:
+            desc: Nitrogen content of foliage
+            unit: "kgN*m^{-2}"
+            type: variable
+            key: leaf_N
+        - N_r:
+            desc: Nitrogen content of fine roots
+            type: variable
+            key: root_N
+        - n_f:
+            desc: "Foliar N:C ratio"
+            key: leaf_N_C_ratio
+        - n_crit:
+            desc: "Foliar N:C ratio below which production is N-limited"
+            key: leaf_N_C_crit
+        - T_a:
+            desc: Mean air temperature
+            type: parameter
+            key: air_temperature
+        - Q_10:
+            type: parameter
+            key: Q_10
+        - Q_010:
+            type: parameter
+            key: Q_10
+    - respiration_parameters: 
+        - R_c:
+            desc: Total construction respiration
+            type: variable
+            key: respiration
+        - R_0:
+            desc: "Respiration rate per unit nitrogen content corresponding to a temperature of 0°C"
+            unit: "kgC*kgN^{-1}*year^{-1}"
+            type: variable
+            key: respiration
+        - R_mf:
+            desc: Annual maintenance respiration rate of foliage (dark period only) 
+            exprs: "R_mf = 0.5*R_0*N_f*Q_10**(T_a/10)"
+            type: variable
+            key: respiration
+        - R_mr:
+            desc: Annual maintenance respiration rate of fine roots (dark period only) 
+            exprs: "R_mr = R_0*N_r*Q_10**(T_a/10)"
+            type: variable
+            key: respiration
+        - R_msw:
+            desc: Annual maintenance respiration rate of sapwood (dark period only)
+            exprs: "R_msw = 0.00876*C_sw*Q_010**(T_a/10)"
+            type: variable
+            key: respiration
+        - R_m:
+            desc: Total maintenance respiration
+            exprs: "R_m = R_mf + R_mr + R_msw"
+            type: variable
+            key: respiration
+    - photosynthetic_parameters:
+        - I_0:
+            desc: Incident PAR
+            unit: "GJ*m^{-2}"
+            key: IPAR
+        - sigma:
+            desc: Leaf area per unit carbon
+            key: LAI #fixme: is it really LAI? See also DeAngelis...
+            unit: "m^{2}*kgC^{-1}"
+            type: variable
+        - k:
+            desc: Light extinction coefficient 
+            unit: "kgC*m^{-2}"
+            key: light_ext
+        - APAR:
+            desc: Absorbed photosynthetically active radiation
+            exprs: "APAR = I_0*(1-exp(-k*sigma*C_f))"
+            type: variable
+            key: APAR
+        - E_nf:
+            desc: "Function that represents the dependence of NPP on foliar N:C ratio (n_f)"
+            exprs: "E_nf = Piecewise((((((1.84*n_f)-0.01)/(0.017+n_f))/(((1.84*n_crit)-0.01)/(0.017+n_crit))),n_f<n_crit),(1,n_f>n_crit))"
+            key: N_depend_NPP
+        - epsilon_young:
+            desc:  Maximum gross PAR utilization efficiency of young stands
+            unit: "gC*MJ^{-1}"
+            type: parameter
+            key: light_use_eff
+        - epsilon_old:
+            desc:  Maximum gross PAR utilization efficiency of old stands
+            unit: "gC*MJ^{-1}"
+            type: parameter
+            key: light_use_eff
+        - epsilon_0:
+            desc: Maximum gross PAR utilization efficiency
+            exprs: "epsilon_0 = Piecewise((epsilon_young,t<=t_1),(Piecewise(((epsilon_young - ((epsilon_young-epsilon_old)*((t-t_1)/(t_2-t_1)))),t_1<t),(Piecewise(((epsilon_young - ((epsilon_young-epsilon_old)*((t-t_1)/(t_2-t_1)))),t<t_2),(epsilon_old,t>=t_2)),True)),True))"
+            unit: "gC*MJ^{-1}"
+            type: parameter
+            key: light_use_eff
+        - GPP:
+            desc: Gross primary production
+            exprs: "GPP = epsilon_0*E_nf*APAR"
+            type: variable
+            key: GPP
+        - NPP:
+            desc: Annual net primary production
+            exprs: "NPP = GPP -(R_c+R_m)"
+            type: variable
+            key: NPP
+            unit: "kgC*m^{-2}*year^{-1}"
+
+    - allocation_coefficients[Partitioning coefficients]:
+        - a_f:
+            desc: Allocation fraction to foliar biomass
+            type: parameter
+            key: "part_foliage"
+        - a_r:
+            desc: Allocation fraction to roots biomass 
+            type: parameter
+            key: "part_roots"
+        - a_w:
+            desc: Allocation fraction to wood (in stem, branches and large structurl roots) biomass
+            exprs: "a_w = 1-a_f-a_r"
+            type: parameter
+            key: "part_wood"
+
+    - cycling_rates:
+        - gamma_f: 
+            desc: Foliage senescence rate
+            type: parameter
+            key: "cyc_foliage"
+            unit: "yr^{-1}" 
+        - gamma_r:
+            desc: Roots senescence rate
+            type: parameter
+            key: "cyc_roots"
+            unit: "yr^{-1}" 
+        - gamma_w:
+            desc: Wood senescence rate
+            type: parameter
+            key: "cyc_wood"
+            unit: "yr^{-1}"
+
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(3,1,[C_f, C_r, C_w])"
+            desc: vector of states for vegetation
+        - u: 
+            key: scalar_func_phot    
+            exprs: "u=NPP"
+            desc: scalar function of photosynthetic inputs
+        - b: 
+            key: part_coeff    
+            exprs: "b=Matrix(3,1,[a_f, a_r, a_w])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - A: 
+            key: cyc_matrix    
+            exprs: "A=diag(-gamma_f, -gamma_r, -gamma_w)"
+            desc: matrix of senescence (cycling) rates 
+        - f_v: 
+            key: state_vector_derivative  
+            exprs: "f_v = u*b + A*x"
+            desc: the righthandside of the ode
+
+# Parameter sets not working because some of the symbols have 2 values.
+#model_run_data:
+#    parameter_sets:
+#        - "Original dataset of the publication":
+#            values: {R_c: 0.25*NPP,Q_10: 2,Q_010: 1.94,n_crit: 0.034,I_0: 1.164,k: 0.5,R_0: 27,T_a: 3.8,epsilon_0: (1.05,1.25),sigma: 7.6,a_f: (0.16,0.19),a_r: (0.42,0.58),a_w: (0.23,0.42)}
+#            doi: 10.1016/S0304-3800(00)00345-8

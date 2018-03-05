@@ -30,7 +30,7 @@ def suite():
     #s.addTest(TestReportElements("test_Math"))
     #s.addTest(TestReportElements("test_TableRow"))
     #s.addTest(TestReportElements("test_Report"))
-    #s.addTest(TestReportElements("test_ReportElementList"))
+    #s.addTest(TestReportElements("test_ReportElementList")
     #s.addTest(TestReportElements("test_add"))
     #s.addTest(TestDensityAlgorithm("test_age_distribution"))
     #s.addTest(TestTsTpMassFieldsPerPoolPerTimeStep("test_mean_age_distribution_for_BW"))

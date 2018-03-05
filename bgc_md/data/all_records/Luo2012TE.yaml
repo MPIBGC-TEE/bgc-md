@@ -1,0 +1,155 @@
+
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: Luo2012TE
+name: 
+version: 
+model-id: V0015
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+entryCreationDate: 24/3/2016
+lastModification: _lm_
+modApproach: process based
+partitioningScheme: fixed
+claimedDynamicPart: "no"
+spaceScale: global 
+#    unit: "1°"
+timeResolution: monthly 
+#    unit: month^{-1}
+bibtex: "@article{Luo2012TE,
+         address = {Berkeley},
+         author = {Yiqi Luo and Ensheng Weng and Yuanhe Yang},
+         booktitle = {Encyclopedia of Theoretical Ecology},
+         editor = {Alan Hastings and Louis Gross},
+         pages = {219-229},
+         publisher = {University of California Press},
+         title = {Ecosystem Ecology},
+         year = {2012}
+        }"
+
+abstract: "Ecosystem ecology is a subdiscipline of ecology that focuses on exchange of energy and materials between organisms and the environment. The materials that are commonly studied in ecosystem ecology include water, carbon, nitrogen, phosphorus, and other elements that organisms use as nutrients. The source of energy for most ecosystems is solar radiation. In this entry, material cy-cling and energy exchange are generally described before the carbon cycle is used as an example to illustrate our quantitative and theoretical understanding of ecosystem ecology."
+model:
+    - state_variables:
+        - C_f:
+            desc: Carbon in foliage
+            key: "foliage"
+        - C_r: 
+            desc: Carbon in roots 
+            key: "fine_roots"
+        - C_w:
+            desc: Carbon in woody tissue
+            key: "wood"
+    
+    - photosynthetic_parameters:
+        - t:
+            unit: "day"
+            key: time_symbol
+        - GPP:
+            desc: Photosynthetic rate (Carbon input) at time t 
+            unit: "gC*day^{-1}" # Can it still be called a flux, given that there are no area units?
+            type: variable
+            key: GPP
+        - T:
+            desc: Temperature
+            type: variable
+            key: Temperature
+        - Q_10:
+            desc: "Temperature quotient that describes a change in decomposition rate for evey 10°C difference in temperature"
+            type: parameter
+            key: Q_10
+        - W:
+            desc: Volumetric soil moisture
+            type: variable
+            key: soil_moisture
+        - f_W:
+            desc: Function of W
+            exprs: "f_W = Min((0.5*W),1)"
+            type: variable
+            key: func_soil_moist
+        - f_T:
+            desc: Function of T 
+            exprs: "f_T = Q_10**((T-10)/10)"
+            type: variable
+            key: func_temp
+        - epsilon_t:
+            desc: Environmental scalar
+            exprs: "epsilon_t = f_W*f_T" 
+            type: variable
+            unit: km^2
+            key: env_scalar
+    - allocation_coefficients:
+        - eta_f:
+            desc: Fixed partitioning ratio (fraction) of available carbon allocated to foliage
+            type: parameter
+            key: "part_foliage"
+        - eta_r:
+            desc: Fixed partitioning ratio (fraction) of available carbon allocated to roots
+            type: parameter
+            key: "part_roots"
+        - eta_w:
+            desc: Fixed partitioning ratio (fraction) of available carbon allocated to wood
+            type: parameter
+            key: "part_wood"
+    - cycling_rates:
+        - gamma_f: 
+            desc: Foliage turnover rate
+            unit: 
+            type: parameter
+            key: "cyc_foliage"
+            entryAuthorOrcid: 0000-0002-0046-1160
+        - gamma_r:
+            desc: Roots turnover rate
+            unit: 
+            type: parameter
+            key: "cyc_roots"
+            entryAuthorOrcid: 0000-0002-0046-1160
+        - gamma_w:
+            desc: Wood turnover rate
+            unit:
+            type: parameter
+            key: "cyc_wood"
+            entryAuthorOrcid: 0000-0002-0046-1160
+    - components:
+        # you are required to provide at least expressions for f u x and A
+        # you are allowed to use as many helper expressions as you want to arrive there
+        # e.g.
+        # p= x**2 # allowed just for conviniece
+        # f =p**2.. #required
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(3,1,[C_f, C_w, C_r])"
+            desc: vector of states for vegetation
+        - u: 
+            key: scalar_func_phot    
+            exprs: "u=GPP*epsilon_t"
+            desc: scalar function of photosynthetic inputs
+        - b: 
+            key: part_coeff    
+            exprs: "b=Matrix(3,1,[eta_f, eta_w, eta_r])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - A: 
+            key: cyc_matrix    
+            exprs: "A=diag(-gamma_f, -gamma_w, -gamma_r)"
+            desc: matrix of turnover (cycling) rates 
+        - f_v: 
+            key: state_vector_derivative  
+            exprs: "f_v = u*b + A*x"
+            desc: the righthandside of the ode
+
+model_run_data:
+    parameter_sets:
+        - "set1":
+            desc: "Original parameters of the publication. Parameter value of GPP corresponds to an annual average"
+            values: {Q_10: 1, W: 4.2, T: 25, GPP: 3370, eta_f: 0.14,eta_r: 0.26,eta_w: 0.14, gamma_f: 0.00258, gamma_w: 0.0000586, gamma_r: 0.00239} # T, Q_10, and W are variables that should be looked at in a data set. What I have here are invented values
+    initial_values:
+        - "_0":
+            values: {C_f: 250, C_w: 4145, C_r: 192}
+            desc: "original dataset of the publication. Parameter value of GPP corresponds to an annual average"
+
+    run_times:
+        - RT1:
+            start: 0
+            end: 150
+            step_size: 2.5
+
+    possible_combinations:
+        - ["set1", "_0", RT1]

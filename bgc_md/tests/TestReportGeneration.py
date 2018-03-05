@@ -20,17 +20,17 @@ class TestReportGeneration(InDirTest):
     def test_create_overview_report(self):
         # we create a target directory populated with only a few files and create a overview html from it
         d=defaults() 
-        sp=d['paths']['tested_records']
-        #sp=d['paths']['tested_records'].parent.joinpath('VerosTestModels')
+        #sp=d['paths']['tested_records']
+        sp=d['paths']['tested_records'].parent.joinpath('VerosTestModels')
         src_dir_name='localDataBase'
         src_dir_path=Path(src_dir_name)
         src_dir_path.mkdir()
         rec_list=[ rec  for rec in sp.glob('*.yaml')]#[0:2]
         
         for rec in rec_list:
-            print(rec)
-            src=(sp.joinpath(rec)).as_posix()
+            src=str(sp.joinpath(rec))
             target=(src_dir_name)
+
             shutil.copy(src,src_dir_name)
          
         ml=ModelList.from_dir_path(src_dir_path)

@@ -1,0 +1,154 @@
+
+# vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: VanDerWerf1993PlantSoil
+name: 
+version: 1
+model-id: V0006
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+entryCreationDate: 11/8/2015 # cahngeset: 2309
+lastModification: _lm_
+modApproach: process based
+partitioningScheme: fixed
+spaceScale: growth chamber 
+#    unit: "1°"
+timeResolution: daily
+doi: 10.1007/BF00025014
+# Comment: this model has no compartment for wood. It is used to simulate effect of nitrogen on growth of a grass (Dactylis glomerata L.).
+reviews: 
+      - reviewer: Carlos Sierra
+        orcid: 0000-0003-0009-4169
+        date: 12/04/2016
+        desc: "Checked equations against original paper. Removed a matrix that was not necessary." 
+        type: deep
+model:
+    - state_variables:
+        - W_l:
+            desc: Dry weight of leaf blades
+            key: "foliage"
+        - W_s: 
+            desc: Dry weight of leaf sheaths
+            key: "stem"
+        - W_r:
+            desc: Dry weight of roots
+            key: "fine_roots"
+#        - N_p:
+#            desc: Nitrogen. Rate of uptake obeys to the following expression
+#            exprs: "N_p=(sigma*W_r)"
+
+    - additional_variables:
+        - C_cl: 
+            desc: Carbon content of leaf blades
+            type: parameter
+        - C_cs:
+            desc: Carbon content of leaf sheaths 
+            type: parameter
+        - C_cr:
+            desc: Carbon content of roots
+            type: parameter
+            key: roots # fixme?
+        - r_m:
+            desc: Amount of carbon lost per day in root respiration for maintenance processes
+            type: parameter
+        - c_nu: 
+            desc: Amount of carbon lost per unit of nitrogen taken up 
+            type: parameter
+        - c_g:
+            desc: Amount of carbon lost per unit of root biomass produced
+            type: parameter
+            key: part_root #fixme?
+        - sigma:
+            desc: Rate of nitrogen uptake per unit of root weight
+            type: parameter
+        - N_p:
+            desc: Rate of nitrogen uptake
+            type: variable
+            exprs: "N_p = sigma * W_r"
+
+    - photosynthetic_parameters:
+        - phi_g:
+            desc: Rate of gross photosynthesis per unit of leaf weight
+            type: variable
+            key: GPP
+
+    - allocation_coefficients:
+        - alpha_cl:
+            desc: Allocation of carbon to leaf blades
+            type: parameter
+            key: "part_foliage"
+            unit: 
+        - alpha_cs:
+            desc: allocation of carbon to leaf sheaths
+            type: parameter
+            key: "part_wood"
+            unit: 
+        - alpha_cr:
+            desc: allocation of carbon to roots
+            type: parameter
+            key: "part_roots"
+            unit:
+    
+    #- cycling_rates:
+    #    - gamma_f:
+    #        desc:
+    #        type: parameter
+    #        key: "cyc_foliage"
+    #        entryAuthorOrcid: 0000-0002-0046-1160
+    #        unit: 
+    #    - gamma_r:
+    #        desc:
+    #        type: parameter
+    #        key: "cyc_roots"
+    #        entryAuthorOrcid: 0000-0002-0046-1160
+    #        unit: 
+    #    - gamma_w:
+    #        desc:
+    #        type: parameter
+    #        key: "cyc_wood"
+    #        entryAuthorOrcid: 0000-0002-0046-1160
+    #        unit:
+
+    - cycling_rates:
+        - Q_l: 
+            desc: rate of respiration per unit of leaf #Respiration rates per unit of leaf weight-variable formulated by us, for generalization purposes-
+            type: parameter
+            entryAuthorOrcid: 0000-0002-0046-1160
+        - Q_s:
+            desc: rate of respiration per unit of stem #Respiration rates per unit of  stem weight -variable formulated by us, for generalization purposes-
+            type: parameter
+            entryAuthorOrcid: 0000-0002-0046-1160
+        - Q_r:
+            desc: Respiration rates per unit of roots -variable formulated by us, for generalization purposes-
+            type: variable
+            entryAuthorOrcid: 0000-0002-0046-1160
+            exprs: "Q_r = (r_m + sigma*c_nu)/(1+(c_g/C_cr))"
+
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x = Matrix(3,1,[W_l, W_s, W_r])"
+            desc: vector of states for vegetation
+        - u: 
+            key: scalar_func_phot    
+            exprs: "u = phi_g"
+            desc: scalar function of photosynthetic inputs
+        - c:   
+            key: C_content    
+            exprs: "c = diag((1/C_cl), (1/C_cs), (1/C_cr))"
+            desc: carbon contents per compartment
+        - A:   
+            key: resp_matrix    
+            exprs: "A = diag(-Q_l, -Q_s, -Q_r)"
+            desc: vector of respiration rates
+        - b: 
+            key: part_coeff    
+            exprs: "b = Matrix(3,1,[(alpha_cl), (alpha_cs), (alpha_cr/(1+(c_g/C_cr)))])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+#        - A: 
+#            key: cyc_matrix    
+#            exprs: "A = diag(-gamma_f, -gamma_r, -gamma_w)"
+#            desc: matrix of turnover (cycling) rates 
+        - f_v: 
+            key: state_vector_derivative  
+            exprs: "f_v = u*x[0]*c*b + A*c*x"
+            desc: the righthandside of the ode
