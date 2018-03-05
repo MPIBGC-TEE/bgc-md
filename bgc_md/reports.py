@@ -770,7 +770,7 @@ def create_overview_report(model_list, target_dir_path=Path('.'),output_file_nam
         fig = plt.figure(figsize=(6,len(models_with_partitioning_scheme)*0.48))
         fig.subplots_adjust(bottom=0.2, top=0.8, left=0.2)
         ax = fig.add_subplot(1,1,1)
-        ax.set_xlim(0.5,2.5)
+        ax.set_xlim(0,3)
         ax = models_with_partitioning_scheme.create_scatter_plot_plus_rand(
             ax
             ,x='partitioning_scheme_nr'
@@ -789,9 +789,11 @@ def create_overview_report(model_list, target_dir_path=Path('.'),output_file_nam
             m for m in model_list 
             if m.partitioning_scheme and m.claimed_dyn_part_nr
         )
-        fig = plt.figure()
+        #fig = plt.figure()
+        fig = plt.figure(figsize=(6,len(models_part_scheme_and_claim)*0.48))
+        fig.subplots_adjust(bottom=0.2, top=0.8, left=0.2)
         ax = fig.add_subplot(1,1,1)
-        ax.set_xlim(0.5,2.5)
+        ax.set_xlim(0,3)
         ax = models_part_scheme_and_claim.create_scatter_plot_plus_rand(
             ax
             ,x='partitioning_scheme_nr'
@@ -804,7 +806,6 @@ def create_overview_report(model_list, target_dir_path=Path('.'),output_file_nam
         ax.set_xticklabels(['fixed','dynamic'])
         ax.set_yticks([1,2])
         ax.set_yticklabels(['No','Yes'])
-        plt.tight_layout()
         
         rel += MatplotlibFigure(fig,"Figure 7","Type of carbon partitioning scheme among pools and claim to have a dynamic partitionings" )
 
