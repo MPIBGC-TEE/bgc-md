@@ -404,7 +404,7 @@ class ModelList(list):
             print(name)
             ps=model_symbol_mapping[name]
             #ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker , c=ps.color)
-            ax.scatter(xdata[i]+(0.6-np.random.rand(1))*0.1,ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker , c=ps.color)
+            ax.scatter(xdata[i]+(0.1*np.random.rand(1)),ydata[i], s=50, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker, c=ps.color)
 
         print('##################################################') 
     
@@ -417,7 +417,7 @@ class ModelList(list):
         #ax.set_ylabel(y_label, fontsize = "22",  labelpad=20)
         ax.set_xlabel(x_label, fontsize = "18")
         ax.set_ylabel(y_label, fontsize = "18")
-        ax.set_ylim((0,max(ydata)*1.05))
+        ax.set_ylim((min(ydata)-0.5,max(ydata)*1.25))
     
         # change font size for the tick labels
         for tick in ax.xaxis.get_major_ticks():
