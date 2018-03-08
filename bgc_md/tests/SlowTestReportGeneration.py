@@ -74,7 +74,9 @@ class TestReportGeneration(InDirTest):
         d=defaults() 
         sp=d['paths']['tested_records']
         here=Path('.')
-        test_list=['Allison2010NatureGeoscience.yaml']
+        rec_list=[ rec  for rec in sp.glob('*.yaml')]
+        test_list= rec_list
+        #test_list=['Allison2010NatureGeoscience.yaml']
         targetDirName='output'
         targetPath=here.joinpath(targetDirName)
         targetPath.mkdir(parents=True,exist_ok=True)

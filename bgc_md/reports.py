@@ -878,7 +878,7 @@ def generate_html_dir(src_dir, target_dir):
     
 
     ml=ModelList.from_dir_path(src_dir_path)
-    ml.create_overview_report(html_dir_path,'list_report.html')
+    create_overview_report(ml,html_dir_path,'list_report.html')
 
 def create_single_report(yaml_file_path, target_dir_path):
     model = Model.from_path(yaml_file_path)
