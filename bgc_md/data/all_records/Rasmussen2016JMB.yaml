@@ -44,31 +44,31 @@ bibtex: "@article{Rasmussen2016JMB,
 model:
     - state_variables:
         - x_1:
-            desc: 
+            desc: Leaves 
             unit: 
         - x_2: 
-            desc: 
+            desc: Wood
             unit: 
         - x_3:
-            desc: 
+            desc: Roots
             unit: 
         - x_4:
-            desc: 
+            desc: Metabolic litter
             unit: 
         - x_5:
-            desc: 
+            desc: Structural litter
             unit: 
         - x_6:
-            desc: 
+            desc: Coarse woody debris
             unit: 
         - x_7: 
-            desc: 
+            desc: Labile SOM
             unit: 
         - x_8:
-            desc: 
+            desc: Slow SOM
             unit: 
         - x_9:
-            desc: 
+            desc: Passive SOM
             unit: 
     
     - decomposition_rates:
