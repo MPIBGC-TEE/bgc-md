@@ -83,12 +83,13 @@ def generate_model_run_reports():
     com = parser.parse_args()
     generate_html_dir(com.src_dir,com.target_dir)
 
-def generate_miniaml_model_reports(com):
-   pass 
-def generate_miniaml_model_report(com):
-   pass 
-    
-
+def generate_minimal_model_reports(com):
+    # this is an example of a custom made function
+    # the generic interface should list the desired parts
+    Exception("This function is not implemented yet")
+def generate_minimal_model_report(com):
+    # this is an example of a custom made function
+    Exception("This function is not implemented yet")
 
 def report_from_model(model):
     #rel = model.get_meta_data_report()
@@ -105,7 +106,7 @@ def report_from_model(model):
         #plt.show(logofig)
         #print('Logo printed')
 
-    rel+= Text(r"This report is the result of the use of the python package bgc_md , as means to translate published models to a common language. It was created by $curator (Orcid ID: $Oid) on $entryDate, and was last modified on $modDate." + "\n",
+    rel+= Text(r"This report is the result of the use of the python package bgc_md , as means to translate published models to a common language.  The underlying yaml file was created by $curator (Orcid ID: $Oid) on $entryDate, and was last modified on $modDate." + "\n",
             curator=model.entryAuthor,
             entryDate=model.entry_creation_date,
             modDate=model.last_modification_date,

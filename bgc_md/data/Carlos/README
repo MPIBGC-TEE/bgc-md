@@ -1,0 +1,12 @@
+Assuming that you have activated your virtual env by 
+source pathToYourEnv/bin/activate
+The commandline tools are available.
+
+generate_model_run_report Rasmussen2016JMB.yaml 
+
+will create a folder Rasmussen2016JMB with all the necessary files in it. 
+(You can also specify a target folder. To see the options just run generate_model_run_report without arguments)
+
+To look at the output say: 
+firefox Rasmussen2016JMB/Report.html 
+
