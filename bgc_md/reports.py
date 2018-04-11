@@ -869,7 +869,7 @@ def generate_html_dir(src_dir, target_dir):
 
     target_dir_path = Path(target_dir)
     src_dir_path= Path(src_dir)
-    print("Targetdirectory: "+target_dir_path.as_posix())
+    print("Targetdirectory: "+str(target_dir_path))
     
     html_dir_path = target_dir_path.joinpath("html")
     
