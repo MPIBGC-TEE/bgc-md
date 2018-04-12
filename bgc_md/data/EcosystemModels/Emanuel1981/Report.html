@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Report of the model: Emanuel1981, version: 1</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="buttondown.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">Report of the model: Emanuel1981, version: 1</h1>
+</header>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the python package bgc_md , as means to translate published models to a common language. The underlying yaml file was created by Carlos A. Sierra (Orcid ID: 0000-0003-0009-4169) on 12/9/2016, and was last modified on .</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation. It was originally described by <span class="citation" data-cites="Emanuel1981">Emanuel, Killough, &amp; Olson (1981)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>A mathematical model for the circulation of carbon in the world terrestrial ecosystems is proposed. A five-compartment representation is developed which corresponds to the functional components studied by field ecologists. Rate coefficients for this linear dynamic model are calculated from estimates of the 1970 standingcrops and compartment exchanges of carbon. The model is analyzed in terms of response to a unit impulse, thereby displaying a transient time distribution. The response to a hypothetical pulse input through gross primary production is also simulated, illustrating the efficiency of the terrestrial carbon system in transferring carbon into longer storage components. Finally, the concept of CO<span class="math inline">\(_{2}\)</span> fertilization is examined by allowing gross primary production to increase in response to higher atmospheric concentrations. Although the standing crop of carbon in photosynthesizing compartments is induced to grow from a hypothetical preindustrial level to a specified 1970 level, the accompanying increase in other compartments is not as large as obtained in earlier model formulations which incorporate an input from the atmosphere directly to compartments containing carbon in woody material or soil.</p>
+<h3 id="keywords">Keywords</h3>
+<p>differential equations, linear, time invariant, analytic</p>
+<h3 id="principles">Principles</h3>
+<p>mass balance, substrate dependence of decomposition, heterogeneity of speed of decay, internal transformations of organic matter</p>
+<h3 id="available-parameter-values">Available parameter values</h3>
+<table>
+<caption>Information on given parameter sets</caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Abbreviation</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Original parameters of the publication</td>
+<td style="text-align: left;">Parameter value of GPP corresponds to an annual average</td>
+</tr>
+</tbody>
+</table>
+<h3 id="available-initial-values">Available initial values</h3>
+<table>
+<caption>Information on given sets of initial values</caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Abbreviation</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Original initial values of the publication</td>
+<td style="text-align: left;">original dataset of the publication. Parameter value of GPP corresponds to an annual average</td>
+</tr>
+</tbody>
+</table>
+<h1 id="state-variables">State Variables</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on State Variables</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Values <br> <br>Original initial values of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x_{1}\)</span></td>
+<td style="text-align: left;">Non-woody tree parts</td>
+<td style="text-align: center;"><span class="math inline">\(37\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x_{2}\)</span></td>
+<td style="text-align: left;">Woody tree parts</td>
+<td style="text-align: center;"><span class="math inline">\(452\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x_{3}\)</span></td>
+<td style="text-align: left;">Ground vegetation</td>
+<td style="text-align: center;"><span class="math inline">\(69\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x_{4}\)</span></td>
+<td style="text-align: left;">Detritus/Decomposers</td>
+<td style="text-align: center;"><span class="math inline">\(81\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x_{5}\)</span></td>
+<td style="text-align: left;">Active soil carbon</td>
+<td style="text-align: center;"><span class="math inline">\(1121\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="photosynthetic-parameters">Photosynthetic Parameters</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Photosynthetic Parameters</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Units</th>
+<th style="text-align: center;">Values <br> <br>Original parameters of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(I_{1}\)</span></td>
+<td style="text-align: left;">Gross primary production of the non-woody pool</td>
+<td style="text-align: center;"><span class="math inline">\(PgC yr^{-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(77\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(I_{3}\)</span></td>
+<td style="text-align: left;">Gross primary production of the ground vegetation pool</td>
+<td style="text-align: center;"><span class="math inline">\(PgC yr^{-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(36\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="cycling-rates">Cycling Rates</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Cycling Rates</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Type</th>
+<th style="text-align: center;">Units</th>
+<th style="text-align: center;">Values <br> <br>Original parameters of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(F_{1}\)</span></td>
+<td style="text-align: left;">Cycling rate of pool 1</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(yr^{-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(2.081\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(F_{2}\)</span></td>
+<td style="text-align: left;">Cycling rate of pool 2</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(yr^{-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.0686\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(F_{3}\)</span></td>
+<td style="text-align: left;">Cycling rate of pool 3</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(yr^{-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.5217\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(F_{4}\)</span></td>
+<td style="text-align: left;">Cycling rate of pool 4</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(yr^{-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.5926\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(F_{5}\)</span></td>
+<td style="text-align: left;">Cycling rate of pool 5</td>
+<td style="text-align: center;">parameter</td>
+<td style="text-align: center;"><span class="math inline">\(yr^{-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.009813\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="transfer-coefficients">Transfer Coefficients</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table>
+<caption>Information on Transfer Coefficients</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Values <br> <br>Original parameters of the publication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(F_{21}\)</span></td>
+<td style="text-align: left;">Transfer coefficient from non-woody to woody vegetation</td>
+<td style="text-align: center;"><span class="math inline">\(0.8378\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(F_{41}\)</span></td>
+<td style="text-align: left;">Transfer coefficient from non-woody to detritus</td>
+<td style="text-align: center;"><span class="math inline">\(0.5676\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(F_{42}\)</span></td>
+<td style="text-align: left;">Transfer coefficient from ground vegetaion to detritus</td>
+<td style="text-align: center;"><span class="math inline">\(0.0322\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(F_{52}\)</span></td>
+<td style="text-align: left;">Transfer coefficient from woody parts to soil</td>
+<td style="text-align: center;"><span class="math inline">\(0.004425\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(F_{43}\)</span></td>
+<td style="text-align: left;">Transfer coefficient from ground vegetation to deteritus</td>
+<td style="text-align: center;"><span class="math inline">\(0.1739\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(F_{53}\)</span></td>
+<td style="text-align: left;">Transfer coefficient from ground vegetation to soil</td>
+<td style="text-align: center;"><span class="math inline">\(0.087\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(F_{54}\)</span></td>
+<td style="text-align: left;">Transfer coefficient from detritus to soil</td>
+<td style="text-align: center;"><span class="math inline">\(0.037\)</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="components">Components</h1>
+<p>The following table contains the available information regarding this section:</p>
+<table style="width:100%;">
+<caption>Information on Components</caption>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 30%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expressions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x\)</span></td>
+<td style="text-align: left;">vector of state variables</td>
+<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}x_{1}\\x_{2}\\x_{3}\\x_{4}\\x_{5}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(u\)</span></td>
+<td style="text-align: left;">vector of photosynthetically fixed carbon</td>
+<td style="text-align: center;"><span class="math inline">\(u=\left[\begin{matrix}I_{1}\\0\\I_{3}\\0\\0\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(B\)</span></td>
+<td style="text-align: left;">matrix of cycling rates</td>
+<td style="text-align: center;"><span class="math inline">\(B=\left[\begin{matrix}- F_{1} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\F_{21} &amp; - F_{2} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; - F_{3} &amp; 0 &amp; 0\\F_{41} &amp; F_{42} &amp; F_{43} &amp; - F_{4} &amp; 0\\0 &amp; F_{52} &amp; F_{53} &amp; F_{54} &amp; - F_{5}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(f_{v}\)</span></td>
+<td style="text-align: left;">the righthandside of the ode</td>
+<td style="text-align: center;"><span class="math inline">\(f_{v}=u+B\cdot x\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+Flux description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center," style="vertical-align: middle">
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+</td>
+<td align="left" style="vertical-align: middle">
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(x_{1}: I_{1}\)</span> <br><span class="math inline">\(x_{3}: I_{3}\)</span> <br></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(x_{1}: x_{1}\cdot\left(F_{1} - F_{21} - F_{41}\right)\)</span> <br><span class="math inline">\(x_{2}: x_{2}\cdot\left(F_{2} - F_{42} - F_{52}\right)\)</span> <br><span class="math inline">\(x_{3}: x_{3}\cdot\left(F_{3} - F_{43} - F_{53}\right)\)</span> <br><span class="math inline">\(x_{4}: x_{4}\cdot\left(F_{4} - F_{54}\right)\)</span> <br><span class="math inline">\(x_{5}: F_{5}\cdot x_{5}\)</span> <br></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<span class="math inline">\(x_{1} \rightarrow x_{2}: F_{21}\cdot x_{1}\)</span> <br><span class="math inline">\(x_{1} \rightarrow x_{4}: F_{41}\cdot x_{1}\)</span> <br><span class="math inline">\(x_{2} \rightarrow x_{4}: F_{42}\cdot x_{2}\)</span> <br><span class="math inline">\(x_{2} \rightarrow x_{5}: F_{52}\cdot x_{2}\)</span> <br><span class="math inline">\(x_{3} \rightarrow x_{4}: F_{43}\cdot x_{3}\)</span> <br><span class="math inline">\(x_{3} \rightarrow x_{5}: F_{53}\cdot x_{3}\)</span> <br><span class="math inline">\(x_{4} \rightarrow x_{5}: F_{54}\cdot x_{4}\)</span> <br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-right-hand-side-of-the-ode">The right hand side of the ODE</h2>
+<p><span class="math inline">\(\left[\begin{matrix}- F_{1}\cdot x_{1} + I_{1}\\- F_{2}\cdot x_{2} + F_{21}\cdot x_{1}\\- F_{3}\cdot x_{3} + I_{3}\\- F_{4}\cdot x_{4} + F_{41}\cdot x_{1} + F_{42}\cdot x_{2} + F_{43}\cdot x_{3}\\- F_{5}\cdot x_{5} + F_{52}\cdot x_{2} + F_{53}\cdot x_{3} + F_{54}\cdot x_{4}\end{matrix}\right]\)</span></p>
+<h2 id="the-jacobian-derivative-of-the-ode-w.r.t.-state-variables">The Jacobian (derivative of the ODE w.r.t. state variables)</h2>
+<p><span class="math inline">\(\left[\begin{matrix}- F_{1} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\F_{21} &amp; - F_{2} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; - F_{3} &amp; 0 &amp; 0\\F_{41} &amp; F_{42} &amp; F_{43} &amp; - F_{4} &amp; 0\\0 &amp; F_{52} &amp; F_{53} &amp; F_{54} &amp; - F_{5}\end{matrix}\right]\)</span></p>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(x_{1} = \frac{I_{1}}{F_{1}}\)</span> <br><span class="math inline">\(x_{2} = \frac{F_{21}\cdot I_{1}}{F_{1}\cdot F_{2}}\)</span> <br><span class="math inline">\(x_{3} = \frac{I_{3}}{F_{3}}\)</span> <br><span class="math inline">\(x_{4} = \frac{1}{F_{1}\cdot F_{2}\cdot F_{3}\cdot F_{4}}\cdot\left(F_{1}\cdot F_{2}\cdot F_{43}\cdot I_{3} + F_{3}\cdot I_{1}\cdot\left(F_{2}\cdot F_{41} + F_{21}\cdot F_{42}\right)\right)\)</span> <br><span class="math inline">\(x_{5} = \frac{1}{F_{1}\cdot F_{2}\cdot F_{3}\cdot F_{4}\cdot F_{5}}\cdot\left(F_{1}\cdot F_{2}\cdot I_{3}\cdot\left(F_{4}\cdot F_{53} + F_{43}\cdot F_{54}\right) + F_{3}\cdot I_{1}\cdot\left(F_{2}\cdot F_{41}\cdot F_{54} + F_{21}\cdot F_{4}\cdot F_{52} + F_{21}\cdot F_{42}\cdot F_{54}\right)\right)\)</span> <br> <br></p>
+<h2 id="steady-states-potentially-incomplete-according-jacobian-eigenvalues-damping-ratio">Steady states (potentially incomplete), according jacobian eigenvalues, damping ratio</h2>
+<h3 id="parameter-set-original-parameters-of-the-publication">Parameter set: Original parameters of the publication</h3>
+<p><span class="math inline">\(x_1: 37.001\)</span>, <span class="math inline">\(x_2: 451.892\)</span>, <span class="math inline">\(x_3: 69.005\)</span>, <span class="math inline">\(x_4: 80.245\)</span>, <span class="math inline">\(x_5: 1118.121\)</span> <br> <br><span class="math inline">\(\lambda_{1}: -2.081\)</span> <br><span class="math inline">\(\lambda_{2}: -0.069\)</span> <br><span class="math inline">\(\lambda_{3}: -0.593\)</span> <br><span class="math inline">\(\lambda_{4}: -0.522\)</span> <br><span class="math inline">\(\lambda_{5}: -0.010\)</span> <br></p>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
+<div id="ref-Emanuel1981">
+<p>Emanuel, W. R., Killough, G. G., &amp; Olson, J. S. (1981). Modelling the circulation of carbon in the world’s terrestrial ecosystems. In B. Bolin (Ed.), <em>Carbon cycle modelling</em> (pp. 335–353). John Wiley and Sons.</p>
+</div>
+</div>
+</body>
+</html>

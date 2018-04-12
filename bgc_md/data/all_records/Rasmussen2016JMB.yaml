@@ -1,31 +1,22 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
 citationKey: Rasmussen2016JMB
 name: CASA (9 pools)
-version: 1
+version: 2016
 model-id: E004
 entryAuthor: "Holger Metzler"
 entryAuthorOrcid: 0000-0002-8239-1601
 entryCreationDate: 18/01/2018
-lastModification: _lm_
+lastModification: 12/04/2018
 #modApproach: 
 #timeScale: "30 years"
 #spaceScale: [plot, field, catchment, regional, national, global]
 #timeResolution: annual # ??? parameters are yearly, but it is run on monthly basis
 doi: 10.1007/s00285-016-0990-8
-abstract: 
 
 keywords: 
     - "differential equations"
     - "linear"
     - "time variant"
-#    - "analytic"
-
-principles:
-    - "mass balance"
-    - "substrate dependence of decomposition"
-    - "heterogeneity of speed of decay"
-    - "internal transformations of organic matter"
-    - "environmental variability effects"
 
 
 bibtex: "@article{Rasmussen2016JMB,
@@ -45,76 +36,76 @@ model:
     - state_variables:
         - x_1:
             desc: Leaves 
-            unit: 
+            unit: Pg C
         - x_2: 
-            desc: Wood
-            unit: 
-        - x_3:
             desc: Roots
-            unit: 
+            unit: Pg C
+        - x_3:
+            desc: Wood
+            unit: Pg C
         - x_4:
-            desc: Metabolic litter
-            unit: 
+            desc: Litter 1
+            unit: Pg C
         - x_5:
-            desc: Structural litter
-            unit: 
+            desc: Litter 2
+            unit: Pg C
         - x_6:
-            desc: Coarse woody debris
-            unit: 
+            desc: Litter 3
+            unit: Pg C
         - x_7: 
-            desc: Labile SOM
-            unit: 
+            desc: Soil 1
+            unit: Pg C
         - x_8:
-            desc: Slow SOM
-            unit: 
+            desc: Soil 2
+            unit: Pg C
         - x_9:
-            desc: Passive SOM
-            unit: 
+            desc: Soil 3
+            unit: Pg C
     
-    - decomposition_rates:
+    - cycling_rates:
         - b_11:
-            desc: 
+            desc: Cycling rate for leaf pool
             unit: "yr^{-1}"
             type: parameter
         - b_22:
-            desc: 
+            desc: Cycling rate for root pool
             unit: "yr^{-1}"
             type: parameter
         - b_33:
-            desc: 
+            desc: Cycling rate for wood pool
             unit: "yr^{-1}"
             type: parameter
         - b_44:
-            desc: 
+            desc: Cycling rate for litter pool 1
             unit: "yr^{-1}"
             type: parameter
         - b_55:
-            desc: 
+            desc: Cycling rate for litter pool 2
             unit: "yr^{-1}"
             type: parameter
         - b_66:
-            desc: 
+            desc: Cycling rate for litter pool 3
             unit: "yr^{-1}"
             type: parameter
         - b_77:
-            desc: 
+            desc: Cycling rate for soil pool 1
             unit: "yr^{-1}"
             type: parameter
         - b_88:
-            desc: 
+            desc: Cycling rate for soil pool 2
             unit: "yr^{-1}"
             type: parameter
         - b_99:
-            desc: 
+            desc: Cycling rate for soil pool 3
             unit: "yr^{-1}"
             type: parameter
 
     - additional_parameters:          
         - sigma:
-            desc: sensitivity of global temperatures to $x_a$
+            desc: Sensitivity of global temperatures to atmospheric CO2  $x_a$
             type: parameter
         - T_s0:
-            desc: mean land surface temperature in 1850
+            desc: Mean land surface temperature in 1850
             type: parameter
 
     - auxiliary_variables:
@@ -122,81 +113,81 @@ model:
             desc: time symbol
             key: time_symbol
         - x_a:
-            desc: 
+            desc: Atmospheric CO2 content
             exprs: "x_a = 1715*exp(0.0305*t)/(1715+exp(0.0305*t)-1)+284" # from code
 
     - transfer_coefficients:
         - b_41:
-            desc: 
-            unit:
+            desc: Transfer rate from Leaves to Litter 1 
+            unit: "yr^{-1}"
             type: parameter
         - b_51:
-            desc: 
-            unit:
+            desc: Transfer rate from Leaves to Litter 2
+            unit: "yr^{-1}"
             type: parameter
         - b_42:
-            desc: 
-            unit:
+            desc: Transfer rate from Roots to Litter 1
+            unit: "yr^{-1}"
             type: parameter
         - b_52:
-            desc: 
-            unit:
+            desc: Transfer rate from Roots to Litter 2
+            unit: "yr^{-1}"
             type: parameter
         - b_63:
-            desc: 
-            unit:
+            desc: Transfer rate from Wood to Litter 3
+            unit: "yr^{-1}"
             type: parameter
         - b_74:
-            desc: 
-            unit:
+            desc: Transfer rate from Litter 1 to Soil 1
+            unit: "yr^{-1}"
             type: parameter
         - b_75:
-            desc: 
-            unit:
+            desc: Transfer rate from Litter 2 to Soil 1
+            unit: "yr^{-1}"
             type: parameter
         - b_85:
-            desc: 
-            unit:
+            desc: Transfer rate from Litter 2 to Soil 2
+            unit: "yr^{-1}"
             type: parameter
         - b_76:
-            desc: 
-            unit:
+            desc: Transfer rate from Litter 3 to Soil 1
+            unit: "yr^{-1}"
             type: parameter
         - b_86:
-            desc: 
-            unit:
+            desc: Transfer rate from Litter 3 to Soil 2
+            unit: "yr^{-1}"
             type: parameter
         - b_87:
-            desc: 
-            unit:
+            desc: Transfer rate from Soil 1 to Soil 2
+            unit: "yr^{-1}"
             type: parameter
         - b_97:
-            desc: 
-            unit:
+            desc: Transfer rate from Soil 1 to Soil 3
+            unit: "yr^{-1}"
             type: parameter
         - b_78:
-            desc: 
-            unit:
+            desc: Transfer rate from Soil 2 to Soil 1
+            unit: "yr^{-1}"
             type: parameter
         - b_98:
-            desc: 
-            unit:
+            desc: Transfer rate from Soil 2 to Soil 3
+            unit: "yr^{-1}"
             type: parameter
         - b_79:
-            desc: 
-            unit:
+            desc: Transfer rate from Soil 3 to Soil 1
+            unit: "yr^{-1}"
             type: parameter
         - b_89:
-            desc: 
-            unit:
+            desc: Transfer rate from Soil 3 to Soil 2
+            unit: "yr^{-1}"
             type: parameter
 
     - environmental_coefficients:
         - T_s:
-            desc: surface temperature
+            desc: Surface temperature
             exprs: "T_s = T_s0 + sigma/log(2)*log(x_a/285)"
         - xi_b:
-            desc:
+            desc: Scaling of decomposition rates at 20 degrees Celsius
             type: parameter
 
     - input_components:
@@ -213,7 +204,7 @@ model:
             desc: 
             exprs: "Gamma = 42.7 + 1.68*(T_s-25) + 0.012*(T_s-25)**2"
         - beta:
-            desc: sensitivity of s to x_a
+            desc: sensitivity of $s$ to $x_a$
             exprs: "beta = 3*rho*x_a*Gamma/((rho*x_a-Gamma)*(rho*x_a+2*Gamma))"
         - s_0:
             desc:
@@ -221,8 +212,6 @@ model:
         - s_i:
             desc: general input function
             exprs: "s_i = f_i*alpha*s_0*(1+2.5*beta*log(x_a/285))" # 2.5 from code (betak)
-            unit: 
-            type: parameter
         - s_1:
             desc: input to pool 1
             exprs: "s_1 = s_i"
@@ -246,9 +235,9 @@ model:
             desc: environmental effects multiplier, not for all pools
             exprs: "xi = xi_b**(0.1*T_s-1.5)" # paper says -2, code says -1.5, parameter vals say -1.5
             key: 
-        - A:
-            desc: decomposition operator
-            exprs: "A = Matrix([[-b_11,     0,     0,        0,        0,        0,        0,        0,        0], 
+        - B:
+            desc: Matrix of cycling and transfer rates
+            exprs: "B = Matrix([[-b_11,     0,     0,        0,        0,        0,        0,        0,        0], 
                                 [    0, -b_22,     0,        0,        0,        0,        0,        0,        0],
                                 [    0,     0, -b_33,        0,        0,        0,        0,        0,        0],
                                 [ b_41,  b_42,     0, -b_44*xi,        0,        0,        0,        0,        0],
@@ -259,7 +248,7 @@ model:
                                 [    0,     0,     0,        0,        0,        0,  b_97*xi,  b_98*xi, -b_99*xi]])"
             key: decomp_op_lin
         - f_s: 
-            exprs: "f_s = s + A * C"
+            exprs: "f_s = s + B * C"
             desc: the right hand side of the ode
             key: state_vector_derivative
 
