@@ -214,7 +214,7 @@ class ModelList(list):
         #   This method offensively misuses the class ReportElementList by 
         #   putting html code directly into the report elements 
         #   which defeats their purpose  of creating transformable output.
-        #   It also writes files directly so it works throu side effects
+        #   It also writes files directly so it works through side effects
 
         #   Either 
         #   1.) 

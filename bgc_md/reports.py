@@ -9,6 +9,7 @@ import subprocess
 from os.path import relpath, dirname
 import os
 import getopt, sys
+from string import Template
 from sympy import sympify, solve, Symbol, limit, oo, ceiling, simplify, Matrix
 from sympy.core import Atom
 import matplotlib
@@ -42,7 +43,7 @@ def common_parser():
 
 def generate_model_run_report():
     parser = argparse.ArgumentParser(parents=[common_parser()])
-    parser.description="Create an html report of a singel yaml file.\\n"
+    parser.description="Create markdown and html reports of a singel yaml file.\\n"
     parser.add_argument('path', default=None, help="The path to the yaml file containing the description of the record." )
     parser.epilog= "Example: %s Henin1945Annalesagronomiques.yaml-t SoilModels/html" % parser.prog
 
@@ -83,13 +84,6 @@ def generate_model_run_reports():
     com = parser.parse_args()
     generate_html_dir(com.src_dir,com.target_dir)
 
-def generate_minimal_model_reports(com):
-    # this is an example of a custom made function
-    # the generic interface should list the desired parts
-    Exception("This function is not implemented yet")
-def generate_minimal_model_report(com):
-    # this is an example of a custom made function
-    Exception("This function is not implemented yet")
 
 def report_from_model(model):
     #rel = model.get_meta_data_report()
@@ -893,10 +887,29 @@ def create_single_report(yaml_file_path, target_dir_path):
     rel = report_from_model(model) 
     rel.create_pandoc_dir(sub_dir)
 
+def render(temp,source_dir_path,target_dir_path,yaml=None):
+    ml=ModelList.from_dir_path(src_dir_path)
 
 def generate_website():
     generate_model_run_reports()
 
+def render_parse():
+    parser = argparse.ArgumentParser(parents=[common_parser()])
+    parser.description="Create markdown and html reports of a single report template"
+    parser.add_argument('temp', default=None, help="The path to the templat file containing the description of the report." )
+    parser.add_argument('src_dir', default=None, help="The path to the directory of containing the yaml files sourced by the report." )
+    parser.add_argument('-y', '--yaml', default=None, help="The path to the yaml file containing the description of the record." )
+    parser.epilog= Template("""Examples:\n
+        ${p} report_templates/Overview_table.py data/all_records  -t ${o} 
+        \n
+       ${p} report_templates/Overview_table.py bgc_md/data/all_records  -y Henin1945Annalesagronomiques.yaml  -t ${o} """).substitute(p=parser.prog,o="output" )
+
+    com=parser.parse_args()
+    if com.yaml: 
+        render(Path(com.temp),Path(com.src_dir), Path(com.target_dir),com.yaml)
+    else:
+        render(Path(com.temp),Path(com.src_dir), Path(com.target_dir))
+    sys.exit(0)
     
 
 ######################################################################################
