@@ -12,7 +12,7 @@ import sys
 import numpy as np
 
 from .ReportInfraStructure import Text, Math, ReportElementList, TableRow, Table, Header, Newline
-from .bibtexc import BibtexEntry, DoiNotFoundException
+from .bibtexc import BibtexEntry, DoiNotFoundException, online_entry
 from .helpers import remove_indentation, create_symbols_func, eval_expressions, retrieve_or_default, retrieve_this_or_that, py2tex_silent
 from .helpers_reservoir import factor_out_from_matrix
 from .DataFrame import DataFrame
@@ -68,19 +68,27 @@ def convert_yaml_bibtex_str(yaml_bibtex_str):
 
 
 def load_bibtex_entry(complete_dict):
-    # load BibTex entry, priority: yaml file, then by doi, also retrieve abstract if entry is fetched by doi
+    # load BibTex entry, priority: yaml file, then by doi, 
+    # also retrieve abstract if entry is fetched by doi
     tag = 'bibtex'
     if tag in complete_dict.keys():
         # prepare bibtex string from yaml file for initialisation
         entry_str = convert_yaml_bibtex_str(complete_dict[tag])
-        bibtex_entry = BibtexEntry(entry_str=entry_str)
+        bibtex_entry = BibtexEntry.from_entry_str(entry_str)
     elif 'doi' in complete_dict.keys():
-        bibtex_entry = BibtexEntry(doi=complete_dict['doi'], abstract=True)
+        try:
+            entry = online_entry(doi=complete_dict['doi'], abstract=True)
+            return BibtexEntry(entry)
+
+        except DoiNotFoundException:
+            bibtec_entry=None
+
+
     else:
+        print("called without a bibtex_str, bibtex dict or doi")
         bibtex_entry = None
 
     return bibtex_entry
-
 
 def load_abstract(complete_dict, bibtex_entry):
     abstract = None
@@ -120,10 +128,10 @@ def load_further_references(complete_dict):
             if (tag2 in ref_dict.keys()) and (ref_dict[tag2]):      
                 # prepare bibtex string from yaml file for initialisation
                 entry_str = convert_yaml_bibtex_str(ref_dict[tag2])
-                ref['bibtex_entry'] = BibtexEntry(entry_str=entry_str)
+                ref['bibtex_entry'] = BibtexEntry.from_entry_str(entry_str)
             elif ('doi' in ref_dict.keys()) and (ref_dict['doi']):
                 try:
-                    ref['bibtex_entry'] = BibtexEntry(ref_dict['doi'])
+                    ref['bibtex_entry'] = BibtexEntry(online_entry(ref_dict['doi']))
                 except DoiNotFoundException as e:
                     ex_string = "Invalid doi in further_references."
                     raise(YamlException(ex_string + "\n" + e.__str__()))
@@ -352,14 +360,15 @@ def load_from_model_run_data(model_run_data, attr_name):
             if 'bibtex' in lel.keys():
                 # prepare bibtex string from yaml file for initialisation
                 entry_str = convert_yaml_bibtex_str(lel['bibtex'])
-                lel['bibtex_entry'] = BibtexEntry(entry_str=entry_str)
+                lel['bibtex_entry'] = BibtexEntry.from_entry_str(entry_str)
                 del lel['bibtex']
             elif 'doi' in lel.keys():
                 try:
-                    lel['bibtex_entry'] = BibtexEntry(doi=lel['doi'])
+                    lel['bibtex_entry'] = BibtexEntry(online_entry(doi=lel['doi']))
                     del lel['doi']
                 except DoiNotFoundException as e:
-                    ex_string = "Invalid doi in parameter set '" + lel['table_head'] + "'."
+                    #ex_string = "Invalid doi in parameter set '" + lel['table_head'] + "'."
+                    ex_string = "could not fetch doi " + lel['table_head'] + "'."
                     raise(YamlException(ex_string + "\n" + e.__str__()))
             else:
                 lel['bibtex_entry'] = None

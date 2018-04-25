@@ -16,7 +16,8 @@ from bgc_md.ReportInfraStructure import Text, Math, Meta, ReportElementList, Tab
 from testinfrastructure.InDirTest import InDirTest
 from bgc_md.helpers import remove_indentation
 from bgc_md import gv
-from bgc_md import bibtexc
+from bgc_md.bibtexc import  BibtexEntry, online_entry,entry_list_from_file
+
 
 
 class TestWriteReportElements(InDirTest):
@@ -31,14 +32,14 @@ class TestWriteReportElements(InDirTest):
         css_file_name = gv.resources_path.joinpath('buttondown.css').as_posix()
         rel=Text("Some Text")
         rel+=Newline()
-        rel+=Citation(bibtexc.BibtexEntry(doi="10.1139/x91-133"),parentheses=True)
+        rel+=Citation(BibtexEntry(online_entry(doi="10.1139/x91-133")),parentheses=True)
         rel+=Text("This is some text between the citations")
         rel+=Newline()
-        rel+=Citation(bibtexc.BibtexEntry(doi="10.1556/Select.2.2001.1-2.14"))
+        rel+=Citation(BibtexEntry(online_entry(doi="10.1556/Select.2.2001.1-2.14")))
         rel+=Text("This is some text after the citation")
         rel+=Newline()
         rel+=Text("This is second citation of the first paper")
-        rel+=Citation(bibtexc.BibtexEntry(doi="10.1139/x91-133"),parentheses=True)
+        rel+=Citation(BibtexEntry(online_entry(doi="10.1139/x91-133")),parentheses=True)
 
         html_file_name="text_with_citation.html"
         bibtex_file_name="text_with_citation.bibtex"
@@ -52,7 +53,7 @@ class TestWriteReportElements(InDirTest):
         # read the bibtexfile with bibtexparser and 
         # make sure that only two entries are present 
         # which presupposes that the parser does not deduplicate
-        et=bibtexc.entry_list_from_file(bibtex_file_name)
+        et=entry_list_from_file(bibtex_file_name)
         self.assertEqual(len(et),2)
 
     def test_write_html_with_picture(self):

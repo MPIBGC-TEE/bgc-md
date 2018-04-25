@@ -37,6 +37,29 @@ from pathlib import Path
 #imports from own package
 from . import gv
 
+def online_entry(doi,abstract=True):
+    try: 
+        print(doi)
+        # 1st: check on Mendeley, because they provide abstracts
+        #entry= _mendeley(doi, abstract)
+        entry= _mendeley_str(doi, abstract)
+        print("entry="+str(entry))
+        return entry
+            
+    except Exception as e: #fixme mm , maybe find out what exceptions mendeley has und only catch those
+        print('#################')
+        print("Warning:Could not reach mendeley")
+        print(e)
+        print('#################')
+        # 2nd: check doi.org directly, no abstracts provided here                  
+        try: 
+            entry = _direct(doi)
+
+        except Exception: #fixme mm , maybe find out what exceptions mendeley has und only catch those
+            print("Warning:Could not reach doi.org")
+            #reraise an exception
+            raise DoiNotFoundException(doi) 
+
 class DoiNotFoundException(Exception):
     """Raised if BibTex entry cannot be found online by doi"""
     def __init__(self, doi):
@@ -60,47 +83,67 @@ class BibtexEntry():
         - key: the key of a BibtexEntry (stored in entry['ID'])
     """
 
-    def __init__(self, doi = "", entry = {}, entry_str = "", abstract = False, nochanges = False):
-        """Create a BibtexEntry either by doi or by a given dictionary.
+    @classmethod
+    def from_entry_str(cls,entry_str):
+        # call normal init
+        BE=cls(_entry_from_str(entry_str))
+        return(BE)
 
-        If doi is given attempt to find the appropriate entry online (first on Mendeley, second on doi.org), in case of failure \
-        raise DoiNotFoundException.
-        If entry is given just copy the entry into the new BibtexEntry.
-        In both cases the key is created automatically as LastnamefirstauthorYearJournalname.
+    def __init__(self, entry ):
+        self.entry = entry
+        self.__automatic_key()
 
-        If neither doi nor entry are given create an empty entry dictionary.
+       # # 'ID' saves the key (convention by biblatexparser)
+        #if 'ID' not in self.entry.keys() or self.entry['ID'] == "default":
+        #    self.__automatic_key() # if no key given create automatic key
 
-        If abstract = True then also the abstract will be incorporated (if possible).
-        """
+    #def __init__(self, doi = "", entry = {}, entry_str = "", abstract = False, nochanges = False):
+       
+       # """Create a BibtexEntry either by doi or by a given dictionary.
 
-        self.entry = {}
-        if doi:
-            # 1st: check on Mendeley, because they provide abstracts
-            entry = _mendeley(doi, abstract)
-            if entry: 
-                self.entry = entry
-                self.__automatic_key()
-                return
- 
-            # 2nd: check doi.org directly, no abstracts provided here       
-            entry = _direct(doi)
-            if entry: 
-                self.entry = entry
-                self.__automatic_key()
-                return
+       # If doi is given attempt to find the appropriate entry online (first on Mendeley, second on doi.org), in case of failure \
+       # raise DoiNotFoundException.
+       # If entry is given just copy the entry into the new BibtexEntry.
+       # In both cases the key is created automatically as LastnamefirstauthorYearJournalname.
 
-            # doi could not be resolved
-            raise DoiNotFoundException(doi)
-        
-        if entry:
-            self.entry = _entry_from_str(_entry_to_str(entry)) # dictionary that contains the plain BibTeX data
-                # slightly formatted by first converting it to a string by the bibtexparser
-        elif entry_str:
-            self.entry = _entry_from_str(entry_str)
+       # If neither doi nor entry are given create an empty entry dictionary.
 
-        # 'ID' saves the key (convention by biblatexparser)
-        if 'ID' not in self.entry.keys() or self.entry['ID'] == "default":
-            self.__automatic_key() # if no key given create automatic key
+       # If abstract = True then also the abstract will be incorporated (if possible).
+       # """
+       # # check if an entry was given as dict        
+       # if entry:
+       #     cls.from_entry(entry)
+       #     self.entry = _entry_from_str(_entry_to_str(entry)) # dictionary that contains the plain BibTeX data
+       #         # slightly formatted by first converting it to a string by the bibtexparser
+       # # or as str
+       # elif entry_str:
+       #     self.entry = _entry_from_str(entry_str)
+
+       # else:
+       #     #self.entry = {}
+       #     if doi:
+       #         try: 
+       #             # 1st: check on Mendeley, because they provide abstracts
+       #             entry = _mendeley(doi, abstract)
+       #             if entry: 
+       #                 self.entry = entry
+       #                 self.__automatic_key()
+       #                 return
+       #         except Exception: #fixme mm , maybe find out what exceptions mendeley has und only catch those
+       #             print("Warning:Could not reach mendeley")
+       #             # 2nd: check doi.org directly, no abstracts provided here                  
+       #             try: 
+       #                 entry = _direct(doi)
+       #                 if entry: 
+       #                     self.entry = entry
+       #                     self.__automatic_key()
+       #                     return
+       #             except Exception: #fixme mm , maybe find out what exceptions mendeley has und only catch those
+       #             print("Warning:Could not reach doi.org")
+       #     else:
+       #         print("BibtexEntry was called without a bibtex_str, bibtex dict or doi")
+
+
 
 
     def __eq__(self, other):
@@ -356,6 +399,7 @@ def _mendeley_data(doi):
 def _mendeley_str(doi, abstract=False):
     """Return a BibTeX entry as a string or 'None', reetrieved by doi via Mendeley."""
     doc = _mendeley_data(doi)
+    print("doc="+str(doc))
     if doc:
         # doi could be resolved by Mendeley
         # now create a BibTex entry as a string
@@ -415,7 +459,9 @@ def _mendeley_str(doi, abstract=False):
                )
 
         return entry_str
-
+    else:
+        print("not in if doc")
+        raise DoiNotFoundException(doi)
 
 def _mendeley(doi, abstract=False):
     """Returns a BibTeX entry as dictionary or 'None', retrieved by doi via Mendeley."""
@@ -431,6 +477,9 @@ def _mendeley(doi, abstract=False):
 
 
 def entry_list_from_file(input_file, nochanges = False):
+    # fixme mm:
+    # nochanges does not seem to be used anywhere any longer.
+    # remove it.
     """Return a list of elements of type BibtexEntry read in from input_file."""
     with open(input_file, 'r') as bibtex_file:
 #        parser = BibTexParser()
@@ -438,7 +487,7 @@ def entry_list_from_file(input_file, nochanges = False):
 
     entry_list = []
     for entry in bib_database.entries:
-        element = BibtexEntry(entry=entry, nochanges=nochanges)
+        element = BibtexEntry(entry=entry )
         entry_list.append(element)
 
     return entry_list
