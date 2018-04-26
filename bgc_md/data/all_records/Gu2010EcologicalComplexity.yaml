@@ -1,0 +1,116 @@
+
+## vim:set ff=unix expandtab ts=4 sw=4: 
+name: CEVSA2
+longName:
+version: 2
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+modApproach: process based
+partitioningScheme: dynamic
+claimedDynamicPart: "yes"
+spaceScale: forest
+timeResolution: daily
+doi: 10.1016/j.ecocom.2010.04.002
+model:
+    - state_variables:
+        - C_S:
+            desc: Carbon in stem
+            unit:
+            key: wood
+        - C_R:
+            desc: Carbon in root
+            unit:
+            key: fine_roots
+        - C_L:
+            desc: Carbon in leaf
+            unit:
+            key: foliage
+    - photosynthesis_parameters:
+        - t:
+            desc: time step
+            unit: "year"
+            type: variable
+            key: time_symbol
+        - NPP:
+            desc: Net Primary Production
+            unit:
+            type: variable
+            key: NPP
+        - L:
+            desc: Scalar light availability
+            type: variable # Depends on LAI and PFT See Arora and Boer 2005
+        - W:
+            desc: Scalar water availability
+            type: variable # See Arora and Boer 2005
+    - nutrients:
+        - N_ava:
+            desc: effect of nitrogen availability on carbon allocation
+            type: variable 
+            exprs: #see paper, page 3
+    - partitioning_rates:
+        - Omega:
+            desc: Sensitivity of allocation to changes in resources availability. If =0, partitioning is determined by constant allocation fractions.
+            type: parameter
+        - epsilon_S:
+            desc: Parameter relative to vegetation type
+            type: parameter
+        - epsilon_R:
+            desc: Parameter relative to vegetation type
+            type: parameter
+        - epsilon_L:
+            desc: Parameter relative to vegetation type
+            type: parameter
+            exprs: "epsilon_L = 1-epsilon_R-epsilon_S"
+        - a_S:
+            desc: Allocation fraction to stem
+            type: variable
+            exprs: "a_S = (epsilon_S+(Omega*(1.5-L-(0.5*N_ava))))/(1+(Omega*(3-L-W-N_ava)))"
+        - a_R:
+            desc: Allocation fraction to root
+            type: variable
+            exprs: "a_R = (epsilon_R+(Omega*(1.5-W-(0.5*N_ava))))/(1+(Omega*(3-L-W-N_ava)))"
+        - a_L:
+            desc: Allocation fraction to leaf
+            type: variable
+            exprs: "a_L = epsilon_L/(1+(Omega*(3-L-W-N_ava)))" #, "a_L = 1-a_S-a_R"
+
+    - cycling_rates:
+        - gamma_S: 
+            desc: Stem turnover rate 
+            type: parameter 
+            key: "cyc_wood"
+            unit: years 
+        - gamma_R: 
+            desc: Root turnover rate
+            type: parameter 
+            key: "cyc_roots"
+            unit: years 
+        - gamma_L: 
+            desc: Stem turnover rate 
+            type: parameter 
+            key: "cyc_foliage"
+            unit: years 
+
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(3,1,[C_S, C_R, C_L])"
+            desc: vector of states for vegetation
+        - u:
+            desc: scalar function of photosynthetic inputs
+            exprs: "u = NPP" 
+            key: scalar_func_phot   
+        - b: 
+            key: part_coeff    
+            exprs: "b=Matrix(3,1,[a_S,a_R,a_L])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - A:
+            key: cyc_matrix    
+            exprs: "A = Matrix([-gamma_S,0,0],
+                               [0, -gamma_R, 0],
+                               [0, 0, -gamma_L])"
+            desc: matrix of cycling rates 
+        - f_v:
+            desc: the righthandside of the ode
+            exprs: "f_v = u*b + A*x"
+            key: state_vector_derivative

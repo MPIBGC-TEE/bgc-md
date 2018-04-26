@@ -11,7 +11,7 @@ lastModification: _lm_
 modApproach: process based
 partitioningScheme: fixed
 claimedDynamicPart: "no"
-spaceScale: site 
+spaceScale: forest 
 #    unit: "1°"
 timeResolution: monthly 
 doi: 10.1016/0304-3800(88)90112-3
