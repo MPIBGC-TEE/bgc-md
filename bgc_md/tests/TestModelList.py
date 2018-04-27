@@ -35,8 +35,7 @@ class TestModelList(InDirTest):
                     exprs: "f_s = u*b"
                     key: state_vector_derivative
         """
-        model_0 = IncompleteModel(yaml_str)
-        model_0.outsideName="Test1"
+        model_0 = IncompleteModel(yaml_str,"mod0")
         model_0.sections, model_0.section_titles, model_0.complete_dict = load_sections_and_titles(model_0.complete_dict)
         model_0.df = load_df(model_0.complete_dict, model_0.sections)
         model_0.syms_dict, model_0.exprs_dict, model_0.symbols_by_type = load_expressions_and_symbols(model_0.df) 
@@ -64,8 +63,7 @@ class TestModelList(InDirTest):
                     exprs: "f_s = u*b"
                     key: state_vector_derivative
         """
-        model_1 = IncompleteModel(yaml_str)
-        model_1.outsideName="Test2"
+        model_1 = IncompleteModel(yaml_str,"mod1")
         model_1.sections, model_1.section_titles, model_1.complete_dict = load_sections_and_titles(model_1.complete_dict)
         model_1.df = load_df(model_1.complete_dict, model_1.sections)
         model_1.syms_dict, model_1.exprs_dict, model_1.symbols_by_type = load_expressions_and_symbols(model_1.df) 

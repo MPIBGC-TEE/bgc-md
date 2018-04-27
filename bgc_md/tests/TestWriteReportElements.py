@@ -32,14 +32,14 @@ class TestWriteReportElements(InDirTest):
         css_file_name = gv.resources_path.joinpath('buttondown.css').as_posix()
         rel=Text("Some Text")
         rel+=Newline()
-        rel+=Citation(BibtexEntry(online_entry(doi="10.1139/x91-133")),parentheses=True)
+        rel+=Citation(BibtexEntry.from_doi(doi="10.1139/x91-133"),parentheses=True)
         rel+=Text("This is some text between the citations")
         rel+=Newline()
-        rel+=Citation(BibtexEntry(online_entry(doi="10.1556/Select.2.2001.1-2.14")))
+        rel+=Citation(BibtexEntry.from_doi(doi="10.1556/Select.2.2001.1-2.14"))
         rel+=Text("This is some text after the citation")
         rel+=Newline()
         rel+=Text("This is second citation of the first paper")
-        rel+=Citation(BibtexEntry(online_entry(doi="10.1139/x91-133")),parentheses=True)
+        rel+=Citation(BibtexEntry.from_doi(doi="10.1139/x91-133"),parentheses=True)
 
         html_file_name="text_with_citation.html"
         bibtex_file_name="text_with_citation.bibtex"

@@ -81,7 +81,6 @@ class TestModel(InDirTest):
         # -k without description, without colon
         yaml_str="""\
         model-id: V0001
-        citationKey: Arora500
         model:
             - parameters:
                 - k 
@@ -109,7 +108,6 @@ class TestModel(InDirTest):
         # test good case
         yaml_str = """\
             model-id: S0019
-            citationKey: Arora500
             model:
                 - state_variables:
                     - X:
@@ -149,6 +147,7 @@ class TestModel(InDirTest):
         bibtex_entry = load_bibtex_entry(complete_dict)
         self.assertEqual(bibtex_entry.key, 'Key_to_check')
 
+    def test_load_bibtex_entry_from_doi(self):
         # test loading from doi
         yaml_str = """\
                         doi: 10.1038/ngeo846
@@ -157,17 +156,17 @@ class TestModel(InDirTest):
         bibtex_entry = load_bibtex_entry(complete_dict)
         self.assertEqual(bibtex_entry.key, 'Allison2010NatureGeoscience')
 
+    def test_load_bibtex_entry_from_invalid_doi(self):
         # test invalid doi
         yaml_str = """\
                         doi: xyzbgcv12y.122
                     """
         complete_dict = yaml.load(yaml_str)
-        with self.assertRaises(DoiNotFoundException) as cm:
-            bibtex_entry = load_bibtex_entry(complete_dict)
-        e = cm.exception
-        self.assertEqual(e.__str__(), "The doi xyzbgcv12y.122 could not be resolved.")
+        bibtex_entry = load_bibtex_entry(complete_dict)
+        self.assertEqual(bibtex_entry,None)
 
 
+    def test_load_bibtex_entry_no_doi_no_yaml(self):
         # test missing doi and bibtex
         yaml_str = """\
                     modelID : S0019
@@ -1035,7 +1034,7 @@ class TestModel(InDirTest):
                                 "k_1o": 1.0
                                 },
                "desc": "data from another paper",
-               "bibtex_entry": BibtexEntry(online_entry(doi="10.1038/ngeo846"))
+               "bibtex_entry": BibtexEntry.from_doi(doi="10.1038/ngeo846")
               }
 
         complete_dict = yaml.load(yaml_str)
@@ -1174,8 +1173,6 @@ class TestModel(InDirTest):
 
     def test_meta_data(self):
         yaml_str="""\
-              citationKey: Hilbert1991AnnBot
-              name:
               version: 
               model-id: V0001
               entryAuthor: "Verónika Ceballos-Núñez"
@@ -1199,9 +1196,7 @@ class TestModel(InDirTest):
         m=IncompleteModel(yaml_str)
         m.bibtex_entry = load_bibtex_entry(m.complete_dict)
         self.assertEqual(m.entryAuthor, "Verónika Ceballos-Núñez")
-        self.assertEqual(m.name, "Hilbert1991Annals_of_Botany")
         self.assertEqual(m.version, "1")
-        #self.assertEqual(m.modelID, "V0001")
 
         self.assertEqual(m.entry_creation_date, "_ecd_")
         self.assertEqual(m.last_modification_date, "_lm_")

@@ -67,31 +67,30 @@ class Testbibtexc(unittest.TestCase):
         for key, dic in dict_dict.items():
             self.entry_dict[key] = BibtexEntry(entry = dic)
         
-    @unittest.skip
+#    @unittest.skip
     def test_init(self):
 
         ## check that Mendeley returns a dictionary with the correct doi
-        #result = bibtexc.BibtexEntry(online_entry(doi="10.1556/Select.2.2001.1-2.14"))
-        #self.assertEqual(result.entry['doi'], "10.1556/Select.2.2001.1-2.14")
+        result = bibtexc.BibtexEntry.from_doi(doi="10.1556/Select.2.2001.1-2.14")
+        self.assertEqual(result.entry['doi'], "10.1556/Select.2.2001.1-2.14")
 
         ## check that  doi.org returns a dictionary with the correct doi
-        #result = bibtexc.BibtexEntry(online_entry(doi="10.1139/x91-151"))
-        #self.assertEqual(result.entry['doi'], "10.1139/x91-151")
+        result = bibtexc.BibtexEntry.from_doi(doi="10.1139/x91-151")
+        self.assertEqual(result.entry['doi'], "10.1139/x91-151")
 
+        
+        # check case 'abstract=True'
+        result = bibtexc.BibtexEntry.from_doi(doi="10.1029/93GB02725", abstract=True)
+        self.assertTrue(len(result.entry['abstract']) >0)
+
+    def test_online_entry(self):
         # check on invalid doi, hence DoiNotFoundException
         doi = "kcvbjs__e"
         with self.assertRaises(DoiNotFoundException) as cm:
             entry = online_entry(doi=doi)
-            #BibtexEntry(online_entry(doi=doi))
         e = cm.exception
-        print(e)
         #self.assertEqual(e.__str__(),"The doi " + doi + " could not be resolved.")
-        #self.assertEqual(e.doi, doi)
-        
-        # check case 'abstract=True'
-        result = bibtexc.BibtexEntry(online_entry(doi="10.1029/93GB02725", abstract=True))
-        self.assertTrue(len(result.entry['abstract']) >0)
-
+        self.assertEqual(e.doi, doi)
 
     def test_eq_ne_hash(self):
         entry1 = self.entry_dict["10.1139/x91-133"]
@@ -198,7 +197,7 @@ class Testbibtexc(unittest.TestCase):
 
     @unittest.skip("They always change the target")
     def test_get_abstract(self):
-        bibtex_entry = bibtexc.BibtexEntry(online_entry(doi="10.1029/93GB02725", abstract=True))
+        bibtex_entry = bibtexc.BibtexEntry.from_doi(doi="10.1029/93GB02725", abstract=True)
         
         # check plain style
         result = bibtex_entry.get_abstract("plain")
@@ -267,8 +266,8 @@ class TestbibtexcFiles(InDirTest):
     # find a more stable way to test the mendeley implementation or remove it entirely 
     def test_entry_list_to_file(self):
         bibtex_entry_list = []
-        bibtex_entry_list.append(bibtexc.BibtexEntry(online_entry(doi="10.1556/Select.2.2001.1-2.14")))
-        bibtex_entry_list.append(bibtexc.BibtexEntry(online_entry(doi="10.1139/x91-151")))
+        bibtex_entry_list.append(bibtexc.BibtexEntry.from_doi(doi="10.1556/Select.2.2001.1-2.14"))
+        bibtex_entry_list.append(bibtexc.BibtexEntry.from_doi(doi="10.1139/x91-151"))
 
         # check plain style
         test_file = "plain.bib"

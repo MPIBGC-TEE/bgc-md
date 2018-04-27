@@ -51,7 +51,9 @@ def generate_test_report():
     print("Creating report from " + com.path + " to " + com.target_dir)
     yaml_file_path=Path(com.path)
     target_dir_path=Path(com.target_dir)
+    print('####################1')
     model = Model.from_path(yaml_file_path)
+    print('####################2')
     dir_name = yaml_file_path.stem
     #dir_name = model.bibtex_entry.key
     #if model.modelID: dir_name += "-" + model.modelID

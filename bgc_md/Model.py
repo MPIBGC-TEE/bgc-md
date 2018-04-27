@@ -77,17 +77,17 @@ def load_bibtex_entry(complete_dict):
         bibtex_entry = BibtexEntry.from_entry_str(entry_str)
     elif 'doi' in complete_dict.keys():
         try:
-            entry = online_entry(doi=complete_dict['doi'], abstract=True)
-            return BibtexEntry(entry)
+            return BibtexEntry.from_doi(doi=complete_dict['doi'], abstract=True)
 
         except DoiNotFoundException:
-            bibtec_entry=None
+            bibtex_entry=None
 
 
     else:
+        #fixme: prints should become  logger calls
         print("called without a bibtex_str, bibtex dict or doi")
         bibtex_entry = None
-
+    
     return bibtex_entry
 
 def load_abstract(complete_dict, bibtex_entry):
@@ -131,7 +131,7 @@ def load_further_references(complete_dict):
                 ref['bibtex_entry'] = BibtexEntry.from_entry_str(entry_str)
             elif ('doi' in ref_dict.keys()) and (ref_dict['doi']):
                 try:
-                    ref['bibtex_entry'] = BibtexEntry(online_entry(ref_dict['doi']))
+                    ref['bibtex_entry'] = BibtexEntry.from_doi(ref_dict['doi'])
                 except DoiNotFoundException as e:
                     ex_string = "Invalid doi in further_references."
                     raise(YamlException(ex_string + "\n" + e.__str__()))
@@ -364,7 +364,7 @@ def load_from_model_run_data(model_run_data, attr_name):
                 del lel['bibtex']
             elif 'doi' in lel.keys():
                 try:
-                    lel['bibtex_entry'] = BibtexEntry(online_entry(doi=lel['doi']))
+                    lel['bibtex_entry'] = BibtexEntry.from_doi(doi=lel['doi'])
                     del lel['doi']
                 except DoiNotFoundException as e:
                     #ex_string = "Invalid doi in parameter set '" + lel['table_head'] + "'."
@@ -574,34 +574,72 @@ def load_model_run_combinations(model_run_data, parameter_sets, initial_values, 
 class Model:
     
     @classmethod
-    def from_str(cls, yaml_str, yaml_file_path= None):
+    def from_str(cls, yaml_str, name):
         try:
              complete_dict = yaml.load(yaml_str)
         except yaml.YAMLError as ye:
-            print("---------------------")
-            print(yaml_file_path)
-            print("---------------------")
             raise(ye)
             
-        model = cls(complete_dict, yaml_file_path) # call to __init__
+        model = cls(complete_dict, name) # call to __init__
         return(model)
 
     @classmethod
     def from_file(cls, yaml_file_name): 
         yaml_file_path=Path(yaml_file_name)
         model = cls.from_path(yaml_file_path)
-    
+         
         return model
     
     @classmethod
     def from_path(cls, yaml_file_path): 
         with yaml_file_path.open() as f:
             yaml_str = f.read()
-
-        model = cls.from_str(yaml_str, yaml_file_path)
-        # fixme rather store the path object in Model instance than the filename since the path object is platform independent
+        name=yaml_file_path.stem
+        model = cls.from_str(yaml_str,name)
+        model.yaml_file_path=yaml_file_path
         return model
     
+    def __init__(self, complete_dict, name= None):
+        self.name=name 
+        try:
+            self.complete_dict, self.modelID = load_complete_dict_and_id(complete_dict)
+            self.bibtex_entry = load_bibtex_entry(self.complete_dict)
+            self.abstract = load_abstract(self.complete_dict, self.bibtex_entry)
+            self.further_references = load_further_references(self.complete_dict)
+            self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)
+            self.sections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)
+            self.df = load_df(self.complete_dict, self.sections)
+            self.syms_dict, self.exprs_dict, self.symbols_by_type = load_expressions_and_symbols(self.df) 
+            self.set_component_keys()
+
+            self.model_run_data = load_model_run_data(self.complete_dict)
+            self.parameter_sets = load_parameter_sets(self.model_run_data)
+            check_parameter_sets_valid(self.parameter_sets, self.symbols_by_type)
+            self.initial_values = load_initial_values(self.model_run_data)
+            self.run_times = load_run_times(self.model_run_data)
+
+            self.model_run_combinations, msg = load_model_run_combinations(self.model_run_data, self.parameter_sets,
+                     self.initial_values, self.run_times, self.state_vector, self.time_symbol, 
+                     self.state_vector_derivative)
+
+            if msg:
+                print("-------------")
+                print('Warning at initializing model ' + self.modelID)
+                print(str(self.yaml_file_path))
+                print(msg)
+                print("-------------")
+            
+            #self.parameter_sets=[]
+        except Exception as ex:
+            #fixme: model-id is mandatory in yaml file!
+#            if not self.modelID: self.modelID = ''
+
+            print("-------------")
+            print('Initializing model ' + self.modelID + ' failed.')
+            print(str(self.yaml_file_path))
+            print(ex)
+            print("-------------")
+            raise(ex)
 
     @property
     def nr_state_v(self):
@@ -723,47 +761,6 @@ class Model:
         return(len(self.parameters))
 	
 
-    def __init__(self, complete_dict, yaml_file_path= None):
-        self.yaml_file_path= yaml_file_path
-        try:
-            self.complete_dict, self.modelID = load_complete_dict_and_id(complete_dict)
-            self.bibtex_entry = load_bibtex_entry(self.complete_dict)
-            self.abstract = load_abstract(self.complete_dict, self.bibtex_entry)
-            self.further_references = load_further_references(self.complete_dict)
-            self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)
-            self.sections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)
-            self.df = load_df(self.complete_dict, self.sections)
-            self.syms_dict, self.exprs_dict, self.symbols_by_type = load_expressions_and_symbols(self.df) 
-            self.set_component_keys()
-
-            self.model_run_data = load_model_run_data(self.complete_dict)
-            self.parameter_sets = load_parameter_sets(self.model_run_data)
-            check_parameter_sets_valid(self.parameter_sets, self.symbols_by_type)
-            self.initial_values = load_initial_values(self.model_run_data)
-            self.run_times = load_run_times(self.model_run_data)
-
-            self.model_run_combinations, msg = load_model_run_combinations(self.model_run_data, self.parameter_sets,
-                     self.initial_values, self.run_times, self.state_vector, self.time_symbol, 
-                     self.state_vector_derivative)
-
-            if msg:
-                print("-------------")
-                print('Warning at initializing model ' + self.modelID)
-                print(self.yaml_file_name)
-                print(msg)
-                print("-------------")
-            
-            #self.parameter_sets=[]
-        except Exception as ex:
-            #fixme: model-id is mandatory in yaml file!
-#            if not self.modelID: self.modelID = ''
-
-            print("-------------")
-            print('Initializing model ' + self.modelID + ' failed.')
-            print(self.yaml_file_name)
-            print(ex)
-            print("-------------")
-            raise(ex)
         
 
 
@@ -939,11 +936,6 @@ class Model:
         # fixme 
         # avoid complete_dict references outside init
 
-    @property
-    def name(self):
-        return retrieve_this_or_that("name", self.bibtex_entry.key, self.complete_dict)
-        # fixme 
-        # avoid complete_dict references outside init
 
     @property
     def nr_ops(self):

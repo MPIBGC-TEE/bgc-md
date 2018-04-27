@@ -101,7 +101,7 @@ for index, bibtex_entry in enumerate(bibtex_entry_list):
                 # save the key given in the input file to restore it after fetching the new entry by doi changed it
                 save_key =  bibtex_entry.key
 
-                new_bibtex_entry = bibtexc.BibtexEntry(online_entry(doi=bibtex_entry.entry['doi']))
+                new_bibtex_entry = bibtexc.BibtexEntry.from_doi(doi=bibtex_entry.entry['doi'])
                 bibtex_entry = new_bibtex_entry
 
                 # restore saved key

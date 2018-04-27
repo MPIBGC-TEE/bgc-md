@@ -3,7 +3,7 @@
 import unittest
 #from run_tests import *
 from bgc_md.tests.TestCompleteModelList import TestCompleteModelList
-#from bgc_md.tests.TestModel import TestModel
+from bgc_md.tests.TestModel import TestModel
 from bgc_md.tests.TestModelList import TestModelList
 #from bgc_md.tests.TestStoichiometricModel import TestStoichiometricModel
 #from bgc_md.tests.TestTsTpField import TestTsTpField
@@ -14,13 +14,13 @@ from bgc_md.tests.Testbibtexc import Testbibtexc
 
 def suite():
     s=unittest.TestSuite()
-    s.addTest(Testbibtexc("test_init"))
+    #s.addTest(Testbibtexc("test_online_entry"))
+    #s.addTest(Testbibtexc("test_init"))
     #s.addTest(TestCompleteModelList("test_scatter_plus_hist_nr_vars_vs_nr_ops"))
     #s.addTest(TestReportGeneration("test_commandline_generate_model_run_report_with_targetdir"))
     #s.addTest(TestReportGeneration("test_commandline_gnerate_website"))
     #s.addTest(TestReportGeneration("test_commandline_generate_model_run_report_single_file"))
 
-    #s.addTest(TestCompleteModelList("test_scatter_plus_hist_nr_vars_vs_nr_ops"))
     #s.addTest(TestReportGeneration("test_create_overview_report"))
     #s.addTest(TestModelList("test_create_overview_table"))
     #s.addTest(Test(""))
@@ -36,12 +36,13 @@ def suite():
     #s.addTest(TestReportElements("test_add"))
     #s.addTest(TestDensityAlgorithm("test_age_distribution"))
     #s.addTest(TestTsTpMassFieldsPerPoolPerTimeStep("test_mean_age_distribution_for_BW"))
+    #s.addTest(TestModel("test_load_bibtex_entry_from_doi"))
     #s.addTest(TestModel("test_load_model_runs_dict"))
     #s.addTest(TestModel("test_jacobian"))
     #s.addTest(TestModel("test_key_relations"))
     #s.addTest(TestReportGeneration("test_histogram"))
     #s.addTest(TestReportGeneration("test_commandline_tools"))
-    #s.addTest(TestModel("test_plot_model_key_dependencies_scatter_plot"))
+    s.addTest(TestModelList("test_plot_model_key_dependencies_scatter_plot"))
     #s.addTest(TestModel("test_meta_data"))
     #s.addTest(TestModel("test_reservoir_model"))
     #s.addTest(TestStoichiometricModel("test_rhs"))

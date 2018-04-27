@@ -106,9 +106,9 @@ model:
             desc: vector of partitioning coefficients of photosynthetically fixed carbon
         - A:
             key: cyc_matrix    
-            exprs: "A = Matrix([-gamma_S,0,0],
-                               [0, -gamma_R, 0],
-                               [0, 0, -gamma_L])"
+            exprs: "A = Matrix([[-gamma_S,          0,          0],
+                               [        0,   -gamma_R,          0],
+                               [        0,          0, -gamma_L]])"
             desc: matrix of cycling rates 
         - f_v:
             desc: the righthandside of the ode

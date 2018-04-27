@@ -39,24 +39,18 @@ from . import gv
 
 def online_entry(doi,abstract=True):
     try: 
-        print(doi)
         # 1st: check on Mendeley, because they provide abstracts
-        #entry= _mendeley(doi, abstract)
-        entry= _mendeley_str(doi, abstract)
-        print("entry="+str(entry))
+        entry= _entry_from_str(_mendeley_str(doi, abstract))
         return entry
             
     except Exception as e: #fixme mm , maybe find out what exceptions mendeley has und only catch those
-        print('#################')
-        print("Warning:Could not reach mendeley")
-        print(e)
-        print('#################')
         # 2nd: check doi.org directly, no abstracts provided here                  
         try: 
             entry = _direct(doi)
 
         except Exception: #fixme mm , maybe find out what exceptions mendeley has und only catch those
             print("Warning:Could not reach doi.org")
+            
             #reraise an exception
             raise DoiNotFoundException(doi) 
 
@@ -68,7 +62,7 @@ class DoiNotFoundException(Exception):
     def __str__(self):
         return("The doi " + self.doi + " could not be resolved.")
 
-
+############################################################
 class BibtexEntry():
     """Stores a BibTeX entry as a dictionary in plain style and provides methods to convert the entry to BibTeX and BibLaTeX.
 
@@ -89,9 +83,19 @@ class BibtexEntry():
         BE=cls(_entry_from_str(entry_str))
         return(BE)
 
+    @classmethod
+    def from_doi(cls,doi,abstract=True):
+        # call normal init
+        entry=online_entry(doi)
+        BE=cls(entry)
+        BE.__automatic_key()
+        return(BE)
+
     def __init__(self, entry ):
         self.entry = entry
-        self.__automatic_key()
+        #if entry:
+        #    if 'ID' not in self.entry.keys() or self.entry['ID'] == "default":
+        #        self.__automatic_key()
 
        # # 'ID' saves the key (convention by biblatexparser)
         #if 'ID' not in self.entry.keys() or self.entry['ID'] == "default":
@@ -327,7 +331,8 @@ def _entry_from_str(entry_str):
     else:
         return None
 
-
+#fixme mm 
+# the method seems to be untested 
 def _direct_data(doi):
     """Return the data coming directly from doi (as string) or 'None'."""
     url = "http://dx.doi.org/" + doi
@@ -340,9 +345,11 @@ def _direct_data(doi):
         return doi_result
     else:
         # doi was not found
-        return None
+        raise DoiNotFoundException(doi)
 
 
+#fixme mm 
+# the method seems to be untested 
 def _direct(doi):
     """Return a BibTex entry as dictionary or 'None', retrieved by doi directly on doi.org."""
     entry_str = _direct_data(doi)
@@ -460,17 +467,16 @@ def _mendeley_str(doi, abstract=False):
 
         return entry_str
     else:
-        print("not in if doc")
         raise DoiNotFoundException(doi)
 
-def _mendeley(doi, abstract=False):
-    """Returns a BibTeX entry as dictionary or 'None', retrieved by doi via Mendeley."""
-    entry_str = _mendeley_str(doi, abstract)
-
-    if entry_str:
-        return _entry_from_str(entry_str)
-    else:
-        return None
+#def _mendeley(doi, abstract=False):
+#    """Returns a BibTeX entry as dictionary or 'None', retrieved by doi via Mendeley."""
+#    entry_str = _mendeley_str(doi, abstract)
+#
+#    if entry_str:
+#        return _entry_from_str(entry_str)
+#    else:
+#        return None
 
 
 ### public methods ###
