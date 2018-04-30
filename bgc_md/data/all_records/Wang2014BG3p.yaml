@@ -1,8 +1,6 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Wang2014BG3p
 name: Three-pool microbial
 version: 1
-model-id: S00019
 entryAuthor: "Holger Metzler"
 entryAuthorOrcid: 0000-0002-8239-1601
 entryCreationDate: 22/01/2018

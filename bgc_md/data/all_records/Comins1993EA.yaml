@@ -1,10 +1,8 @@
 
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Comins1993EA
 name: "G'DAY"
 longName: Generic Decomposition and Yield
 version: 1
-model-id: V0009
 entryAuthor: "Verónika Ceballos-Núñez"
 entryAuthorOrcid: 0000-0002-0046-1160
 entryCreationDate: 27/1/2016 # changeset 3056

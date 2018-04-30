@@ -1,8 +1,6 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Jenkinson1977SoilScience
 name: RothC-26.3
 version: 1
-model-id: S0003
 entryAuthor: "Holger Metzler"
 entryAuthorOrcid: 0000-0002-8239-1601
 entryCreationDate: 10/03/2016

@@ -1,10 +1,8 @@
 
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Thomas2014GeosciModelDev 
 name: ACONITE
 longName: "A new, simple model of ecosystem C–N cycling and interactions"
 version: 1
-model-id: V0016
 entryAuthor: "Verónika Ceballos-Núñez"
 entryAuthorOrcid: 0000-0002-0046-1160
 entryCreationDate: 29/3/2016

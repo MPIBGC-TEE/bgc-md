@@ -1,8 +1,6 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Zelenev2000MicrobialEcology
 name: BACWAVE
 version: 1
-model-id: S0008
 entryAuthor: "Holger Metzler"
 entryAuthorOrcid: 0000-0002-8239-1601
 entryCreationDate: 15/03/2016

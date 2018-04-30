@@ -1,8 +1,6 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: EmanuelTalkModel
 name: EmanuelTalkModel
 version: 1
-model-id: O0004
 entryAuthor: Holger Metzler
 #entryAuthorOrcid: 0000-0003-0009-4169
 entryCreationDate: 22/08/2016

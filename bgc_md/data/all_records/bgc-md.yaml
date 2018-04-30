@@ -1,8 +1,6 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Parton1987SoilSciSocAmJ
 name: BGC-MD
 version: 1
-model-id: O0002
 entryAuthor: "Carlos Sierra"
 entryAuthorOrcid: 0000-0003-0009-4169
 entryCreationDate: 13/04/2016

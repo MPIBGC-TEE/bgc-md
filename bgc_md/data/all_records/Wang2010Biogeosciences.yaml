@@ -1,10 +1,8 @@
 
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Wang2010Biogeosciences # fixme?: check for previous paper: Kowalczyk2006...?
 name: CABLE
 longName: CSIRO Atmosphere Biosphere Land Exchange
 version: 1
-model-id: V0011
 basedOn: "CASA'" # Fung et al. (2005) -> Need to look it up
 entryAuthor: "Verónika Ceballos-Núñez"
 entryAuthorOrcid: 0000-0002-0046-1160

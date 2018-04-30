@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 from bgc_md.helpers import  retrieve_this_or_that
 from bgc_md.yaml_creator_mod import example_yaml_string_list
-from bgc_md.Model import Model, load_complete_dict_and_id, load_bibtex_entry, load_abstract, load_further_references, load_reviews, load_sections_and_titles, load_df, load_expressions_and_symbols, section_subdict, load_model_run_data, load_parameter_sets, load_initial_values, check_parameter_set_valid, check_parameter_sets_valid, check_parameter_set_complete, check_initial_values_set_valid, check_initial_values_complete, load_run_times, load_model_run_combinations, YamlException
+from bgc_md.Model import Model, load_bibtex_entry, load_abstract, load_further_references, load_reviews, load_sections_and_titles, load_df, load_expressions_and_symbols, section_subdict, load_model_run_data, load_parameter_sets, load_initial_values, check_parameter_set_valid, check_parameter_sets_valid, check_parameter_set_complete, check_initial_values_set_valid, check_initial_values_complete, load_run_times, load_model_run_combinations, YamlException
 from bgc_md.ModelList import ModelList
 from bgc_md.bibtexc import BibtexEntry, DoiNotFoundException, online_entry
 from bgc_md.SmoothModelRun import SmoothModelRun 
@@ -90,7 +90,6 @@ class TestModel(InDirTest):
                     exprs: "b=Matrix(3,1,[u, 2, 3])"
         """
         model = IncompleteModel(yaml_str)
-        #model.complete_dict, self.modelID = load_complete_dict_and_id(complete_dict)
         #model.bibtex_entry = load_bibtex_entry(self.complete_dict)
         #model.abstract = load_abstract(self.complete_dict, self.bibtex_entry)
         #model.further_references = load_further_references(self.complete_dict)
@@ -103,7 +102,8 @@ class TestModel(InDirTest):
         self.assertEqual(syms_dict, {'u': u, 'k': k})
         self.assertEqual(exprs_dict, {'b': Matrix(3,1,[u,2,3])})
 
-
+    @unittest.skip
+    # the model-id is no longer used
     def test_load_complete_dict_and_id(self):
         # test good case
         yaml_str = """\

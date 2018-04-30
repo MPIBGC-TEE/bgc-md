@@ -1,8 +1,6 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Rasmussen2016JMB
 name: CASA (9 pools)
 version: 2016
-model-id: E004
 entryAuthor: "Holger Metzler"
 entryAuthorOrcid: 0000-0002-8239-1601
 entryCreationDate: 18/01/2018

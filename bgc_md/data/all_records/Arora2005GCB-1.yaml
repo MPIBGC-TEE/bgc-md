@@ -1,10 +1,8 @@
 
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Arora2005GCB 
 name: CTEM
 longNAme: Canadian Terrestrial Ecosystem Model
 version: 1
-model-id: V0007
 entryAuthor: "Verónika Ceballos-Núñez"
 entryAuthorOrcid: 0000-0002-0046-1160
 entryCreationDate: 21/1/2016 # changeset 3032

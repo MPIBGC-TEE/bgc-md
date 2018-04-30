@@ -1,10 +1,8 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
 
-citationKey: NoKey
 name: Three microbe-substrate pairs
 #longName: Microbial-Enzyme-Mediated Decomposition model
 version: 1
-model-id: O001
 entryAuthor: "Carlos Sierra"
 entryAuthorOrcid: 0000-0003-0009-4169
 entryCreationDate: 13/04/2016

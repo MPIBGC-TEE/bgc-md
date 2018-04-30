@@ -40,23 +40,20 @@ def depth(expr):
             return 0
         return 1 + max([depth(arg) for arg in expr.args])
 
-def load_complete_dict_and_id(complete_dict):
-    if ('model' not in complete_dict) or (not complete_dict['model']):
-        raise(YamlException("yaml file does not contain a model section:\n\n" + str(complete_dict)))
-
-    #fixme: We need to check here for all mandatory entries in the yaml file
-    # 'citationKey' is never used (obsolete)
-    #mandatory_tags = ('citationKey', ) # 'model-id' need to be introduced to vegetation models
-    mandatory_tags = tuple()
-    for tag in mandatory_tags:
-        if (tag not in complete_dict) or (not complete_dict[tag]):
-            raise(YamlException("Did not find '" + tag +"' in:\n\n" + str(complete_dict)))
-
-    #fixme: remove that as soon as possible
-    if 'model-id' not in complete_dict.keys():
-        complete_dict['model-id'] = ''
-
-    return complete_dict, complete_dict['model-id'] 
+#def load_complete_dict_and_id(complete_dict):
+#    if ('model' not in complete_dict) or (not complete_dict['model']):
+#        raise(YamlException("yaml file does not contain a model section:\n\n" + str(complete_dict)))
+#
+#    #mandatory_tags = tuple()
+#    #for tag in mandatory_tags:
+#    #    if (tag not in complete_dict) or (not complete_dict[tag]):
+#    #        raise(YamlException("Did not find '" + tag +"' in:\n\n" + str(complete_dict)))
+#
+#    #fixme: remove that as soon as possible
+#    #if 'model-id' not in complete_dict.keys():
+#    #    complete_dict['model-id'] = ''
+#
+#    return complete_dict, complete_dict['model-id'] 
 
 
 def convert_yaml_bibtex_str(yaml_bibtex_str):
@@ -574,13 +571,13 @@ def load_model_run_combinations(model_run_data, parameter_sets, initial_values, 
 class Model:
     
     @classmethod
-    def from_str(cls, yaml_str, name):
+    def from_str(cls, yaml_str, id):
         try:
              complete_dict = yaml.load(yaml_str)
         except yaml.YAMLError as ye:
             raise(ye)
             
-        model = cls(complete_dict, name) # call to __init__
+        model = cls(complete_dict, id ) # call to __init__
         return(model)
 
     @classmethod
@@ -595,21 +592,30 @@ class Model:
         with yaml_file_path.open() as f:
             yaml_str = f.read()
         name=yaml_file_path.stem
-        model = cls.from_str(yaml_str,name)
+        model = cls.from_str(yaml_str,id=name)
         model.yaml_file_path=yaml_file_path
         return model
-    
-    def __init__(self, complete_dict, name= None):
-        self.name=name 
+
+    @property
+    def name(self):
+        return retrieve_this_or_that("name",self.id,self.complete_dict)
+
+    def __init__(self, complete_dict, id= None):
+        # every model can be given a unique id (like a key in a database table) 
+        # usually we will use the filename for this because it is unique by definition
+        # for models created directly from strings we provide it as a parameter.
+        self.id=id
         try:
-            self.complete_dict, self.modelID = load_complete_dict_and_id(complete_dict)
+            self.complete_dict = complete_dict
             self.bibtex_entry = load_bibtex_entry(self.complete_dict)
             self.abstract = load_abstract(self.complete_dict, self.bibtex_entry)
             self.further_references = load_further_references(self.complete_dict)
             self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)
             self.sections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)
             self.df = load_df(self.complete_dict, self.sections)
+            print('3###########################333')
             self.syms_dict, self.exprs_dict, self.symbols_by_type = load_expressions_and_symbols(self.df) 
+            print('4###########################')
             self.set_component_keys()
 
             self.model_run_data = load_model_run_data(self.complete_dict)
@@ -624,19 +630,19 @@ class Model:
 
             if msg:
                 print("-------------")
-                print('Warning at initializing model ' + self.modelID)
-                print(str(self.yaml_file_path))
+                print('Warning at initializing model ' + self.id)
+                if hasattr(self,yaml_file_path):
+                    print(str(self.yaml_file_path))
                 print(msg)
                 print("-------------")
             
             #self.parameter_sets=[]
         except Exception as ex:
-            #fixme: model-id is mandatory in yaml file!
-#            if not self.modelID: self.modelID = ''
 
             print("-------------")
-            print('Initializing model ' + self.modelID + ' failed.')
-            print(str(self.yaml_file_path))
+            print('Initializing model ' + self.id + ' failed.')
+            if hasattr(self,yaml_file_path):
+                print(str(self.yaml_file_path))
             print(ex)
             print("-------------")
             raise(ex)

@@ -1,10 +1,8 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
 
-citationKey: Wang2013EcologicalApplications
 name: MEND
 longName: Microbial-Enzyme-Mediated Decomposition model
 version: 1
-model-id: S0010
 entryAuthor: "Holger Metzler"
 entryAuthorOrcid: 0000-0002-8239-1601
 entryCreationDate: 21/03/2016

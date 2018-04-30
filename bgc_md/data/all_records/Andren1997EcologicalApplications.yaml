@@ -1,9 +1,7 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Andren1997EcologicalApplications
 name: ICBM
 longName: Introductory Carbon Balance Model
 version: 1
-model-id: S0002
 entryAuthor: "Holger Metzler"
 entryAuthorOrcid: 0000-0002-8239-1601
 entryCreationDate: 09/03/2016

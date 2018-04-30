@@ -1,9 +1,7 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
 
-citationKey: Fontaine2005Ecologyletters
 name: FB2005 - The C-N model of SOM dynamics, two decomposer types (model 4)
 version: 1 - C limitation
-model-id: S0015
 entryAuthor: "Holger Metzler"
 entryAuthorOrcid: 0000-0002-8239-1601
 entryCreationDate: 22/03/2016

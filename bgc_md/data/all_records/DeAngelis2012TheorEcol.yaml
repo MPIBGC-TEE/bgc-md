@@ -1,9 +1,7 @@
 
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: DeAngelis2012TheorEcol
 name: 
 version:
-model-id: V0012
 basedOn: "G'DAY"
 entryAuthor: "Verónika Ceballos-Núñez"
 entryAuthorOrcid: 0000-0002-0046-1160

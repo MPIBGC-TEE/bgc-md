@@ -1,9 +1,7 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Schimel2003SoilBiologyandBiochemistry
 name: Exoenzyme rMM
 longName: Exoenzyme model - reverse Michaelis Menten
 version: 2
-model-id: S0006
 entryAuthor: "Holger Metzler"
 entryAuthorOrcid: 0000-0002-8239-1601
 entryCreationDate: 14/03/2016

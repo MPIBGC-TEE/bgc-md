@@ -1,0 +1,43 @@
+doi: 10.1016/j.ecocom.2010.04.002
+model:
+    - state_variables:
+        - C_S:
+        - C_R:
+        - C_L:
+            #    - photosynthesis_parameters:
+        #        - t:
+        #            desc: time step
+        #            unit: "year"
+        #            type: variable
+        #            key: time_symbol
+        #        - NPP:
+        #    - partitioning_rates:
+        #        - a_S:
+        #        - a_R:
+        #        - a_L:
+        #
+        #    - cycling_rates:
+        #        - gamma_S: 
+        #        - gamma_R: 
+        #        - gamma_L: 
+
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(3,1,[C_S, C_R, C_L])"
+        - u:
+            #exprs: "u = NPP" 
+            exprs: "u=Matrix(3,1,[1,2,3])"
+            #exprs: "u = 1400" 
+            key: input_vector
+        - A:
+            key: cyc_matrix    
+            #exprs: "A = Matrix([[-gamma_S,          0,          0],
+            #                   [        0,   -gamma_R,          0],
+            #                   [        0,          0, -gamma_L]])"
+            exprs: "A = Matrix([[-1,          0,          0],
+                               [        0,   -2,          0],
+                               [        0,          0, -3]])"
+        - f_v:
+            exprs: "f_v = u + A*x"
+            key: state_vector_derivative

@@ -1,9 +1,7 @@
 
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Sitch2003GlobChangBiol
 name: LPJ
 version: 1
-model-id: V0010
 basedOn: "BIOME"
 entryAuthor: "Verónika Ceballos-Núñez"
 entryAuthorOrcid: 0000-0002-0046-1160

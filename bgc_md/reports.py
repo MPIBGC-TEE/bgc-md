@@ -52,6 +52,7 @@ def generate_test_report():
     yaml_file_path=Path(com.path)
     target_dir_path=Path(com.target_dir)
     print('####################1')
+    print(str(yaml_file_path))
     model = Model.from_path(yaml_file_path)
     print('####################2')
     dir_name = yaml_file_path.stem

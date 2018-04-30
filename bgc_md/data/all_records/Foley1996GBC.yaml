@@ -1,9 +1,7 @@
 
 ## vim:set ff=unix expandtab ts=4 sw=4:
-citationKey: Foley1996GBC
 name: IBIS
 version: 1
-model-id: V0008
 basedOn: "LSX" # Land Surface Transfer model (Thompson and Pollard, 1995). See Castanho2013Biogeosciences
 entryAuthor: "Verónika Ceballos-Núñez"
 entryAuthorOrcid: 0000-0002-0046-1160

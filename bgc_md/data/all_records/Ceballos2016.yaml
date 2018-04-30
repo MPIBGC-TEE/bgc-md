@@ -1,10 +1,8 @@
 
 ## vim:set ff=unix expandtab ts=4 sw=4: 
-citationKey: Ceballos2016
 name: CAVPFP 
 longName: Carbon Allocation in Vegetation with Positive Feedback Photosynthesis
 version: 1
-model-id: V0017
 entryAuthor: "Verónika Ceballos-Núñez"
 entryAuthorOrcid: 0000-0002-0046-1160
 entryCreationDate: 13/4/2016
