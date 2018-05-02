@@ -14,6 +14,7 @@ from bgc_md.tests.Testbibtexc import Testbibtexc
 
 def suite():
     s=unittest.TestSuite()
+    s.addTest(TestReportGeneration('test_report_templates'))
     #s.addTest(Testbibtexc("test_online_entry"))
     #s.addTest(Testbibtexc("test_init"))
     #s.addTest(TestCompleteModelList("test_scatter_plus_hist_nr_vars_vs_nr_ops"))
@@ -23,7 +24,7 @@ def suite():
 
     #s.addTest(TestReportGeneration("test_create_overview_report"))
     #s.addTest(TestModelList("test_create_overview_table"))
-    #s.addTest(Test(""))
+    #s.addTest(Test
     #s.addTest(TestWriteReportElements("test_write_html_with_bibliography"))
     #s.addTest(TestWriteReportElements("test_write_html_with_picture"))
     #s.addTest(TestReportElements("test_Report"))
@@ -42,7 +43,7 @@ def suite():
     #s.addTest(TestModel("test_key_relations"))
     #s.addTest(TestReportGeneration("test_histogram"))
     #s.addTest(TestReportGeneration("test_commandline_tools"))
-    s.addTest(TestModelList("test_plot_model_key_dependencies_scatter_plot"))
+    #s.addTest(TestModelList("test_plot_model_key_dependencies_scatter_plot"))
     #s.addTest(TestModel("test_meta_data"))
     #s.addTest(TestModel("test_reservoir_model"))
     #s.addTest(TestStoichiometricModel("test_rhs"))

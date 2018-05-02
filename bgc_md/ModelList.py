@@ -219,8 +219,9 @@ class ModelList(list):
         #   Either 
         #   1.) 
         #   we abandon the proposed multiformat approach by creating 
-        #   html only and do not use the ReportElementList here or we  
-        #
+        #   html only and do not use the ReportElementList here 
+        #   
+        #   Or we  
         #   2.)
         #   implement a table reportElement that is rich enough 
         #   to show what we want. In this case the html goes into the

@@ -51,10 +51,7 @@ def generate_test_report():
     print("Creating report from " + com.path + " to " + com.target_dir)
     yaml_file_path=Path(com.path)
     target_dir_path=Path(com.target_dir)
-    print('####################1')
-    print(str(yaml_file_path))
     model = Model.from_path(yaml_file_path)
-    print('####################2')
     dir_name = yaml_file_path.stem
     #dir_name = model.bibtex_entry.key
     #if model.modelID: dir_name += "-" + model.modelID
@@ -83,10 +80,12 @@ def defaults():
     # fixme mm 
     # I would like to get rid of the Subdirectories 
     # and rather put the information is something is a soil or 
-    # vegetation model in the yaml file.
+    # vegetation model in the yaml file only but at the moment we still use the distinct directories.
     soilModelPath=this.joinpath("data","SoilModels")
     vegModelPath=this.joinpath("data","VegetationModels") 
-    path_dict={"veg":vegModelPath,"soil":soilModelPath,"tested_records":tested_record_path}
+    
+    templatePath=this.joinpath("..","report_templates")
+    path_dict={"veg":vegModelPath,"soil":soilModelPath,"tested_records":tested_record_path,"report_templates":templatePath}
     
     dir_dict={key:value.as_posix() for key,value in path_dict.items()}
     msg_dict={key:"generating %s model website to" % key for key in path_dict.keys()}
@@ -912,9 +911,6 @@ def create_single_report(yaml_file_path, target_dir_path):
     rel = report_from_model(model) 
     rel.create_pandoc_dir(sub_dir)
 
-def render(temp,source_dir_path,target_dir_path,yaml=None):
-    ml=ModelList.from_dir_path(src_dir_path)
-
 def generate_website():
     generate_model_run_reports()
 
@@ -936,21 +932,18 @@ def render_parse():
         render(Path(com.temp),Path(com.src_dir), Path(com.target_dir))
     sys.exit(0)
     
-
+#def render(temp,source_dir_path,target_dir_path,yaml=None):
+#    ml=ModelList.from_dir_path(src_dir_path)
+#
+def render(path,model_list):
+    
+    with path.open() as f:
+        code=f.read()
+    
+    exec(code,globals(),locals()) # this makes the template function defined in the file available   
+    # call the function defined in the template
+    func=locals()['template']
+    rel= func.__call__(model_list)
+    return rel
 ######################################################################################
-
-#fixme: improve to also use optional input directories?
-if __name__ == '__main__':
-    print("""
-    There is a commandline tool to use directly now. Just run: 
-   
-    $generate_website 
-   
-    from anywhere now.""")
-    parse_args()
-
-#lachs
-#brot
-#brotbelag
-#bastikaese
 

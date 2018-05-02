@@ -9,7 +9,7 @@ from pathlib import Path
 import shutil 
 from bgc_md.Model import Model
 from testinfrastructure.InDirTest import InDirTest
-from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory, create_html_from_pandoc_md, create_html_from_pandoc_md_directory,generate_website,defaults,create_overview_report
+from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory, create_html_from_pandoc_md, create_html_from_pandoc_md_directory,generate_website,defaults,create_overview_report,render
 from bgc_md.yaml_creator_mod import example_yaml_string_list2
 from bgc_md.helpers import remove_indentation
 from bgc_md.ModelList import ModelList
@@ -17,6 +17,19 @@ import bgc_md.gv as gv
 
 
 class TestReportGeneration(InDirTest):
+    def test_report_templates(self):
+        d=defaults() 
+        sp=d['paths']['tested_records'].parent.joinpath('VerosTestModels')
+        
+        tp=d['paths']['report_templates'].joinpath('OverviewTable.py')
+        model_list=ModelList.from_dir_path(sp)
+        rel=render(tp,model_list)
+         
+        target_dir_path=Path('.').joinpath('html')
+        target_dir_path.mkdir(parents=True,exist_ok=True)
+        targetFileName='overview.html'
+        rel.write_pandoc_html(str(target_dir_path.joinpath(targetFileName)))
+
     def test_create_overview_report(self):
         # we create a target directory populated with only a few files and create a overview html from it
         d=defaults() 
@@ -39,7 +52,6 @@ class TestReportGeneration(InDirTest):
         targetFileName='overview.html'
         create_overview_report(ml,target_dir_path,targetFileName)
         targetPath=target_dir_path.joinpath(targetFileName)
-        print(targetPath)
         self.assertTrue(targetPath.exists())
         
 
