@@ -28,8 +28,8 @@ class TestWriteReportElements(InDirTest):
         rel.write_pandoc_markdown("report.md")
     
     def test_write_html_with_bibliography(self):
-        csl_file_name = gv.resources_path.joinpath('apa.csl').as_posix()
-        css_file_name = gv.resources_path.joinpath('buttondown.css').as_posix()
+        csl_file_path = gv.resources_path.joinpath('apa.csl')
+        css_file_path = gv.resources_path.joinpath('buttondown.css')
         rel=Text("Some Text")
         rel+=Newline()
         rel+=Citation(BibtexEntry.from_doi(doi="10.1139/x91-133"),parentheses=True)
@@ -41,12 +41,12 @@ class TestWriteReportElements(InDirTest):
         rel+=Text("This is second citation of the first paper")
         rel+=Citation(BibtexEntry.from_doi(doi="10.1139/x91-133"),parentheses=True)
 
-        html_file_name="text_with_citation.html"
+        html_file_path="text_with_citation.html"
         bibtex_file_name="text_with_citation.bibtex"
         print('#######################################')
-        rel.write_pandoc_html(html_file_name,csl_file_name,css_file_name)
+        rel.write_pandoc_html(html_file_path,csl_file_path,css_file_path)
         
-        self.assertTrue(Path(html_file_name).exists())
+        self.assertTrue(Path(html_file_path).exists())
         # check that the bibtex file is there
         self.assertTrue(Path(bibtex_file_name).exists())
         # check deduplication
@@ -57,8 +57,8 @@ class TestWriteReportElements(InDirTest):
         self.assertEqual(len(et),2)
 
     def test_write_html_with_picture(self):
-        csl_file_name = gv.resources_path.joinpath('apa.csl').as_posix()
-        css_file_name = gv.resources_path.joinpath('buttondown.css').as_posix()
+        csl_file_path = gv.resources_path.joinpath('apa.csl')
+        css_file_path = gv.resources_path.joinpath('buttondown.css')
         rel=Text("some text before the first picture")
         fig=plt.figure()
         x_values=[2*pi/100*i for i in range(0,100)]
@@ -78,8 +78,8 @@ class TestWriteReportElements(InDirTest):
         rel+=Text("some text before the second picture")
         rel+=MatplotlibFigure(fig2,"differentLabel","caption text 2") 
         # now refer to the figures from the text
-        html_file_name="text_with_figure.html"
-        rel.write_pandoc_html(html_file_name,csl_file_name,css_file_name)
+        html_file_path="text_with_figure.html"
+        rel.write_pandoc_html(html_file_path,csl_file_path,css_file_path)
 
 
         

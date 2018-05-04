@@ -608,14 +608,14 @@ class Model:
         try:
             self.complete_dict = complete_dict
             self.bibtex_entry = load_bibtex_entry(self.complete_dict)
-            self.abstract = load_abstract(self.complete_dict, self.bibtex_entry)
+            #print("1#################################",self.bibtex_entry)
+            #if self.bibtex_entry!=None:
+            #    self.abstract = load_abstract(self.complete_dict, self.bibtex_entry)
             self.further_references = load_further_references(self.complete_dict)
             self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)
             self.sections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)
             self.df = load_df(self.complete_dict, self.sections)
-            print('3###########################333')
             self.syms_dict, self.exprs_dict, self.symbols_by_type = load_expressions_and_symbols(self.df) 
-            print('4###########################')
             self.set_component_keys()
 
             self.model_run_data = load_model_run_data(self.complete_dict)

@@ -406,7 +406,6 @@ def _mendeley_data(doi):
 def _mendeley_str(doi, abstract=False):
     """Return a BibTeX entry as a string or 'None', reetrieved by doi via Mendeley."""
     doc = _mendeley_data(doi)
-    print("doc="+str(doc))
     if doc:
         # doi could be resolved by Mendeley
         # now create a BibTex entry as a string

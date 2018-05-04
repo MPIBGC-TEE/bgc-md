@@ -398,7 +398,6 @@ class ModelList(list):
     
         xdata = np.array(plot_data[:,'x'])
         ydata = np.array(plot_data[:,'y'])
-        print('##################################################') 
         print(plot_data[:,'name'])
         for i in range(plot_data.nrow):
             name=plot_data[i,'name']
@@ -407,7 +406,6 @@ class ModelList(list):
             #ax.scatter(xdata[i],ydata[i], s=200, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker , c=ps.color)
             ax.scatter(xdata[i]+(0.1*np.random.rand(1)),ydata[i], s=50, alpha=0.9, label=plot_data[i,'name'], marker=ps.marker, c=ps.color)
 
-        print('##################################################') 
     
         box = ax.get_position()
 

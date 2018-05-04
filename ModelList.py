@@ -32,11 +32,6 @@ class ModelList(list):
             else:
                 boolean_part_scheme = 1
             scalar_func_phot_dep_set=model.depends_on_keys(target_keys[0]) 
-            #print("############################")
-            #print(model.name)
-            #print(model.df)
-            #print(scalar_func_phot_dep_set)
-            #scalar_func_phot_dep_set={"faked_key","another_faked_key"}
 
             data_list += [nr_state_v, len(model.syms_dict), len(model.exprs_dict), ops, d,len(model.variables),len(model.parameters),boolean_part_scheme,model.space_scale,model.time_resolution,scalar_func_phot_dep_set]
             plot_data.append_row(data_list)

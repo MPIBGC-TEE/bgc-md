@@ -4,9 +4,7 @@ from string import Template
 from copy import copy,deepcopy 
 from pathlib import Path
 import shutil
-from os.path import relpath, dirname
 import subprocess
-import os
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -82,6 +80,21 @@ class ReportElementList(list):
             # backsubstitution to a list
         return(entries)
     
+    def sub_pages(self):
+        if isinstance(self,AtomicReportElementList):
+            if isinstance(self,LinkedSubPage):
+                entries=[self[0]]
+            else:
+                entries = []
+            return(entries)    
+        else:
+            entries = []
+            for sub_el in self:
+                el_lst=sub_el.sub_pages()
+                entries+=el_lst
+            
+        return(entries)
+
     def matplotlib_figure_elements(self):
         if isinstance(self,AtomicReportElementList):
             if isinstance(self,MatplotlibFigure):
@@ -97,15 +110,22 @@ class ReportElementList(list):
             
         return(entries)
 
-    def write_pandoc_html(self,html_file_name,csl_file_name = "", css_file_name = "", slide_show = False):
-        if not csl_file_name:
-            csl_file_name = gv.resources_path.joinpath('apa.csl').as_posix()
-        if not css_file_name:
-            css_file_name = gv.resources_path.joinpath('buttondown.css').as_posix()
+    def write_pandoc_html(self,html_file_path,csl_file_path=None , css_file_path= None, slide_show = False):
+        csl_file_name=str(csl_file_path)
+        css_file_name=str(css_file_path)
+        html_file_name=str(html_file_path)
+        print("1########################")
+        print(html_file_name)
+        print("2########################")
         html_file_path=Path(html_file_name)
-        trunk = Path(html_file_name).stem
-        md_file_name = os.path.join(os.path.dirname(html_file_name), trunk + ".md")
-        bibtex_file_name = os.path.join(os.path.dirname(html_file_name), trunk + ".bibtex")
+        if csl_file_path is None:
+            csl_file_path= gv.resources_path.joinpath('apa.csl')
+        if css_file_path is None:
+            css_file_path= gv.resources_path.joinpath('buttondown.css')
+        trunk = html_file_path.stem
+
+        md_file_path = html_file_path.parent.joinpath(html_file_path.stem+".md")
+        bibtex_file_path= html_file_path.parent.joinpath(html_file_path.stem+".bibtex")
 
         #collect bibtexentries
         references=self.bibtex_entries()
@@ -118,52 +138,59 @@ class ReportElementList(list):
             #plt.show(fig_el.fig)
 #            plt.rc('text', usetex=True)
             plt.rc('font', family='serif')
-            file_name=os.path.join(os.path.dirname(html_file_name), fig_el.label+".svg")
-            print('####################################################33')
-            print('file_name')
-            print(file_name)
-            print('####################################################33')
+            file_path= html_file_path.parent.joinpath(fig_el.label+".svg")
+            file_name=str(file_path)
+            #file_name=os.path.join(os.path.dirname(html_file_name), fig_el.label+".svg")
             fig_el.fig.savefig(file_name, transparent=fig_el.transparent)
             plt.close(fig_el.fig)
 
+        #collect sub_pages and write them 
+        for sub_page in self.sub_pages():
+            dir_path=html_file_path.parent
+            sub_dir_path=dir_path.joinpath(sub_page.label)
+            sub_dir_path.mkdir(exist_ok=True,parents=True)
+            if sub_page.target_format=="html":
+                outputFilePath=str(sub_dir_path.joinpath(LinkedSubPage.output_file_name()+".html"))
+                sub_page.contentRel.write_pandoc_html(outputFilePath,csl_file_path,css_file_path)
+
+        print("5####################") 
         self.write_pandoc_markdown(md_file_name)   
         cmd = ["pandoc"]
         cmd += [md_file_name,"-s","--mathjax", "-o", html_file_name]        
-        cmd += ["--metadata=title:Test"]
+        #cmd += ["--metadata=title:Test"]
         cmd += ["--filter=pandoc-citeproc", "--bibliography="+bibtex_file_name]
         if css_file_name: 
-            rel_css_folder = relpath(dirname(css_file_name), dirname(html_file_name))
-            rel_css_file_name = os.path.join(rel_css_folder, os.path.split(css_file_name)[1])
+            #rel_css_folder = relpath(dirname(css_file_name), dirname(html_file_name))
+            rel_css_folder_path = css_file_path.relative_to(html_file_path.parent)
+            #rel_css_file_name = os.path.join(rel_css_folder, os.path.split(css_file_name)[1])
+            rel_css_file_path= rel_css_folder_path.joinpath(css_file_name)
 
-            # use the local one for the website
-            rel_css_file_name = 'buttondown.css'
 
-            cmd += ["-c", rel_css_file_name]
+            cmd += ["-c", str(rel_css_file_path)]
 
-        if csl_file_name: cmd += ["--csl", csl_file_name]
+        #if csl_file_name: cmd += ["--csl", csl_file_name]
+        if csl_file_path is not None:
+            cmd += ["--csl", str(csl_file_path)]
         if slide_show: cmd += ["-t", "slidy"]
             # "slidy" can be changed to: "s5", "slideous", "dzslides", or "revealjs". 
             # For generating a beamer, we'll need: (["pandoc","-t","beamer","--mathjax",md_file,"-o","pdf"]), 
             # where md_file should have TeX math embedded.
 
         try:
-            html_file_path=Path(html_file_name)
-
-            subprocess.check_call(["rm","-rf", html_file_name])
+            subprocess.check_call(["rm","-rf", str(html_file_path)])
             #print(" ".join(cmd))
             
             subprocess.check_output(cmd)
     
             # copy css file
+
             copy_cmd = ["cp"]
-            copy_cmd += [css_file_name]
-            dn = html_file_path.parent.as_posix()
+            copy_cmd += [str(css_file_path)]
+            dn = str(html_file_path.parent)
             copy_cmd += [dn]
 
             # comment in if copying buttondown.css is needed
-            print(" ".join(copy_cmd))
             subprocess.check_call(copy_cmd)
-            print('#######################################')
 
         except subprocess.CalledProcessError as e:
            out=e.output
@@ -293,21 +320,23 @@ class HeaderElement(TextElement):
 ##########################################
 
 class Meta(AtomicReportElementList):
-    def __init__(self, long_name, name, version):
-        if long_name:
-            t=TextElement(remove_indentation("""\
-                                             ---
-                                             title: "Report of the model: $long_name ($name), version: $version"
-                                             ---
-                                             """), long_name=long_name, name=name, version=version)
-        else:
-            t=TextElement(remove_indentation("""\
-                                             ---
-                                             title: "Report of the model: $name, version: $version"
-                                             ---
-                                             """), name=name, version=version)
-        super().__init__([t])
+    #def __init__(self, long_name, name, version):
+    def __init__(self, key_dict):
+        self.key_dict=key_dict
+        
 
+        dict_string="\n ".join([
+            str(key) + ": " + str(val) for key, val in key_dict.items()
+        ])
+        t=TextElement(remove_indentation("""\
+                 --- 
+                 ${dict_string} 
+                 ---
+                 """
+        ),dict_string=dict_string)
+
+
+        super().__init__([t])
 
 ##########################################
 class Newline(AtomicReportElementList):
@@ -352,6 +381,43 @@ class MatplotlibFigureElement(TextElement):
             """))
             return(t.substitute(l=self.label))
 
+##########################################
+class LinkedSubPage(AtomicReportElementList):
+    @classmethod
+    def output_file_name(cls):
+        return "Report"
+
+    def __init__(self, contentRel, label, link_text,target_format):
+        atom=LinkedSubPageElement(contentRel,label,link_text,target_format)
+        super().__init__([atom])
+
+class LinkedSubPageElement(TextElement):
+    def __init__(self, contentRel, label, link_text,target_format):
+        self.contentRel=contentRel
+        self.label=label
+        self.link_text=link_text
+        self.target_format=target_format
+    
+    def pandoc_markdown_string(self):
+        t=Template("[${text}](${path_str})")
+        return t.substitute(
+                text=self.link_text,
+                path_str=str(Path(self.label).joinpath(LinkedSubPage.output_file_name()+"."+self.target_format)))
+
+
+##########################################
+class Link(AtomicReportElementList):
+    def __init__(self, text, target):
+        atom=LinkElement(text,target)
+        super().__init__([atom])
+
+class LinkElement(TextElement):
+    def __init__(self, text, target):
+        self.text = text
+        self.target = target
+    
+    def pandoc_markdown_string(self):
+        return "[" + self.text +"](" + self.target +")"
 
 ##########################################
 class Citation(AtomicReportElementList):

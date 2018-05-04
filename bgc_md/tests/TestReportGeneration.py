@@ -6,6 +6,7 @@ from multiprocessing import Pool
 from subprocess import run,CalledProcessError
 from concurrencytest import ConcurrentTestSuite, fork_for_tests
 from pathlib import Path
+import pandas as pd
 import shutil 
 from bgc_md.Model import Model
 from testinfrastructure.InDirTest import InDirTest
@@ -16,20 +17,70 @@ from bgc_md.ModelList import ModelList
 import bgc_md.gv as gv
 
 
+
 class TestReportGeneration(InDirTest):
-    def test_report_templates(self):
+    def test_report_template_single_model(self):
         d=defaults() 
-        sp=d['paths']['tested_records'].parent.joinpath('VerosTestModels')
+        sp=d['paths']['tested_records'].parent.joinpath('TestModels_1').joinpath('Williams2005GCB.yaml')
+        
+        tp=d['paths']['report_templates'].joinpath('MinimalSingleReport.py')
+        model=Model.from_path(sp)
+        rel=render(tp,model)
+         
+        target_dir_path=Path('.').joinpath('html')
+        target_dir_path.mkdir(parents=True,exist_ok=True)
+        targetFileName='Report.html'
+        rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
+    def test_report_template_overview(self):
+        d=defaults() 
+        sp=d['paths']['tested_records'].parent.joinpath('TestModels_1')
         
         tp=d['paths']['report_templates'].joinpath('OverviewTable.py')
         model_list=ModelList.from_dir_path(sp)
         rel=render(tp,model_list)
          
-        target_dir_path=Path('.').joinpath('html')
+        target_dir_path=Path('.')
         target_dir_path.mkdir(parents=True,exist_ok=True)
         targetFileName='overview.html'
-        rel.write_pandoc_html(str(target_dir_path.joinpath(targetFileName)))
+        rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
+    
+    def test_website_from_template(self):
+        d=defaults() 
+        sp=d['paths']['tested_records'].parent.joinpath('TestModels_1')
+        model_list=ModelList.from_dir_path(sp)
+        print(model_list)
+        print("####################################")
+        
+        list_tp=d['paths']['report_templates'].joinpath('Website.py')
+        #rel=render(list_tp,model_list=model_list)
+        rel=render(list_tp,model_list)
+         
+        target_dir_path=Path('.')
+        target_dir_path.mkdir(parents=True,exist_ok=True)
+        targetFileName='overview.html'
+        rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
 
+#    def test_website_from_templates(self):
+#        d=defaults() 
+#        sp=d['paths']['tested_records'].parent.joinpath('TestModels_1')
+#        
+#        list_tp=d['paths']['report_templates'].joinpath('OverviewTable.py')
+#        single_tp=d['paths']['report_templates'].joinpath('MinimalSingleReport.py')
+#        model_list=ModelList.from_dir_path(sp)
+#        paths=[Path(model.yaml_file_path.stem).joinpath("Report.html") for model in  model_list]
+#        rel=render(list_tp,paths=paths,model_list=model_list)
+#         
+#        target_dir_path=Path('.')
+#        target_dir_path.mkdir(parents=True,exist_ok=True)
+#        targetFileName='overview.html'
+#        rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
+#        for model in model_list:
+#            rel=render(single_tp,model=model)
+#            target_dir_path=Path(model.yaml_file_path.stem)
+#            target_dir_path.mkdir(parents=True,exist_ok=True)
+#            targetFileName='Report.html'
+#            rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
+#
     def test_create_overview_report(self):
         # we create a target directory populated with only a few files and create a overview html from it
         d=defaults() 

@@ -14,7 +14,10 @@ from bgc_md.tests.Testbibtexc import Testbibtexc
 
 def suite():
     s=unittest.TestSuite()
-    s.addTest(TestReportGeneration('test_report_templates'))
+    #s.addTest(TestReportGeneration('test_report_templates'))
+    #s.addTest(TestReportGeneration('test_report_template_single_model'))
+    s.addTest(TestReportGeneration('test_website_from_template'))
+    #s.addTest(TestReportGeneration('test_website_from_templates'))
     #s.addTest(Testbibtexc("test_online_entry"))
     #s.addTest(Testbibtexc("test_init"))
     #s.addTest(TestCompleteModelList("test_scatter_plus_hist_nr_vars_vs_nr_ops"))

@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import argparse
 from bgc_md.DataFrame import DataFrame
-from bgc_md.ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline, MatplotlibFigure
+from bgc_md.ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline, MatplotlibFigure, Link, LinkedSubPage
 from bgc_md.Model import Model, check_parameter_set_complete
 from bgc_md.ModelList import ModelList
 #import bgc_md.bibtex as bibtex
@@ -111,7 +111,8 @@ def generate_model_run_reports():
 
 def report_from_model(model):
     #rel = model.get_meta_data_report()
-    rel = Meta(model.long_name, model.name, model.version)
+    #rel = Meta(model.long_name, model.name, model.version)
+    rel=ReportElementList()
     rel+= Header("General Overview", 1)
 
     reservoir_model = model.reservoir_model
@@ -875,7 +876,7 @@ def create_overview_report(model_list, target_dir_path=Path('.'),output_file_nam
 #        
 #
 #        rel += Header("Bibliography", 1)
-        rel.write_pandoc_html(output_path.as_posix())
+        rel.write_pandoc_html(output_path)
 
 
 
@@ -907,7 +908,7 @@ def create_single_report(yaml_file_path, target_dir_path):
     #fixme mm: I think we should avoid the modelID property
     #and ensure uniqe filenames by requesting them
 
-    sub_dir = target_dir_path.joinpath(dir_name).as_posix()
+    sub_dir = str(target_dir_path.joinpath(dir_name))
     rel = report_from_model(model) 
     rel.create_pandoc_dir(sub_dir)
 
@@ -935,15 +936,16 @@ def render_parse():
 #def render(temp,source_dir_path,target_dir_path,yaml=None):
 #    ml=ModelList.from_dir_path(src_dir_path)
 #
-def render(path,model_list):
+########################################################################
+def render(template_path,*args,**kw):
     
-    with path.open() as f:
+    with template_path.open() as f:
         code=f.read()
     
     exec(code,globals(),locals()) # this makes the template function defined in the file available   
     # call the function defined in the template
     func=locals()['template']
-    rel= func.__call__(model_list)
+    rel= func.__call__(*args,**kw)
     return rel
 ######################################################################################
 

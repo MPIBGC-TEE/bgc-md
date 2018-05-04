@@ -120,7 +120,6 @@ class TestReportGeneration(InDirTest):
         src_dir_path.mkdir()
         rec_list=sorted([ rec  for rec in sp.glob('*.yaml')])[2:3]
         
-        print('##################################################')
         for rec in rec_list:
             print(rec)
             src=(sp.joinpath(rec)).as_posix()
