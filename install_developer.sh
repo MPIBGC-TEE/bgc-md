@@ -10,8 +10,7 @@
 pip3 install --upgrade pip setuptools wheel setuptools_git tox concurrencytest 
 
 pip3 install -rrequirements.developer 
-
-python3 setup.py develop
+pip3 install -e .
 
 ## enable jupyter notebook nbextensions
 #pip3 install --upgrade jupyter jupyter_contrib_nbextensions jupyter_nbextensions_configurator

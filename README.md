@@ -44,7 +44,7 @@ that is needed there.
 
 
 ## Install the package for development:
-The package depends on other packagesthat will often be edited and tested at the same time:
+The package depends on other packages which will often be edited and tested at the same time:
 (testinfrastructure, LAPM, CompartmentalSystems)
 If you develop those packages it is recommended to install them also in development mode.
 If you do that for the first time it means to go to run setup.py (or the install script ) 
