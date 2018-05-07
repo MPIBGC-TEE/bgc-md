@@ -5,19 +5,20 @@ import unittest
 from bgc_md.tests.TestCompleteModelList import TestCompleteModelList
 from bgc_md.tests.TestModel import TestModel
 from bgc_md.tests.TestModelList import TestModelList
+from bgc_md.tests.TestReportElements import TestReportElements
 #from bgc_md.tests.TestStoichiometricModel import TestStoichiometricModel
 #from bgc_md.tests.TestTsTpField import TestTsTpField
 #from bgc_md.tests.TestTsTpMassFieldsPerPoolPerTimeStep import TestTsTpMassFieldsPerPoolPerTimeStep 
 from bgc_md.tests.TestWriteReportElements import  TestWriteReportElements
-from bgc_md.tests.TestReportGeneration import TestReportGeneration
+#from bgc_md.tests.TestReportGeneration import TestReportGeneration
+from bgc_md.tests.SlowTestReportGeneration import TestReportGeneration
 from bgc_md.tests.Testbibtexc import Testbibtexc
 
 def suite():
     s=unittest.TestSuite()
-    #s.addTest(TestReportGeneration('test_report_templates'))
+    #s.addTest(TestReportGeneration('test_report_template_linked_table'))
     #s.addTest(TestReportGeneration('test_report_template_single_model'))
-    s.addTest(TestReportGeneration('test_website_from_template'))
-    #s.addTest(TestReportGeneration('test_website_from_templates'))
+    #s.addTest(TestReportGeneration('test_website_from_template'))
     #s.addTest(Testbibtexc("test_online_entry"))
     #s.addTest(Testbibtexc("test_init"))
     #s.addTest(TestCompleteModelList("test_scatter_plus_hist_nr_vars_vs_nr_ops"))
@@ -30,6 +31,7 @@ def suite():
     #s.addTest(Test
     #s.addTest(TestWriteReportElements("test_write_html_with_bibliography"))
     #s.addTest(TestWriteReportElements("test_write_html_with_picture"))
+    s.addTest(TestReportElements("test_Meta"))
     #s.addTest(TestReportElements("test_Report"))
     #s.addTest(TestReportElements("test_TableRow"))
     #s.addTest(TestReportElements("test_Text"))

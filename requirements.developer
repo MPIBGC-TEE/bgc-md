@@ -3,8 +3,12 @@
 # pip to resolve dependencies
 sympy==1.0.0
 bibtexparser>=1.0.1
+future==0.14.3
+# We assume that you allready installed the following commented out libraries directly 
+# in develop mode  (by setup.py develop in the source code dir of the packages)
+#
 #-e git+https://git@github.com/MPIBGC-TEE/LAPM.git#egg=LAPM
-#-e git+https://git@github.com/mamueller/testinfrastructure.git#egg=testinfrastructure 
+-e git+https://git@github.com/mamueller/testinfrastructure.git#egg=testinfrastructure 
 #-e git+https://git@github.com/MPIBGC-TEE/CompartmentalSystems.git#egg=CompartmentalSystems
  -e git+https://git@github.com/MPIBGC-TEE/pytexit.git#egg=pytexit
  

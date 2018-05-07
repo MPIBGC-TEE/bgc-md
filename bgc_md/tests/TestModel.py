@@ -1539,7 +1539,7 @@ class TestModel(InDirTest):
         
         # test conversion to matrices l
         pm = model.reservoir_model
-        xi2, T2, N2, C2, u2 = pm.xi_T_N_u_representation
+        xi2, T2, N2, C2, u2 = pm.xi_T_N_u_representation()
         self.assertTrue(Eq(u2+xi2*T2*N2*C2, model.fs))
 
 
@@ -1576,7 +1576,7 @@ class TestModel(InDirTest):
             
         # test backward conversion to matrices
         pm = model.reservoir_model
-        xi2, T2, N2, C2, u2 = pm.xi_T_N_u_representation
+        xi2, T2, N2, C2, u2 = pm.xi_T_N_u_representation()
         self.assertTrue(Eq(u2+xi2*T2*N2*C2, model.fs))
         A = pm.compartmental_matrix
 
@@ -1618,7 +1618,7 @@ class TestModel(InDirTest):
             
         # test backward conversion to matrices
         pm = model.reservoir_model
-        xi2, T2, N2, C2, u2 = pm.xi_T_N_u_representation
+        xi2, T2, N2, C2, u2 = pm.xi_T_N_u_representation()
         self.assertTrue(Eq(u2+xi2*T2*N2*C2, model.fs))
 
 
@@ -1661,7 +1661,7 @@ class TestModel(InDirTest):
         
         # test backward conversion to matrices
         pm = model.reservoir_model
-        xi2, T2, N2, C2, u2 = pm.xi_T_N_u_representation
+        xi2, T2, N2, C2, u2 = pm.xi_T_N_u_representation()
 
         self.assertTrue(Eq(u2+xi2*T2*N2*C2, model.fs)
 )

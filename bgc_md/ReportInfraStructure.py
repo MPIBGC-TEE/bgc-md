@@ -114,10 +114,12 @@ class ReportElementList(list):
         csl_file_name=str(csl_file_path)
         css_file_name=str(css_file_path)
         html_file_name=str(html_file_path)
-        print("1########################")
-        print(html_file_name)
-        print("2########################")
         html_file_path=Path(html_file_name)
+        
+        dir_path=html_file_path.parent
+        if not dir_path.exists():
+            dir_path.mkdir(parents=True)
+
         if csl_file_path is None:
             csl_file_path= gv.resources_path.joinpath('apa.csl')
         if css_file_path is None:
@@ -129,8 +131,8 @@ class ReportElementList(list):
 
         #collect bibtexentries
         references=self.bibtex_entries()
-#        bibtexc.entry_list_to_file(bibtex_file_name, references, format_str="BibTeX")
-        bibtexc.entry_list_to_file(bibtex_file_name, references, format_str="plain")
+#        bibtexc.entry_list_to_file(bibtex_file_path, references, format_str="BibTeX")
+        bibtexc.entry_list_to_file(str(bibtex_file_path), references, format_str="plain")
 
         #collect matplotlib figures and plot them 
         figure_elements=self.matplotlib_figure_elements()
@@ -153,22 +155,14 @@ class ReportElementList(list):
                 outputFilePath=str(sub_dir_path.joinpath(LinkedSubPage.output_file_name()+".html"))
                 sub_page.contentRel.write_pandoc_html(outputFilePath,csl_file_path,css_file_path)
 
-        print("5####################") 
-        self.write_pandoc_markdown(md_file_name)   
+        self.write_pandoc_markdown(md_file_path)   
         cmd = ["pandoc"]
-        cmd += [md_file_name,"-s","--mathjax", "-o", html_file_name]        
+        cmd += [str(md_file_path),"-s","--mathjax", "-o", html_file_name]        
         #cmd += ["--metadata=title:Test"]
-        cmd += ["--filter=pandoc-citeproc", "--bibliography="+bibtex_file_name]
-        if css_file_name: 
-            #rel_css_folder = relpath(dirname(css_file_name), dirname(html_file_name))
-            rel_css_folder_path = css_file_path.relative_to(html_file_path.parent)
-            #rel_css_file_name = os.path.join(rel_css_folder, os.path.split(css_file_name)[1])
-            rel_css_file_path= rel_css_folder_path.joinpath(css_file_name)
+        cmd += ["--filter=pandoc-citeproc", "--bibliography="+str(bibtex_file_path)]
+        if css_file_path is not None : 
+            cmd += ["-c", str(css_file_path.absolute())]
 
-
-            cmd += ["-c", str(rel_css_file_path)]
-
-        #if csl_file_name: cmd += ["--csl", csl_file_name]
         if csl_file_path is not None:
             cmd += ["--csl", str(csl_file_path)]
         if slide_show: cmd += ["-t", "slidy"]
@@ -197,68 +191,68 @@ class ReportElementList(list):
             #print(out)
         
         
-    def create_pandoc_dir(self,dir_name,csl_file_name = "", css_file_name = "", slide_show = False):
-        if not csl_file_name:
-            csl_file_name = gv.resources_path.joinpath('apa.csl').as_posix()
-        if not css_file_name:
-            css_file_name = gv.resources_path.joinpath('buttondown.css').as_posix()
+   # def create_pandoc_dir(self,csl_file_path=None , css_file_path= None, slide_show = False):
+   #     if csl_file_path is not None:
+   #         csl_file_path= gv.resources_path.joinpath('apa.csl')
+   #     if not css_file_name:
+   #         css_file_name = gv.resources_path.joinpath('buttondown.css')
 
-        dir_path=Path(dir_name) 
-        if not dir_path.exists():
-            dir_path.mkdir(parents=True)
-        trunk = "Report" 
-        html_path=dir_path.joinpath(trunk+".html")
-        html_file_name=html_path.as_posix()
-        md_file_name = os.path.join(os.path.dirname(html_file_name), trunk + ".md")
-        bibtex_file_name = os.path.join(os.path.dirname(html_file_name), trunk + ".bibtex")
+   #     dir_path=Path(dir_name) 
+   #     if not dir_path.exists():
+   #         dir_path.mkdir(parents=True)
+   #     trunk = "Report" 
+   #     html_path=dir_path.joinpath(trunk+".html")
+   #     html_file_name=html_path.as_posix()
+   #     md_file_name = os.path.join(os.path.dirname(html_file_name), trunk + ".md")
+   #     bibtex_file_name = os.path.join(os.path.dirname(html_file_name), trunk + ".bibtex")
 
-        #collect bibtexentries
-        references=self.bibtex_entries()
-#        bibtexc.entry_list_to_file(bibtex_file_name, references, format_str="BibTeX")
-        bibtexc.entry_list_to_file(bibtex_file_name, references, format_str="plain")
+   #     #collect bibtexentries
+   #     references=self.bibtex_entries()
+#  #      bibtexc.entry_list_to_file(bibtex_file_name, references, format_str="BibTeX")
+   #     bibtexc.entry_list_to_file(bibtex_file_name, references, format_str="plain")
 
-        #collect matplotlib figures and plot them 
-        figure_elements=self.matplotlib_figure_elements()
-        for fig_el in figure_elements:
-            plt.rc('text', usetex=True)
-            plt.rc('font', family='serif')
-            fig_el.fig.savefig(os.path.join(os.path.dirname(html_file_name), fig_el.label+".svg"), transparent=fig_el.transparent)
-            plt.close(fig_el.fig)
+   #     #collect matplotlib figures and plot them 
+   #     figure_elements=self.matplotlib_figure_elements()
+   #     for fig_el in figure_elements:
+   #         plt.rc('text', usetex=True)
+   #         plt.rc('font', family='serif')
+   #         fig_el.fig.savefig(os.path.join(os.path.dirname(html_file_name), fig_el.label+".svg"), transparent=fig_el.transparent)
+   #         plt.close(fig_el.fig)
 
-        self.write_pandoc_markdown(md_file_name)   
-        cmd = ["pandoc"]
-        cmd += [md_file_name,"-s","--mathjax", "-o", html_file_name]        
-        cmd += ["--filter=pandoc-citeproc", "--bibliography="+bibtex_file_name]
-        if css_file_name: 
-            rel_css_folder = relpath(dirname(css_file_name), dirname(html_file_name))
-            rel_css_file_name = os.path.join(rel_css_folder, os.path.split(css_file_name)[1])
+   #     self.write_pandoc_markdown(md_file_name)   
+   #     cmd = ["pandoc"]
+   #     cmd += [md_file_name,"-s","--mathjax", "-o", html_file_name]        
+   #     cmd += ["--filter=pandoc-citeproc", "--bibliography="+bibtex_file_name]
+   #     if css_file_name: 
+   #         rel_css_folder = relpath(dirname(css_file_name), dirname(html_file_name))
+   #         rel_css_file_name = os.path.join(rel_css_folder, os.path.split(css_file_name)[1])
 
-            # use css from this folder
-            rel_css_file_name = 'buttondown.css'
+   #         # use css from this folder
+   #         rel_css_file_name = 'buttondown.css'
 
-            cmd += ["-c", rel_css_file_name]
+   #         cmd += ["-c", rel_css_file_name]
 
-        if csl_file_name: cmd += ["--csl", csl_file_name]
-        if slide_show: cmd += ["-t", "slidy"]
-            # "slidy" can be changed to: "s5", "slideous", "dzslides", or "revealjs". 
-            # For generating a beamer, we'll need: (["pandoc","-t","beamer","--mathjax",md_file,"-o","pdf"]), 
-            # where md_file should have TeX math embedded.
+   #     if csl_file_name: cmd += ["--csl", csl_file_name]
+   #     if slide_show: cmd += ["-t", "slidy"]
+   #         # "slidy" can be changed to: "s5", "slideous", "dzslides", or "revealjs". 
+   #         # For generating a beamer, we'll need: (["pandoc","-t","beamer","--mathjax",md_file,"-o","pdf"]), 
+   #         # where md_file should have TeX math embedded.
 
-        try:
-            subprocess.check_call(["rm","-rf", html_file_name])
-            subprocess.check_output(cmd)
-            #print(cmd)
+   #     try:
+   #         subprocess.check_call(["rm","-rf", html_file_name])
+   #         subprocess.check_output(cmd)
+   #         #print(cmd)
 
-            # copy css file
-            copy_cmd = ["cp"]
-            copy_cmd += [css_file_name]
-            copy_cmd += [dir_path.as_posix()]
-            # comment in if copying buttondown.css is needed
-            subprocess.check_call(copy_cmd)
+   #         # copy css file
+   #         copy_cmd = ["cp"]
+   #         copy_cmd += [css_file_name]
+   #         copy_cmd += [dir_path.as_posix()]
+   #         # comment in if copying buttondown.css is needed
+   #         subprocess.check_call(copy_cmd)
 
-        except subprocess.CalledProcessError as e:
-           out=e.output
-            #print(out)
+   #     except subprocess.CalledProcessError as e:
+   #        out=e.output
+   #         #print(out)
         
         
     def write_pandoc_markdown(self, output_md_file):
@@ -325,7 +319,7 @@ class Meta(AtomicReportElementList):
         self.key_dict=key_dict
         
 
-        dict_string="\n ".join([
+        dict_string="\n".join([
             str(key) + ": " + str(val) for key, val in key_dict.items()
         ])
         t=TextElement(remove_indentation("""\

@@ -65,35 +65,19 @@ class TestReportElements(unittest.TestCase):
         self.assertEqual(m.pandoc_markdown(), r"$x=\alpha\cdot\delta\cdot r$")
 
     def test_Meta(self):
-        long_name = None
-        name = "Hilbert 1991"
-        version = "2"
-        self.assertEqual(
-            Meta(long_name, name, version).pandoc_markdown(),
-            remove_indentation("""\
-                ---
-                title: "Report of the model: Hilbert 1991, version: 2"
-                ---
+        d={ "name":"Hilbert 1991", "version":"2"}
+        res=Meta(d).pandoc_markdown()
+        rev=remove_indentation("""\
+            ---
+            name: Hilbert 1991 
+            version: 2
+            ---
             """
-            # fixme:
-            # extend to entryAuthor,
-            )
         )
-
-        long_name = "The beautiful Hilbert model"
-        name="Hilbert 1991"
-        version="2"
-        self.assertEqual(
-            Meta(long_name, name, version).pandoc_markdown(),
-            remove_indentation("""\
-                ---
-                title: "Report of the model: The beautiful Hilbert model (Hilbert 1991), version: 2"
-                ---
-            """
-            # fixme:
-            # extend to entryAuthor,
-            )
-        )
+        print("############")
+        print(res)
+        print(rev)
+        self.assertEqual(res,rev)
 
     def test_Newline(self):
         self.assertEqual(Newline().pandoc_markdown(), " <br>")

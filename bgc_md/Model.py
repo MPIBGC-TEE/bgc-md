@@ -609,8 +609,8 @@ class Model:
             self.complete_dict = complete_dict
             self.bibtex_entry = load_bibtex_entry(self.complete_dict)
             #print("1#################################",self.bibtex_entry)
-            #if self.bibtex_entry!=None:
-            #    self.abstract = load_abstract(self.complete_dict, self.bibtex_entry)
+            if self.bibtex_entry is not None:
+                self.abstract = load_abstract(self.complete_dict, self.bibtex_entry)
             self.further_references = load_further_references(self.complete_dict)
             self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)
             self.sections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)

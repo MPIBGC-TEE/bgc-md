@@ -40,28 +40,6 @@ def common_parser():
     )
     return parser
 #import mpld3 # interesting functionality for interactive web figures
-def generate_test_report():
-    # fixme mm: prototyp, to be removed
-    parser = argparse.ArgumentParser(parents=[common_parser()])
-    parser.description="Create markdown and html reports of a singel yaml file.\\n"
-    parser.add_argument('path', default=None, help="The path to the yaml file containing the description of the record." )
-    parser.epilog= "Example: %s Henin1945Annalesagronomiques.yaml-t SoilModels/html" % parser.prog
-
-    com=parser.parse_args()
-    print("Creating report from " + com.path + " to " + com.target_dir)
-    yaml_file_path=Path(com.path)
-    target_dir_path=Path(com.target_dir)
-    model = Model.from_path(yaml_file_path)
-    dir_name = yaml_file_path.stem
-    #dir_name = model.bibtex_entry.key
-    #if model.modelID: dir_name += "-" + model.modelID
-    #fixme mm: I think we should avoid the modelID property
-    #and ensure uniqe filenames by requesting them
-
-    sub_dir = target_dir_path.joinpath(dir_name).as_posix()
-    rel = report_from_model(model) 
-    rel.create_pandoc_dir(sub_dir)
-    sys.exit(0)
 
 def generate_model_run_report():
     parser = argparse.ArgumentParser(parents=[common_parser()])
@@ -908,9 +886,9 @@ def create_single_report(yaml_file_path, target_dir_path):
     #fixme mm: I think we should avoid the modelID property
     #and ensure uniqe filenames by requesting them
 
-    sub_dir = str(target_dir_path.joinpath(dir_name))
+    html_file_path= target_dir_path.joinpath(dir_name,"Report.html")
     rel = report_from_model(model) 
-    rel.create_pandoc_dir(sub_dir)
+    rel.write_pandoc_html(html_file_path)
 
 def generate_website():
     generate_model_run_reports()
