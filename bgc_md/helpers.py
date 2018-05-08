@@ -107,7 +107,7 @@ def py2tex_silent(python_expression):
 
     # matrices (also diagonal ones) are handled by sympify only
     # they are not implemented in py2tex, even though
-    # diag does not give raise error
+    # diag does not raise an error
     if r'\operatorname{diag}\left(' in result: raise(TypeError)
     return result
 

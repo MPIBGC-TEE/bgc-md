@@ -10,10 +10,10 @@ from sympy import sympify, solve, Symbol, limit, oo, ceiling, simplify, Matrix
 #from sympy.core import Atom
 from matplotlib.ticker import MaxNLocator
 from .gv import indexed_color,indexed_filled_marker,filled_markers,indexcolors
-from bgc_md.plot_helpers import add_xhist_data_to_scatter,xhist_fs,yhist_fs
-from bgc_md.ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline, MatplotlibFigure
-from bgc_md.Model import Model, check_parameter_set_complete
-from bgc_md.helpers import py2tex_silent, key_from_dict_by_value
+from .plot_helpers import add_xhist_data_to_scatter,xhist_fs,yhist_fs
+from .ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline, MatplotlibFigure, exprs_to_element
+from .Model import Model, check_parameter_set_complete
+from .helpers import py2tex_silent, key_from_dict_by_value
 
 from .DataFrame import DataFrame
 
@@ -60,46 +60,6 @@ def dict_plot(hist_dict,ax):
     
     ax.set_xticklabels(hist_dict.keys(), rotation=90)
 
-# needs a test
-def exprs_to_element(exprs, symbols_by_type):
-    if not exprs:
-        return Text("-")
-
-    # two possibilities in yaml file:
-    # 1)    exprs: "C = ..."
-    # 2)    exprs:
-    #           - "C = ..."
-    #           - "C = ..."
-    # so this table entry will be treated as a list of expressions
-    subl = ReportElementList([])
-    if type(exprs) == type(""):
-        expr_list = [exprs]
-    elif type(exprs) == type([]):
-        expr_list = exprs
-    else:
-        raise(Exception(str(exprs) + " is no valid list of expressions."))
-
-    for index2, expr_string in enumerate(expr_list):
-        if expr_string:
-            # new line if not first entry
-            if index2 > 0:
-                subl.append(Newline()) 
-            parts = expr_string.split("=",1)
-            parts[0] = parts[0].strip()
-            parts[1] = parts[1].strip()
-            p1 = sympify(parts[0], locals=symbols_by_type)
-            p2 = sympify(parts[1], locals=symbols_by_type)
-            
-            # this is a hybrid version that keeps 'f_s = I + A*C' in shape, but if 'Matrix(...)' comes into play, rearranging by sympify within the matrix cannot be prevented
-            # comment it out for a a clean version regarding use of ReportElementList, but with showing 
-            # 'f_s = A * C + I' instead
-            try:
-                p2 = py2tex_silent(parts[1])
-            except TypeError:
-               pass
-            
-            subl.append(Math("$p1=$p2", p1=p1,p2=p2))
-    return subl
 
 
 

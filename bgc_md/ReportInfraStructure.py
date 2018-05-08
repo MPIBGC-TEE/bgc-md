@@ -1,18 +1,63 @@
 # vim:set ff=unix expandtab ts=4 sw=4:
-
 from string import Template
 from copy import copy,deepcopy 
 from pathlib import Path
+from sympy import sympify
+from pytexit import py2tex
+from .helpers import py2tex_silent
+
 import shutil
 import subprocess
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-#imports from own package
+
+# imports from own package
 from .helpers import remove_indentation
 from .BGCmarkdown import MarkdownTemplate 
 from . import bibtexc
 from . import gv
+
+# needs a test
+def exprs_to_element(exprs, symbols_by_type):
+    if not exprs:
+        return Text("-")
+
+    # two possibilities in yaml file:
+    # 1)    exprs: "C = ..."
+    # 2)    exprs:
+    #           - "C = ..."
+    #           - "C = ..."
+    # so this table entry will be treated as a list of expressions
+    subl = ReportElementList([])
+    if type(exprs) == type(""):
+        expr_list = [exprs]
+    elif type(exprs) == type([]):
+        expr_list = exprs
+    else:
+        raise(Exception(str(exprs) + " is no valid list of expressions."))
+
+    for index2, expr_string in enumerate(expr_list):
+        if expr_string:
+            # new line if not first entry
+            if index2 > 0:
+                subl.append(Newline()) 
+            parts = expr_string.split("=",1)
+            parts[0] = parts[0].strip()
+            parts[1] = parts[1].strip()
+            p1 = sympify(parts[0], locals=symbols_by_type)
+            p2 = sympify(parts[1], locals=symbols_by_type)
+            
+            # this is a hybrid version that keeps 'f_s = I + A*C' in shape, but if 'Matrix(...)' comes into play, rearranging by sympify within the matrix cannot be prevented
+            # comment it out for a a clean version regarding use of ReportElementList, but with showing 
+            # 'f_s = A * C + I' instead
+            try:
+                p2 = py2tex_silent(parts[1])
+            except TypeError:
+               pass
+            
+            subl.append(Math("$p1=$p2", p1=p1,p2=p2))
+    return subl
 
 class ReportElementList(list):
     def __init__(self,ListOfObjects=[]):

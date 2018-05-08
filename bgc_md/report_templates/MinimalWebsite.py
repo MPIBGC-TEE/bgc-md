@@ -24,5 +24,6 @@ def template(model_list):
         T.add_row(row)
     
     rel+=T
+
     return(rel)
 

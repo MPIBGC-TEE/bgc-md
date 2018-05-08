@@ -18,12 +18,12 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import argparse
 from bgc_md.DataFrame import DataFrame
-from bgc_md.ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline, MatplotlibFigure, Link, LinkedSubPage
-from bgc_md.Model import Model, check_parameter_set_complete
-from bgc_md.ModelList import ModelList
-#import bgc_md.bibtex as bibtex
+from bgc_md.ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline, MatplotlibFigure, Link, LinkedSubPage, exprs_to_element
+
+from .Model import Model, check_parameter_set_complete
+from .ModelList import ModelList
 import bgc_md.bibtexc as bibtexc
-from bgc_md.helpers import py2tex_silent, key_from_dict_by_value
+from .helpers import py2tex_silent, key_from_dict_by_value
 from bgc_md.plot_helpers import add_xhist_data_to_scatter
 from bgc_md.gv import indexcolors, filled_markers
 import bgc_md.gv as gv
@@ -62,7 +62,7 @@ def defaults():
     soilModelPath=this.joinpath("data","SoilModels")
     vegModelPath=this.joinpath("data","VegetationModels") 
     
-    templatePath=this.joinpath("..","report_templates")
+    templatePath=this.joinpath("report_templates")
     path_dict={"veg":vegModelPath,"soil":soilModelPath,"tested_records":tested_record_path,"report_templates":templatePath}
     
     dir_dict={key:value.as_posix() for key,value in path_dict.items()}

@@ -26,32 +26,27 @@ def runProtected(rec,command_list,targetPath=Path('.')):
     return(result)
 
 def f(rec):
-    command_list=['generate_model_run_report']
+    #command_list=['generate_model_run_report']
+    d=defaults() 
+    tp=d['paths']['report_templates'].joinpath("CompleteSingleModelReport.py")
+    print("1 ###################")
+    print(tp.absolute())
+    command_list=['render']
     result=runProtected(rec,command_list)
     return result
 
-def f2(rec):
-    command_list=['generate_model_run_report']
-    result=runProtected(rec,command_list)
-    return result
-
-#print(f(test_list[1]))
 
 class SlowTestReportGeneration(InDirTest):
-
+    @unittest.skip
     def test_commandline_generate_model_run_report(self):
         d=defaults() 
         sp=d['paths']['tested_records']
-        here=Path('.')
         rec_list=[ rec  for rec in sp.glob('*.yaml')]
         test_list= rec_list
         #test_list= sorted(rec_list)[2:3]
 
         pool=Pool(processes=1)
         result_list=pool.map(f,test_list)
-        #for res in result_list:
-        #    print(res)
-        ## result_list=[ runProtected(rec,['generate_model_run_report'] ) for rec in test_list]
        # 
         failure_list=[
             r  for r in result_list 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 import unittest
 import argparse
 from concurrencytest import ConcurrentTestSuite, fork_for_tests

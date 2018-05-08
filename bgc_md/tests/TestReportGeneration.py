@@ -46,7 +46,7 @@ class TestReportGeneration(InDirTest):
         rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
 
 #
-    def test_create_overview_report(self):
+    def test_create_old_overview_report(self):
         # fixme:
         # The tested method is deprecated and should be replaced by templates as soon as possible.
         # we create a target directory populated with only a few files and create a overview html from it
