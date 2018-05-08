@@ -4,7 +4,6 @@ import unittest
 import sys
 from multiprocessing import Pool
 from subprocess import run,CalledProcessError
-from concurrencytest import ConcurrentTestSuite, fork_for_tests
 from pathlib import Path
 import shutil 
 from bgc_md.Model import Model
@@ -166,13 +165,3 @@ class SlowTestReportGeneration(InDirTest):
 #        create_html_from_pandoc_md_directory("md", "html", csl_file_name=csl_file_name, css_file_name=css_file_name)
 #        
 #
-####################################################################################################
-#if __name__ == '__main__':
-#    suite=unittest.defaultTestLoader.discover(".",pattern=__file__)
-#    # Run same tests across 16 processes
-#    concurrent_suite = ConcurrentTestSuite(suite, fork_for_tests(16))
-#    runner = unittest.TextTestRunner()
-#    res=runner.run(concurrent_suite)
-#    # to let the buildbot fail we set the exit value !=0 if either a failure or error occurs
-#    if (len(res.errors)+len(res.failures))>0:
-#        sys.exit(1)

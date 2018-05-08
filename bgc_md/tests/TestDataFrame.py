@@ -3,7 +3,6 @@ from bgc_md.DataFrame import DataFrame
 import unittest
 import sys
 import re as regexp
-from concurrencytest import ConcurrentTestSuite, fork_for_tests
 
 
 class TestDataFrame(unittest.TestCase):
@@ -374,15 +373,5 @@ class TestDataFrame(unittest.TestCase):
 
 
 
-####################################################################################################
-if __name__ == '__main__':
-    suite=unittest.defaultTestLoader.discover(".",pattern=__file__)
-    # Run same tests across 16 processes
-    concurrent_suite = ConcurrentTestSuite(suite, fork_for_tests(16))
-    runner = unittest.TextTestRunner()
-    res=runner.run(concurrent_suite)
-    # to let the buildbot fail we set the exit value !=0 if either a failure or error occurs
-    if (len(res.errors)+len(res.failures))>0:
-        sys.exit(1)
 
 

@@ -4,7 +4,6 @@ import unittest
 import sys
 from multiprocessing import Pool
 from subprocess import run,CalledProcessError
-from concurrencytest import ConcurrentTestSuite, fork_for_tests
 from pathlib import Path
 import shutil 
 from bgc_md.Model import Model
@@ -75,13 +74,3 @@ class TestReportGeneration(InDirTest):
         
 
 
-####################################################################################################
-if __name__ == '__main__':
-    suite=unittest.defaultTestLoader.discover(".",pattern=__file__)
-    # Run same tests across 16 processes
-    concurt_website_from_templateent_suite = ConcurrentTestSuite(suite, fork_for_tests(16))
-    runner = unittest.TextTestRunner()
-    res=runner.run(suite)
-    # to let the buildbot fail we set the exit value !=0 if either a failure or error occurs
-    if (len(res.errors)+len(res.failures))>0:
-        sys.exit(1)

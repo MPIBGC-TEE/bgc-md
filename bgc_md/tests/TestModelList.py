@@ -7,7 +7,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import shutil
 from pathlib import Path
-from concurrencytest import ConcurrentTestSuite, fork_for_tests
 from bgc_md.IncompleteModel import IncompleteModel
 from bgc_md.Model import Model, load_bibtex_entry, load_abstract, load_further_references, load_reviews, load_sections_and_titles, load_df, load_expressions_and_symbols, section_subdict, load_model_run_data, load_parameter_sets, load_initial_values, check_parameter_set_valid, check_parameter_sets_valid, check_parameter_set_complete, check_initial_values_set_valid, check_initial_values_complete, load_run_times, load_model_run_combinations, YamlException
 from bgc_md.ModelList import ModelList
@@ -108,14 +107,3 @@ class TestModelList(InDirTest):
         print(targetPath)
         self.assertTrue(targetPath.exists())
 
-####################################################################################################
-if __name__ == '__main__':
-    suite=unittest.defaultTestLoader.discover(".",pattern=__file__)
-
-    # Run same tests across 16 processes
-    concurrent_suite = ConcurrentTestSuite(suite, fork_for_tests(16))
-    runner = unittest.TextTestRunner()
-    res=runner.run(concurrent_suite)
-    # to let the buildbot fail we set the exit value !=0 if either a failure or error occurs
-    if (len(res.errors)+len(res.failures))>0:
-        sys.exit(1)

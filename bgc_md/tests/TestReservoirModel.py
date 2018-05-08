@@ -1,7 +1,6 @@
 # vim:set ff=unix expandtab ts=4 sw=4:
 import unittest
 import sys
-from concurrencytest import ConcurrentTestSuite, fork_for_tests
 import yaml
 from sympy import Symbol, Matrix, var, sin, cos, Matrix, lambdify, symbols, MatrixSymbol, diag, Eq, simplify, Piecewise, DiracDelta
 import numpy as np
@@ -197,14 +196,3 @@ class TestReservoirModel(InDirTest):
 #
 #
 #
-#####################################################################################################
-if __name__ == '__main__':
-    suite=unittest.defaultTestLoader.discover(".",pattern=__file__)
-
-    # Run same tests across 16 processes
-    concurrent_suite = ConcurrentTestSuite(suite, fork_for_tests(1))
-    runner = unittest.TextTestRunner()
-    res=runner.run(concurrent_suite)
-    # to let the buildbot fail we set the exit value !=0 if either a failure or error occurs
-    if (len(res.errors)+len(res.failures))>0:
-        sys.exit(1)
