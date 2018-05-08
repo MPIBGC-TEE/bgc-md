@@ -79,9 +79,9 @@ class TestReportGeneration(InDirTest):
 if __name__ == '__main__':
     suite=unittest.defaultTestLoader.discover(".",pattern=__file__)
     # Run same tests across 16 processes
-    concurrent_suite = ConcurrentTestSuite(suite, fork_for_tests(16))
+    concurt_website_from_templateent_suite = ConcurrentTestSuite(suite, fork_for_tests(16))
     runner = unittest.TextTestRunner()
-    res=runner.run(concurrent_suite)
+    res=runner.run(suite)
     # to let the buildbot fail we set the exit value !=0 if either a failure or error occurs
     if (len(res.errors)+len(res.failures))>0:
         sys.exit(1)

@@ -38,7 +38,7 @@ def f2(rec):
 
 #print(f(test_list[1]))
 
-class TestReportGeneration(InDirTest):
+class SlowTestReportGeneration(InDirTest):
 
     def test_commandline_generate_model_run_report(self):
         d=defaults() 
