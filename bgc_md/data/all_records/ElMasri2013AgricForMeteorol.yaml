@@ -1,0 +1,134 @@
+
+## vim:set ff=unix expandtab ts=4 sw=4:
+name: ISAM
+longName: Integrated Science Assessment Model
+version: 
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+entryCreationDate: 3/5/2018 # changeset 3032
+lastModification: _lm_
+modApproach: process based
+partitioningScheme: dynamic #if L and W change with time
+claimedDynamicPart: "yes"
+# Dynamically performs allocation on the basis of the light, water and phenological status pf the canopy.
+spaceScale: regional #Amazon basin
+#    unit: "1°"
+timeResolution: yearly # based on table 4. See also table A1> Photosynthesis: sec, respiration: day, turnover: year 
+#bibtex: "@article{ElMasri2013AgricForMeteorol,
+#                  author =	Bassil El Masri and Rahul Barman and Prasanth Meiyappan and Yang Song and Miaoling Liang,
+#                  title =	Carbon dynamics in the Amazonian Basin: Integration of eddy covariance and ecophysiological data with a land surface model,
+#                  journal =	Agricultural and forest meteorology,
+#                  year =	2013,
+#                  volume =	182,
+#                  number =	Sp. Iss. SI,
+#                  pages =	156-167,
+#                  issn =	0168-1923,
+#                  doi =	10.1016/j.agrformet.2013.03.011,
+#                  url =	http://tinyurl.sfx.mpg.de/uahl,
+#                }"
+doi: 10.1111/j.1365-2486.2004.00890.x
+model:
+    - state_variables:
+        - t:
+            desc: time step
+            unit: "year"
+            type: variable
+            key: time_symbol
+        - C_leaf:
+            desc: Amount of carbon for the leaf
+            key: "foliage"
+            unit: "kgC*m^{-2}" 
+        - C_stem: 
+            desc: Amount of carbon for the stem
+            key: "wood"
+            unit: "kgC*m^{-2}" 
+        - C_roots:
+            desc: Amount of carbon for the root
+            key: "fine_roots"
+            unit: "kgC*m^{-2}" 
+    - photosynthetic_parameters:
+        - GPP:
+            desc: Carbon gain via photosynthesis (Gross Primary Productivity, GPP)
+            type: variable
+            key: GPP
+            unit: "KgC*m^{−2}*yr^{−1}"
+        - NPP:
+            desc: Net primary Productivity (NPP)
+            type: variable
+            key: NPP
+            unit: "KgC*m^{−2}*yr^{−1}"
+            #exprs: "NPP=G-(R_gL+R_gS+R_gR)-(R_mL+R_mS+R_mR)"
+    - other_variables:
+        - k_leaf:
+        - cn_leaf:
+        - k_stem:
+        - cn_stem:
+        - k_roots:
+        - cn_roots:
+        - gt:
+            desc: Function of Q_10 and temperature # See table A1 for equations
+            type: variable
+        - teta:
+    - respiration:
+        - R_leaf:
+            desc: Leaf respiration
+            exprs: "R_leaf = k_leaf * (C_leaf/cn_leaf) * teta * gt"
+            type: variable
+        - R_stem:
+            desc: Stem respiration
+            exprs: "R_stem = k_stem * (C_stem/cn_stem) * teta * gt"
+            type: variable
+        - R_roots:
+            desc: Roots respiration
+            exprs: "R_roots = k_roots * (C_roots/cn_roots) * teta * gt"
+            type: variable
+    - partitioning:
+        - Allo_fact_stem:
+        - Allo_fact_roots:
+        - Allo_fact_leaf:
+            exprs: "Allo_fact_leaf = 1 - Allo_fact_stem - Allo_fact_roots"
+        - a_L:
+            desc: Parameter introduced by the author of this entry in order to summarize equations on the paper.   
+            exprs: "a_L = Piecewise((((GPP*Allo_fact_leaf)-R_leaf),NPP<0),((NPP*Allo_fact_leaf),NPP>0))"
+            type: variable
+        - a_S:
+            desc: Parameter introduced by the author of this entry in order to summarize equations on the paper.   
+            exprs: "a_S = Piecewise((((GPP*Allo_fact_stem)-R_stem),NPP<0),((NPP*Allo_fact_stem),NPP>0))"
+            type: variable
+        - a_R:
+            desc: Parameter introduced by the author of this entry in order to summarize equations on the paper.   
+            exprs: "a_R = Piecewise((((GPP*Allo_fact_roots)-R_roots),NPP<0),((NPP*Allo_fact_roots),NPP>0))"
+            type: variable
+    - litter:
+        - Y_leaf:
+            desc: Litter production
+            unit: "year"
+            type: parameter
+        - Y_stem:
+            desc: Litter production
+            unit: "year"
+            type: parameter
+        - Y_roots:
+            desc: Litter production
+            unit: "year"
+            type: parameter
+    
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(3,1,[C_leaf, C_stem, C_roots])"
+            desc: vector of states for vegetation
+        - u:
+            key: input_vector    
+            exprs: "u = Matrix(3,1,[a_L,a_S,a_R])" 
+            desc: Vector of functions of photosynthetic inputs
+        - A:
+            key: cyc_matrix    
+            exprs: "A = Matrix([[-(1/Y_leaf),0,0],
+                               [0, -(1/Y_stem), 0],
+                               [0, 0, -(1/Y_roots)]])"
+            desc: matrix of cycling rates 
+        - f_v:
+            desc: the righthandside of the ode
+            exprs: "f_v = u + A*x"
+            key: state_vector_derivative
