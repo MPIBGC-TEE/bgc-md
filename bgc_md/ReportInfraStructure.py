@@ -388,7 +388,7 @@ class NewlineElement(TextElement):
         pass
         
     def pandoc_markdown_string(self):
-        return " <br>"
+        return "\n"
 
 ##########################################
 class MatplotlibFigure(AtomicReportElementList):

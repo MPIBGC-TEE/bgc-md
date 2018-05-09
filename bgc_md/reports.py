@@ -81,6 +81,8 @@ def defaults():
         ,"paths":path_dict
         ,"msgs":msg_dict
         }
+
+
 def generate_model_run_reports():
     parser = argparse.ArgumentParser(parents=[common_parser])
     parser.add_argument(
@@ -97,158 +99,158 @@ def generate_model_run_reports():
 
 
 def report_from_model(model):
-    #rel = model.get_meta_data_report()
-    #rel = Meta(model.long_name, model.name, model.version)
-    rel=ReportElementList()
-    rel+= Header("General Overview", 1)
-
-    reservoir_model = model.reservoir_model
-    if reservoir_model:
-        plt.rc('text', usetex=True)
-        plt.rc('font', family='serif')
-        rel += MatplotlibFigure(reservoir_model.figure(logo=True), "Logo", show_label=False, transparent=True)
-        #logofig = reservoir_model.figure(logo=True)
-        #logofig.savefig('ICBM_logo.svg', transparent=True)
-        #plt.show(logofig)
-        #print('Logo printed')
-
-    rel+= Text(r"This report is the result of the use of the python package bgc_md , as means to translate published models to a common language.  The underlying yaml file was created by $curator (Orcid ID: $Oid) on $entryDate, and was last modified on $modDate." + "\n",
-            curator=model.entryAuthor,
-            entryDate=model.entry_creation_date,
-            modDate=model.last_modification_date,
-            Oid=model.entryAuthor_orc_id,
-             )
-
-    if model.model_type == "vegetation_model": modType = "carbon allocation"
-    if model.model_type == "soil_model": modType = "soil organic matter decomposition"
-
-    if model.approach:
-            article = "a"
-            if model.approach[0] in "aeiou":
-                article = "an"
-            modApproach = " with " + article + " " + model.approach + " approach."
-    else:
-                modApproach = "."
-
-    rel += Header("About the model", 2)
-    rel += Text(r"The model depicted in this document considers $modType$modApproach It was originally described by ", 
-                modType=modType, modApproach=modApproach)
-    rel += Citation(model.bibtex_entry, parentheses=False) + Text(".  \n")
-
-    # fixme: further references
-    # include further references
-    if model.further_references:
-        rel += Header("Further references" , 3)
-        for ref_dict in model.further_references:
-            rel += Citation(ref_dict['bibtex_entry'], parentheses=False)
-            if 'desc' in ref_dict.keys():
-                rel += Text(": $desc", desc=ref_dict['desc'])
-            rel += Text("\n")
-
-    # include the abstract
-    if model.abstract:
-        rel += Header("Abstract", 3)
-        rel += Text("$abstract", abstract=model.abstract+"\n")
-
-    # include keywords
-    if model.keywords:
-        rel += Header("Keywords", 3)
-        rel += Text("$k\n", k = (", ").join(model.keywords))
-
-    # include principles
-    if model.principles:
-        rel += Header("Principles", 3)
-        rel += Text("$k\n", k = (", ").join(model.principles))
-
-    # include spaceScale:
-    if model.spaceScale:
-        rel += Header("Space Scale", 3)
-    
-        space_scale = model.spaceScale
-        if type(space_scale) == type(""):
-            space_scale = [space_scale]
-        rel += Text("$k\n", k = (", ").join(space_scale))
-
-    # include information on available parameter sets
-    if model.parameter_sets:
-        desc_exists = False
-        colname_list = [Text("Abbreviation")]
-        format_list = ["l"]
-        for par_set in model.parameter_sets:
-            sources_exist = False
-            desc_exists = False
-            if 'bibtex_entry' in par_set.keys() and par_set['bibtex_entry']: sources_exist = True
-            if 'desc' in par_set.keys() and par_set['desc']: desc_exists = True
-
-        if desc_exists:
-            colname_list.append(Text("Description"))
-            format_list.append("l")
-        if sources_exist:
-            colname_list.append(Text("Source"))
-            format_list.append("l")
-    
-        # show this section only if additional information to the parameter sets is given
-        if len(colname_list)>1:
-            rel += Header("Available parameter values", 3)
-            headers_row = TableRow(colname_list)
-            T = Table(" Information on given parameter sets", headers_row, format_list)
-            for par_set in model.parameter_sets:
-                l = [Text(par_set['table_head'])]
-                if desc_exists: 
-                    if par_set['desc']:
-                        l.append(Text(par_set['desc']))
-                    else:
-                        l.append(Text(" "))
-
-                if sources_exist: 
-                    if par_set['bibtex_entry']:
-                        l.append(Citation(par_set['bibtex_entry'], parentheses=False))
-                    else:
-                        l.append(Text(" "))
-
-                tr = TableRow(l)
-                T.add_row(tr)    
-            rel += T
-
-    # include information on available initial values sets
-    if model.initial_values:
-        desc_exists = False
-        colname_list = [Text("Abbreviation")]
-        format_list = ["l"]
-        for par_set in model.initial_values:
-            if 'bibtex_entry' in par_set.keys() and par_set['bibtex_entry']: sources_exist = True
-            if 'desc' in par_set.keys() and par_set['desc']: desc_exists = True
-
-        if desc_exists:
-            colname_list.append(Text("Description"))
-            format_list.append("l")
-        if sources_exist:
-            colname_list.append(Text("Source"))
-            format_list.append("l")
-    
-        # show this section only if additional information to the initial values sets is given
-        if len(colname_list)>1:
-            rel += Header("Available initial values", 3)
-            headers_row = TableRow(colname_list)
-            T = Table(" Information on given sets of initial values", headers_row, format_list)
-            for par_set in model.initial_values:
-                l = [Text(par_set['table_head'])]
-                if desc_exists: 
-                    if par_set['desc']:
-                        l.append(Text(par_set['desc']))
-                    else:
-                        l.append(Text(" "))
-
-                if sources_exist: 
-                    if par_set['bibtex_entry']:
-                        l.append(Citation(par_set['bibtex_entry'], parentheses=False))
-                    else:
-                        l.append(Text(" "))
-
-                tr = TableRow(l)
-                T.add_row(tr)    
-            rel += T
-
+#    #rel = model.get_meta_data_report()
+#    #rel = Meta(model.long_name, model.name, model.version)
+#    rel=ReportElementList()
+#    rel+= Header("General Overview", 1)
+#
+#    reservoir_model = model.reservoir_model
+#    if reservoir_model:
+#        plt.rc('text', usetex=True)
+#        plt.rc('font', family='serif')
+#        rel += MatplotlibFigure(reservoir_model.figure(logo=True), "Logo", show_label=False, transparent=True)
+#        #logofig = reservoir_model.figure(logo=True)
+#        #logofig.savefig('ICBM_logo.svg', transparent=True)
+#        #plt.show(logofig)
+#        #print('Logo printed')
+#
+#    rel+= Text(r"This report is the result of the use of the python package bgc_md, as means to translate published models to a common language.  The underlying yaml file was created by $curator (Orcid ID: $Oid) on $entryDate, and was last modified on $modDate." + "\n",
+#            curator=model.entryAuthor,
+#            entryDate=model.entry_creation_date,
+#            modDate=model.last_modification_date,
+#            Oid=model.entryAuthor_orc_id,
+#             )
+#
+#    if model.model_type == "vegetation_model": modType = "carbon allocation"
+#    if model.model_type == "soil_model": modType = "soil organic matter decomposition"
+#
+#    if model.approach:
+#            article = "a"
+#            if model.approach[0] in "aeiou":
+#                article = "an"
+#            modApproach = " with " + article + " " + model.approach + " approach."
+#    else:
+#                modApproach = "."
+#
+#    rel += Header("About the model", 2)
+#    rel += Text(r"The model depicted in this document considers $modType$modApproach It was originally described by ", 
+#                modType=modType, modApproach=modApproach)
+#    rel += Citation(model.bibtex_entry, parentheses=False) + Text(".  \n")
+#
+#    # fixme: further references
+#    # include further references
+#    if model.further_references:
+#        rel += Header("Further references" , 3)
+#        for ref_dict in model.further_references:
+#            rel += Citation(ref_dict['bibtex_entry'], parentheses=False)
+#            if 'desc' in ref_dict.keys():
+#                rel += Text(": $desc", desc=ref_dict['desc'])
+#            rel += Text("\n")
+#
+#    # include the abstract
+#    if model.abstract:
+#        rel += Header("Abstract", 3)
+#        rel += Text("$abstract", abstract=model.abstract+"\n")
+#
+#    # include keywords
+#    if model.keywords:
+#        rel += Header("Keywords", 3)
+#        rel += Text("$k\n", k = (", ").join(model.keywords))
+#
+#    # include principles
+#    if model.principles:
+#        rel += Header("Principles", 3)
+#        rel += Text("$k\n", k = (", ").join(model.principles))
+#
+#    # include spaceScale:
+#    if model.spaceScale:
+#        rel += Header("Space Scale", 3)
+#    
+#        space_scale = model.spaceScale
+#        if type(space_scale) == type(""):
+#            space_scale = [space_scale]
+#        rel += Text("$k\n", k = (", ").join(space_scale))
+#
+#    # include information on available parameter sets
+#    if model.parameter_sets:
+#        desc_exists = False
+#        colname_list = [Text("Abbreviation")]
+#        format_list = ["l"]
+#        for par_set in model.parameter_sets:
+#            sources_exist = False
+#            desc_exists = False
+#            if 'bibtex_entry' in par_set.keys() and par_set['bibtex_entry']: sources_exist = True
+#            if 'desc' in par_set.keys() and par_set['desc']: desc_exists = True
+#
+#        if desc_exists:
+#            colname_list.append(Text("Description"))
+#            format_list.append("l")
+#        if sources_exist:
+#            colname_list.append(Text("Source"))
+#            format_list.append("l")
+#    
+#        # show this section only if additional information to the parameter sets is given
+#        if len(colname_list)>1:
+#            rel += Header("Available parameter values", 3)
+#            headers_row = TableRow(colname_list)
+#            T = Table(" Information on given parameter sets", headers_row, format_list)
+#            for par_set in model.parameter_sets:
+#                l = [Text(par_set['table_head'])]
+#                if desc_exists: 
+#                    if par_set['desc']:
+#                        l.append(Text(par_set['desc']))
+#                    else:
+#                        l.append(Text(" "))
+#
+#                if sources_exist: 
+#                    if par_set['bibtex_entry']:
+#                        l.append(Citation(par_set['bibtex_entry'], parentheses=False))
+#                    else:
+#                        l.append(Text(" "))
+#
+#                tr = TableRow(l)
+#                T.add_row(tr)    
+#            rel += T
+#
+#    # include information on available initial values sets
+#    if model.initial_values:
+#        desc_exists = False
+#        colname_list = [Text("Abbreviation")]
+#        format_list = ["l"]
+#        for par_set in model.initial_values:
+#            if 'bibtex_entry' in par_set.keys() and par_set['bibtex_entry']: sources_exist = True
+#            if 'desc' in par_set.keys() and par_set['desc']: desc_exists = True
+#
+#        if desc_exists:
+#            colname_list.append(Text("Description"))
+#            format_list.append("l")
+#        if sources_exist:
+#            colname_list.append(Text("Source"))
+#            format_list.append("l")
+#    
+#        # show this section only if additional information to the initial values sets is given
+#        if len(colname_list)>1:
+#            rel += Header("Available initial values", 3)
+#            headers_row = TableRow(colname_list)
+#            T = Table(" Information on given sets of initial values", headers_row, format_list)
+#            for par_set in model.initial_values:
+#                l = [Text(par_set['table_head'])]
+#                if desc_exists: 
+#                    if par_set['desc']:
+#                        l.append(Text(par_set['desc']))
+#                    else:
+#                        l.append(Text(" "))
+#
+#                if sources_exist: 
+#                    if par_set['bibtex_entry']:
+#                        l.append(Citation(par_set['bibtex_entry'], parentheses=False))
+#                    else:
+#                        l.append(Text(" "))
+#
+#                tr = TableRow(l)
+#                T.add_row(tr)    
+#            rel += T
+#
     # show the secions of the model data
     for section_name in model.sections:
         if section_name == 'state_variables':
@@ -926,9 +928,9 @@ def render_parse():
     fn=template_path.stem+".html"
 
     if com.target_dir is not None:
-        target_path=Path(com.target_dir)
+        target_dir_path=Path(com.target_dir)
     else:
-        target_path=Path(".")
+        target_dir_path=Path(".")
 
     if com.yaml: 
         yaml_file_path=Path(com.yaml)
