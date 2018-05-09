@@ -29,20 +29,29 @@ from bgc_md.gv import indexcolors, filled_markers
 import bgc_md.gv as gv
 from CompartmentalSystems.bins.TsTpMassFieldsPerPoolPerTimeStep import TsTpMassFieldsPerPoolPerTimeStep
 from CompartmentalSystems.bins.TimeStepIterator import TimeStepIterator
-def common_parser():
-    parser= argparse.ArgumentParser(add_help=False)
-    parser.add_argument(
-        '-t'
-        ,'--target_dir'
-        ,type=str
-        ,default='.'
-        ,help="where to generate the html files" 
-    )
-    return parser
+#def common_parser:
+#    parser= argparse.ArgumentParser(add_help=False)
+#    parser.add_argument(
+#        '-t'
+#        ,'--target_dir'
+#        ,type=str
+#        ,default='.'
+#        ,help="where to generate the html files" 
+#    )
+#    return parser
+common_parser= argparse.ArgumentParser(add_help=False)
+common_parser.add_argument(
+    '-t'
+    ,'--target_dir'
+    ,type=str
+    ,default='.'
+    ,help="where to generate the html files" 
+)
+
 #import mpld3 # interesting functionality for interactive web figures
 
 def generate_model_run_report():
-    parser = argparse.ArgumentParser(parents=[common_parser()])
+    parser = argparse.ArgumentParser(parents=[common_parser])
     parser.description="Create markdown and html reports of a singel yaml file.\\n"
     parser.add_argument('path', default=None, help="The path to the yaml file containing the description of the record." )
     parser.epilog= "Example: %s Henin1945Annalesagronomiques.yaml-t SoilModels/html" % parser.prog
@@ -73,7 +82,7 @@ def defaults():
         ,"msgs":msg_dict
         }
 def generate_model_run_reports():
-    parser = argparse.ArgumentParser(parents=[common_parser()])
+    parser = argparse.ArgumentParser(parents=[common_parser])
     parser.add_argument(
         '-s'
         ,'--src_dir'
@@ -894,26 +903,48 @@ def generate_website():
     generate_model_run_reports()
 
 def render_parse():
-    parser = argparse.ArgumentParser(parents=[common_parser()])
-    parser.description="Create markdown and html reports of a single report template"
-    parser.add_argument('temp', default=None, help="The path to the templat file containing the description of the report." )
-    parser.add_argument('src_dir', default=None, help="The path to the directory of containing the yaml files sourced by the report." )
-    parser.add_argument('-y', '--yaml', default=None, help="The path to the yaml file containing the description of the record." )
+    parser = argparse.ArgumentParser(parents=[common_parser])
+
+    parser.description="""
+    Create markdown and html report from a template and either a single yaml file  or a directory of yaml files.
+    This command line tool calls the render function with either a Model or a ModelList object. You can write your own scripts to provide your own templates with more arguments for rendering.
+    """
+    parser.add_argument('template', default=None, help="The path to the template file containing the description of the report." )
+
+    sources= parser.add_mutually_exclusive_group(required=True)
+    sources.add_argument('-sd','--src_dir', default=None, help="The path to the directory containing the yaml files sourced by the report. Either this or -y must be present. " )
+    sources.add_argument('-y', '--yaml', default=None, help="The path to the yaml file containing the description of the record. Either this or -sd must be present." )
+    
     parser.epilog= Template("""Examples:\n
-        ${p} report_templates/Overview_table.py data/all_records  -t ${o} 
+        ${p} report_templates/Overview_table.py -sd data/all_records  -t ${o} 
         \n
-       ${p} report_templates/Overview_table.py bgc_md/data/all_records  -y Henin1945Annalesagronomiques.yaml  -t ${o} """).substitute(p=parser.prog,o="output" )
+       ${p} report_templates/Overview_table.py -y data/all_records/Henin1945Annalesagronomiques.yaml  -t ${o} """).substitute(p=parser.prog,o="output" ) 
 
     com=parser.parse_args()
-    if com.yaml: 
-        render(Path(com.temp),Path(com.src_dir), Path(com.target_dir),com.yaml)
+    template_path=Path(com.template)
+    #reference the template in the output html filename
+    fn=template_path.stem+".html"
+
+    if com.target_dir is not None:
+        target_path=Path(com.target_dir)
     else:
-        render(Path(com.temp),Path(com.src_dir), Path(com.target_dir))
+        target_path=Path(".")
+
+    if com.yaml: 
+        yaml_file_path=Path(com.yaml)
+        model=Model.from_path(yaml_file_path)
+        rel=render(template_path,model)
+        dir_name = yaml_file_path.stem
+        html_file_path= target_dir_path.joinpath(dir_name,fn)
+        rel.write_pandoc_html(html_file_path)
+    else:
+        model_list=ModelList.from_dir_path(Path(com.src__dir))
+        rel=render(template_path,model_list)
+        html_file_path= target_dir_path.joinpath(fn)
+        rel.write_pandoc_html(html_file_path)
     sys.exit(0)
     
-#def render(temp,source_dir_path,target_dir_path,yaml=None):
-#    ml=ModelList.from_dir_path(src_dir_path)
-#
+
 ########################################################################
 def render(template_path,*args,**kw):
     
