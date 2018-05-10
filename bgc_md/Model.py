@@ -9,6 +9,7 @@ import string
 import yaml
 import builtins
 import sys
+import pandas as pd
 import numpy as np
 
 from .ReportInfraStructure import Text, Math, ReportElementList, TableRow, Table, Header, Newline
@@ -228,16 +229,22 @@ def get_all_colnames(complete_dict, variables_sections):
     colnames = set()
     for sec in variables_sections:
         section_dic = section_subdict(complete_dict, sec) # {'state_variables': [...]}
-        for sec_name, var_list in section_dic.items():
-            for var_dic in var_list:
-                # var_dic = {'C': {'exprs': 'C=...', 'desc': '...'}}
-                # or var_dic = 'C'
-                if type(var_dic) == builtins.dict:
-                    for var, props in var_dic.items():
-                        if props: # maybe var_dic = {'C': }
-                            for colname, value in props.items(): # ('desc', '...')
-                                colnames |= {colname}
+        colnames |= get_all_colnames_of_section_dict(section_dic)
     return sorted(list(colnames))
+
+# helper function for get_all_colnames
+def get_all_colnames_of_section_dict(section_dic):
+    colnames = set()
+    for sec_name, var_list in section_dic.items():
+        for var_dic in var_list:
+            # var_dic = {'C': {'exprs': 'C=...', 'desc': '...'}}
+            # or var_dic = 'C'
+            if type(var_dic) == builtins.dict:
+                for var, props in var_dic.items():
+                    if props: # maybe var_dic = {'C': }
+                        for colname, value in props.items(): # ('desc', '...')
+                            colnames |= {colname}
+    return colnames
 
 
 def load_df(complete_dict, sections):
@@ -571,7 +578,7 @@ def load_model_run_combinations(model_run_data, parameter_sets, initial_values, 
 class Model:
     
     @classmethod
-    def from_str(cls, yaml_str, id):
+    def from_str(cls,yaml_str, id):
         try:
              complete_dict = yaml.load(yaml_str)
         except yaml.YAMLError as ye:
@@ -614,6 +621,8 @@ class Model:
             self.further_references = load_further_references(self.complete_dict)
             self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)
             self.sections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)
+            #fixme mm:
+            # if we want to switch to pandas the load_df should become obsolete
             self.df = load_df(self.complete_dict, self.sections)
             self.syms_dict, self.exprs_dict, self.symbols_by_type = load_expressions_and_symbols(self.df) 
             self.set_component_keys()
@@ -997,6 +1006,7 @@ class Model:
         
 
     def variables_Table_from_data_frame(self, df, table_title, alternative_head=False):
+        
         if df == None:
             return(Text(""))
 
@@ -1166,6 +1176,39 @@ class Model:
 
     def section_subdict(self,target_key):   
         return(section_subdict(self.complete_dict,target_key))
+    
+    def section_pandas_df(self,target_key):   
+        # pandas can create a DataFrame from a dictionary of array like objects
+        # so we assemble it columnwise
+        sd=section_subdict(self.complete_dict,target_key)
+        dict_list=sd[target_key]
+        additional_colnames = list(get_all_colnames_of_section_dict(sd))
+        first_key=lambda d :list(d.keys())[0]
+        first_val=lambda d :list(d.values())[0]
+
+        first_col=[ first_key(d) for d in dict_list]
+        col_dict={"name":first_col}
+        for colname in additional_colnames:
+            col=[]
+            for var_dict in dict_list:
+                # var_dict = {'C': {'exprs': 'C=...', 'desc': '...'}}
+                # or var_dict = {'C': }
+                var=first_val(var_dict)
+                if type(var) == builtins.dict:
+                    names=var.keys()
+                    print(var)
+                    if colname in names:
+                        col.append(var[colname])
+                    else:
+                        col.append(None)
+                elif type(var) == builtins.str:
+                    col.append(None)
+                else:
+                    raise(YamlException('Variable description wrong in ' + sec + '.'))
+            col_dict[colname]=col
+
+        print(col_dict)
+        return(pd.DataFrame(col_dict))
     
     @property
     def model_runs(self):

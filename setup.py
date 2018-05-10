@@ -45,6 +45,7 @@ setup(name='bgc_md',
             ,"concurrencytest"
             ,"mendeley "
             ,"PyYAML"
+            ,"pandas"
         ],
         include_package_data=True,
         #zip_safe=False

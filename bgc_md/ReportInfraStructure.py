@@ -388,8 +388,7 @@ class NewlineElement(TextElement):
         pass
         
     def pandoc_markdown_string(self):
-        return "\n"
-
+        return "  " #pandoc breaks a line after two or more spaces
 ##########################################
 class MatplotlibFigure(AtomicReportElementList):
     def __init__(self, fig, label,caption_text = '', show_label = True, transparent = False):
