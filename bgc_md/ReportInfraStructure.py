@@ -528,7 +528,7 @@ class Table(ReportElementList):
         format_row="|".join(pandoc_format_strings)
         
         # adding the header format and footer of the table in the right order    
-        last_row="\nTable: "+str(self.name)+"\n"
+        last_row="  Table: "+str(self.name)+"  \n"
         row_strings=[tr.pandoc_markdown_string() for tr in self]
-        complete=["\n"]+[row_strings[0]]+[format_row]+row_strings[1:]+[last_row]
-        return("\n".join(complete))
+        complete=["  \n"]+[row_strings[0]]+[format_row]+row_strings[1:]+[last_row]
+        return("  \n".join(complete))

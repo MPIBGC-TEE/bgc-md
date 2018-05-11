@@ -992,7 +992,8 @@ class Model:
     def components_Table(self):
         return self.variables_Table_from_section("components", parameter_values=False)
 
-
+    # fixme mm 11.5.2018
+    # deprecate! 
     def variables_Table_from_section(self, section_name, parameter_values = False, initial_values = False):
         df = self.section_vars(section_name)
         if parameter_values:
@@ -1005,6 +1006,9 @@ class Model:
         return self.variables_Table_from_data_frame(df, self.section_titles[section_name])
         
 
+
+    # fixme mm 11.5.2018
+    # deprecate! 
     def variables_Table_from_data_frame(self, df, table_title, alternative_head=False):
         
         if df == None:
@@ -1158,7 +1162,8 @@ class Model:
         
         return(T)
 
-
+    # fixme mm 11.5.2018
+    # deprecate! 
     def add_data_columns_to_data_frame(self, data_frame, data):
         # return a data frame with appropriate parameter value columns from available parameter sets
         df = deepcopy(data_frame) # prevent side effects on 'data_frame' variable
@@ -1206,8 +1211,6 @@ class Model:
                 else:
                     raise(YamlException('Variable description wrong in ' + sec + '.'))
             col_dict[colname]=col
-
-        print(col_dict)
         return(pd.DataFrame(col_dict))
     
     @property
