@@ -1,5 +1,8 @@
 def template(model):
     df=model.section_pandas_df("state_variables")
+    df=model.section_pandas_df("parameters")
+    # replace missing entries  column with '-'
+    df["unit"].fillna(value='-',inplace=True) 
 
     header_row = TableRow(
         [ Text("Name")
