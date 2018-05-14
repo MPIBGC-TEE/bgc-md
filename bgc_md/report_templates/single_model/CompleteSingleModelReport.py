@@ -1,10 +1,9 @@
 
 def template(model):
+    sdp= defaults()["paths"]["report_templates"].joinpath("single_model")
+    rel=render(sdp.joinpath("GeneralOverview.py"),model)
+    rel+=render(sdp.joinpath("StateVariables.py"),model)
     
-    sub_template_path=defaults()["paths"]["report_templates"].joinpath("single_model","GeneralOverview.py")
-    rel=render(sub_template_path,model)
-    sub_template_path=defaults()["paths"]["report_templates"].joinpath("single_model","StateVariables.py")
-    rel+=render(sub_template_path,model)
 
     return(rel)
 

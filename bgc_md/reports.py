@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import argparse
 from bgc_md.DataFrame import DataFrame
-from bgc_md.ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline, MatplotlibFigure, Link, LinkedSubPage, exprs_to_element
+from bgc_md.ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline,EmptyLine,MatplotlibFigure, Link, LinkedSubPage, exprs_to_element
 
 from .Model import Model, check_parameter_set_complete
 from .ModelList import ModelList
@@ -98,6 +98,8 @@ def generate_model_run_reports():
     generate_html_dir(com.src_dir,com.target_dir)
 
 
+# fixme mm 14.5.2018
+# deprecate! 
 def report_from_model(model):
     #rel = model.get_meta_data_report()
     #rel = Meta(model.long_name, model.name, model.version)

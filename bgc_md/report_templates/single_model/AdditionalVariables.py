@@ -16,7 +16,6 @@ def template(model):
     for i in range(len(df)):
         df_line=df.loc[i]
         expr_string=df_line["exprs"]
-        print(expr_string)
         if expr_string:
             parts = expr_string.split("=",1)
             parts[0] = parts[0].strip()

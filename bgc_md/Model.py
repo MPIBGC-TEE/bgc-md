@@ -979,16 +979,24 @@ class Model:
         dim = self.rhs.rows
         return(Matrix(dim,dim,lambda i,j: diff(vec[i],state_vec[j])))
 
+    # fixme mm 14.5.2018
+    # deprecate! 
     def allocation_coefficients_Table(self):
         return self.variables_Table_from_section("allocation_coefficients", parameter_values=True)
     
+    # fixme mm 14.5.2018
+    # deprecate! 
     def additional_variables_Table(self):
         return self.variables_Table_from_section("additional_variables", parameter_values=True)
     
+    # fixme mm 14.5.2018
+    # deprecate! 
     def state_variables_Table(self):
         # include possible initial values !!!
         return self.variables_Table_from_section("state_variables", parameter_values=False, initial_values=True)
     
+    # fixme mm 14.5.2018
+    # deprecate! 
     def components_Table(self):
         return self.variables_Table_from_section("components", parameter_values=False)
 
@@ -1201,7 +1209,6 @@ class Model:
                 var=first_val(var_dict)
                 if type(var) == builtins.dict:
                     names=var.keys()
-                    print(var)
                     if colname in names:
                         col.append(var[colname])
                     else:

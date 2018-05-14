@@ -378,6 +378,18 @@ class Meta(AtomicReportElementList):
         super().__init__([t])
 
 ##########################################
+class EmptyLine(AtomicReportElementList):
+    def __init__(self):
+        atom=EmptyLineElement()
+        super().__init__([atom])
+
+class EmptyLineElement(TextElement):
+    def __init__(self):
+        pass
+        
+    def pandoc_markdown_string(self):
+        return "\n" 
+##########################################
 class Newline(AtomicReportElementList):
     def __init__(self):
         atom=NewlineElement()
