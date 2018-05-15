@@ -925,6 +925,7 @@ def render_parse():
        ${p} report_templates/Overview_table.py -y data/all_records/Henin1945Annalesagronomiques.yaml  -t ${o} """).substitute(p=parser.prog,o="output" ) 
 
     com=parser.parse_args()
+    print(com)
     template_path=Path(com.template)
     #reference the template in the output html filename
     fn=template_path.stem+".html"

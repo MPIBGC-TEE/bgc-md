@@ -90,14 +90,14 @@ def load_bibtex_entry(complete_dict):
 
 def load_abstract(complete_dict, bibtex_entry):
     abstract = None
-    # load abstract from BibTeX entry if possible
-    if bibtex_entry:
-        abstract = bibtex_entry.get_abstract(format_str="BibLaTeX")
-
     # if abstract given in yaml file, keep it
     tag = 'abstract'
     if tag in complete_dict.keys() and complete_dict[tag]:
         abstract = complete_dict[tag]
+
+    else:# load abstract from BibTeX entry if possible
+        if bibtex_entry:
+            abstract = bibtex_entry.get_abstract(format_str="BibLaTeX")
 
     # try to convert common strangely written terms in the abstract to good-looking ones
     # works only with Text("abstract: $a", a=abstract) from ReportElementList

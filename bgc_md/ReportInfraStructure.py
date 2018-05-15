@@ -417,6 +417,8 @@ class MatplotlibFigureElement(TextElement):
     
     def pandoc_markdown_string(self):
         if self.show_label:
+            # fixme mm 15.05.2018 looks like html which we do not want to see in
+            # the markdown string
             t=Template(remove_indentation("""\n<br>
             <center>
             ![$l]($l.svg)<br>**$l:** *$c*<br>
@@ -516,7 +518,10 @@ class TableRow(ReportElementList):
     
     def pandoc_markdown_string(self):
         substituted_templates=[ob.pandoc_markdown()  for ob in self]
-        return("|".join(substituted_templates))
+        if self.ncol()==1:
+            return "|"+substituted_templates[0]+"|"
+        else:
+            return("|".join(substituted_templates))
 
     def ncol(self):
         return(len(self))
@@ -537,7 +542,10 @@ class Table(ReportElementList):
         # translate the alingnment from (r)ight (l)eft (d)efault (c)center to the pipe_tables format used by pandoc
         d={"r":"-----:","l":":-----","d":"------","c":":-----:"}
         pandoc_format_strings=[d[fs] for fs in self.column_formats]
-        format_row="|".join(pandoc_format_strings)
+        if len(pandoc_format_strings)==1:
+            format_row="|"+pandoc_format_strings[0]+'|'
+        else:
+            format_row="|".join(pandoc_format_strings)
         
         # adding the header format and footer of the table in the right order    
         last_row="  Table: "+str(self.name)+"  \n"

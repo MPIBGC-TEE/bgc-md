@@ -1,6 +1,7 @@
 def template(model):
     # include model simulations
-    rel = Header("Model simulations", 2)
+    rel = EmptyLine()
+    rel += Header("Model simulations", 2)
     #if reservoir_model and model.model_runs:
 
 

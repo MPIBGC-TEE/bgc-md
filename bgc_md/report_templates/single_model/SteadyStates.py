@@ -24,6 +24,7 @@ def template(model):
 
     formal_steady_states = steady_states
     if formal_steady_states:
+        rel += EmptyLine()
         rel += Header("Steady state formulas", 2)
         for ss in formal_steady_states:
             for sv_symbol in model.state_vector['expr']:
