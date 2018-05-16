@@ -17,7 +17,7 @@ def template(model_list):
         Text("Source")])
     table_format = list("lllcl")
     T = Table("Summary of the models in the database of Carbon Allocation in Vegetation models", header_row, table_format)
-    single_tp=defaults()['paths']['report_templates'].joinpath('MinimalSingleReport.py')
+    single_tp=defaults()['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
     for i,model in enumerate(model_list):
 
         modelRel=render(single_tp,model=model)
@@ -43,7 +43,7 @@ def template(model_list):
     # add the scatter plots and histograms from a different template
     rel+=Newline()
     rel+=render(
-        defaults()["paths"]["report_templates"].joinpath("ModelListPlots.py")
+        defaults()["paths"]["report_templates"].joinpath('multiple_model',"ModelListPlots.py")
         ,model_list)
 
     return(rel)
