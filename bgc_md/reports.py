@@ -27,6 +27,7 @@ from .helpers import py2tex_silent, key_from_dict_by_value
 from bgc_md.plot_helpers import add_xhist_data_to_scatter
 from bgc_md.gv import indexcolors, filled_markers
 import bgc_md.gv as gv
+from .Exceptions import ModelInitializationException
 from CompartmentalSystems.bins.TsTpMassFieldsPerPoolPerTimeStep import TsTpMassFieldsPerPoolPerTimeStep
 from CompartmentalSystems.bins.TimeStepIterator import TimeStepIterator
 #def common_parser:
@@ -885,7 +886,13 @@ def generate_html_dir(src_dir, target_dir):
     
     rec_list=[ rec  for rec in src_dir_path.glob('*.yaml')]
     for rec in rec_list:
-        create_single_report(rec,html_dir_path)
+        try:
+            create_single_report(rec,html_dir_path)
+        except Exception as e:
+            print("##################")
+            print("problems with file: "+str(rec))
+            print(e)
+            print("##################")
     
 
     ml=ModelList.from_dir_path(src_dir_path)
