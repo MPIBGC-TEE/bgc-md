@@ -79,7 +79,7 @@ model:
             unit: "hr^{-1}"
             type: parameter
         - BGF:
-            desc: constant bakground flux of substrate
+            desc: constant background flux of substrate
             unit: "\\mu g C cm^{-3}hr^{-1}"
             type: parameter
 
