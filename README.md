@@ -11,10 +11,12 @@ This package consists of two components:
     software.
     Some distributions do not install it by default
     E.g. for ubuntu you have to say:```bash
-    sudo apt-get install python3.4-venv*```
-  - pandoc
-    E.g. for ubuntu you have to say:
-    ```bash sudo apt-get install pandoc*```
+    sudo apt-get install python3-venv*```
+  - pandoc newer than 2.06
+    E.g. for ubuntu-16.04 the version provided by the distribution is too old, 
+    and you have to download the debian package from the pandoc website and install the downloaded file, e.g. by :
+    ```bash sudo apt-get install ./pandoc-2.2.1-1-amd64.deb*```
+    (Version numbers will change.)
 
 ### Create virtual environment (e.g. in ~/test)
 ```bash
