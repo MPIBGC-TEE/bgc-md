@@ -15,9 +15,10 @@ def template(model):
 
         # plot solutions
         fig = plt.figure(figsize=(7,3*len(model.state_vector["expr"])), tight_layout=True)          
-#        time_unit = model.df.get_by_cond('unit', 'name', model.time_symbol['name'])
-#        units = [model.df.get_by_cond('unit', 'name', sv.name) for sv in model.state_vector['expr']]
-#        mr.plot_sols(fig, time_unit, units)
+        time_unit = model.df.get_by_cond('unit', 'name', model.time_symbol['name'])
+        units = [model.df.get_by_cond('unit', 'name', sv.name) for sv in model.state_vector['expr']]
+        #mr.plot_sols(fig, time_unit, units)
+        mr.plot_solutions(fig )
 # fimm-30.01.2018            mr.plot_sols(fig)
 
         label = "Model run " + str(i+1) + " - solutions"
@@ -44,16 +45,16 @@ def template(model):
         # plot system-age distributions
         fig = plt.figure(figsize=(10,15), tight_layout=True)
 #        fig = plt.figure(figsize=(6,6), tight_layout=True)
-        tsi=TimeStepIterator.from_ode_reservoir_model_run(mr)
+#        tsi=TimeStepIterator.from_ode_reservoir_model_run(mr)
         
-        age_dist_hist=TsTpMassFieldsPerPoolPerTimeStep.from_time_step_iterator(tsi)
-        print("Calculation done, creating plot.")
-        age_dist_hist.matrix_plot3d("plot_system_age_distributions_with_bins", fig, title="System age distribution", mr=mr)
-        print("Plot created.")
-        
-        label = "Model run " + str(i+1) + " - system-age-distributions"
-        
-        rel += MatplotlibFigure(fig, label, run_data_str_basis)
+#        age_dist_hist=TsTpMassFieldsPerPoolPerTimeStep.from_time_step_iterator(tsi)
+#        print("Calculation done, creating plot.")
+#        age_dist_hist.matrix_plot3d("plot_system_age_distributions_with_bins", fig, title="System age distribution", mr=mr)
+#        print("Plot created.")
+#        
+#        label = "Model run " + str(i+1) + " - system-age-distributions"
+#        
+#        rel += MatplotlibFigure(fig, label, run_data_str_basis)
         #fig.show()
         #input()
 

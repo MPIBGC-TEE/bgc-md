@@ -300,10 +300,10 @@ class ReportElementList(list):
    #         #print(out)
         
         
-    def write_pandoc_markdown(self, output_md_file):
+    def write_pandoc_markdown(self, output_md_path):
         # template_file="report_template_html.template"
         Text=self.pandoc_markdown()
-        with open(output_md_file,"w") as f:
+        with output_md_path.open("w") as f:
             f.write(Text)
 
 ##########################################

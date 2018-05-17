@@ -24,7 +24,7 @@ class TestWriteReportElements(InDirTest):
         var("x")
         expr=sqrt(2/x)
         rel=Text("name=:$n",n="Markus")+Math("a=$a",a=expr)
-        rel.write_pandoc_markdown("report.md")
+        rel.write_pandoc_markdown(Path("report.md"))
     
     def test_write_html_with_bibliography(self):
         csl_file_path = gv.resources_path.joinpath('apa.csl')
