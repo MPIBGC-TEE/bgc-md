@@ -15,10 +15,10 @@ def template(model):
 
         # plot solutions
         fig = plt.figure(figsize=(7,3*len(model.state_vector["expr"])), tight_layout=True)          
-        time_unit = model.df.get_by_cond('unit', 'name', model.time_symbol['name'])
-        units = [model.df.get_by_cond('unit', 'name', sv.name) for sv in model.state_vector['expr']]
+        #time_unit = model.df.get_by_cond('unit', 'name', model.time_symbol['name'])
+        #units = [model.df.get_by_cond('unit', 'name', sv.name) for sv in model.state_vector['expr']]
         #mr.plot_sols(fig, time_unit, units)
-        mr.plot_solutions(fig )
+        mr.plot_solutions(fig)
 # fimm-30.01.2018            mr.plot_sols(fig)
 
         label = "Model run " + str(i+1) + " - solutions"

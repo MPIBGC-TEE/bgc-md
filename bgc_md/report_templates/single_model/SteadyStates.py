@@ -36,7 +36,7 @@ def template(model):
                 rel += Math("$name = $value", name=sv_symbol, value=ss[sv_symbol]) + Newline()
             rel += Newline()
     # include parameter set information: steady states, eigenvalues, damping ratios
-#    complete_parameter_sets = [par_set for par_set in model.parameter_sets if check_parameter_set_complete(par_set, model.state_vector, model.time_symbol, model.state_vector_derivative)]
+    complete_parameter_sets = [par_set for par_set in model.parameter_sets if check_parameter_set_complete(par_set, model.state_vector, model.time_symbol, model.state_vector_derivative)]
     
     if model.time_symbol:
         time_symbol = model.time_symbol['symbol']
@@ -45,7 +45,7 @@ def template(model):
 
     complete_parameter_sets = model.parameter_sets
     if formal_steady_states and complete_parameter_sets:
-        rel += Text("\n")
+        rel += EmptyLine()*2
         rel += Header("Steady states (potentially incomplete), according jacobian eigenvalues, damping ratio", 2)
         for par_set in complete_parameter_sets:
             header_str = "Parameter set: " + par_set['table_head']
@@ -91,7 +91,7 @@ def template(model):
     
                     rel += Newline()*2
     
-                    dic = par_set['values']
+                    dic = par_set['values'].copy()
                     for i in range(len(ss_list)):
                         dic[ss_list[i]['name']] = ss_list[i]['value']
     

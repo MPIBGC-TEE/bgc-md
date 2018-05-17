@@ -79,7 +79,7 @@ model:
             unit: "hr^{-1}"
             type: parameter
         - BGF:
-            desc: constant bakground flux of substrate
+            desc: constant background flux of substrate
             unit: "\\mu g C cm^{-3}hr^{-1}"
             type: parameter
 
@@ -145,8 +145,8 @@ model_run_data:
     run_times:
         - "RT1":
             start: 0
-            end: 200
-            step_size: 0.001
+            end: 2000
+            step_size: 0.1
 
     possible_combinations:
         - ["Set 1", "Low", "RT1"]
