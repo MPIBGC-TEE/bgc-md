@@ -32,7 +32,7 @@ that is needed there.
 - Assuming that you just want to use the package and are not going to change any of the packages it depends on
   you can just type the following commands:
 ```bash
-     $ pip install -r requirements.txt
+     $ pip install -r requirements.freeze
      $ python setup.py develop
 ```
 - You can also run the script 

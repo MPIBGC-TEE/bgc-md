@@ -4,7 +4,7 @@
 pip3 install --upgrade pip setuptools wheel setuptools_git
 
 # installs the libraries with pinned versions 
-pip3 install -rrequirements.txt 
+pip3 install -rrequirements.freeze
 
 # installs all the libraries found in setup.py that do not need version pinning
 # and runs setup.py develop afterwards (installs bgc_md by linking to the sourcecode in this directory(

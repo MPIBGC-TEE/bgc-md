@@ -3,6 +3,7 @@
 # pip to resolve dependencies
 sympy==1.0.0
 bibtexparser>=1.0.1
+#future==0.14.3
 
 -e git+https://git@github.com/MPIBGC-TEE/LAPM.git#egg=LAPM
 -e git+https://git@github.com/mamueller/testinfrastructure.git#egg=testinfrastructure 

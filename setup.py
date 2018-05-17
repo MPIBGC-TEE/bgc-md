@@ -3,7 +3,7 @@
 
 # This is the standard pyhon install script.
 # Only if it does not work use the shell script ../install_bgc_md.sh in the folder above
-# Keep the requirements.txt clean and to a minimum.
+# Keep the requirements.freeze clean and to a minimum.
 
 from setuptools import setup,find_packages
 def readme():
