@@ -155,7 +155,7 @@ class ReportElementList(list):
             
         return(entries)
 
-    def write_pandoc_html(self,html_file_path,csl_file_path=None , css_file_path= None, slide_show = False):
+    def write_pandoc_html(self, html_file_path,csl_file_path=None , css_file_path= None, slide_show = False):
         csl_file_name=str(csl_file_path)
         css_file_name=str(css_file_path)
         html_file_name=str(html_file_path)
@@ -351,7 +351,7 @@ class HeaderElement(TextElement):
     def pandoc_markdown_string(self):
         if self.level>6:
             raise(Exception("In pandoc markdown only 6 levels for headers are allowed"))
-        return("\n"+"#"*self.level+" "+super().pandoc_markdown_string()+"\n")
+        return("  \n  \n"+"#"*self.level+" "+super().pandoc_markdown_string()+"  \n  \n")
 
 
 
@@ -386,9 +386,10 @@ class EmptyLine(AtomicReportElementList):
 class EmptyLineElement(TextElement):
     def __init__(self):
         pass
-        
+
     def pandoc_markdown_string(self):
-        return "\n" 
+        return "  \n  \n"
+
 ##########################################
 class Newline(AtomicReportElementList):
     def __init__(self):
@@ -400,7 +401,8 @@ class NewlineElement(TextElement):
         pass
         
     def pandoc_markdown_string(self):
-        return "  " #pandoc breaks a line after two or more spaces
+        return "  \n" #pandoc breaks a line after two or more spaces
+
 ##########################################
 class MatplotlibFigure(AtomicReportElementList):
     def __init__(self, fig, label,caption_text = '', show_label = True, transparent = False):

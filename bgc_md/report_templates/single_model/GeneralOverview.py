@@ -9,7 +9,7 @@ def template(model):
     #rel=ReportElementList()
     rel= Meta({"title":t})
 
-    rel+= Link(str(model.yaml_file_path.absolute()),str(model.yaml_file_path))
+    rel+= Link(str(model.yaml_file_path),str(model.yaml_file_path.absolute()))
     rel+=EmptyLine()
     rel+= Header("General Overview", 1)
     reservoir_model = model.reservoir_model
