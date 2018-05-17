@@ -17,16 +17,9 @@ from .bibtexc import BibtexEntry, DoiNotFoundException, online_entry
 from .helpers import remove_indentation, create_symbols_func, eval_expressions, retrieve_or_default, retrieve_this_or_that, py2tex_silent
 from .helpers_reservoir import factor_out_from_matrix
 from .DataFrame import DataFrame
+from .Exceptions import ModelInitializationException
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
-
-class YamlException(Exception):
-    """Raised if parsing of yaml file fails for any reason."""
-    def __init__(self, msg):
-        self.msg = msg
-
-    def __str__(self):
-        return self.msg
 
 
 ######### helper functions #############
@@ -43,12 +36,12 @@ def depth(expr):
 
 #def load_complete_dict_and_id(complete_dict):
 #    if ('model' not in complete_dict) or (not complete_dict['model']):
-#        raise(YamlException("yaml file does not contain a model section:\n\n" + str(complete_dict)))
+#        raise(ModelInitializationException("yaml file does not contain a model section:\n\n" + str(complete_dict)))
 #
 #    #mandatory_tags = tuple()
 #    #for tag in mandatory_tags:
 #    #    if (tag not in complete_dict) or (not complete_dict[tag]):
-#    #        raise(YamlException("Did not find '" + tag +"' in:\n\n" + str(complete_dict)))
+#    #        raise(ModelInitializationException("Did not find '" + tag +"' in:\n\n" + str(complete_dict)))
 #
 #    #fixme: remove that as soon as possible
 #    #if 'model-id' not in complete_dict.keys():
@@ -132,10 +125,10 @@ def load_further_references(complete_dict):
                     ref['bibtex_entry'] = BibtexEntry.from_doi(ref_dict['doi'])
                 except DoiNotFoundException as e:
                     ex_string = "Invalid doi in further_references."
-                    raise(YamlException(ex_string + "\n" + e.__str__()))
+                    raise(ModelInitializationException(ex_string + "\n" + e.__str__()))
             else:
                 ex_string = "Missing 'doi' and 'bibtex' in further_references."
-                raise(YamlException(ex_string))
+                raise(ModelInitializationException(ex_string))
             if ref:
                 tag3 = 'desc'
                 if tag3 in ref_dict.keys():
@@ -157,7 +150,7 @@ def load_reviews(complete_dict):
             for obl_key in obligatory_keys:
                 if (obl_key not in review.keys()) or (not review[obl_key]):
                     ex_string = "Missing '" + obl_key + "' in review list."
-                    raise(YamlException(ex_string))
+                    raise(ModelInitializationException(ex_string))
             if review['type'] == 'deep':
                 deeply_reviewed = True        
     else:
@@ -208,7 +201,7 @@ def load_sections_and_titles(complete_dict):
     
     for section in new_section_names:
         if new_section_names.count(section) > 1:
-            raise(YamlException("The model contains more than one subsection called '" + section + "'."))
+            raise(ModelInitializationException("The model contains more than one subsection called '" + section + "'."))
             
     return (new_section_names, section_titles, new_complete_dict)
 
@@ -219,7 +212,7 @@ def section_subdict(complete_dict, target_key):
     matching = [dic for dic in model_list if target_key in dic.keys()]
 
     if len(matching) != 1:
-        raise(YamlException('Subsection ' + target_key + ' not found.'))
+        raise(ModelInitializationException('Subsection ' + target_key + ' not found.'))
    
     return matching[0]
         
@@ -276,7 +269,7 @@ def load_df(complete_dict, sections):
                     for colname in additional_colnames:
                         row.append(None)
                 else:
-                    raise(YamlException('Variable description wrong in ' + sec + '.'))
+                    raise(ModelInitializationException('Variable description wrong in ' + sec + '.'))
                 row_list.append(row)
 
     df = DataFrame(row_list)
@@ -284,7 +277,7 @@ def load_df(complete_dict, sections):
     var_list = df.get_column('name')
     for v in var_list:
         if var_list.count(v) > 1:
-            raise(YamlException("Variable '" + v + "' defined more than once."))
+            raise(ModelInitializationException("Variable '" + v + "' defined more than once."))
 
     return df
 
@@ -359,7 +352,7 @@ def load_from_model_run_data(model_run_data, attr_name):
             lel['table_head'] = parset_name
             lel.update(parset[parset_name])
             if not 'values' in lel.keys():
-                raise(YamlException("No values given in data set '" + lel['table_head'] + "'."))
+                raise(ModelInitializationException("No values given in data set '" + lel['table_head'] + "'."))
 
             if 'bibtex' in lel.keys():
                 # prepare bibtex string from yaml file for initialisation
@@ -373,12 +366,12 @@ def load_from_model_run_data(model_run_data, attr_name):
                 except DoiNotFoundException as e:
                     #ex_string = "Invalid doi in parameter set '" + lel['table_head'] + "'."
                     ex_string = "could not fetch doi " + lel['table_head'] + "'."
-                    raise(YamlException(ex_string + "\n" + e.__str__()))
+                    raise(ModelInitializationException(ex_string + "\n" + e.__str__()))
             else:
                 lel['bibtex_entry'] = None
 
             if type(lel['values']) != type(dict()):
-                raise(YamlException("Data set '" + lel['table_head'] + "' invalid, probably forgotten space after colon."))
+                raise(ModelInitializationException("Data set '" + lel['table_head'] + "' invalid, probably forgotten space after colon."))
     
             for par_key, par_val in lel['values'].items():
                 if type(par_val) == type(''):      
@@ -386,7 +379,7 @@ def load_from_model_run_data(model_run_data, attr_name):
                         # no cnonversion to float here, because 'Rational(1,3)' needs to be kept
                         lel['values'][par_key] = par_val
                     except ValueError as e:
-                        raise(YamlException("Data set '" +lel['table_head'] + "' invalid.\n" + e.__str__()))
+                        raise(ModelInitializationException("Data set '" +lel['table_head'] + "' invalid.\n" + e.__str__()))
         
         res_list.append(lel)
 
@@ -400,7 +393,7 @@ def load_parameter_sets(model_run_data):
         return load_from_model_run_data(model_run_data, 'parameter_sets')
     except Exception as e:
         ex_str = "Could not load parameter sets."
-        raise(YamlException(ex_str + "\n" + e.__str__()))
+        raise(ModelInitializationException(ex_str + "\n" + e.__str__()))
         
 
 def load_initial_values(model_run_data):
@@ -410,7 +403,7 @@ def load_initial_values(model_run_data):
         return load_from_model_run_data(model_run_data, 'initial_values')
     except Exception as e:
         ex_str = "Could not load initial values."
-        raise(YamlException(ex_str + "\n" + e.__str__()))
+        raise(ModelInitializationException(ex_str + "\n" + e.__str__()))
         
 
 def check_parameter_set_valid(par_set, syms_by_type):
@@ -429,7 +422,7 @@ def check_parameter_set_valid(par_set, syms_by_type):
         except Exception as e:
             ex_str = "Invalid parameter set: " + par_set['table_head']
             ex_str += "\nCould not substitute '" + name + "'"
-            raise(YamlException(ex_str + "\n" + e.__str__()))
+            raise(ModelInitializationException(ex_str + "\n" + e.__str__()))
 
             return False   
     return True
@@ -466,7 +459,7 @@ def check_initial_values_set_valid(par_set, syms_by_type, state_variables):
         except Exception as e:
             ex_str = "Invalid initial values set: " + par_set['table_head']
             ex_str += "\nCould not substitute '" + name + "'"
-            raise(YamlException(ex_str + "\n" + e.__str__()))
+            raise(ModelInitializationException(ex_str + "\n" + e.__str__()))
 
             return False   
     return True
@@ -517,12 +510,12 @@ def load_run_times(model_run_data):
             mandatory_keys = ('start', 'end', 'step_size')
             for mk in mandatory_keys:
                 if not mk in sub_dic:
-                    raise(YamlException("'run_times' data set '" + name + "' does not contain '" + mk + "'"))
+                    raise(ModelInitializationException("'run_times' data set '" + name + "' does not contain '" + mk + "'"))
 
             res_dic.update(sub_dic)
 
             if res_dic['start'] > res_dic['end']:
-                raise(YamlException("'run_times' data set '" + name + "' has 'start' > 'end'"))
+                raise(ModelInitializationException("'run_times' data set '" + name + "' has 'start' > 'end'"))
 
         result.append(res_dic)
     
@@ -596,11 +589,34 @@ class Model:
     
     @classmethod
     def from_path(cls, yaml_file_path): 
+        # We could create the new model by a call to its
+        #   model = cls.from_str(yaml_str,id=name)
+        # This would call init and thus implicitly __new__(cls) 
+        # to create the model  and  then initialize it.
+        #
+        # Instead we create the model explicitly with __new__(cls) 
+        # and immidiately set its yaml_file_path property 
+        # in case something goes wrong with the initialization 
+        # we can at least report the location of the problematic file
+
+        #create a new model
+        model=object.__new__(cls)
+        model.yaml_file_path=yaml_file_path
+        print("#####################################")
+        print(str(model.yaml_file_path))
+        
         with yaml_file_path.open() as f:
             yaml_str = f.read()
         name=yaml_file_path.stem
-        model = cls.from_str(yaml_str,id=name)
-        model.yaml_file_path=yaml_file_path
+        # now load the yaml str into a dictionary
+        try:
+             complete_dict = yaml.load(yaml_str)
+        except yaml.YAMLError as ye:
+            msg=Template("The Yaml in file ${ps} caused the following exception ${submsg}").substitute(ps=str(model.yaml_file_path),submsg=str(ye))
+            raise(ModelInitializationException(msg))
+            
+
+        model.__init__(complete_dict,id=name)
         return model
 
     @property
@@ -618,6 +634,8 @@ class Model:
             #print("1#################################",self.bibtex_entry)
             if self.bibtex_entry is not None:
                 self.abstract = load_abstract(self.complete_dict, self.bibtex_entry)
+            else:
+                self.abstract = None
             self.further_references = load_further_references(self.complete_dict)
             self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)
             self.sections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)
@@ -640,7 +658,7 @@ class Model:
             if msg:
                 print("-------------")
                 print('Warning at initializing model ' + self.id)
-                if hasattr(self,yaml_file_path):
+                if hasattr(self,"yaml_file_path"):
                     print(str(self.yaml_file_path))
                 print(msg)
                 print("-------------")
@@ -650,7 +668,7 @@ class Model:
 
             print("-------------")
             print('Initializing model ' + self.id + ' failed.')
-            if hasattr(self,yaml_file_path):
+            if hasattr(self,"yaml_file_path"):
                 print(str(self.yaml_file_path))
             print(ex)
             print("-------------")
@@ -724,7 +742,7 @@ class Model:
             dic = {'name': comp_name, 'symbol': syms[comp_name], 'expr': expr}
 
             if hasattr(self, comp_key):
-                raise(YamlException("Invalid component key: '" + comp_key + "'"))
+                raise(ModelInitializationException("Invalid component key: '" + comp_key + "'"))
 
             setattr(self, comp_key, dic)
 
@@ -1216,7 +1234,7 @@ class Model:
                 elif type(var) == builtins.str:
                     col.append(None)
                 else:
-                    raise(YamlException('Variable description wrong in ' + sec + '.'))
+                    raise(ModelInitializationException('Variable description wrong in ' + sec + '.'))
             col_dict[colname]=col
         return(pd.DataFrame(col_dict))
     

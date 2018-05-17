@@ -17,7 +17,6 @@ from .helpers import remove_indentation
 from .BGCmarkdown import MarkdownTemplate 
 from . import bibtexc
 from . import gv
-
 # needs a test
 def exprs_to_element(exprs, symbols_by_type):
     if not exprs:
@@ -174,11 +173,12 @@ class ReportElementList(list):
         md_file_path = html_file_path.parent.joinpath(html_file_path.stem+".md")
         bibtex_file_path= html_file_path.parent.joinpath(html_file_path.stem+".bibtex")
 
-        #collect bibtexentries
-        references=self.bibtex_entries()
-#        bibtexc.entry_list_to_file(bibtex_file_path, references, format_str="BibTeX")
-        bibtexc.entry_list_to_file(str(bibtex_file_path), references, format_str="plain")
-
+        #collect bibtexentries and remove None entries
+        references=set([ el for el in self.bibtex_entries() if el is not None])
+        if len(references)!=0:
+            #bibtexc.entry_list_to_file(bibtex_file_path, references, format_str="BibTeX")
+            bibtexc.entry_list_to_file(str(bibtex_file_path), references, format_str="plain")
+    
         #collect matplotlib figures and plot them 
         figure_elements=self.matplotlib_figure_elements()
         for fig_el in figure_elements:
@@ -204,7 +204,8 @@ class ReportElementList(list):
         cmd = ["pandoc"]
         cmd += [str(md_file_path),"-s","--mathjax", "-o", html_file_name]        
         #cmd += ["--metadata=title:Test"]
-        cmd += ["--filter=pandoc-citeproc", "--bibliography="+str(bibtex_file_path)]
+        if len(references)!=0:
+            cmd += ["--filter=pandoc-citeproc", "--bibliography="+str(bibtex_file_path)]
         if css_file_path is not None : 
             cmd += ["-c", str(css_file_path.absolute())]
 
