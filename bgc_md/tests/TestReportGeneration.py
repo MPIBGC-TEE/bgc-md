@@ -45,6 +45,9 @@ class TestReportGeneration(InDirTest):
         targetFileName='overview.html'
         rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
 
+    def test_flagstaff_templates(self):
+        d=defaults() 
+        sp=d['paths']['data'].joinpath('FlagStaffModels')
 #
     def test_create_old_overview_report(self):
         # fixme:

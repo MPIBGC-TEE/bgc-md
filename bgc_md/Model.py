@@ -563,13 +563,15 @@ def load_model_run_combinations(model_run_data, parameter_sets, initial_values, 
 
         iv = None
         for x in complete_initial_values:
-            if x['table_head'] == pc[1]:
+            # we use negative indices to avoid trouble with missing parameter sets
+            if x['table_head'] == pc[-2]:
                 iv = x
         dic['IV'] = iv
 
         run_time = None
         for rt in run_times:
-            if rt['name'] == pc[2]:
+            # we use negative indices to avoid trouble with missing parameter sets
+            if rt['name'] == pc[-1]:
                 run_time = rt
         dic['run_time'] = run_time
 

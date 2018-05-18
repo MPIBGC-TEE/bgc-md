@@ -67,13 +67,15 @@ def defaults():
     tested_record_path=this.joinpath('data','tested_records')
     # fixme mm 
     # I would like to get rid of the Subdirectories 
-    # and rather put the information is something is a soil or 
-    # vegetation model in the yaml file only but at the moment we still use the distinct directories.
-    soilModelPath=this.joinpath("data","SoilModels")
-    vegModelPath=this.joinpath("data","VegetationModels") 
+    # and rather put the information if something is a soil or 
+    # vegetation model in the yaml file only but at the moment 
+    # someone might still use the distinct directories.
+    dataPath=this.joinpath("data") 
+    soilModelPath=dataPath.joinpath("SoilModels")
+    vegModelPath =dataPath.joinpath("VegetationModels") 
     
     templatePath=this.joinpath("report_templates")
-    path_dict={"veg":vegModelPath,"soil":soilModelPath,"tested_records":tested_record_path,"report_templates":templatePath}
+    path_dict={"veg":vegModelPath,"soil":soilModelPath,"tested_records":tested_record_path,'data':dataPath,"report_templates":templatePath}
     
     dir_dict={key:value.as_posix() for key,value in path_dict.items()}
     msg_dict={key:"generating %s model website to" % key for key in path_dict.keys()}
