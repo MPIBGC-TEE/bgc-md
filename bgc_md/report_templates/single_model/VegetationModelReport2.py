@@ -10,8 +10,8 @@ def template(model):
     #rel+=render(sdp.joinpath("AdditionalVariables.py"),model)
     rel+=render(sdp.joinpath("Components.py"),model)
     rel+=render(sdp.joinpath("ReservoirModel.py"),model)
-    rel+=render(sdp.joinpath("SteadyStates.py"),model)
-    rel+=render(sdp.joinpath("Simulations.py"),model)
+    #rel+=render(sdp.joinpath("SteadyStates.py"),model)
+    #rel+=render(sdp.joinpath("Simulations.py"),model)
     rel+=render(sdp.joinpath("RightHandSideOfODE.py"),model)
     
 
