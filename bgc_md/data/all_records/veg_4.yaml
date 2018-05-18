@@ -1,30 +1,10 @@
-# Extensions to veg_4.yaml 
-# 1.) Add more parameter to the exprs in components
-#     a) add the parameters
-#     b) add values for them in the parameter sets
-#     c) r
-# 2.) Add some (fake) bibliographic information
-name: IBIS
-longName: Integrated Biosphere Simulator
-version: 2.6
-entryAuthor: "Verónika Ceballos-Núñez"
-entryAuthorOrcid: 0000-0002-0046-1160
-entryCreationDate: 22/3/2016 # changeset 3354
-lastModification: _lm_
-modApproach: process based
-partitioningScheme: dynamic #fixed
-claimedDynamicPart: "no"
-spaceScale: Amazon region 
-#    unit: "1°*1°"
-timeResolution: monthly 
-doi: 10.5194/bg-10-2255-2013
-reviews: 
-      - reviewer: Carlos Sierra
-        orcid: 0000-0003-0009-4169
-        date: 12/04/2016
-        desc: "Changed the allocation coefficients for functions that depend on percentage sand. Checked equations against the original paper"
-        type: deep
-# Model uses an integrated framework based on land suface biophysics (canopy and soil physics, plant physiology), vegetation phenology, vegetation dynamics and competition, terrestrial carbon and nutrient cycling
+# Extensions to veg_3.yaml 
+# 1.) Add an additional state variable C_ir
+#     a ) This will force us to update the state vector as well 
+#     b ) we also have to increase the size of the matrix A to 3X3
+#     c ) we also have to provide an additional startvalue in the initial value section 
+#
+# 2.) Describe the state variables and add some meta information to the others
 model:
     - state_variables:
         - C_il:

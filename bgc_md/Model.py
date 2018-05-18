@@ -335,8 +335,6 @@ def load_model_run_data(complete_dict):
             res = {}
     except Exception as e:
         raise(Exception('Could not load model_run_data.\n' + e.__str__()))
-    print("4 #############################")
-    print(res)
     return(res)
 
 
@@ -403,12 +401,16 @@ def load_from_model_run_data(model_run_data, attr_name):
 def load_parameter_sets(model_run_data):
     if not model_run_data: 
         return []
+   
+    target_key = 'parameter_sets' 
     
-    if not 'parameter_set' in model_run_data.keys():
+    if not target_key in model_run_data.keys():
         return []
 
     try:
-        return load_from_model_run_data(model_run_data, 'parameter_sets')
+        par_sets=load_from_model_run_data(model_run_data, target_key)
+        return par_sets 
+
     except Exception as e:
         ex_str = "Could not load parameter sets."
         raise(ModelInitializationException(ex_str + "\n" + e.__str__()))
@@ -425,13 +427,22 @@ def load_initial_values(model_run_data):
         
 
 def check_parameter_set_valid(par_set, syms_by_type):
-    if not par_set: return True
+    # fixme mm05.18.2018:
+    # This whole function might be obsolete 
+    # I think that it is enough to check for completeness of 
+    # a parameter.
+    # we should not need the execution of strings at all..
+    cond=not par_set
+    if cond : 
+        return True
 
     par_dict = par_set['values']
 
     l = deepcopy(syms_by_type)
     l['par_dict'] = par_dict
     g = copy(l)
+    #fixme mm 05.18.2018:
+    #the following line looks realy dangerous
     exec("from sympy import *", g, l)
     for name in par_dict.keys():
         cmd = name + " = " + name + ".subs(par_dict)"
@@ -493,11 +504,13 @@ def check_initial_values_complete(iv, state_vector):
 
 
 def check_parameter_sets_valid(par_sets, syms_as_type):
-    if not par_sets: return True
+    if par_sets is None: 
+        return True
 
     valid = True
     for par_set in par_sets:
-        if not check_parameter_set_valid(par_set, syms_as_type):
+        cond=check_parameter_set_valid(par_set, syms_as_type)
+        if not cond:
             valid = False
     return valid
 
@@ -541,14 +554,17 @@ def load_run_times(model_run_data):
 
 
 def load_model_run_combinations(model_run_data, parameter_sets, initial_values, run_times, state_vector, time_symbol, state_vector_derivative):
-    if not model_run_data: return [], None
-    if 'possible_combinations' not in model_run_data.keys(): return [], None
+    if not model_run_data: 
+        return [], None
+    if not 'possible_combinations' in model_run_data.keys(): 
+        return [], None
 
     msg = None
 
     poss_comb = model_run_data['possible_combinations']
 
     complete_parameter_sets = [par_set for par_set in parameter_sets if check_parameter_set_complete(par_set, state_vector, time_symbol, state_vector_derivative)]
+
     complete_initial_values = [iv for iv in initial_values if check_initial_values_complete(iv, state_vector)]
 
     result = []
@@ -636,7 +652,6 @@ class Model:
         #create a new model
         model=object.__new__(cls)
         model.yaml_file_path=yaml_file_path
-        print("#####################################")
         print(str(model.yaml_file_path))
         
         with yaml_file_path.open() as f:
@@ -665,7 +680,6 @@ class Model:
         try:
             self.complete_dict = complete_dict
             self.bibtex_entry = load_bibtex_entry(self.complete_dict)
-            #print("1#################################",self.bibtex_entry)
             if self.bibtex_entry is not None:
                 self.abstract = load_abstract(self.complete_dict, self.bibtex_entry)
             else:
@@ -688,6 +702,7 @@ class Model:
             self.model_run_combinations, msg = load_model_run_combinations(self.model_run_data, self.parameter_sets,
                      self.initial_values, self.run_times, self.state_vector, self.time_symbol, 
                      self.state_vector_derivative)
+            print(self.model_run_combinations)
 
             if msg:
                 print("-------------")
@@ -1480,8 +1495,6 @@ class Model:
         i=keys.index(target_key)
         names=df.get_column("name")
         name=names[keys.index(target_key)]
-        #print("\n####################")
-        #print("Symbol with target key=",name)
         #fixme :
         # the following check should be made on model initialization for all keys found
         keys.remove(target_key)
@@ -1489,11 +1502,9 @@ class Model:
             raise(Exception("the key: "+str(target_key)+" has been used at least twice"))
         # now get all the varnames that are part of the expr
         var_names=self.find_all_variables_in_dependency_tree_of_expr(name)
-        #print("varnames=:",var_names)
         res=set([])
         for vn in var_names:
             key=self.get_key_of_var_name_or_None(vn)
-            #print("key=:",key,type(key))
             if key:
                 res.update([key]) #note the list brackets wich prevent 
         return(res)
@@ -1512,8 +1523,6 @@ class Model:
         i=keys.index(target_key)
         names=df.get_column("name")
         name=names[keys.index(target_key)]
-        #print("\n####################")
-        #print("Symbol with target key=",name)
         #fixme :
         # the following check should be made on model initialization for all keys found
         keys.remove(target_key)
@@ -1522,11 +1531,9 @@ class Model:
             raise(Exception("the key: "+str(target_key)+" has been used at least twice"))
         # now get all the varnames that are part of the expr
         var_names=self.find_all_variables_in_dependency_tree_of_expr(name)
-        #print("varnames=:",var_names)
         res=set([])
         for vn in var_names:
             key=self.get_key_of_var_name_or_None(vn)
-            #print("key=:",key,type(key))
             if key:
                 res.update([key]) #note the list brackets wich prevent 
             else:

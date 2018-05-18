@@ -13,7 +13,7 @@ def template(model):
         comb = model.model_run_combinations[i]
         if comb['par_set'] is not None:
             par_set_names = comb['par_set']['values']
-            par_set = {self.symbols_by_type[name]: value for name, value in par_set_names.items()}
+            par_set = {model.symbols_by_type[name]: value for name, value in par_set_names.items()}
         else:
             par_set=dict()
         #par_set = comb['par_set']['values']
