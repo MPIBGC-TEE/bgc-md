@@ -4,6 +4,13 @@ model:
         - C_il:
         - C_is: 
 
+    - additional_variables:
+        - t:
+            desc: time
+            unit: "day"
+            type: variable
+            key: time_symbol
+
     - components:
         # you are required to provide at least expressions for f u x and A
         # you are allowed to use as many helper expressions as you want to arrive there
@@ -25,25 +32,27 @@ model:
         - f_v: 
             key: state_vector_derivative 
             exprs: "f_v = u*b + A*x"
-            #model_run_data:
-            #    parameter_sets:
-            #        - "Set1":
-            #            desc: "Parameter values as described in Wang and Luo"
-            #            values: {GPP: 3.370, b_1: 0.14, b_2: 0.26, b_3: 0.14, f_41: 0.9, f_51: 0.1, f_52: 1, f_43: 0.2, f_53: 0.8, f_64: 0.45, f_65: 0.275, f_75: 0.275, f_76: 0.296, f_86: 0.004, f_67: 0.42, f_87: 0.01, f_68: 0.45, c_1: 0.00258, c_2: 0.0000586, c_3: 0.002390, c_4: 0.0109, c_5: 0.00095, c_6: 0.0105, c_7: 0.0000995,c_8: 0.0000115}
-            #    initial_values:
-            #        - "IV1":
-            #            values: {x_1: 250, x_2: 4145, x_3: 192, x_4: 93, x_5: 545, x_6: 146, x_7: 1585, x_8: 300}
-            #            desc: "Initial values as in Wang and Luo"
-            #    
-            #        - "IV2":
-            #            values: {x_1: 0, x_2: 0, x_3: 0, x_4: 0, x_5: 0, x_6: 0, x_7: 0, x_8: 0}
-            #            desc: "Initial values as in Wang and Luo"
-            #    run_times:
-            #        - "RT1":
-            #            start: 0
-            #            end: 200
-            #            step_size: 0.1
-            #
-            #    possible_combinations:
-            #        - ["Set1","IV2", "RT1"]
-            #
+
+
+model_run_data:
+    parameter_sets:
+         - "Set1":
+             desc: "Parameter values as described in Wang and Luo"
+             values: {}
+         -
+             #values: {GPP: 3.370}
+    
+    initial_values:
+        - "IV1": 
+            values: {C_il: 250, C_is: 414}
+            desc: "Initial values as invented by Markus "
+    
+    run_times:
+        - "RT1":
+            start: 0
+            end: 200
+            step_size: 0.1
+    
+    possible_combinations:
+        - ["Set1","IV1", "RT1"]
+     
