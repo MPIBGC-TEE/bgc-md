@@ -221,9 +221,6 @@ model_run_data:
             values: {x_1: 250, x_2: 4145, x_3: 192, x_4: 93, x_5: 545, x_6: 146, x_7: 1585, x_8: 300}
             desc: "Initial values as in Wang and Luo"
     
-        - "IV2":
-            values: {x_1: 0, x_2: 0, x_3: 0, x_4: 0, x_5: 0, x_6: 0, x_7: 0, x_8: 0}
-            desc: "Initial values as in Wang and Luo"
     run_times:
         - "RT1":
             start: 0
@@ -231,5 +228,5 @@ model_run_data:
             step_size: 0.1
 
     possible_combinations:
-        - ["Set1","IV2", "RT1"]
+        - ["Set1","IV1", "RT1"]
 

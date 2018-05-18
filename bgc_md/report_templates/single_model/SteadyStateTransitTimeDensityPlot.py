@@ -7,7 +7,7 @@ def template(srm, ss_dict, par_set):
     lapm = LinearAutonomousPoolModel(u, B, force_numerical=True)
 
     rel = Header('Transit time density plot in steady state', 3)
-    times=np.linspace(5,2500,100)
+    times=np.linspace(0,2500,100)
     vals=[lapm.T_density(t) for t in times]
     
     fig = plt.figure(figsize=(10,10))
