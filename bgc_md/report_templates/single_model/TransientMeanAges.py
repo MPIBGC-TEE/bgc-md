@@ -1,7 +1,7 @@
 def template(model):
-    # include model simulations
+    # include mean ages
     rel = EmptyLine()
-    rel += Header("Model simulations", 2)
+    rel += Header("Mean ages", 2)
     #if reservoir_model and model.model_runs:
 
     fontsize = 20
