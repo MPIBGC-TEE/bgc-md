@@ -153,7 +153,7 @@ def report_from_model(model):
             rel += Text("\n")
 
     # include the abstract
-    if model.abstract:
+    if hasattr(model,"abstract"):
         rel += Header("Abstract", 3)
         rel += Text("$abstract", abstract=model.abstract+"\n")
 

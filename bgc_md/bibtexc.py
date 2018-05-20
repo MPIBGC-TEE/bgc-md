@@ -40,7 +40,7 @@ from . import gv
 def online_entry(doi,abstract=True):
     try: 
         # 1st: check on Mendeley, because they provide abstracts
-        entry= _entry_from_str(_mendeley_str(doi, abstract))
+        entry= _entry_from_str(_mendeley_str(doi, abstract=abstract))
         return entry
             
     except Exception as e: #fixme mm , maybe find out what exceptions mendeley has und only catch those
@@ -51,7 +51,6 @@ def online_entry(doi,abstract=True):
 
         except Exception: #fixme mm , maybe find out what exceptions occure and only catch those
             print("Warning:Could not reach doi.org")
-            
             #reraise an exception
             raise DoiNotFoundException(doi) 
 
@@ -86,17 +85,13 @@ class BibtexEntry():
 
     @classmethod
     def from_doi(cls,doi,abstract=True):
-        try:
-            entry=online_entry(doi)
-            print("2 ###########################")
-            print(entry)
-            print("2 ###########################")
-            # call normal init
-            BE=cls(entry)
-            BE.__automatic_key()
-            return(BE)
-        except DoiNotFoundException:
-            return cls(dict())
+        entry=online_entry(doi,abstract=abstract)
+        entry=online_entry(doi,abstract=abstract)
+        # call normal init
+        BE=cls(entry)
+        BE.__automatic_key()
+        return(BE)
+    
     def __init__(self, entry ):
         self.entry = entry
         #if entry:

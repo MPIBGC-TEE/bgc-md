@@ -41,7 +41,7 @@ def template(model):
         modType=modType, modApproach=modApproach)
     rel += Citation(model.bibtex_entry, parentheses=False) + Text(".")+EmptyLine()
     # include the abstract
-    if model.abstract:
+    if hasattr(model,"abstract"):
         rel += Header("Abstract", 3)
         rel += Text("$abstract", abstract=model.abstract+"\n")
     # include keywords
