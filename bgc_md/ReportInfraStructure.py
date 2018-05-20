@@ -11,6 +11,7 @@ import subprocess
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import plotly.offline as po
 
 # imports from own package
 from .helpers import remove_indentation
@@ -154,6 +155,21 @@ class ReportElementList(list):
             
         return(entries)
 
+    def plotly_figure_elements(self):
+        if isinstance(self,AtomicReportElementList):
+            if isinstance(self,PlotlyFigure):
+                entries=[self[0]]
+            else:
+                entries = []
+            return(entries)    
+        else:
+            entries = []
+            for sub_el in self:
+                el_lst=sub_el.plotly_figure_elements()
+                entries+=el_lst
+            
+        return(entries)
+
     def write_pandoc_html(self, html_file_path,csl_file_path=None , css_file_path= None, slide_show = False):
         csl_file_name=str(csl_file_path)
         css_file_name=str(css_file_path)
@@ -187,10 +203,21 @@ class ReportElementList(list):
             plt.rc('font', family='serif')
             file_path= html_file_path.parent.joinpath(fig_el.label+".svg")
             file_name=str(file_path)
-            #file_name=os.path.join(os.path.dirname(html_file_name), fig_el.label+".svg")
             fig_el.fig.savefig(file_name, transparent=fig_el.transparent)
             plt.close(fig_el.fig)
 
+        #collect plotly figures and plot them 
+        figure_elements=self.plotly_figure_elements()
+        for fig_el in figure_elements:
+            fig_html_file_path= html_file_path.parent.joinpath(fig_el.target)
+            fig_html_file_name = str(fig_html_file_path)
+            po.plot(
+                fig_el.fig, 
+                fig_html_file_name,
+                auto_open=False,
+                filename=fig_html_file_name
+            )
+        
         #collect sub_pages and write them 
         for sub_page in self.sub_pages():
             dir_path=html_file_path.parent
@@ -437,6 +464,21 @@ class MatplotlibFigureElement(TextElement):
             return(t.substitute(l=self.label))
 
 ##########################################
+class PlotlyFigure(AtomicReportElementList):
+    def __init__(self, fig, label):
+        atom=PlotlyFigureElement(fig, label)
+        super().__init__([atom])
+
+class PlotlyFigureElement(TextElement):
+    def __init__(self, fig, label):
+        self.fig=fig
+        self.label=label
+        self.target = self.label+'.html'
+ 
+    def pandoc_markdown_string(self):
+        return "[" + self.label +"](" + self.target +")"
+
+##########################################
 class LinkedSubPage(AtomicReportElementList):
     @classmethod
     def output_file_name(cls):
@@ -469,7 +511,7 @@ class Link(AtomicReportElementList):
 class LinkElement(TextElement):
     def __init__(self, text, target):
         self.text = text
-        self.target = target
+        self.target = str(Path(target))
     
     def pandoc_markdown_string(self):
         return "[" + self.text +"](" + self.target +")"
