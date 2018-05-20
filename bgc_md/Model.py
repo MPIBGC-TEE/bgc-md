@@ -335,12 +335,24 @@ def load_model_run_data(complete_dict):
             res = {}
     except Exception as e:
         raise(Exception('Could not load model_run_data.\n' + e.__str__()))
+    print("4 #############################")
+    print(res)
     return(res)
 
 
 # helper function for loading parameter sets and initial values since they have the same structure
 def load_from_model_run_data(model_run_data, attr_name):
     # attr_name = 'parameter_sets' or attr_name = 'initial_values'
+    
+    # fixme mm 18.05.2018
+    # this is a typical  examle of a function that seems too deeply nested
+    # It tries to solve problems that should be solved on the level of the caller
+    # This would make knowledge about fields like "values" and "table_head" unnecessary.
+    # This is also a kind of duplication. (probably arising from the attempt to remove duplicated code)
+
+    
+    # fixme mm 18.05.2018
+    # the next line checks something that looks as if it should be checked in the caller
     if (not attr_name in model_run_data.keys()) or (not model_run_data[attr_name]): return []
 
     parset_list = model_run_data[attr_name]
@@ -349,6 +361,8 @@ def load_from_model_run_data(model_run_data, attr_name):
     for parset in parset_list:
         for parset_name in parset.keys():
             lel = dict()
+            # fixme mm 18.05.2018
+            # The name "table_head" is secret knowledge spread through the class
             lel['table_head'] = parset_name
             lel.update(parset[parset_name])
             if not 'values' in lel.keys():
@@ -387,7 +401,11 @@ def load_from_model_run_data(model_run_data, attr_name):
 
 
 def load_parameter_sets(model_run_data):
-    if not model_run_data: return []
+    if not model_run_data: 
+        return []
+    
+    if not 'parameter_set' in model_run_data.keys():
+        return []
 
     try:
         return load_from_model_run_data(model_run_data, 'parameter_sets')
@@ -555,8 +573,22 @@ def load_model_run_combinations(model_run_data, parameter_sets, initial_values, 
                 run_time = rt
         dic['run_time'] = run_time
 
-        if par_set and iv and run_time:
-            result.append(dic)
+        if iv and run_time:
+            if par_set:
+                result.append(dic)
+            else:
+                # even if there is no parameter set we might be able to run the model
+                # if it does not contain free symbols
+                free_symbols = (state_vector_derivative['expr']).free_symbols
+                if time_symbol:
+                    free_symbols -= {time_symbol['symbol']} 
+                free_symbols -= set(state_vector['expr'])
+                if  len(free_symbols)==0:
+                    result.append(dic)
+                else:
+                    msg = "Model run combination  '" + str(pc) + "' is invalid. There are free symbols but no parameter set is given"
+
+            
         else:
             msg = "Model run combination  '" + str(pc) + "' is invalid"
             if not par_set:
@@ -1245,9 +1277,11 @@ class Model:
         if hasattr(self, 'model_run_combinations'):
             for comb in self.model_run_combinations:
                 # needs to have the symbols as keys, not the names
-                par_set_names = comb['par_set']['values']
-                par_set = {self.symbols_by_type[name]: value for name, value in par_set_names.items()}
-        
+                if comb['par_set'] is not None:
+                    par_set_names = comb['par_set']['values']
+                    par_set = {self.symbols_by_type[name]: value for name, value in par_set_names.items()}
+                else:
+                    par_set=dict()
                 # initial values need to be a list
                 iv_dic = comb['IV']['values']
                 iv = []
@@ -1258,8 +1292,8 @@ class Model:
         
                 run_time = comb['run_time']
                 times = np.arange(run_time['start'], run_time['end']+run_time['step_size'], run_time['step_size'])
-               
-                model_runs.append(SmoothModelRun(mod, par_set, np.array(iv), times=times))
+                mr = SmoothModelRun(mod, par_set, np.array(iv), times=times)
+                model_runs.append(mr)
         return(model_runs)
 
 

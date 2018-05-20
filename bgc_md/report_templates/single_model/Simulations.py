@@ -11,10 +11,17 @@ def template(model):
         n = mr.nr_pools
 
         comb = model.model_run_combinations[i]
-        par_set = comb['par_set']['values']
+        if comb['par_set'] is not None:
+            par_set_names = comb['par_set']['values']
+            par_set = {self.symbols_by_type[name]: value for name, value in par_set_names.items()}
+        else:
+            par_set=dict()
+        #par_set = comb['par_set']['values']
 
         run_data_str_basis = "Initial values: " + comb['IV']['table_head']
-        run_data_str_basis += ", Parameter set: " + comb['par_set']['table_head']
+        
+        if comb['par_set'] is not None:
+            run_data_str_basis += ", Parameter set: " + comb['par_set']['table_head']
 
         # plot solutions
         fig = plt.figure(figsize=(7,3*len(model.state_vector["expr"])), tight_layout=True)          
