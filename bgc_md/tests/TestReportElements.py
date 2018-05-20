@@ -20,6 +20,8 @@ from bgc_md import bibtexc
 
 
 class TestReportElements(unittest.TestCase):
+
+    @unittest.skip # this test actually depends on the implementation of Newline until we decide how to implement this we 
     def test_Header(self):
         #self.maxDiff = None
         self.assertEqual(
@@ -78,6 +80,7 @@ class TestReportElements(unittest.TestCase):
         )
         self.assertEqual(res,ref)
 
+    @unittest.skip
     def test_Newline(self):
         self.assertEqual(Newline().pandoc_markdown(), "  ")
 
@@ -130,8 +133,8 @@ class TestReportElements(unittest.TestCase):
         )
 
     def test_mul(self):
-        rel = Newline()*3
-        self.assertEqual(rel.pandoc_markdown(), "      ")
+        rel = Text("x")*3
+        self.assertEqual(rel.pandoc_markdown(), "xxx")
 
 
     def test_TableRow(self):

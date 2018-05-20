@@ -58,50 +58,7 @@ def convert_yaml_bibtex_str(yaml_bibtex_str):
     return entry_str
 
 
-def load_bibtex_entry(complete_dict):
-    # load BibTex entry, priority: yaml file, then by doi, 
-    # also retrieve abstract if entry is fetched by doi
-    tag = 'bibtex'
-    if tag in complete_dict.keys():
-        # prepare bibtex string from yaml file for initialisation
-        entry_str = convert_yaml_bibtex_str(complete_dict[tag])
-        bibtex_entry = BibtexEntry.from_entry_str(entry_str)
-    elif 'doi' in complete_dict.keys():
-        try:
-            return BibtexEntry.from_doi(doi=complete_dict['doi'], abstract=True)
 
-        except DoiNotFoundException:
-            bibtex_entry=None
-
-
-    else:
-        #fixme: prints should become  logger calls
-        print("called without a bibtex_str, bibtex dict or doi")
-        bibtex_entry = None
-    
-    return bibtex_entry
-
-def load_abstract(complete_dict, bibtex_entry):
-    abstract = None
-    # if abstract given in yaml file, keep it
-    tag = 'abstract'
-    if tag in complete_dict.keys() and complete_dict[tag]:
-        abstract = complete_dict[tag]
-
-    else:# load abstract from BibTeX entry if possible
-        if bibtex_entry:
-            abstract = bibtex_entry.get_abstract(format_str="BibLaTeX")
-
-    # try to convert common strangely written terms in the abstract to good-looking ones
-    # works only with Text("abstract: $a", a=abstract) from ReportElementList
-    # attention: − is not - !!!
-    if abstract:
-        special_terms = {"CO\(2\)": 'CO$_2$', "CO2": 'CO$_2$', "yr-1": 'yr$^{-1}$', "MJ-1": 'MJ$^{-1}$', "year−1": 'year$^{-1}$', "ha−1": 'ha$^{-1}$', "\(lai\)": '(LAI)', "\slai\s": ' LAI '}
-        for key in special_terms.keys():
-            regexp = re.compile(key)
-            abstract = regexp.sub(special_terms[key], abstract)
-
-    return abstract
 
 
 def load_further_references(complete_dict):
@@ -672,6 +629,46 @@ class Model:
     def name(self):
         return retrieve_this_or_that("name",self.id,self.complete_dict)
 
+    def load_bibtex_entry(self,complete_dict):
+        # load BibTex entry, priority: yaml file, then by doi, 
+        # also retrieve abstract if entry is fetched by doi
+        # we do not 
+        tag = 'bibtex'
+        if tag in complete_dict.keys():
+            # prepare bibtex string from yaml file for initialisation
+            entry_str = convert_yaml_bibtex_str(complete_dict[tag])
+            self.bibtex_entry=BibtexEntry.from_entry_str(entry_str)
+        elif 'doi' in complete_dict.keys():
+            try:
+                self.bibtex_entry=BibtexEntry.from_doi(doi=complete_dict['doi'], abstract=True)
+
+            except DoiNotFoundException:
+                print("could not find BibtexEntry by doi")
+
+        else:
+            #fixme: prints should become  logger calls
+            print("called without a bibtex_str, bibtex dict or doi")
+
+    def load_abstract(self,complete_dict, bibtex_entry):
+        # if abstract given in yaml file, keep it
+        tag = 'abstract'
+        if tag in complete_dict.keys() and complete_dict[tag]:
+            self.abstract = complete_dict[tag]
+    
+        else:# load abstract from BibTeX entry if possible
+            if hasattr(self,"bibtex_entry"):
+                    self.abstract = bibtex_entry.get_abstract(format_str="BibLaTeX")
+    
+            # try to convert common strangely written terms in the abstract to good-looking ones
+            # works only with Text("abstract: $a", a=abstract) from ReportElementList
+            # attention: − is not - !!!
+            if hasattr(self,"abstract"):
+                special_terms = {"CO\(2\)": 'CO$_2$', "CO2": 'CO$_2$', "yr-1": 'yr$^{-1}$', "MJ-1": 'MJ$^{-1}$', "year−1": 'year$^{-1}$', "ha−1": 'ha$^{-1}$', "\(lai\)": '(LAI)', "\slai\s": ' LAI '}
+                for key in special_terms.keys():
+                    regexp = re.compile(key)
+                    self.abstract = regexp.sub(special_terms[key], self.abstract)
+    
+
     def __init__(self, complete_dict, id= None):
         # every model can be given a unique id (like a key in a database table) 
         # usually we will use the filename for this because it is unique by definition
@@ -679,11 +676,8 @@ class Model:
         self.id=id
         try:
             self.complete_dict = complete_dict
-            self.bibtex_entry = load_bibtex_entry(self.complete_dict)
-            if self.bibtex_entry is not None:
-                self.abstract = load_abstract(self.complete_dict, self.bibtex_entry)
-            else:
-                self.abstract = None
+            self.load_bibtex_entry(self.complete_dict)
+            self.load_abstract(self.complete_dict, self.bibtex_entry)
             self.further_references = load_further_references(self.complete_dict)
             self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)
             self.sections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)
