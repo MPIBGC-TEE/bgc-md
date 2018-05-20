@@ -45,9 +45,16 @@ class TestReportGeneration(InDirTest):
         targetFileName='overview.html'
         rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
 
-    def test_flagstaff_templates(self):
+    def test_flagstaff_templates_commandline(self):
         d=defaults() 
-        sp=d['paths']['data'].joinpath('FlagStaffModels')
+        sp=d['paths']['data'].joinpath('FlagstaffTemplates')
+        tp=d['paths']['report_templates'].joinpath('single_model','FlagstaffVegetationTemplate.py')
+        rec_list=[ rec  for rec in sp.glob('*.yaml')]#[0:2]
+        for rec in rec_list:
+            #print(rec)
+            run(["render", str(tp.absolute()),"-y",str(rec.absolute()),"-t","."])
+            #m=Model.from_path(rec)
+            #rel=render(tp,model=m)
 #
     def test_create_old_overview_report(self):
         # fixme:
