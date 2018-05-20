@@ -952,7 +952,7 @@ def render_parse():
         html_file_path= target_dir_path.joinpath(dir_name,fn)
         rel.write_pandoc_html(html_file_path)
     else:
-        model_list=ModelList.from_dir_path(Path(com.src__dir))
+        model_list=ModelList.from_dir_path(Path(com.src_dir))
         rel=render(template_path,model_list)
         html_file_path= target_dir_path.joinpath(fn)
         rel.write_pandoc_html(html_file_path)
