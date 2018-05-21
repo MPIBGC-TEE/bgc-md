@@ -1,4 +1,5 @@
-
+# We add some initial values and a time range and can compute trajectories 
+#
 model:
     - state_variables:
         - C_il:
@@ -25,10 +26,11 @@ model:
             exprs: "u=2"
         - b: 
             key: part_coeff   
-            exprs: "b=Matrix(2,1,[1,1])"
+            exprs: "b=Matrix(2,1,[1/2*(1-sin(2*pi*t)),1/2*(1+sin(2*pi*t))])"
         - A: 
             key: cyc_matrix   
-            exprs: "A=diag(-1/2*C_il, -1/4*(1+sin(2*pi/5*t)))"
+            #exprs: "A=diag(-1/2*C_il, -1/4*(1+sin(2*pi/5*t)))"
+            exprs: "A=Matrix([[-1/2*C_il,0],[1/4*C_il, -1/4*(1+sin(2*pi/5*t))]])"
         - f_v: 
             key: state_vector_derivative 
             exprs: "f_v = u*b + A*x"
@@ -44,7 +46,7 @@ model_run_data:
     run_times:
         - "RT1":
             start: 0
-            end: 20
+            end: 2
             step_size: 0.01
     
     possible_combinations:

@@ -1,4 +1,4 @@
-
+# a minimum vegetation model template
 model:
     - state_variables:
         - C_il:
@@ -17,6 +17,7 @@ model:
         # e.g.
         # p= x**2 # allowed just for conviniece
         # f =p**2.. #required
+
         - x: 
             key: state_vector
             exprs: "x=Matrix(2,1,[C_il, C_is ])"
@@ -25,11 +26,11 @@ model:
             exprs: "u=2"
         - b: 
             key: part_coeff   
-            exprs: "b=Matrix(2,1,[1,1])"
+            exprs: "b=Matrix(2,1,[1/2*(1-sin(2*pi*t)),1/2*(1+sin(2*pi*t))])"
         - A: 
             key: cyc_matrix   
-            exprs: "A=diag(-1/2*C_il, -1/4*(1+sin(2*pi/5*t)))"
+            #exprs: "A=diag(-1/2*C_il, -1/4*(1+sin(2*pi/5*t)))"
+            exprs: "A=Matrix([[-1/2*C_il,0],[1/4*C_il, -1/4*(1+sin(2*pi/5*t))]])"
         - f_v: 
             key: state_vector_derivative 
             exprs: "f_v = u*b + A*x"
-
