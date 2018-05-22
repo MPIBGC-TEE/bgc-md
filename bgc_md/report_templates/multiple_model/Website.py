@@ -15,7 +15,7 @@ def template(model_list):
         Text("Structure"), 
         Text("Right hand side of ODE"), 
         Text("Source")])
-    table_format = list("lllcl")
+    table_format = list("lccccc")
     T = Table("Summary of the models in the database of Carbon Allocation in Vegetation models", header_row, table_format)
     single_tp=defaults()['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
     for i,model in enumerate(model_list):
@@ -24,8 +24,8 @@ def template(model_list):
         l = [
             LinkedSubPage(modelRel,model.yaml_file_path.stem,model.name,"html")
         ]         
-        l.append(Math("${v}",v=len(model.parameters), parentheses=False))
-        l.append(Math("${v}",v=len(model.variables), parentheses=False))
+        l.append(Math("${v}",v=model.nr_variables, parentheses=False))
+        l.append(Math("${v}",v=model.nr_parameters, parentheses=False))
         
         fv_fs_entry = Text(" ")
         for row_dic in model.df.rows_as_dictionary:
