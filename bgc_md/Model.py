@@ -642,7 +642,6 @@ class Model:
         #create a new model
         model=object.__new__(cls)
         model.yaml_file_path=yaml_file_path
-        print(str(model.yaml_file_path))
         
         with yaml_file_path.open() as f:
             yaml_str = f.read()
@@ -696,8 +695,6 @@ class Model:
             self.model_run_combinations, msg = load_model_run_combinations(self.model_run_data, self.parameter_sets,
                      self.initial_values, self.run_times, self.state_vector, self.time_symbol, 
                      self.state_vector_derivative)
-            print(self.model_run_combinations)
-
             if msg:
                 print("-------------")
                 print('Warning at initializing model ' + self.id)
