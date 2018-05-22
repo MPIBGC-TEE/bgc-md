@@ -10,7 +10,7 @@ version: 2.6
 entryAuthor: "Verónika Ceballos-Núñez"
 entryAuthorOrcid: 0000-0002-0046-1160
 entryCreationDate: 22/3/2016 # changeset 3354
-lastModification: _lm_
+lastModification: 21/5/2018
 modApproach: process based
 partitioningScheme: dynamic #fixed
 claimedDynamicPart: "no"
@@ -64,10 +64,10 @@ model:
             exprs: "u=NPP_i"
         - b: 
             key: part_coeff   
-            exprs: "b=Matrix(3,1,[1,1,1])"
+            exprs: "b=Matrix(3,1,[1/4*(1-sin(2*pi*t)),1/4*(1+sin(2*pi*t)),1/2])"
         - A: 
             key: cyc_matrix   
-            exprs: "A=diag(-1/2*C_il, -1/4*(1+sin(2*pi/5*t)),-1/8)"
+            exprs: "A=Matrix([[-1/4*C_il,0,0],[1/8*C_il, -1/2*(2+sin(2*pi/5*t)),0],[0,1/4,1/8]])"
         - f_v: 
             key: state_vector_derivative 
             exprs: "f_v = u*b + A*x"
@@ -78,7 +78,7 @@ model_run_data:
     parameter_sets:
         - "Set1":
             values: {NPP_i: 2}
-            desc: "Parameter values as described in Fake Publication"
+            desc: "Parameter values as described in (fake) Publication"
 
     initial_values:
         - "IV1": 

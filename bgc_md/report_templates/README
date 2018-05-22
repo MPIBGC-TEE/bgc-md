@@ -1,2 +1,4 @@
 The two subdirectories of this directory are just a help to distinguish between the different default templates we provide and test. 
 You can put templates everywhere.
+The commoandlinetool we provide for convinience can call templates that take an object of class  Model  (in single_model folder) or of class ModelList (in folder multiple_model).
+The other folders contain templates (like model_run) are either used by templates in the first two folders or by (possibly your own code) that provides the correct arguments. 
