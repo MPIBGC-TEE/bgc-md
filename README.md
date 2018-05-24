@@ -3,6 +3,12 @@ This package consists of two components:
 - A folder with yaml files which encode several soil, vegetation, and ecosystem models in a unified way.
 - A python package that can be used (and extended) to run queries against single models or subsets of the encoded models.
 
+#Docker image can be build from Dockerfile or pulled from Docker hub (Not apllouded need to add it there at first).
+#To build image from Dockerfile
+  $ docker build -t docker_image_name dockerfile_location
+#To pull
+  $ docker pull image_name
+
 
 ## INSTALLATION
 ### Prerequisites:
@@ -84,4 +90,11 @@ on unbuntu building of these python packages requires non python libraries to be
     $ sudo apt-get install libfreetype6-dev
     $ sudo apt-get install libffi6 libffi-dev
     $ sudo apt-get install libssl-dev
+```
+## Test the render command
+go to the directory of the package (e.g. /path/to/bgc-md/bgc_md/)
+and run the commandline tool
+ren
+```bash
+render report_templates/single_model/FlagstaffVegetationTemplate.py -y data/all_records/veg_1.yaml -t output
 ```
