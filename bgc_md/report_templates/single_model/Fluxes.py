@@ -25,20 +25,21 @@ def template(model):
         # plot solutions
 
        # plot external input 
-        fig = plt.figure(figsize=(7,7), tight_layout=True)
+        fs=mr.nr_pools*3
+        fig1 = plt.figure(figsize=(7,fs), tight_layout=True)
         label = "Model run " + str(i+1) + " - external input"
-        mr.plot_external_input_fluxes(fig)
-        rel += MatplotlibFigure(fig, label, run_data_str_basis)
+        mr.plot_external_input_fluxes(fig1)
+        rel += MatplotlibFigure(fig1, label, run_data_str_basis)
        
        # plot external output fluxes
-        fig = plt.figure(figsize=(7,7), tight_layout=True)
+        fig2 = plt.figure(figsize=(7,fs), tight_layout=True)
         label = "Model run " + str(i+1) + " - external output"
-        mr.plot_external_output_fluxes(fig)
-        rel += MatplotlibFigure(fig, label, run_data_str_basis)
+        mr.plot_external_output_fluxes(fig2)
+        rel += MatplotlibFigure(fig2, label, run_data_str_basis)
 
        # plot internal fluxes
-        fig = plt.figure(figsize=(7,7), tight_layout=True)
+        fig3 = plt.figure(figsize=(7,fs), tight_layout=True)
         label = "Model run " + str(i+1) + " - internal fluxes"
-        mr.plot_internal_fluxes(fig)
-        rel += MatplotlibFigure(fig, label, run_data_str_basis)
+        mr.plot_internal_fluxes(fig3)
+        rel += MatplotlibFigure(fig3, label, run_data_str_basis)
     return rel

@@ -220,7 +220,9 @@ model_run_data:
 
     initial_values:
         - "IV 1":
-            values: {C_1: 100, C_2: 200}
+            #values: {C_1: 100, C_2: 200}
+            values: {C_1: 100, C_2: 200, C_3: 00, C_4: 0, C_5: 0, C_6: 0, C_7: 0, C_8: 0, C_9: 0} #faked values by Markus to make it run
+
             desc: original values without effects of temperature and soil moisture
 
     possible_combinations:
