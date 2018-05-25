@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import argparse
 from bgc_md.DataFrame import DataFrame
-from bgc_md.ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline,EmptyLine,MatplotlibFigure, Link, LinkedSubPage, exprs_to_element
+from bgc_md.ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline,EmptyLine,MatplotlibFigure, Link, LinkedSubPage, exprs_to_element, PlotlyFigure
 
 from .Model import Model, check_parameter_set_complete
 from .ModelList import ModelList
