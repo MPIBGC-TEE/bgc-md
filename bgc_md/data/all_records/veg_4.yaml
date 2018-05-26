@@ -38,13 +38,13 @@ model:
         # f =p**2.. #required
         - x: 
             key: state_vector
-            exprs: "x=Matrix(3,1,[C_il, C_is, C_ir ])"
+            exprs: "x=Matrix([C_il, C_is, C_ir ])"
         - u: 
             key: scalar_func_phot   
             exprs: "u=NPP_i"
         - b: 
             key: part_coeff   
-            exprs: "b=Matrix(3,1,[1/4*(1-sin(2*pi*t)),1/4*(1+sin(2*pi*t)),1/2])"
+            exprs: "b=Matrix([1/4*(1-sin(2*pi*t)),1/4*(1+sin(2*pi*t)),1/2])"
         - A: 
             key: cyc_matrix   
             exprs: "A=Matrix([[-1/4*C_il,0,0],[1/8*C_il, -1/2*(2+sin(2*pi/5*t)),0],[0,1/4,1/8]])"
