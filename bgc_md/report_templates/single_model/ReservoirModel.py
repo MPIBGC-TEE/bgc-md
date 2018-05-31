@@ -5,7 +5,7 @@ def template(model):
     outputs = reservoir_model.output_fluxes
     internal_fluxes = reservoir_model.internal_fluxes
     n=reservoir_model.nr_pools 
-    fig = reservoir_model.figure(figure_size=(3*n,3*n))
+    fig = reservoir_model.figure(figure_size=(2*n,2*n))
     fig_rel = MatplotlibFigure(fig, "Figure 1", "Pool model representation")
     rel+=fig_rel
     legend = ReportElementList()
