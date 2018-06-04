@@ -11,13 +11,13 @@ import subprocess
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import plotly.offline as po
 
 # imports from own package
 from .helpers import remove_indentation
 from .BGCmarkdown import MarkdownTemplate 
 from . import bibtexc
 from . import gv
-
 # needs a test
 def exprs_to_element(exprs, symbols_by_type):
     if not exprs:
@@ -155,7 +155,22 @@ class ReportElementList(list):
             
         return(entries)
 
-    def write_pandoc_html(self,html_file_path,csl_file_path=None , css_file_path= None, slide_show = False):
+    def plotly_figure_elements(self):
+        if isinstance(self,AtomicReportElementList):
+            if isinstance(self,PlotlyFigure):
+                entries=[self[0]]
+            else:
+                entries = []
+            return(entries)    
+        else:
+            entries = []
+            for sub_el in self:
+                el_lst=sub_el.plotly_figure_elements()
+                entries+=el_lst
+            
+        return(entries)
+
+    def write_pandoc_html(self, html_file_path,csl_file_path=None , css_file_path= None, slide_show = False):
         csl_file_name=str(csl_file_path)
         css_file_name=str(css_file_path)
         html_file_name=str(html_file_path)
@@ -174,11 +189,12 @@ class ReportElementList(list):
         md_file_path = html_file_path.parent.joinpath(html_file_path.stem+".md")
         bibtex_file_path= html_file_path.parent.joinpath(html_file_path.stem+".bibtex")
 
-        #collect bibtexentries
-        references=self.bibtex_entries()
-#        bibtexc.entry_list_to_file(bibtex_file_path, references, format_str="BibTeX")
-        bibtexc.entry_list_to_file(str(bibtex_file_path), references, format_str="plain")
-
+        #collect bibtexentries and remove None entries
+        references=set([ el for el in self.bibtex_entries() if el is not None])
+        if len(references)!=0:
+            #bibtexc.entry_list_to_file(bibtex_file_path, references, format_str="BibTeX")
+            bibtexc.entry_list_to_file(str(bibtex_file_path), references, format_str="plain")
+    
         #collect matplotlib figures and plot them 
         figure_elements=self.matplotlib_figure_elements()
         for fig_el in figure_elements:
@@ -187,10 +203,21 @@ class ReportElementList(list):
             plt.rc('font', family='serif')
             file_path= html_file_path.parent.joinpath(fig_el.label+".svg")
             file_name=str(file_path)
-            #file_name=os.path.join(os.path.dirname(html_file_name), fig_el.label+".svg")
             fig_el.fig.savefig(file_name, transparent=fig_el.transparent)
             plt.close(fig_el.fig)
 
+        #collect plotly figures and plot them 
+        figure_elements=self.plotly_figure_elements()
+        for fig_el in figure_elements:
+            fig_html_file_path= html_file_path.parent.joinpath(fig_el.target)
+            fig_html_file_name = str(fig_html_file_path)
+            po.plot(
+                fig_el.fig, 
+                fig_html_file_name,
+                auto_open=False,
+                filename=fig_html_file_name
+            )
+        
         #collect sub_pages and write them 
         for sub_page in self.sub_pages():
             dir_path=html_file_path.parent
@@ -204,7 +231,8 @@ class ReportElementList(list):
         cmd = ["pandoc"]
         cmd += [str(md_file_path),"-s","--mathjax", "-o", html_file_name]        
         #cmd += ["--metadata=title:Test"]
-        cmd += ["--filter=pandoc-citeproc", "--bibliography="+str(bibtex_file_path)]
+        if len(references)!=0:
+            cmd += ["--filter=pandoc-citeproc", "--bibliography="+str(bibtex_file_path)]
         if css_file_path is not None : 
             cmd += ["-c", str(css_file_path.absolute())]
 
@@ -300,10 +328,10 @@ class ReportElementList(list):
    #         #print(out)
         
         
-    def write_pandoc_markdown(self, output_md_file):
+    def write_pandoc_markdown(self, output_md_path):
         # template_file="report_template_html.template"
         Text=self.pandoc_markdown()
-        with open(output_md_file,"w") as f:
+        with output_md_path.open("w") as f:
             f.write(Text)
 
 ##########################################
@@ -351,7 +379,7 @@ class HeaderElement(TextElement):
     def pandoc_markdown_string(self):
         if self.level>6:
             raise(Exception("In pandoc markdown only 6 levels for headers are allowed"))
-        return("\n"+"#"*self.level+" "+super().pandoc_markdown_string()+"\n")
+        return("  \n  \n"+"#"*self.level+" "+super().pandoc_markdown_string()+"  \n  \n")
 
 
 
@@ -386,9 +414,10 @@ class EmptyLine(AtomicReportElementList):
 class EmptyLineElement(TextElement):
     def __init__(self):
         pass
-        
+
     def pandoc_markdown_string(self):
-        return "\n" 
+        return "  \n  \n"
+
 ##########################################
 class Newline(AtomicReportElementList):
     def __init__(self):
@@ -400,7 +429,8 @@ class NewlineElement(TextElement):
         pass
         
     def pandoc_markdown_string(self):
-        return "  " #pandoc breaks a line after two or more spaces
+        return "  \n" #pandoc breaks a line after two or more spaces
+
 ##########################################
 class MatplotlibFigure(AtomicReportElementList):
     def __init__(self, fig, label,caption_text = '', show_label = True, transparent = False):
@@ -417,6 +447,8 @@ class MatplotlibFigureElement(TextElement):
     
     def pandoc_markdown_string(self):
         if self.show_label:
+            # fixme mm 15.05.2018 looks like html which we do not want to see in
+            # the markdown string
             t=Template(remove_indentation("""\n<br>
             <center>
             ![$l]($l.svg)<br>**$l:** *$c*<br>
@@ -430,6 +462,21 @@ class MatplotlibFigureElement(TextElement):
             </center>
             """))
             return(t.substitute(l=self.label))
+
+##########################################
+class PlotlyFigure(AtomicReportElementList):
+    def __init__(self, fig, label):
+        atom=PlotlyFigureElement(fig, label)
+        super().__init__([atom])
+
+class PlotlyFigureElement(TextElement):
+    def __init__(self, fig, label):
+        self.fig=fig
+        self.label=label
+        self.target = self.label+'.html'
+ 
+    def pandoc_markdown_string(self):
+        return "[" + self.label +"](" + self.target +")"
 
 ##########################################
 class LinkedSubPage(AtomicReportElementList):
@@ -464,7 +511,7 @@ class Link(AtomicReportElementList):
 class LinkElement(TextElement):
     def __init__(self, text, target):
         self.text = text
-        self.target = target
+        self.target = str(Path(target))
     
     def pandoc_markdown_string(self):
         return "[" + self.text +"](" + self.target +")"
@@ -516,7 +563,10 @@ class TableRow(ReportElementList):
     
     def pandoc_markdown_string(self):
         substituted_templates=[ob.pandoc_markdown()  for ob in self]
-        return("|".join(substituted_templates))
+        if self.ncol()==1:
+            return "|"+substituted_templates[0]+"|"
+        else:
+            return("|".join(substituted_templates))
 
     def ncol(self):
         return(len(self))
@@ -537,7 +587,10 @@ class Table(ReportElementList):
         # translate the alingnment from (r)ight (l)eft (d)efault (c)center to the pipe_tables format used by pandoc
         d={"r":"-----:","l":":-----","d":"------","c":":-----:"}
         pandoc_format_strings=[d[fs] for fs in self.column_formats]
-        format_row="|".join(pandoc_format_strings)
+        if len(pandoc_format_strings)==1:
+            format_row="|"+pandoc_format_strings[0]+'|'
+        else:
+            format_row="|".join(pandoc_format_strings)
         
         # adding the header format and footer of the table in the right order    
         last_row="  Table: "+str(self.name)+"  \n"

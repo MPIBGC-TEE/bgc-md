@@ -4,8 +4,8 @@ def template(model):
     inputs = reservoir_model.input_fluxes
     outputs = reservoir_model.output_fluxes
     internal_fluxes = reservoir_model.internal_fluxes
-    
-    fig = reservoir_model.figure(figure_size=(7,7))
+    n=reservoir_model.nr_pools 
+    fig = reservoir_model.figure(figure_size=(2*n,2*n))
     fig_rel = MatplotlibFigure(fig, "Figure 1", "Pool model representation")
     rel+=fig_rel
     legend = ReportElementList()

@@ -79,7 +79,7 @@ model:
             unit: "hr^{-1}"
             type: parameter
         - BGF:
-            desc: constant bakground flux of substrate
+            desc: constant background flux of substrate
             unit: "\\mu g C cm^{-3}hr^{-1}"
             type: parameter
 
@@ -128,7 +128,7 @@ model:
 model_run_data:
     parameter_sets:
         - "Set 1":
-            values: {D_max: 0.26, Y: 0.44, K_s: 3.0, theta: 0.23, ExuT: 0.8, BGF: 0.15, K_d: 14.5, K_r: 0.4, ExuM: 8, mu_max: 0.063}
+            values: {D_max: 0.26, Y: 0.44, K_s: 3.0, theta: 0.23, ExuT: 0.8, BGF: 0.15, K_d: 14.5, K_r: 0.4, ExuM: 8.0, mu_max: 0.063}
             desc: original values from linked model (no nitrogen cycle considered in this model here)
 
     initial_values:

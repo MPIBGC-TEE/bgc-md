@@ -21,7 +21,7 @@ class TestReportGeneration(InDirTest):
         d=defaults() 
         sp=d['paths']['tested_records'].parent.joinpath('TestModels_1').joinpath('Williams2005GCB.yaml')
 
-        tp=d['paths']['report_templates'].joinpath('MinimalSingleReport.py')
+        tp=d['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
         model=Model.from_path(sp)
         rel=render(tp,model)
 
@@ -36,7 +36,7 @@ class TestReportGeneration(InDirTest):
         sp=d['paths']['tested_records'].parent.joinpath('TestModels_1')
         model_list=ModelList.from_dir_path(sp)
 
-        list_tp=d['paths']['report_templates'].joinpath('Website.py')
+        list_tp=d['paths']['report_templates'].joinpath('multiple_model','Website.py')
         #rel=render(list_tp,model_list=model_list)
         rel=render(list_tp,model_list)
 
@@ -45,6 +45,16 @@ class TestReportGeneration(InDirTest):
         targetFileName='overview.html'
         rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
 
+    def test_flagstaff_templates_commandline(self):
+        d=defaults() 
+        sp=d['paths']['data'].joinpath('FlagstaffTemplates')
+        tp=d['paths']['report_templates'].joinpath('single_model','FlagstaffVegetationTemplate.py')
+        rec_list=[ rec  for rec in sp.glob('*.yaml')]#[0:2]
+        for rec in rec_list:
+            #print(rec)
+            run(["render", str(tp.absolute()),"-y",str(rec.absolute()),"-t","."])
+            #m=Model.from_path(rec)
+            #rel=render(tp,model=m)
 #
     def test_create_old_overview_report(self):
         # fixme:

@@ -1,0 +1,76 @@
+# Extensions to veg_3.yaml 
+# 1.) Add an additional state variable C_ir
+#     a ) This will force us to update the state vector as well 
+#     b ) we also have to increase the size of the matrix A to 3X3
+#     c ) we also have to provide an additional startvalue in the initial value section 
+#
+# 2.) Describe the state variables and add some meta information to the others
+model:
+    - state_variables:
+        - C_il:
+            desc: Carbon in leaves of plant functional type (PFT) $i$
+            key: "foliage"
+        - C_is: 
+            desc: "Carbon in transport tissue (mainly stems) of PFT$_i$"
+            key: "wood" # consider changing this key to "vascular_tissue" and add to vegetation subcategories
+        - C_ir:
+            desc: Carbon in fine roots of PFT$_i$
+            key: "fine_roots"
+
+    - additional_variables:
+        - t:
+            desc: time
+            unit: "day"
+            type: variable
+            key: time_symbol
+
+    - photosynthetic_parameters:
+        - NPP_i:
+            desc: Net Primary Production for PFT$_i$
+            type: variable
+            key: NPP
+
+    - components:
+        # you are required to provide at least expressions for f u x and A
+        # you are allowed to use as many helper expressions as you want to arrive there
+        # e.g.
+        # p= x**2 # allowed just for conviniece
+        # f =p**2.. #required
+        - x: 
+            key: state_vector
+            exprs: "x=Matrix([C_il, C_is, C_ir ])"
+        - u: 
+            key: scalar_func_phot   
+            exprs: "u=NPP_i"
+        - b: 
+            key: part_coeff   
+            exprs: "b=Matrix([1/4*(1-sin(2*pi*t)),1/4*(1+sin(2*pi*t)),1/2])"
+        - A: 
+            key: cyc_matrix   
+            exprs: "A=Matrix([[-1/4*C_il,0,0],[1/8*C_il, -1/2*(2+sin(2*pi/5*t)),0],[0,1/4,1/8]])"
+        - f_v: 
+            key: state_vector_derivative 
+            exprs: "f_v = u*b + A*x"
+
+
+model_run_data:
+
+    parameter_sets:
+        - "Set1":
+            values: {NPP_i: 2}
+            desc: "Parameter values as described in Fake Publication"
+
+    initial_values:
+        - "IV1": 
+            values: {C_il: 250, C_is: 414, C_ir: 324}
+            desc: "Initial values as invented by Markus "
+    
+    run_times:
+        - "RT1":
+            start: 0
+            end: 20
+            step_size: 0.01
+    
+    possible_combinations:
+        - ["Set1", "IV1", "RT1"]
+     

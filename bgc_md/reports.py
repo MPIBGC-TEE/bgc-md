@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import argparse
 from bgc_md.DataFrame import DataFrame
-from bgc_md.ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline,EmptyLine,MatplotlibFigure, Link, LinkedSubPage, exprs_to_element
+from bgc_md.ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline,EmptyLine,MatplotlibFigure, Link, LinkedSubPage, exprs_to_element, PlotlyFigure
 
 from .Model import Model, check_parameter_set_complete
 from .ModelList import ModelList
@@ -27,6 +27,7 @@ from .helpers import py2tex_silent, key_from_dict_by_value
 from bgc_md.plot_helpers import add_xhist_data_to_scatter
 from bgc_md.gv import indexcolors, filled_markers
 import bgc_md.gv as gv
+from .Exceptions import ModelInitializationException
 from CompartmentalSystems.bins.TsTpMassFieldsPerPoolPerTimeStep import TsTpMassFieldsPerPoolPerTimeStep
 from CompartmentalSystems.bins.TimeStepIterator import TimeStepIterator
 #def common_parser:
@@ -66,13 +67,15 @@ def defaults():
     tested_record_path=this.joinpath('data','tested_records')
     # fixme mm 
     # I would like to get rid of the Subdirectories 
-    # and rather put the information is something is a soil or 
-    # vegetation model in the yaml file only but at the moment we still use the distinct directories.
-    soilModelPath=this.joinpath("data","SoilModels")
-    vegModelPath=this.joinpath("data","VegetationModels") 
+    # and rather put the information if something is a soil or 
+    # vegetation model in the yaml file only but at the moment 
+    # someone might still use the distinct directories.
+    dataPath=this.joinpath("data") 
+    soilModelPath=dataPath.joinpath("SoilModels")
+    vegModelPath =dataPath.joinpath("VegetationModels") 
     
     templatePath=this.joinpath("report_templates")
-    path_dict={"veg":vegModelPath,"soil":soilModelPath,"tested_records":tested_record_path,"report_templates":templatePath}
+    path_dict={"veg":vegModelPath,"soil":soilModelPath,"tested_records":tested_record_path,'data':dataPath,"report_templates":templatePath}
     
     dir_dict={key:value.as_posix() for key,value in path_dict.items()}
     msg_dict={key:"generating %s model website to" % key for key in path_dict.keys()}
@@ -150,7 +153,7 @@ def report_from_model(model):
             rel += Text("\n")
 
     # include the abstract
-    if model.abstract:
+    if hasattr(model,"abstract"):
         rel += Header("Abstract", 3)
         rel += Text("$abstract", abstract=model.abstract+"\n")
 
@@ -885,7 +888,13 @@ def generate_html_dir(src_dir, target_dir):
     
     rec_list=[ rec  for rec in src_dir_path.glob('*.yaml')]
     for rec in rec_list:
-        create_single_report(rec,html_dir_path)
+        try:
+            create_single_report(rec,html_dir_path)
+        except Exception as e:
+            print("##################")
+            print("problems with file: "+str(rec))
+            print(e)
+            print("##################")
     
 
     ml=ModelList.from_dir_path(src_dir_path)
@@ -925,6 +934,7 @@ def render_parse():
        ${p} report_templates/Overview_table.py -y data/all_records/Henin1945Annalesagronomiques.yaml  -t ${o} """).substitute(p=parser.prog,o="output" ) 
 
     com=parser.parse_args()
+    print(com)
     template_path=Path(com.template)
     #reference the template in the output html filename
     fn=template_path.stem+".html"
@@ -942,7 +952,7 @@ def render_parse():
         html_file_path= target_dir_path.joinpath(dir_name,fn)
         rel.write_pandoc_html(html_file_path)
     else:
-        model_list=ModelList.from_dir_path(Path(com.src__dir))
+        model_list=ModelList.from_dir_path(Path(com.src_dir))
         rel=render(template_path,model_list)
         html_file_path= target_dir_path.joinpath(fn)
         rel.write_pandoc_html(html_file_path)

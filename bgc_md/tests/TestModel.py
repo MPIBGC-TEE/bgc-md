@@ -11,7 +11,8 @@ import matplotlib.pyplot as plt
 
 from bgc_md.helpers import  retrieve_this_or_that
 from bgc_md.yaml_creator_mod import example_yaml_string_list
-from bgc_md.Model import Model, load_bibtex_entry, load_abstract, load_further_references, load_reviews, load_sections_and_titles, load_df, load_expressions_and_symbols, section_subdict, load_model_run_data, load_parameter_sets, load_initial_values, check_parameter_set_valid, check_parameter_sets_valid, check_parameter_set_complete, check_initial_values_set_valid, check_initial_values_complete, load_run_times, load_model_run_combinations, YamlException
+from bgc_md.Model import Model, load_bibtex_entry, load_abstract, load_further_references, load_reviews, load_sections_and_titles, load_df, load_expressions_and_symbols, section_subdict, load_model_run_data, load_parameter_sets, load_initial_values, check_parameter_set_valid, check_parameter_sets_valid, check_parameter_set_complete, check_initial_values_set_valid, check_initial_values_complete, load_run_times, load_model_run_combinations
+from bgc_md.Exceptions import ModelInitializationException
 from bgc_md.ModelList import ModelList
 from bgc_md.bibtexc import BibtexEntry, DoiNotFoundException, online_entry
 from bgc_md.SmoothModelRun import SmoothModelRun 
@@ -121,7 +122,7 @@ class TestModel(InDirTest):
             model:
         """
         complete_dict = yaml.load(yaml_str)
-        with self.assertRaises(YamlException) as cm:
+        with self.assertRaises(ModelInitializationException) as cm:
             complete_dict, modelID = load_complete_dict_and_id(complete_dict)
         e = cm.exception
         self.assertEqual(e.__str__()[:20], "yaml file does not contain a model section:"[:20])
@@ -161,18 +162,8 @@ class TestModel(InDirTest):
                         doi: xyzbgcv12y.122
                     """
         complete_dict = yaml.load(yaml_str)
-        bibtex_entry = load_bibtex_entry(complete_dict)
-        self.assertEqual(bibtex_entry,None)
-
-
-    def test_load_bibtex_entry_no_doi_no_yaml(self):
-        # test missing doi and bibtex
-        yaml_str = """\
-                    modelID : S0019
-                   """
-        complete_dict = yaml.load(yaml_str)
-        self.assertEqual(load_bibtex_entry(complete_dict), None)
-
+        with self.assertRaises(DoiNotFoundException):
+            bibtex_entry = load_bibtex_entry(complete_dict)
 
     def test_load_abstract(self):
         # test yaml abstract over bibtex abstract and correction of special terms
@@ -228,31 +219,37 @@ class TestModel(InDirTest):
         further_references = load_further_references(complete_dict)
         self.assertEqual(further_references[0]['bibtex_entry'].key, 'Allison2010NatureGeoscience')
         self.assertEqual(further_references[1]['bibtex_entry'].key, 'Li2014Biogeochemistry')
+        # fixme mm 05/20/2018
+        # the following lines have to be changed
+        # We actually no longer want the whole model initialization to fail if we can not reach mendeley or doi.org
+        # We also do not want a lot of model properties with value None
+        # We just do not set them if we do not have the appropriate information.
+        
 
-        # test missing doi and bibtex
-        yaml_str = """\
-        further_references:
-            - doi: 
-              desc: "Original paper, just by doi"
-        """
-        complete_dict = yaml.load(yaml_str)
-        with self.assertRaises(YamlException) as cm:
-            further_references = load_further_references(complete_dict)
-        e = cm.exception
-        self.assertEqual(e.__str__(), "Missing 'doi' and 'bibtex' in further_references.")
+        ## test missing doi and bibtex
+        #yaml_str = """\
+        #further_references:
+        #    - doi: 
+        #      desc: "Original paper, just by doi"
+        #"""
+        #complete_dict = yaml.load(yaml_str)
+        #with self.assertRaises(ModelInitializationException) as cm:
+        #    further_references = load_further_references(complete_dict)
+        #e = cm.exception
+        #self.assertEqual(e.__str__(), "Missing 'doi' and 'bibtex' in further_references.")
 
-        # test invalid doi
-        yaml_str = """\
-        further_references:
-            - doi: 34.xxcvj8Fs0
-              desc: "Invalid doi"
-        """
-        complete_dict = yaml.load(yaml_str)
-        with self.assertRaises(YamlException) as cm:
-            further_references = load_further_references(complete_dict)
-        e = cm.exception
-        ref_str = "Invalid doi in further_references.\nThe doi 34.xxcvj8Fs0 could not be resolved."
-        self.assertEqual(e.__str__(), ref_str)
+        ## test invalid doi
+        #yaml_str = """\
+        #further_references:
+        #    - doi: 34.xxcvj8Fs0
+        #      desc: "Invalid doi"
+        #"""
+        #complete_dict = yaml.load(yaml_str)
+        #with self.assertRaises(ModelInitializationException) as cm:
+        #    further_references = load_further_references(complete_dict)
+        #e = cm.exception
+        #ref_str = "Invalid doi in further_references.\nThe doi 34.xxcvj8Fs0 could not be resolved."
+        #self.assertEqual(e.__str__(), ref_str)
 
 
     def test_load_reviews(self):
@@ -287,7 +284,7 @@ class TestModel(InDirTest):
               type: deep
         """
         complete_dict = yaml.load(yaml_str)
-        with self.assertRaises(YamlException) as cm:
+        with self.assertRaises(ModelInitializationException) as cm:
             reviews, deeply_reviewed= load_reviews(complete_dict)
         e = cm.exception
         self.assertEqual(e.__str__(), "Missing 'type' in review list.")
@@ -327,7 +324,7 @@ class TestModel(InDirTest):
                 - e:
         """
         complete_dict = yaml.load(yaml_str)
-        with self.assertRaises(YamlException) as cm:
+        with self.assertRaises(ModelInitializationException) as cm:
             sections, section_titles = load_sections_and_titles(complete_dict)
         e = cm.exception
 
@@ -389,7 +386,7 @@ class TestModel(InDirTest):
         """
         complete_dict = yaml.load(yaml_str)
         sections, section_titles, complete_dict = load_sections_and_titles(complete_dict)
-        with self.assertRaises(YamlException) as cm:
+        with self.assertRaises(ModelInitializationException) as cm:
             df = load_df(complete_dict, sections)
         e = cm.exception
         self.assertEqual(e.__str__(), "Variable 'X' defined more than once.")
@@ -454,7 +451,7 @@ class TestModel(InDirTest):
 
         # test wrong target key: correct key is 'additional_variables[Alternative Title]'
         # since load_sections_and_titles was not yet run
-        with self.assertRaises(YamlException) as cm:
+        with self.assertRaises(ModelInitializationException) as cm:
             subdict = section_subdict(complete_dict, 'additional_variables')
         e = cm.exception
         self.assertEqual(e.__str__(), "Subsection additional_variables not found.")
@@ -766,7 +763,7 @@ class TestModel(InDirTest):
         """
         complete_dict = yaml.load(yaml_str)
         model_run_data = load_model_run_data(complete_dict)
-        with self.assertRaises(YamlException) as cm:
+        with self.assertRaises(ModelInitializationException) as cm:
             run_times = load_run_times(model_run_data)
         e = cm.exception
         self.assertEqual(e.__str__(), "'run_times' data set 'RT2' does not contain 'start'")
@@ -783,7 +780,7 @@ class TestModel(InDirTest):
         """
         complete_dict = yaml.load(yaml_str)
         model_run_data = load_model_run_data(complete_dict)
-        with self.assertRaises(YamlException) as cm:
+        with self.assertRaises(ModelInitializationException) as cm:
             run_times = load_run_times(model_run_data)
         e = cm.exception
         self.assertEqual(e.__str__(), "'run_times' data set 'RT1' has 'start' > 'end'")
@@ -1058,7 +1055,7 @@ class TestModel(InDirTest):
         """
         complete_dict = yaml.load(yaml_str)
         model_run_data = load_model_run_data(complete_dict)
-        with self.assertRaises(YamlException) as cm:
+        with self.assertRaises(ModelInitializationException) as cm:
             parameter_sets = load_parameter_sets(model_run_data)
         e = cm.exception
         self.assertEqual(e.__str__(), "Could not load parameter sets.\nData set 'Set1' invalid, probably forgotten space after colon.")
@@ -1073,7 +1070,7 @@ class TestModel(InDirTest):
         """
         complete_dict = yaml.load(yaml_str)
         model_run_data = load_model_run_data(complete_dict)
-        with self.assertRaises(YamlException) as cm:
+        with self.assertRaises(ModelInitializationException) as cm:
             parameter_sets = load_parameter_sets(model_run_data)
         e = cm.exception
         self.assertEqual(e.__str__(), "Could not load parameter sets.\nNo values given in data set 'Set1'.")
@@ -1134,7 +1131,7 @@ class TestModel(InDirTest):
         sd, ed, syms_by_type = load_expressions_and_symbols(df)
         model_run_data = load_model_run_data(complete_dict)
         parameter_sets = load_parameter_sets(model_run_data)
-        with self.assertRaises(YamlException) as cm:
+        with self.assertRaises(ModelInitializationException) as cm:
             check_parameter_set_valid(parameter_sets[0], syms_by_type)
         e = cm.exception
         self.assertEqual(e.__str__(), "Invalid parameter set: Set1\nCould not substitute 'a'\nname 'a' is not defined")
@@ -1164,7 +1161,7 @@ class TestModel(InDirTest):
         sd, ed, syms_by_type = load_expressions_and_symbols(df)
         model_run_data = load_model_run_data(complete_dict)
         initial_values = load_initial_values(model_run_data)
-        with self.assertRaises(YamlException) as cm:
+        with self.assertRaises(ModelInitializationException) as cm:
             check_initial_values_set_valid(initial_values[0], syms_by_type, ['X'])
         e = cm.exception
         self.assertEqual(e.__str__(), "Invalid initial values set: IV1\nCould not substitute 'Y'\nname 'Y' is not defined")
@@ -1322,7 +1319,7 @@ class TestModel(InDirTest):
         model.df = load_df(model.complete_dict, model.sections)
         model.syms_dict, model.exprs_dict, model.symbols_by_type = load_expressions_and_symbols(model.df) 
         
-        with self.assertRaises(YamlException) as cm:
+        with self.assertRaises(ModelInitializationException) as cm:
             model.set_component_keys()
         e = cm.exception
         self.assertEqual(e.__str__(), "Invalid component key: '__init__'")

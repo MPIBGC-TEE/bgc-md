@@ -9,8 +9,8 @@ def template(model):
     #rel=ReportElementList()
     rel= Meta({"title":t})
 
-    rel+= Link(str(model.yaml_file_path.absolute()),str(model.yaml_file_path))
-    rel+=Newline()
+    rel+= Link(str(model.yaml_file_path),str(model.yaml_file_path.absolute()))
+    rel+=EmptyLine()
     rel+= Header("General Overview", 1)
     reservoir_model = model.reservoir_model
     if reservoir_model:
@@ -24,7 +24,7 @@ def template(model):
         modDate=model.last_modification_date,
         Oid=model.entryAuthor_orc_id,
     )
-    rel+=Newline()
+    rel+=EmptyLine()
     if model.model_type == "vegetation_model": modType = "carbon allocation"
     if model.model_type == "soil_model": modType = "soil organic matter decomposition"
 
@@ -39,9 +39,9 @@ def template(model):
     rel += Header("About the model", 2)
     rel += Text(r"The model depicted in this document considers $modType$modApproach It was originally described by ", 
         modType=modType, modApproach=modApproach)
-    rel += Citation(model.bibtex_entry, parentheses=False) + Text(".")+Newline()
+    rel += Citation(model.bibtex_entry, parentheses=False) + Text(".")+EmptyLine()
     # include the abstract
-    if model.abstract:
+    if hasattr(model,"abstract"):
         rel += Header("Abstract", 3)
         rel += Text("$abstract", abstract=model.abstract+"\n")
     # include keywords

@@ -1,0 +1,142 @@
+# Extensions to veg_3.yaml 
+# 1.) Add an additional state variable C_ir
+#     a ) This will force us to update the state vector as well 
+#     b ) we also have to increase the size of the matrix A to 3X3
+#     c ) we also have to provide an additional startvalue in the initial value section 
+#
+# 2.) Describe the state variables and add some meta information to the others
+model:
+    - state_variables:
+        - C_il_1:
+            desc: Carbon in leaves of plant functional type (PFT) $i$
+            key: "foliage"
+        - C_is_1: 
+            desc: "Carbon in transport tissue (mainly stems) of PFT$_i$"
+            key: "wood" # consider changing this key to "vascular_tissue" and add to vegetation subcategories
+        - C_ir_1:
+            desc: Carbon in fine roots of PFT$_i$
+            key: "fine_roots"
+        - C_il_2:
+            desc: Carbon in leaves of plant functional type (PFT) $i$
+            key: "foliage"
+        - C_is_2: 
+            desc: "Carbon in transport tissue (mainly stems) of PFT$_i$"
+            key: "wood" # consider changing this key to "vascular_tissue" and add to vegetation subcategories
+        - C_ir_2:
+            desc: Carbon in fine roots of PFT$_i$
+            key: "fine_roots"
+        - C_litter:
+            desc: Carbon in pool of litterfall
+            key: "i"
+        - C_soil_fast:
+            desc: fast soil pool carbon
+            key: "i"
+        - C_soil_slow:
+            desc: slow soil pool carbon
+            key: "i"
+        - C_soil_passive:
+            desc: passive soil pool carbon
+            key: "i"
+
+    - additional_variables:
+        - t:
+            desc: time
+            unit: "day"
+            type: variable
+            key: time_symbol
+        - Ca:
+            desc: Atmospheric CO2 concentrations
+            unit: "ppm"
+        - gb_co2:
+            unit: 'unitless'
+        - AgC3:
+            desc: "temporarely treated as parameter until we implement its dependencies"
+        - Rleaf:
+            desc: "temporarely treated as parameter until we implement its dependencies"
+        - An:
+            desc: "eq.9 in the original paper by Jonathan Foley 1996 GBC "
+            exprs: "An=AgC3-Rleaf"
+        - Cs:
+            desc: "eq.14 in the original paper by Jonathan Foley 1996 GBC "
+            exprs: "Cs=(Ca-An)/gb_co2"
+        - lamda:
+            desc: "relative part of distribution of NPP pfts, <1 ,(1-lamda) is for grass"
+            unit: 'unitless'
+            #exprs: "lamda=0.8"
+            exprs: "lamda=C_il_1/(C_il_1+C_il_2)"
+
+    - photosynthetic_parameters:
+        - NPP_i:
+            desc: Net Primary Production for PFT$_i$
+            type: variable
+            key: NPP
+            exprs: "NPP_i=1000"
+            #exprs: "NPP_i=Cs"
+
+    - components:
+        # you are required to provide at least expressions for f u x and A
+        # you are allowed to use as many helper expressions as you want to arrive there
+        # e.g.
+        # p= x**2 # allowed just for conviniece
+        # f =p**2.. #required
+        - x: 
+            key: state_vector
+            exprs: "x=Matrix([C_il_1, C_is_1, C_ir_1,C_il_2, C_is_2, C_ir_2,C_litter,C_soil_fast,C_soil_slow,C_soil_passive])"
+        - u: 
+            key: scalar_func_phot   
+            exprs: "u=NPP_i"
+        - b: 
+            key: part_coeff   
+            #exprs: "b=Matrix(3,1,[1/4*(1-sin(2*pi*t)),1/4*(1+sin(2*pi*t)),1/2])"
+            exprs: "b=Matrix([lamda*0.3,
+                              lamda*0.5,
+                              lamda*0.2,
+                              (1-lamda)*0.3,
+                              (1-lamda)*0.4,
+                              (1-lamda)*0.3,
+                              0,
+                              0,
+                              0,
+                              0])"
+        - A: 
+            key: cyc_matrix   
+            #exprs: "A=Matrix([[-1/4*C_il,0,0],[1/8*C_il, -1/2*(2+sin(2*pi/5*t)),0],[0,1/4,1/8]])"
+            exprs: "A=Matrix([[-0.89     ,0    , 0      ,0    ,  0   ,  0  ,0, 0 ,0 ,0],
+                              [ 0        ,-0.005, 0      ,0    ,  0   ,  0  ,0, 0 ,0 ,0],
+                              [ 0        , 0   ,-0.8    ,0    ,  0   ,  0  ,0, 0 ,0 ,0],
+                              [ 0        , 0   , 0      ,-.79 ,  0   ,  0  ,0, 0 ,0 ,0],
+                              [ 0        , 0   , 0      ,0    ,-0.01 ,0  ,0, 0 ,0 ,0],
+                              [ 0        , 0   , 0      ,0    ,  0   ,-.8  ,0, 0 ,0 ,0],
+                              [ 0.89     , 0.005, 0.8    ,0.79 , 0.01 ,.8 ,0, 0 ,0 ,0],
+                              [ 0        , 0   , 0.8    ,0    ,  0   ,  0  ,0, 0 ,0 ,0],
+                              [ 0        , 0   , 0.8    ,0    ,  0   ,  0  ,0, 0 ,0 ,0],
+                              [ 0        , 0   , 0.8    ,0    ,  0   ,  0  ,0, 0 ,0 ,0]])"
+            # desidious forest
+        - f_v: 
+            key: state_vector_derivative 
+            exprs: "f_v = u*b + A*x"
+
+
+model_run_data:
+
+    parameter_sets:
+        - "Set1":
+            values: {Ca: 390,  AgC3: 1.5, Rleaf: 0.000001, gb_co2: .5}
+            desc: "Parameter values as described in Fake Publication"
+            unit: "kg/m^2"
+            type: variable
+
+    initial_values:
+        - "IV1": 
+            values: { C_il_1: 20, C_is_1: 1500, C_ir_1: 1000, C_il_2: 10, C_is_2: 500, C_ir_2: 2000, C_litter: 1.0, C_soil_fast: 0.5, C_soil_slow: 2.5, C_soil_passive: 50 }
+            desc: "Initial values given by Jinxun Liu, desribing a 5 year old small forest."
+    
+    run_times:
+        - "RT1":
+            start: 0
+            end: 200
+            step_size: 0.1
+    
+    possible_combinations:
+        - ["Set1", "IV1", "RT1"]
+     

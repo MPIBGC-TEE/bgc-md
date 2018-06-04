@@ -1,0 +1,27 @@
+#ASSIGNE FUNDATION IMAGE
+FROM centos:7
+#INSTALL NEEDED COMPONENTS
+RUN yum -y update
+RUN yum -y install git
+RUN yum -y groupinstall development
+RUN yum -y install https://centos7.iucommunity.org/ius-release.rpm
+RUN yum -y install python36u
+RUN yum -y install python36u-pip
+RUN yum -y install python36u-devel
+RUN python3.6 -m venv virtual_env
+RUN source virtual_env/bin/activate
+RUN mkdir workingfolder
+RUN cd workingfolder
+CMD ["git","clone","https://github.com/MPIBGC-TEE/bgc-md.git"]
+#CMD ["chmod","+x","install.sh"]
+RUN chmod +x /workingfolder/bgc-md/install.sh
+#CMD ["./workingfolder/bgc-md/install.sh"]
+RUN install.sh
+#RUN mkdir virtual_env
+#RUN cd virtual_env
+#RUN pip install -U pip
+#RUN pip install -U virtualenv
+#RUN yum -y install python-pip
+#RUN yum -y install python-pip
+#RUN yum -y install python-pip
+3RUN yum - 

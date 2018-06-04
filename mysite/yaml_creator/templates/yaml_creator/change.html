@@ -1,0 +1,10 @@
+<h1>You are changing: {{ yaml_file_name}}</h1>
+
+<form action="{% url 'change' yaml_file_name %}" method="post">
+	{% csrf_token %}
+	{% for choice in  choices %}
+	    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ forloop.counter }}" />
+	        <label for="choice{{ forloop.counter }}">{{ choice}}</label><br />
+	{% endfor %}
+		<input type="submit" value="Vote" />
+</form>

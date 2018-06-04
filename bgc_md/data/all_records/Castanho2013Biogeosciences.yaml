@@ -24,7 +24,7 @@ reviews:
 model:
     - state_variables:
         - C_il:
-            desc: Carbon in leaves of plant functional type (PFT) i
+            desc: Carbon in leaves of plant functional type (PFT) $i$
             key: "foliage"
         - C_is: 
             desc: "Carbon in transport tissue (mainly stems) of PFT$_i$"

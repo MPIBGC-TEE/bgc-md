@@ -1,0 +1,232 @@
+
+## vim:set ff=unix expandtab ts=4 sw=4:
+citationKey: TECO
+name: Terrestrial Ecosystem Model
+version: 
+model-id: E0001
+entryAuthor: Carlos A. Sierra
+entryAuthorOrcid: 0000-0003-0009-4169
+entryCreationDate: 12/4/2018
+lastModification: 16/4/2018
+#    unit: "1°"
+timeResolution: monthly 
+#    unit: month^{-1}
+bibtex: "@incollection{Luo2012TE,
+         Address = {Berkeley},
+         Author = {Yiqi Luo and Ensheng Weng and Yuanhe Yang},
+         Booktitle = {Encyclopedia of Theoretical Ecology},
+         Date-Added = {2015-05-05 15:20:40 +0000},
+         Date-Modified = {2015-05-05 15:20:40 +0000},
+         Editor = {Alan Hastings and Louis Gross},
+         Pages = {219-229},
+         Publisher = {University of California Press},
+         Title = {Ecosystem Ecology},
+         Year = {2012}}"
+abstract: "Ecosystem ecology is a subdiscipline of ecology that focuses on exchange of energy and materials between organisms and the environment. The materials that are commonly studied in ecosystem ecology include water, carbon, nitrogen, phosphorus, and other elements that organisms use as nutrients. The source of energy for most ecosystems is solar radiation. In this entry, material cy-cling and energy exchange are generally described before the carbon cycle is used as an example to illustrate our quantitative and theoretical understanding of ecosystem ecology."
+model:
+    - state_variables:
+        - x_1:
+            desc: Carbon in foliage
+            key: "foliage"
+        - x_2: 
+            desc: Carbon in roots 
+            key: "fine_roots"
+        - x_3:
+            desc: Carbon in woody tissue
+            key: "wood"
+        - x_4:
+            desc: Carbon in metabolic litter
+            key: "litter"
+        - x_5:
+            desc: Carbon in structural litter
+            key: "litter"
+        - x_6:
+            desc: Carbon in fast SOM
+            key: "soil"
+        - x_7:
+            desc: Carbon in slow SOM
+            key: "soil"
+        - x_8:
+            desc: Carbon in passive SOM
+            key: "soil"
+
+    - photosynthetic_parameters:
+        - GPP:
+            desc: Photosynthetic rate (Carbon input) at time t 
+            unit: "gC*day^{-1}" 
+            type: variable
+            key: GPP
+        - T:
+            desc: Temperature
+            type: variable
+            key: Temperature
+        - Q_10:
+            desc: "Temperature quotient that describes a change in decomposition rate for evey 10°C difference in temperature"
+            type: parameter
+            key: Q_10
+        - W:
+            desc: Volumetric soil moisture
+            type: variable
+        - f_W:
+            desc: Function of W
+            exprs: "f_W = Min((0.5*W),1)"
+            type: variable
+            key: func_soil_moist
+        - f_T:
+            desc: Function of T 
+            exprs: "f_T = Q_10*((T-10)/10)"
+            type: variable
+            key: func_temp
+        - xi:
+            desc: Environmental scalar
+            exprs: "xi = f_W*f_T" 
+            type: variable
+            key: env_scalar
+    - allocation_coefficients:
+        - b_1:
+            desc: Fixed partitioning ratio (fraction) of available carbon allocated to foliage
+            type: parameter
+            key: "part_foliage"
+        - b_2:
+            desc: Fixed partitioning ratio (fraction) of available carbon allocated to roots
+            type: parameter
+            key: "part_roots"
+        - b_3:
+            desc: Fixed partitioning ratio (fraction) of available carbon allocated to wood
+            type: parameter
+            key: "part_wood"
+    - cycling_rates:
+        - c_1: 
+            desc: Foliage cycling rate
+            unit: "day^{-1}"
+            type: parameter
+            key: "cyc_foliage"
+        - c_2:
+            desc: Woody cycling rate
+            unit: "day^{-1}"
+            type: parameter
+            key: "cyc_wood"
+        - c_3:
+            desc: Fine roots cycling rate
+            unit: "day^{-1}"
+            type: parameter
+            key: "cyc_root"
+        - c_4:
+            desc: Metabolic litter cycling rate
+            unit: "day^{-1}"
+            type: parameter
+            key: "cyc_litter"
+        - c_5:
+            desc: Structural litter cycling rate
+            unit: "day^{-1}"
+            type: parameter
+            key: "cyc_litter"
+        - c_6:
+            desc: Fast SOM cycling rate
+            unit: "day^{-1}"
+            type: parameter
+            key: "cyc_soil"
+        - c_7:
+            desc: Slow SOM cycling rate
+            unit: "day^{-1}"
+            type: parameter
+            key: "cyc_soil"
+        - c_8:
+            desc: Passive SOM cycling rate
+            unit: "day^{-1}"
+            type: parameter
+            key: "cyc_soil"
+    - transfer_coefficients:
+        - f_41:
+           desc: Transfer coefficient from Foliage to Metabilic Litter 
+        - f_51:
+           desc: Transfer coefficient from Foliage to Structural Litter
+        - f_52:
+           desc: Transfer coefficient from Wood to Structural Litter
+        - f_43:
+           desc: Transfer coefficient from Fine Roots to Metabolic Litter
+        - f_53:
+           desc: Transfer coefficient from Fine Roots to Structural Litter
+        - f_64:
+           desc: Transfer coefficient from Metabolic Litter to Fast SOM
+        - f_65:
+           desc: Transfer coefficient from Structural Litter to Fast SOM
+        - f_75:
+           desc: Transfer coefficient from Structural Litter to Slow SOM
+        - f_76:
+           desc: Transfer coefficient from Fast to Slow SOM
+        - f_86: 
+           desc: Transfer coefficient from Fast to Passive SOM
+        - f_67:
+           desc: Transfer coefficient from Slow to Fast SOM
+        - f_87:
+           desc: Transfer coefficient from Slow to Passive SOM
+        - f_68:
+           desc: Transfer coefficient from Passive to Fast SOM
+
+    - additional_variables:
+        - t:
+            desc: time
+            unit: "day"
+            type: variable
+            key: time_symbol
+
+    - components:
+        # you are required to provide at least expressions for f u x and A
+        # you are allowed to use as many helper expressions as you want to arrive there
+        # e.g.
+        # p= x**2 # allowed just for conviniece
+        # f =p**2.. #required
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(8,1,[x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8])"
+            desc: vector of state variables
+        - u: 
+            key: scalar_func_phot    
+            exprs: "u=GPP"
+            desc: scalar function of photosynthetic inputs
+        - b: 
+            key: part_coeff    
+            exprs: "b=Matrix(8,1,[b_1, b_2, b_3, 0, 0, 0, 0, 0])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - C: 
+            exprs: "C=diag(c_1, c_2, c_3, c_4, c_5, c_6, c_7, c_8)"
+            desc: matrix of cycling rates
+        - A:
+            exprs: "A = Matrix([[  -1,     0,     0,     0,     0,     0,     0,     0],
+                                [   0,    -1,     0,     0,     0,     0,     0,     0],
+                                [   0,     0,    -1,     0,     0,     0,     0,     0],
+                                [f_41,     0,  f_43,    -1,     0,     0,     0,     0],
+                                [f_51,  f_52,  f_53,     0,    -1,     0,     0,     0],
+                                [   0,     0,     0,  f_64,  f_65,    -1,  f_67,  f_68],
+                                [   0,     0,     0,     0,  f_75,  f_76,    -1,     0],
+                                [   0,     0,     0,     0,     0,  f_86,  f_87,    -1]])" 
+            desc: matrix of transfer coefficients
+        - B: 
+            exprs: "B = A*C"
+            desc: matrix of cycling and tansfer rates
+            key: cyc_matrix
+        - f_v: 
+            key: state_vector_derivative  
+            exprs: "f_v = u*b + B*x"
+            desc: the righthandside of the ode
+
+model_run_data:
+    parameter_sets:
+        - "Set1":
+            desc: "Parameter values as described in Wang and Luo"
+            values: {GPP: 3.370, b_1: 0.14, b_2: 0.26, b_3: 0.14, f_41: 0.9, f_51: 0.1, f_52: 1, f_43: 0.2, f_53: 0.8, f_64: 0.45, f_65: 0.275, f_75: 0.275, f_76: 0.296, f_86: 0.004, f_67: 0.42, f_87: 0.01, f_68: 0.45, c_1: 0.00258, c_2: 0.0000586, c_3: 0.002390, c_4: 0.0109, c_5: 0.00095, c_6: 0.0105, c_7: 0.0000995,c_8: 0.0000115}
+    initial_values:
+        - "IV1":
+            values: {x_1: 250, x_2: 4145, x_3: 192, x_4: 93, x_5: 545, x_6: 146, x_7: 1585, x_8: 300}
+            desc: "Initial values as in Wang and Luo"
+    
+    run_times:
+        - "RT1":
+            start: 0
+            end: 200
+            step_size: 1
+
+    possible_combinations:
+        - ["Set1","IV1", "RT1"]
+

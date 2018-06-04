@@ -3,6 +3,12 @@ This package consists of two components:
 - A folder with yaml files which encode several soil, vegetation, and ecosystem models in a unified way.
 - A python package that can be used (and extended) to run queries against single models or subsets of the encoded models.
 
+#Docker image can be build from Dockerfile or pulled from Docker hub (Not apllouded need to add it there at first).
+#To build image from Dockerfile
+  $ docker build -t docker_image_name dockerfile_location
+#To pull
+  $ docker pull image_name
+
 
 ## INSTALLATION
 ### Prerequisites:
@@ -11,10 +17,12 @@ This package consists of two components:
     software.
     Some distributions do not install it by default
     E.g. for ubuntu you have to say:```bash
-    sudo apt-get install python3.4-venv*```
-  - pandoc
-    E.g. for ubuntu you have to say:
-    ```bash sudo apt-get install pandoc*```
+    sudo apt-get install python3-venv*```
+  - pandoc newer than 2.06
+    E.g. for ubuntu-16.04 the version provided by the distribution is too old, 
+    and you have to download the debian package from the pandoc website and install the downloaded file, e.g. by :
+    ```bash sudo apt-get install ./pandoc-2.2.1-1-amd64.deb*```
+    (Version numbers will change.)
 
 ### Create virtual environment (e.g. in ~/test)
 ```bash
@@ -32,7 +40,7 @@ that is needed there.
 - Assuming that you just want to use the package and are not going to change any of the packages it depends on
   you can just type the following commands:
 ```bash
-     $ pip install -r requirements.txt
+     $ pip install -r requirements.freeze
      $ python setup.py develop
 ```
 - You can also run the script 
@@ -82,4 +90,11 @@ on unbuntu building of these python packages requires non python libraries to be
     $ sudo apt-get install libfreetype6-dev
     $ sudo apt-get install libffi6 libffi-dev
     $ sudo apt-get install libssl-dev
+```
+## Test the render command
+go to the directory of the package (e.g. /path/to/bgc-md/bgc_md/)
+and run the commandline tool
+ren
+```bash
+render report_templates/single_model/FlagstaffVegetationTemplate.py -y data/all_records/veg_1.yaml -t output
 ```

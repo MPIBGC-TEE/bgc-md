@@ -3,7 +3,7 @@
 
 # This is the standard pyhon install script.
 # Only if it does not work use the shell script ../install_bgc_md.sh in the folder above
-# Keep the requirements.txt clean and to a minimum.
+# Keep the requirements.freeze clean and to a minimum.
 
 from setuptools import setup,find_packages
 def readme():
@@ -34,6 +34,7 @@ setup(name='bgc_md',
                 'generate_website= bgc_md.reports:generate_website' # creates an executable with name generate_website
                 ,'generate_model_run_reports = bgc_md.reports:generate_model_run_reports' # ...
                 ,'generate_model_run_report = bgc_md.reports:generate_model_run_report' # ...
+                # the next entry is only for test reasons
                 ,'generate_test_report = bgc_md.reports:generate_test_report' # ...
                 ,'render= bgc_md.reports:render_parse'
                 ]

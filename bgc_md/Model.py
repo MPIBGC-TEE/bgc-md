@@ -17,16 +17,9 @@ from .bibtexc import BibtexEntry, DoiNotFoundException, online_entry
 from .helpers import remove_indentation, create_symbols_func, eval_expressions, retrieve_or_default, retrieve_this_or_that, py2tex_silent
 from .helpers_reservoir import factor_out_from_matrix
 from .DataFrame import DataFrame
+from .Exceptions import ModelInitializationException
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
-
-class YamlException(Exception):
-    """Raised if parsing of yaml file fails for any reason."""
-    def __init__(self, msg):
-        self.msg = msg
-
-    def __str__(self):
-        return self.msg
 
 
 ######### helper functions #############
@@ -43,12 +36,12 @@ def depth(expr):
 
 #def load_complete_dict_and_id(complete_dict):
 #    if ('model' not in complete_dict) or (not complete_dict['model']):
-#        raise(YamlException("yaml file does not contain a model section:\n\n" + str(complete_dict)))
+#        raise(ModelInitializationException("yaml file does not contain a model section:\n\n" + str(complete_dict)))
 #
 #    #mandatory_tags = tuple()
 #    #for tag in mandatory_tags:
 #    #    if (tag not in complete_dict) or (not complete_dict[tag]):
-#    #        raise(YamlException("Did not find '" + tag +"' in:\n\n" + str(complete_dict)))
+#    #        raise(ModelInitializationException("Did not find '" + tag +"' in:\n\n" + str(complete_dict)))
 #
 #    #fixme: remove that as soon as possible
 #    #if 'model-id' not in complete_dict.keys():
@@ -68,36 +61,26 @@ def convert_yaml_bibtex_str(yaml_bibtex_str):
 def load_bibtex_entry(complete_dict):
     # load BibTex entry, priority: yaml file, then by doi, 
     # also retrieve abstract if entry is fetched by doi
+    # we do not 
     tag = 'bibtex'
     if tag in complete_dict.keys():
         # prepare bibtex string from yaml file for initialisation
         entry_str = convert_yaml_bibtex_str(complete_dict[tag])
-        bibtex_entry = BibtexEntry.from_entry_str(entry_str)
+        return BibtexEntry.from_entry_str(entry_str)
     elif 'doi' in complete_dict.keys():
-        try:
-            return BibtexEntry.from_doi(doi=complete_dict['doi'], abstract=True)
+        return BibtexEntry.from_doi(doi=complete_dict['doi'], abstract=True)
 
-        except DoiNotFoundException:
-            bibtex_entry=None
-
-
-    else:
-        #fixme: prints should become  logger calls
-        print("called without a bibtex_str, bibtex dict or doi")
-        bibtex_entry = None
-    
-    return bibtex_entry
 
 def load_abstract(complete_dict, bibtex_entry):
     abstract = None
-    # load abstract from BibTeX entry if possible
-    if bibtex_entry:
-        abstract = bibtex_entry.get_abstract(format_str="BibLaTeX")
-
     # if abstract given in yaml file, keep it
     tag = 'abstract'
     if tag in complete_dict.keys() and complete_dict[tag]:
         abstract = complete_dict[tag]
+
+    else:# load abstract from BibTeX entry if possible
+        if bibtex_entry:
+            abstract = bibtex_entry.get_abstract(format_str="BibLaTeX")
 
     # try to convert common strangely written terms in the abstract to good-looking ones
     # works only with Text("abstract: $a", a=abstract) from ReportElementList
@@ -132,10 +115,10 @@ def load_further_references(complete_dict):
                     ref['bibtex_entry'] = BibtexEntry.from_doi(ref_dict['doi'])
                 except DoiNotFoundException as e:
                     ex_string = "Invalid doi in further_references."
-                    raise(YamlException(ex_string + "\n" + e.__str__()))
+                    raise(ModelInitializationException(ex_string + "\n" + e.__str__()))
             else:
                 ex_string = "Missing 'doi' and 'bibtex' in further_references."
-                raise(YamlException(ex_string))
+                raise(ModelInitializationException(ex_string))
             if ref:
                 tag3 = 'desc'
                 if tag3 in ref_dict.keys():
@@ -157,7 +140,7 @@ def load_reviews(complete_dict):
             for obl_key in obligatory_keys:
                 if (obl_key not in review.keys()) or (not review[obl_key]):
                     ex_string = "Missing '" + obl_key + "' in review list."
-                    raise(YamlException(ex_string))
+                    raise(ModelInitializationException(ex_string))
             if review['type'] == 'deep':
                 deeply_reviewed = True        
     else:
@@ -208,7 +191,7 @@ def load_sections_and_titles(complete_dict):
     
     for section in new_section_names:
         if new_section_names.count(section) > 1:
-            raise(YamlException("The model contains more than one subsection called '" + section + "'."))
+            raise(ModelInitializationException("The model contains more than one subsection called '" + section + "'."))
             
     return (new_section_names, section_titles, new_complete_dict)
 
@@ -219,7 +202,7 @@ def section_subdict(complete_dict, target_key):
     matching = [dic for dic in model_list if target_key in dic.keys()]
 
     if len(matching) != 1:
-        raise(YamlException('Subsection ' + target_key + ' not found.'))
+        raise(ModelInitializationException('Subsection ' + target_key + ' not found.'))
    
     return matching[0]
         
@@ -276,7 +259,7 @@ def load_df(complete_dict, sections):
                     for colname in additional_colnames:
                         row.append(None)
                 else:
-                    raise(YamlException('Variable description wrong in ' + sec + '.'))
+                    raise(ModelInitializationException('Variable description wrong in ' + sec + '.'))
                 row_list.append(row)
 
     df = DataFrame(row_list)
@@ -284,7 +267,7 @@ def load_df(complete_dict, sections):
     var_list = df.get_column('name')
     for v in var_list:
         if var_list.count(v) > 1:
-            raise(YamlException("Variable '" + v + "' defined more than once."))
+            raise(ModelInitializationException("Variable '" + v + "' defined more than once."))
 
     return df
 
@@ -348,6 +331,16 @@ def load_model_run_data(complete_dict):
 # helper function for loading parameter sets and initial values since they have the same structure
 def load_from_model_run_data(model_run_data, attr_name):
     # attr_name = 'parameter_sets' or attr_name = 'initial_values'
+    
+    # fixme mm 18.05.2018
+    # this is a typical  examle of a function that seems too deeply nested
+    # It tries to solve problems that should be solved on the level of the caller
+    # This would make knowledge about fields like "values" and "table_head" unnecessary.
+    # This is also a kind of duplication. (probably arising from the attempt to remove duplicated code)
+
+    
+    # fixme mm 18.05.2018
+    # the next line checks something that looks as if it should be checked in the caller
     if (not attr_name in model_run_data.keys()) or (not model_run_data[attr_name]): return []
 
     parset_list = model_run_data[attr_name]
@@ -356,10 +349,12 @@ def load_from_model_run_data(model_run_data, attr_name):
     for parset in parset_list:
         for parset_name in parset.keys():
             lel = dict()
+            # fixme mm 18.05.2018
+            # The name "table_head" is secret knowledge spread through the class
             lel['table_head'] = parset_name
             lel.update(parset[parset_name])
             if not 'values' in lel.keys():
-                raise(YamlException("No values given in data set '" + lel['table_head'] + "'."))
+                raise(ModelInitializationException("No values given in data set '" + lel['table_head'] + "'."))
 
             if 'bibtex' in lel.keys():
                 # prepare bibtex string from yaml file for initialisation
@@ -373,12 +368,12 @@ def load_from_model_run_data(model_run_data, attr_name):
                 except DoiNotFoundException as e:
                     #ex_string = "Invalid doi in parameter set '" + lel['table_head'] + "'."
                     ex_string = "could not fetch doi " + lel['table_head'] + "'."
-                    raise(YamlException(ex_string + "\n" + e.__str__()))
+                    raise(ModelInitializationException(ex_string + "\n" + e.__str__()))
             else:
                 lel['bibtex_entry'] = None
 
             if type(lel['values']) != type(dict()):
-                raise(YamlException("Data set '" + lel['table_head'] + "' invalid, probably forgotten space after colon."))
+                raise(ModelInitializationException("Data set '" + lel['table_head'] + "' invalid, probably forgotten space after colon."))
     
             for par_key, par_val in lel['values'].items():
                 if type(par_val) == type(''):      
@@ -386,7 +381,7 @@ def load_from_model_run_data(model_run_data, attr_name):
                         # no cnonversion to float here, because 'Rational(1,3)' needs to be kept
                         lel['values'][par_key] = par_val
                     except ValueError as e:
-                        raise(YamlException("Data set '" +lel['table_head'] + "' invalid.\n" + e.__str__()))
+                        raise(ModelInitializationException("Data set '" +lel['table_head'] + "' invalid.\n" + e.__str__()))
         
         res_list.append(lel)
 
@@ -394,13 +389,21 @@ def load_from_model_run_data(model_run_data, attr_name):
 
 
 def load_parameter_sets(model_run_data):
-    if not model_run_data: return []
+    if not model_run_data: 
+        return []
+   
+    target_key = 'parameter_sets' 
+    
+    if not target_key in model_run_data.keys():
+        return []
 
     try:
-        return load_from_model_run_data(model_run_data, 'parameter_sets')
+        par_sets=load_from_model_run_data(model_run_data, target_key)
+        return par_sets 
+
     except Exception as e:
         ex_str = "Could not load parameter sets."
-        raise(YamlException(ex_str + "\n" + e.__str__()))
+        raise(ModelInitializationException(ex_str + "\n" + e.__str__()))
         
 
 def load_initial_values(model_run_data):
@@ -410,17 +413,26 @@ def load_initial_values(model_run_data):
         return load_from_model_run_data(model_run_data, 'initial_values')
     except Exception as e:
         ex_str = "Could not load initial values."
-        raise(YamlException(ex_str + "\n" + e.__str__()))
+        raise(ModelInitializationException(ex_str + "\n" + e.__str__()))
         
 
 def check_parameter_set_valid(par_set, syms_by_type):
-    if not par_set: return True
+    # fixme mm05.18.2018:
+    # This whole function might be obsolete 
+    # I think that it is enough to check for completeness of 
+    # a parameter.
+    # we should not need the execution of strings at all..
+    cond=not par_set
+    if cond : 
+        return True
 
     par_dict = par_set['values']
 
     l = deepcopy(syms_by_type)
     l['par_dict'] = par_dict
     g = copy(l)
+    #fixme mm 05.18.2018:
+    #the following line looks realy dangerous
     exec("from sympy import *", g, l)
     for name in par_dict.keys():
         cmd = name + " = " + name + ".subs(par_dict)"
@@ -429,7 +441,7 @@ def check_parameter_set_valid(par_set, syms_by_type):
         except Exception as e:
             ex_str = "Invalid parameter set: " + par_set['table_head']
             ex_str += "\nCould not substitute '" + name + "'"
-            raise(YamlException(ex_str + "\n" + e.__str__()))
+            raise(ModelInitializationException(ex_str + "\n" + e.__str__()))
 
             return False   
     return True
@@ -466,7 +478,7 @@ def check_initial_values_set_valid(par_set, syms_by_type, state_variables):
         except Exception as e:
             ex_str = "Invalid initial values set: " + par_set['table_head']
             ex_str += "\nCould not substitute '" + name + "'"
-            raise(YamlException(ex_str + "\n" + e.__str__()))
+            raise(ModelInitializationException(ex_str + "\n" + e.__str__()))
 
             return False   
     return True
@@ -482,11 +494,13 @@ def check_initial_values_complete(iv, state_vector):
 
 
 def check_parameter_sets_valid(par_sets, syms_as_type):
-    if not par_sets: return True
+    if par_sets is None: 
+        return True
 
     valid = True
     for par_set in par_sets:
-        if not check_parameter_set_valid(par_set, syms_as_type):
+        cond=check_parameter_set_valid(par_set, syms_as_type)
+        if not cond:
             valid = False
     return valid
 
@@ -517,12 +531,12 @@ def load_run_times(model_run_data):
             mandatory_keys = ('start', 'end', 'step_size')
             for mk in mandatory_keys:
                 if not mk in sub_dic:
-                    raise(YamlException("'run_times' data set '" + name + "' does not contain '" + mk + "'"))
+                    raise(ModelInitializationException("'run_times' data set '" + name + "' does not contain '" + mk + "'"))
 
             res_dic.update(sub_dic)
 
             if res_dic['start'] > res_dic['end']:
-                raise(YamlException("'run_times' data set '" + name + "' has 'start' > 'end'"))
+                raise(ModelInitializationException("'run_times' data set '" + name + "' has 'start' > 'end'"))
 
         result.append(res_dic)
     
@@ -530,14 +544,17 @@ def load_run_times(model_run_data):
 
 
 def load_model_run_combinations(model_run_data, parameter_sets, initial_values, run_times, state_vector, time_symbol, state_vector_derivative):
-    if not model_run_data: return [], None
-    if 'possible_combinations' not in model_run_data.keys(): return [], None
+    if not model_run_data: 
+        return [], None
+    if not 'possible_combinations' in model_run_data.keys(): 
+        return [], None
 
     msg = None
 
     poss_comb = model_run_data['possible_combinations']
 
     complete_parameter_sets = [par_set for par_set in parameter_sets if check_parameter_set_complete(par_set, state_vector, time_symbol, state_vector_derivative)]
+
     complete_initial_values = [iv for iv in initial_values if check_initial_values_complete(iv, state_vector)]
 
     result = []
@@ -552,18 +569,37 @@ def load_model_run_combinations(model_run_data, parameter_sets, initial_values, 
 
         iv = None
         for x in complete_initial_values:
-            if x['table_head'] == pc[1]:
+            # we use negative indices to avoid trouble with missing parameter sets
+            if x['table_head'] == pc[-2]:
                 iv = x
         dic['IV'] = iv
 
         run_time = None
         for rt in run_times:
-            if rt['name'] == pc[2]:
+            # we use negative indices to avoid trouble with missing parameter sets
+            if rt['name'] == pc[-1]:
                 run_time = rt
         dic['run_time'] = run_time
 
-        if par_set and iv and run_time:
-            result.append(dic)
+        if iv and run_time:
+            if par_set:
+                result.append(dic)
+            else:
+                # even if there is no parameter set we might be able to run the model
+                # if it does not contain free symbols
+                free_symbols = (state_vector_derivative['expr']).free_symbols
+                if time_symbol:
+                    free_symbols -= {time_symbol['symbol']} 
+                free_symbols -= set(state_vector['expr'])
+                if  len(free_symbols)==0:
+                    result.append(dic)
+                else:
+                    print("##########################################")
+                    print(free_symbols)
+                    print("##########################################")
+                    msg = "Model run combination  '" + str(pc) + "' is invalid. There are free symbols but no parameter set is given"
+
+            
         else:
             msg = "Model run combination  '" + str(pc) + "' is invalid"
             if not par_set:
@@ -596,11 +632,32 @@ class Model:
     
     @classmethod
     def from_path(cls, yaml_file_path): 
+        # We could create the new model by a call to its
+        #   model = cls.from_str(yaml_str,id=name)
+        # This would call init and thus implicitly __new__(cls) 
+        # to create the model  and  then initialize it.
+        #
+        # Instead we create the model explicitly with __new__(cls) 
+        # and immidiately set its yaml_file_path property 
+        # in case something goes wrong with the initialization 
+        # we can at least report the location of the problematic file
+
+        #create a new model
+        model=object.__new__(cls)
+        model.yaml_file_path=yaml_file_path
+        
         with yaml_file_path.open() as f:
             yaml_str = f.read()
         name=yaml_file_path.stem
-        model = cls.from_str(yaml_str,id=name)
-        model.yaml_file_path=yaml_file_path
+        # now load the yaml str into a dictionary
+        try:
+             complete_dict = yaml.load(yaml_str)
+        except yaml.YAMLError as ye:
+            msg=Template("The Yaml in file ${ps} caused the following exception ${submsg}").substitute(ps=str(model.yaml_file_path),submsg=str(ye))
+            raise(ModelInitializationException(msg))
+            
+
+        model.__init__(complete_dict,id=name)
         return model
 
     @property
@@ -614,10 +671,15 @@ class Model:
         self.id=id
         try:
             self.complete_dict = complete_dict
-            self.bibtex_entry = load_bibtex_entry(self.complete_dict)
-            #print("1#################################",self.bibtex_entry)
-            if self.bibtex_entry is not None:
-                self.abstract = load_abstract(self.complete_dict, self.bibtex_entry)
+            try:
+                self.bibtex_entry = load_bibtex_entry(self.complete_dict)
+            except DoiNotFoundException:
+                print("could not find BibtexEntry by doi")
+                if hasattr(self,'bibtex_entry'): 
+                    abstract =load_abstract(self.complete_dict, self.bibtex_entry)
+                if abstract is not None:
+                    self.abstract = abstract
+
             self.further_references = load_further_references(self.complete_dict)
             self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)
             self.sections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)
@@ -636,11 +698,10 @@ class Model:
             self.model_run_combinations, msg = load_model_run_combinations(self.model_run_data, self.parameter_sets,
                      self.initial_values, self.run_times, self.state_vector, self.time_symbol, 
                      self.state_vector_derivative)
-
             if msg:
                 print("-------------")
                 print('Warning at initializing model ' + self.id)
-                if hasattr(self,yaml_file_path):
+                if hasattr(self,"yaml_file_path"):
                     print(str(self.yaml_file_path))
                 print(msg)
                 print("-------------")
@@ -650,7 +711,7 @@ class Model:
 
             print("-------------")
             print('Initializing model ' + self.id + ' failed.')
-            if hasattr(self,yaml_file_path):
+            if hasattr(self,"yaml_file_path"):
                 print(str(self.yaml_file_path))
             print(ex)
             print("-------------")
@@ -724,7 +785,7 @@ class Model:
             dic = {'name': comp_name, 'symbol': syms[comp_name], 'expr': expr}
 
             if hasattr(self, comp_key):
-                raise(YamlException("Invalid component key: '" + comp_key + "'"))
+                raise(ModelInitializationException("Invalid component key: '" + comp_key + "'"))
 
             setattr(self, comp_key, dic)
 
@@ -1216,7 +1277,7 @@ class Model:
                 elif type(var) == builtins.str:
                     col.append(None)
                 else:
-                    raise(YamlException('Variable description wrong in ' + sec + '.'))
+                    raise(ModelInitializationException('Variable description wrong in ' + sec + '.'))
             col_dict[colname]=col
         return(pd.DataFrame(col_dict))
     
@@ -1227,9 +1288,11 @@ class Model:
         if hasattr(self, 'model_run_combinations'):
             for comb in self.model_run_combinations:
                 # needs to have the symbols as keys, not the names
-                par_set_names = comb['par_set']['values']
-                par_set = {self.symbols_by_type[name]: value for name, value in par_set_names.items()}
-        
+                if comb['par_set'] is not None:
+                    par_set_names = comb['par_set']['values']
+                    par_set = {self.symbols_by_type[name]: value for name, value in par_set_names.items()}
+                else:
+                    par_set=dict()
                 # initial values need to be a list
                 iv_dic = comb['IV']['values']
                 iv = []
@@ -1240,8 +1303,8 @@ class Model:
         
                 run_time = comb['run_time']
                 times = np.arange(run_time['start'], run_time['end']+run_time['step_size'], run_time['step_size'])
-               
-                model_runs.append(SmoothModelRun(mod, par_set, np.array(iv), times=times))
+                mr = SmoothModelRun(mod, par_set, np.array(iv), times=times)
+                model_runs.append(mr)
         return(model_runs)
 
 
@@ -1426,8 +1489,6 @@ class Model:
         i=keys.index(target_key)
         names=df.get_column("name")
         name=names[keys.index(target_key)]
-        #print("\n####################")
-        #print("Symbol with target key=",name)
         #fixme :
         # the following check should be made on model initialization for all keys found
         keys.remove(target_key)
@@ -1435,11 +1496,9 @@ class Model:
             raise(Exception("the key: "+str(target_key)+" has been used at least twice"))
         # now get all the varnames that are part of the expr
         var_names=self.find_all_variables_in_dependency_tree_of_expr(name)
-        #print("varnames=:",var_names)
         res=set([])
         for vn in var_names:
             key=self.get_key_of_var_name_or_None(vn)
-            #print("key=:",key,type(key))
             if key:
                 res.update([key]) #note the list brackets wich prevent 
         return(res)
@@ -1458,8 +1517,6 @@ class Model:
         i=keys.index(target_key)
         names=df.get_column("name")
         name=names[keys.index(target_key)]
-        #print("\n####################")
-        #print("Symbol with target key=",name)
         #fixme :
         # the following check should be made on model initialization for all keys found
         keys.remove(target_key)
@@ -1468,11 +1525,9 @@ class Model:
             raise(Exception("the key: "+str(target_key)+" has been used at least twice"))
         # now get all the varnames that are part of the expr
         var_names=self.find_all_variables_in_dependency_tree_of_expr(name)
-        #print("varnames=:",var_names)
         res=set([])
         for vn in var_names:
             key=self.get_key_of_var_name_or_None(vn)
-            #print("key=:",key,type(key))
             if key:
                 res.update([key]) #note the list brackets wich prevent 
             else:

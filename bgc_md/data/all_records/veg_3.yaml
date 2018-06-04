@@ -1,0 +1,69 @@
+# We add a parameter NPP_i in the formula for b
+# which forces us to do three things also
+# 1) declare the variabe NPP_i (which we do in photosynthetic_parameters)
+# 2) give a parameter set that at least contains a value for NPP_i to enable the 
+#    numeric computations
+# 3) add the name of the new parameter set to the model run generations
+model:
+    - state_variables:
+        - C_il:
+        - C_is: 
+
+    - additional_variables:
+        - t:
+            desc: time
+            unit: "day"
+            type: variable
+            key: time_symbol
+
+    - photosynthetic_parameters:
+        - NPP_i:
+            desc: Net Primary Production for PFT$_i$
+            type: variable
+            key: NPP
+
+    - components:
+        # you are required to provide at least expressions for f u x and A
+        # you are allowed to use as many helper expressions as you want to arrive there
+        # e.g.
+        # p= x**2 # allowed just for conviniece
+        # f =p**2.. #required
+
+        - x: 
+            key: state_vector
+            exprs: "x=Matrix(2,1,[C_il, C_is ])"
+        - u: 
+            key: scalar_func_phot   
+            exprs: "u=NPP_i"
+        - b: 
+            key: part_coeff   
+            exprs: "b=Matrix(2,1,[1/2*(1-sin(2*pi*t)),1/2*(1+sin(2*pi*t))])"
+        - A: 
+            key: cyc_matrix   
+            #exprs: "A=diag(-1/2*C_il, -1/4*(1+sin(2*pi/5*t)))"
+            exprs: "A=Matrix([[-1/2*C_il,0],[1/4*C_il, -1/4*(1+sin(2*pi/5*t))]])"
+        - f_v: 
+            key: state_vector_derivative 
+            exprs: "f_v = u*b + A*x"
+
+model_run_data:
+
+    parameter_sets:
+        - "Set1":
+            values: {NPP_i: 2}
+            desc: "Parameter values as described in Wang and Luo"
+
+    initial_values:
+        - "IV1": 
+            values: {C_il: 250, C_is: 414}
+            desc: "Initial values as invented by Markus "
+    
+    run_times:
+        - "RT1":
+            start: 0
+            end: 20
+            step_size: 0.1
+    
+    possible_combinations:
+        - ["Set1", "IV1", "RT1"]
+     

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Report of the model: Terrestrial Ecosystem Model, version: 1</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="/Users/csierra/Repos/bgc-md/bgc_md/Resources/buttondown.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">Report of the model: Terrestrial Ecosystem Model, version: 1</h1>
+</header>
+<p><a href="data/all_records/TECO.yaml">/Users/csierra/Repos/bgc-md/bgc_md/data/all_records/TECO.yaml</a></p>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Carlos A. Sierra (Orcid ID: 0000-0003-0009-4169) on 12/4/2018.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation. It was originally described by <span class="citation" data-cites="Luo2012TE">Luo, Weng, &amp; Yang (2012)</span>.</p>
+<h3 id="abstract">Abstract</h3>
+<p>Ecosystem ecology is a subdiscipline of ecology that focuses on exchange of energy and materials between organisms and the environment. The materials that are commonly studied in ecosystem ecology include water, carbon, nitrogen, phosphorus, and other elements that organisms use as nutrients. The source of energy for most ecosystems is solar radiation. In this entry, material cy-cling and energy exchange are generally described before the carbon cycle is used as an example to illustrate our quantitative and theoretical understanding of ecosystem ecology.</p>
+<h3 id="available-parameter-values">Available parameter values</h3>
+<table>
+<caption>Information on given parameter sets</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Abbreviation</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Set1</td>
+<td style="text-align: left;">Parameter values as described in Wang and Luo</td>
+</tr>
+</tbody>
+</table>
+<h3 id="available-initial-values">Available initial values</h3>
+<table>
+<caption>Information on given sets of initial values</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Abbreviation</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">IV1</td>
+<td style="text-align: left;">Initial values as in Wang and Luo</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IV2</td>
+<td style="text-align: left;">Initial values as in Wang and Luo</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>state_variables</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{1}\)</span></td>
+<td style="text-align: left;">Carbon in foliage</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x_{2}\)</span></td>
+<td style="text-align: left;">Carbon in roots</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{3}\)</span></td>
+<td style="text-align: left;">Carbon in woody tissue</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x_{4}\)</span></td>
+<td style="text-align: left;">Carbon in metabolic litter</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{5}\)</span></td>
+<td style="text-align: left;">Carbon in structural litter</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x_{6}\)</span></td>
+<td style="text-align: left;">Carbon in fast SOM</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{7}\)</span></td>
+<td style="text-align: left;">Carbon in slow SOM</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x_{8}\)</span></td>
+<td style="text-align: left;">Carbon in passive SOM</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>additional_variables</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(t\)</span></td>
+<td style="text-align: left;">time</td>
+<td style="text-align: left;"><span class="math inline">\(day\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>components</caption>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td style="text-align: left;">vector of state variables</td>
+<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}x_{1}\\x_{2}\\x_{3}\\x_{4}\\x_{5}\\x_{6}\\x_{7}\\x_{8}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(u\)</span></td>
+<td style="text-align: left;">scalar function of photosynthetic inputs</td>
+<td style="text-align: center;"><span class="math inline">\(u=GPP\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(b\)</span></td>
+<td style="text-align: left;">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td style="text-align: center;"><span class="math inline">\(b=\left[\begin{matrix}b_{1}\\b_{2}\\b_{3}\\0\\0\\0\\0\\0\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(C\)</span></td>
+<td style="text-align: left;">matrix of cycling rates</td>
+<td style="text-align: center;"><span class="math inline">\(C=\left[\begin{matrix}c_{1} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; c_{2} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; c_{3} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; c_{4} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; c_{5} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; c_{6} &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; c_{7} &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; c_{8}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(A\)</span></td>
+<td style="text-align: left;">matrix of transfer coefficients</td>
+<td style="text-align: center;"><span class="math inline">\(A=\left[\begin{matrix}-1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; -1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; -1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\f_{41} &amp; 0 &amp; f_{43} &amp; -1 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\f_{51} &amp; f_{52} &amp; f_{53} &amp; 0 &amp; -1 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; f_{64} &amp; f_{65} &amp; -1 &amp; f_{67} &amp; f_{68}\\0 &amp; 0 &amp; 0 &amp; 0 &amp; f_{75} &amp; f_{76} &amp; -1 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; f_{86} &amp; f_{87} &amp; -1\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(B\)</span></td>
+<td style="text-align: left;">matrix of cycling and tansfer rates</td>
+<td style="text-align: center;"><span class="math inline">\(B=A C\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(f_{v}\)</span></td>
+<td style="text-align: left;">the righthandside of the ode</td>
+<td style="text-align: center;"><span class="math inline">\(f_{v}=u b + B x\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(x_{1}: GPP\cdot b_{1}\)</span> <span class="math inline">\(x_{2}: GPP\cdot b_{2}\)</span> <span class="math inline">\(x_{3}: GPP\cdot b_{3}\)</span></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(x_{1}: c_{1}\cdot x_{1}\cdot\left(- f_{41} - f_{51} + 1\right)\)</span> <span class="math inline">\(x_{2}: c_{2}\cdot x_{2}\cdot\left(- f_{52} + 1\right)\)</span> <span class="math inline">\(x_{3}: c_{3}\cdot x_{3}\cdot\left(- f_{43} - f_{53} + 1\right)\)</span> <span class="math inline">\(x_{4}: c_{4}\cdot x_{4}\cdot\left(- f_{64} + 1\right)\)</span> <span class="math inline">\(x_{5}: c_{5}\cdot x_{5}\cdot\left(- f_{65} - f_{75} + 1\right)\)</span> <span class="math inline">\(x_{6}: c_{6}\cdot x_{6}\cdot\left(- f_{76} - f_{86} + 1\right)\)</span> <span class="math inline">\(x_{7}: c_{7}\cdot x_{7}\cdot\left(- f_{67} - f_{87} + 1\right)\)</span> <span class="math inline">\(x_{8}: c_{8}\cdot x_{8}\cdot\left(- f_{68} + 1\right)\)</span></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<p><span class="math inline">\(x_{1} \rightarrow x_{4}: c_{1}\cdot f_{41}\cdot x_{1}\)</span> <span class="math inline">\(x_{1} \rightarrow x_{5}: c_{1}\cdot f_{51}\cdot x_{1}\)</span> <span class="math inline">\(x_{2} \rightarrow x_{5}: c_{2}\cdot f_{52}\cdot x_{2}\)</span> <span class="math inline">\(x_{3} \rightarrow x_{4}: c_{3}\cdot f_{43}\cdot x_{3}\)</span> <span class="math inline">\(x_{3} \rightarrow x_{5}: c_{3}\cdot f_{53}\cdot x_{3}\)</span> <span class="math inline">\(x_{4} \rightarrow x_{6}: c_{4}\cdot f_{64}\cdot x_{4}\)</span> <span class="math inline">\(x_{5} \rightarrow x_{6}: c_{5}\cdot f_{65}\cdot x_{5}\)</span> <span class="math inline">\(x_{5} \rightarrow x_{7}: c_{5}\cdot f_{75}\cdot x_{5}\)</span> <span class="math inline">\(x_{6} \rightarrow x_{7}: c_{6}\cdot f_{76}\cdot x_{6}\)</span> <span class="math inline">\(x_{6} \rightarrow x_{8}: c_{6}\cdot f_{86}\cdot x_{6}\)</span> <span class="math inline">\(x_{7} \rightarrow x_{6}: c_{7}\cdot f_{67}\cdot x_{7}\)</span> <span class="math inline">\(x_{7} \rightarrow x_{8}: c_{7}\cdot f_{87}\cdot x_{7}\)</span> <span class="math inline">\(x_{8} \rightarrow x_{6}: c_{8}\cdot f_{68}\cdot x_{8}\)</span></p>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(x_{1} = \frac{GPP}{c_{1}}\cdot b_{1}\)</span> <span class="math inline">\(x_{2} = \frac{GPP}{c_{2}}\cdot b_{2}\)</span> <span class="math inline">\(x_{3} = \frac{GPP}{c_{3}}\cdot b_{3}\)</span> <span class="math inline">\(x_{4} = \frac{GPP}{c_{4}}\cdot\left(b_{1}\cdot f_{41} + b_{3}\cdot f_{43}\right)\)</span> <span class="math inline">\(x_{5} = \frac{GPP}{c_{5}}\cdot\left(b_{1}\cdot f_{51} + b_{2}\cdot f_{52} + b_{3}\cdot f_{53}\right)\)</span> <span class="math inline">\(x_{6} = -\frac{GPP}{c_{6}\cdot\left(f_{67}\cdot f_{76} + f_{68}\cdot f_{76}\cdot f_{87} + f_{68}\cdot f_{86} - 1\right)}\cdot\left(b_{1}\cdot\left(f_{41}\cdot f_{64} + f_{51}\cdot f_{65} + f_{51}\cdot f_{67}\cdot f_{75} + f_{51}\cdot f_{68}\cdot f_{75}\cdot f_{87}\right) + b_{2}\cdot f_{52}\cdot\left(f_{65} + f_{67}\cdot f_{75} + f_{68}\cdot f_{75}\cdot f_{87}\right) + b_{3}\cdot\left(f_{43}\cdot f_{64} + f_{53}\cdot f_{65} + f_{53}\cdot f_{67}\cdot f_{75} + f_{53}\cdot f_{68}\cdot f_{75}\cdot f_{87}\right)\right)\)</span> <span class="math inline">\(x_{7} = -\frac{GPP}{c_{7}\cdot\left(f_{67}\cdot f_{76} + f_{68}\cdot f_{76}\cdot f_{87} + f_{68}\cdot f_{86} - 1\right)}\cdot\left(b_{1}\cdot\left(f_{41}\cdot f_{64}\cdot f_{76} + f_{51}\cdot f_{65}\cdot f_{76} - f_{51}\cdot f_{68}\cdot f_{75}\cdot f_{86} + f_{51}\cdot f_{75}\right) + b_{2}\cdot f_{52}\cdot\left(f_{65}\cdot f_{76} - f_{68}\cdot f_{75}\cdot f_{86} + f_{75}\right) + b_{3}\cdot\left(f_{43}\cdot f_{64}\cdot f_{76} + f_{53}\cdot f_{65}\cdot f_{76} - f_{53}\cdot f_{68}\cdot f_{75}\cdot f_{86} + f_{53}\cdot f_{75}\right)\right)\)</span> <span class="math inline">\(x_{8} = -\frac{GPP}{c_{8}\cdot\left(f_{67}\cdot f_{76} + f_{68}\cdot f_{76}\cdot f_{87} + f_{68}\cdot f_{86} - 1\right)}\cdot\left(b_{1}\cdot\left(f_{41}\cdot f_{64}\cdot f_{76}\cdot f_{87} + f_{41}\cdot f_{64}\cdot f_{86} + f_{51}\cdot f_{65}\cdot f_{76}\cdot f_{87} + f_{51}\cdot f_{65}\cdot f_{86} + f_{51}\cdot f_{67}\cdot f_{75}\cdot f_{86} + f_{51}\cdot f_{75}\cdot f_{87}\right) + b_{2}\cdot f_{52}\cdot\left(f_{65}\cdot f_{76}\cdot f_{87} + f_{65}\cdot f_{86} + f_{67}\cdot f_{75}\cdot f_{86} + f_{75}\cdot f_{87}\right) + b_{3}\cdot\left(f_{43}\cdot f_{64}\cdot f_{76}\cdot f_{87} + f_{43}\cdot f_{64}\cdot f_{86} + f_{53}\cdot f_{65}\cdot f_{76}\cdot f_{87} + f_{53}\cdot f_{65}\cdot f_{86} + f_{53}\cdot f_{67}\cdot f_{75}\cdot f_{86} + f_{53}\cdot f_{75}\cdot f_{87}\right)\right)\)</span></p>
+<h2 id="steady-states-potentially-incomplete-according-jacobian-eigenvalues-damping-ratio">Steady states (potentially incomplete), according jacobian eigenvalues, damping ratio</h2>
+<h3 id="parameter-set-set1">Parameter set: Set1</h3>
+<p><span class="math inline">\(x_1: 182.868\)</span>, <span class="math inline">\(x_2: 14952.218\)</span>, <span class="math inline">\(x_3: 197.406\)</span>, <span class="math inline">\(x_4: 47.613\)</span>, <span class="math inline">\(x_5: 1369.284\)</span>, <span class="math inline">\(x_6: 81.111\)</span>, <span class="math inline">\(x_7: 6128.836\)</span>, <span class="math inline">\(x_8: 826.51\)</span> <span class="math inline">\(\lambda_{1}: -0.011\)</span> <span class="math inline">\(\lambda_{2}: -0.001\)</span> <span class="math inline">\(\lambda_{3}: -0.003\)</span> <span class="math inline">\(\lambda_{4}: -0.002\)</span> <span class="math inline">\(\lambda_{5}: -0.000\)</span> <span class="math inline">\(\lambda_{6}: -0.011+0.000j\)</span> <span class="math inline">\(\rho_{6}: 1.000000\)</span> <span class="math inline">\(\lambda_{7}: -0.000-0.000j\)</span> <span class="math inline">\(\rho_{7}: 1.000000\)</span> <span class="math inline">\(\lambda_{8}: -0.000+0.000j\)</span> <span class="math inline">\(\rho_{8}: 1.000000\)</span></p>
+<h2 id="model-simulations">Model simulations</h2>
+<br>
+<center>
+<img src="Model%20run%201%20-%20solutions.svg" alt="Model run 1 - solutions" /><br><strong>Model run 1 - solutions:</strong> <em>Initial values: IV2, Parameter set: Set1, Time step: 0.1</em><br>
+</center>
+<br>
+<center>
+<img src="Model%20run%201%20-%20phase%20planes.svg" alt="Model run 1 - phase planes" /><br><strong>Model run 1 - phase planes:</strong> <em>Initial values: IV2, Parameter set: Set1, Start: 0, End: 200, Time step: 0.1</em><br>
+</center>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
+<div id="ref-Luo2012TE">
+<p>Luo, Y., Weng, E., &amp; Yang, Y. (2012). Ecosystem ecology. In A. Hastings &amp; L. Gross (Eds.), <em>Encyclopedia of theoretical ecology</em> (pp. 219–229). Berkeley: University of California Press.</p>
+</div>
+</div>
+</body>
+</html>
