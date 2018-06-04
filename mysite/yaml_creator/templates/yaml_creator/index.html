@@ -1,0 +1,5 @@
+<ul>
+    {% for name in yaml_file_names %}
+    <li><a href="{%url 'change' name%}">{{name}}</a></li>
+    {% endfor %}
+</ul>
