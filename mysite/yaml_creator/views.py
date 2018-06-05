@@ -1,6 +1,7 @@
 #from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+from django.shortcuts import render
 from pathlib import Path
 from bgc_md.reports import defaults
 from bgc_md.Model import Model
@@ -13,6 +14,8 @@ def index(request):
     context={'yaml_file_names':yaml_file_names}
     return HttpResponse(template.render(context,request))
 
+def model_overview(request,file_name):
+
 
 def detail(request,file_name):
     #dp=defaults()['paths']['data']
@@ -20,16 +23,16 @@ def detail(request,file_name):
     #m=Model.from_path(ap.joinpath())
     #dp.joinpath("ComponentKeys.yaml")
     m=0  #placebo for model
-    template=loader.get_template('yaml_creator/detail.html')
+    #template=loader.get_template('yaml_creator/detail.html')
     choices=["x=Bx+s","x=Ax+ub"] 
+    context={'yaml_file_name':file_name,'choices':choices}
+    #return render(request,'yaml_creator/detail.html',context)
     try:
         selected_choice=choices[int(request.POST['choice'])-1]
         print(selected_choice)
     except (KeyError):
-        return template.render(
-            { 'yaml_file_name':file_name, 'choices'       :choices, 'error_message' :"You did not select a choice." }
-            ,request
-            )
+        context= { 'yaml_file_name':file_name, 'choices'       :choices, 'error_message' :"You did not select a choice." }
+        return render(request,'yaml_creator/detail.html',context)
     else:
         m+=1 #placebo for impact on model 
 
