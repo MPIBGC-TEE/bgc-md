@@ -13,22 +13,33 @@ def index(request):
     context={'yaml_file_names':yaml_file_names}
     return HttpResponse(template.render(context,request))
 
-def detail(request,question_id):
-    return HttpResponse("You are looking at question %s." % question_id)
 
-def results(request,question_id):
-    return HttpResponse("You are looking at the results of question %s." % question_id)
-
-def change(request,file_name):
-    #m=Model.from_
-    template=loader.get_template('yaml_creator/change.html')
-    ap=defaults()['paths']['data'].joinpath('all_records')
+def detail(request,file_name):
+    #dp=defaults()['paths']['data']
+    #ap=dp.joinpath('all_records')
+    #m=Model.from_path(ap.joinpath())
+    #dp.joinpath("ComponentKeys.yaml")
+    m=0  #placebo for model
+    template=loader.get_template('yaml_creator/detail.html')
     choices=["x=Bx+s","x=Ax+ub"] 
-    #selected_choice=choices[request.POST['choice']-1]
-    print("##############################")
-    print(file_name)
-    print(choices[int(request.POST['choice'])-1])
-    print("##############################")
-    context={'yaml_file_name':file_name,'choices':choices}
-    return HttpResponse(template.render(context,request))
+    try:
+        selected_choice=choices[int(request.POST['choice'])-1]
+        print(selected_choice)
+    except (KeyError):
+        return template.render(
+            { 'yaml_file_name':file_name, 'choices'       :choices, 'error_message' :"You did not select a choice." }
+            ,request
+            )
+    else:
+        m+=1 #placebo for impact on model 
+
+        #selected_choice=choices[request.POST['choice']-1]
+        print("##############################")
+        print(file_name)
+        #print(request.POST['choice'])
+        #print()
+        print("##############################")
+        template=loader.get_template('yaml_creator/SoilModelComponents.html')
+        context={'yaml_file_name':file_name,'choices':choices}
+        return HttpResponseRedirect(reverse('yaml_creator:index'))
 

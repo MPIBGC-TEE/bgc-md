@@ -1,6 +1,5 @@
-<h1>You are changing: {{ yaml_file_name}}</h1>
-
-<form action="{% url 'change' yaml_file_name %}" method="post">
+<h1>You are looking at: {{ yaml_file_name}}</h1
+<form action="{% url 'yaml_creator:detail' yaml_file_name %}" method="post">
 	{% csrf_token %}
 	{% for choice in  choices %}
 	    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ forloop.counter }}" />
