@@ -1,7 +1,8 @@
 #from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.shortcuts import render
+from django.urls import reverse
 from pathlib import Path
 from bgc_md.reports import defaults
 from bgc_md.Model import Model
@@ -9,18 +10,24 @@ from bgc_md.Model import Model
 def index(request):
     ap=defaults()['paths']['data'].joinpath('all_records')
     print(ap)
-    template=loader.get_template('yaml_creator/index.html')
     yaml_file_names=[p.name for p in ap.iterdir()]
     context={'yaml_file_names':yaml_file_names}
-    return HttpResponse(template.render(context,request))
+
+    #template=loader.get_template('yaml_creator/index.html')
+    #return HttpResponse(template.render(context,request))
+    return render(request,'yaml_creator/index.html',context)
 
 def model_overview(request,file_name):
+    dp=defaults()['paths']['data']
+    ap=dp.joinpath('all_records')
+    m=Model.from_path(ap.joinpath(file_name))
+    context={'yaml_file_name':file_name}
+    return render(request,'yaml_creator/model_overview.html',context)
 
 
 def detail(request,file_name):
     #dp=defaults()['paths']['data']
     #ap=dp.joinpath('all_records')
-    #m=Model.from_path(ap.joinpath())
     #dp.joinpath("ComponentKeys.yaml")
     m=0  #placebo for model
     #template=loader.get_template('yaml_creator/detail.html')
@@ -42,7 +49,7 @@ def detail(request,file_name):
         #print(request.POST['choice'])
         #print()
         print("##############################")
-        template=loader.get_template('yaml_creator/SoilModelComponents.html')
+        template=loader.get_template('yaml_creator/soil_model_components.html')
         context={'yaml_file_name':file_name,'choices':choices}
-        return HttpResponseRedirect(reverse('yaml_creator:index'))
+        return HttpResponseRedirect(reverse('index'))
 
