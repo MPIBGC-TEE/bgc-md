@@ -1,5 +1,19 @@
-<h1>Overview: {{ yaml_file_name}}</h1
-
+<h1>Overview: {{ yaml_file_name}}</h1>
+<form action="{% url 'detail' yaml_file_name%}" method="post">
+   {% csrf_token %}
+  <!--
+  the imput fields contain raw html so we have to bypass django's automatic
+  html escape with the |safe filter
+   -->
+  {{input_fields|safe}}
+  <!--
+  First name:<br>
+  <input type="text" name="firstname" value="Mickey">
+   -->
+  <br>
+  <input type="submit" value="Submit">
+  <br><br>
+</form> 
 <form action="{% url 'detail' yaml_file_name%}" method="post">
 	{% csrf_token %}
 	<input type="submit" value="chose component_scheme" />

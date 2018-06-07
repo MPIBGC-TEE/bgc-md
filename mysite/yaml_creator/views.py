@@ -1,13 +1,16 @@
 #from django.shortcuts import render
 import re
+from string import Template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_protect
 from django.urls import reverse
 from pathlib import Path
 from bgc_md.reports import defaults
 from bgc_md.Model import Model
 from bgc_md.component_schemes import  available_component_schemes
+
 # Create your views here.
 def index(request):
     ap=defaults()['paths']['data'].joinpath('all_records')
@@ -35,6 +38,7 @@ def index(request):
     #return HttpResponse(template.render(context,request))
     return render(request,'yaml_creator/index.html',context)
 
+@csrf_protect
 def model_overview(request,file_name):
     choices=available_component_schemes()
 
@@ -49,8 +53,21 @@ def model_overview(request,file_name):
         # set defaults
         m.yaml_component_type=choices[0]
 
-    context={'yaml_file_name':file_name}
+	# make a list of forms to change model properties
+    prop_names=[p for p  in m.editable_vars() if hasattr(m,p)]
+    html_fields='<br>'.join([
+		Template('''<br>
+			${name}:<br>
+			<textarea name="${name}" rows="5" cols="120" > ${value} </textarea>'''
+		).substitute(name=prop_name,value=getattr(m,prop_name))
+	for prop_name in prop_names])
+    context={
+		'yaml_file_name':file_name,
+		'input_fields':html_fields
+	}
     return render(request,'yaml_creator/model_overview.html',context)
+    #html_form=Template('<form action="{% url \'detail\' yaml_file_name%}" method="post"> ${inputs} </form>').substitute(inputs=html_fields)
+    #return HttpResponse(html_form)
 
 
 def detail(request,file_name):
