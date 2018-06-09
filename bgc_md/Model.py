@@ -664,6 +664,7 @@ class Model:
         # fixme: this is still under construction
         #return ['yaml_file_path','id','bibtex_entry']
         return ['bibtex_entry']
+
     @property
     def name(self):
         return retrieve_this_or_that("name",self.id,self.complete_dict)

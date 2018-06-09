@@ -38,15 +38,26 @@ def index(request):
     #return HttpResponse(template.render(context,request))
     return render(request,'yaml_creator/index.html',context)
 
+
+
 @csrf_protect
 def model_overview(request,file_name):
     choices=available_component_schemes()
-
     dp=defaults()['paths']['data']
     ap=dp.joinpath('all_records')
     yaml_path=ap.joinpath(file_name)
     if yaml_path.exists():
          m=Model.from_path(yaml_path)
+         #rotate the choices array so that the saved scheme is the
+         #first entry
+         # fixme:
+         # at the moment we do not yet have it in the yaml file so we 
+         # 
+         if hasattr(m,"yaml_component_type"):
+            c=m.yaml_component_type
+            choices.remove(c)
+            choices.insert(0,c)
+
     else:
         # create an uninitialized instance
         m=object.__new__(Model)
@@ -60,41 +71,36 @@ def model_overview(request,file_name):
 			${name}:<br>
 			<textarea name="${name}" rows="5" cols="120" > ${value} </textarea>'''
 		).substitute(name=prop_name,value=getattr(m,prop_name))
-	for prop_name in prop_names])
+		for prop_name in prop_names
+	])
+	# check inf the component scheme has be chosen
+    try:
+     
+        print('#############################')
+        print(request)
+        print(request.POST['bibtex_entry'])
+        print(request.POST['component_scheme'])
+        ind=int(request.POST['component_scheme'])-1
+        print(ind)
+        selected_choice=choices[ind]
+        print(selected_choice)
+        print('#############################')
+    except (KeyError):
+        context= { 
+            'yaml_file_name':file_name, 
+            'choices'       :choices, 
+		    'input_fields'  :html_fields,
+            'error_message' :"You did not select a choice." 
+            }
+        return render(request,'yaml_creator/model_overview.html',context)
+    else:
+        m.yaml_component_type=selected_choice
+    
     context={
 		'yaml_file_name':file_name,
-		'input_fields':html_fields
+		'input_fields'  :html_fields,
+	    'choices'       :choices
 	}
     return render(request,'yaml_creator/model_overview.html',context)
-    #html_form=Template('<form action="{% url \'detail\' yaml_file_name%}" method="post"> ${inputs} </form>').substitute(inputs=html_fields)
-    #return HttpResponse(html_form)
 
-
-def detail(request,file_name):
-    #dp=defaults()['paths']['data']
-    #ap=dp.joinpath('all_records')
-    #dp.joinpath("ComponentKeys.yaml")
-    m=0  #placebo for model
-    #template=loader.get_template('yaml_creator/detail.html')
-    choices=available_component_schemes()
-    context={'yaml_file_name':file_name,'choices':choices}
-    #return render(request,'yaml_creator/detail.html',context)
-    try:
-        selected_choice=choices[int(request.POST['choice'])-1]
-        print(selected_choice)
-    except (KeyError):
-        context= { 'yaml_file_name':file_name, 'choices'       :choices, 'error_message' :"You did not select a choice." }
-        return render(request,'yaml_creator/detail.html',context)
-    else:
-        m+=1 #placebo for impact on model 
-
-        #selected_choice=choices[request.POST['choice']-1]
-        print("##############################")
-        print(file_name)
-        #print(request.POST['choice'])
-        #print()
-        print("##############################")
-        template=loader.get_template('yaml_creator/soil_model_components.html')
-        context={'yaml_file_name':file_name,'choices':choices}
-        return HttpResponseRedirect(reverse('index'))
 
