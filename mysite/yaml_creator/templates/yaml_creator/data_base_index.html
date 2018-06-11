@@ -1,0 +1,6 @@
+<ul>
+    {% for md in mds%}
+    <li><a href="{%url 'detail' md.filename%}">{{md.filename}}</a></li>
+    {% endfor %}
+</ul>
+

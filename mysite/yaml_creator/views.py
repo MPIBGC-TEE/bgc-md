@@ -10,8 +10,23 @@ from pathlib import Path
 from bgc_md.reports import defaults
 from bgc_md.Model import Model
 from bgc_md.component_schemes import  available_component_schemes
+from .models import ModelDescriptor
 
 # Create your views here.
+def data_base_index(request):
+	latest_modeldescriptor_list = ModelDescriptor.objects.order_by('-pub_date')[:5]
+	context={
+        'mds':latest_modeldescriptor_list
+    }
+	return render(request,'yaml_creator/data_base_index.html',context)
+
+def detail(request,question_id):
+	try:
+		question = ModelDescriptor.objects.get(pk=question_id)
+	except Question.DoesNotExist:
+		raise Http404("Question does not exist")
+	return render(request, 'yaml_creator/detail.html', {'question': question})	
+
 def index(request):
     ap=defaults()['paths']['data'].joinpath('all_records')
     print(ap)
