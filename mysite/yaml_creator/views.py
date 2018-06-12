@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
+from django.views import generic
 from django.urls import reverse
 from pathlib import Path
 from bgc_md.reports import defaults
@@ -12,20 +13,32 @@ from bgc_md.Model import Model
 from bgc_md.component_schemes import  available_component_schemes
 from .models import ModelDescriptor
 
-# Create your views here.
-def data_base_index(request):
-	latest_modeldescriptor_list = ModelDescriptor.objects.order_by('-pub_date')[:5]
-	context={
-        'mds':latest_modeldescriptor_list
-    }
-	return render(request,'yaml_creator/data_base_index.html',context)
+class IndexView(generic.ListView):
+    template_name='yaml_creator/data_base_index.html'
+    context_object_name='latest_modeldescriptor_list'
+    
+    def get_queryset(self):
+    	"""Return the last five published ModelDescriptors."""
+    	return ModelDescriptor.objects.order_by('-pub_date')[:5]
 
-def detail(request,question_id):
-	try:
-		question = ModelDescriptor.objects.get(pk=question_id)
-	except Question.DoesNotExist:
-		raise Http404("Question does not exist")
-	return render(request, 'yaml_creator/detail.html', {'question': question})	
+class DetailView(generic.DetailView):
+	model=ModelDescriptor
+	template_name='yaml_creator/detail.html'
+
+# Create your views here.
+#def data_base_index(request):
+#	latest_modeldescriptor_list = ModelDescriptor.objects.order_by('-pub_date')[:5]
+#	context={
+#        'mds':latest_modeldescriptor_list
+#    }
+#	return render(request,'yaml_creator/data_base_index.html',context)
+
+#def detail(request,modeldescriptor_filename):
+#	try:
+#		modeldescriptor = ModelDescriptor.objects.get(pk=modeldescriptor_filename)
+#	except Question.DoesNotExist:
+#		raise Http404("Question does not exist")
+#	return render(request, 'yaml_creator/detail.html', {'modeldescriptor': modeldescriptor})	
 
 def index(request):
     ap=defaults()['paths']['data'].joinpath('all_records')

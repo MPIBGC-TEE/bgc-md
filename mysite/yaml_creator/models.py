@@ -5,9 +5,8 @@ from bgc_md.reports import defaults
 
 # Create your models here.
 def default_yaml_file_name():
-    ap=defaults()['paths']['data'].joinpath('all_records')
-    print(ap)
-    yaml_file_names=[p.name for p in ap.iterdir()]
+    yaml_file_names=[m.filename for m in ModelDescriptor.objects.all()]
+    
     # set a default file name for a new yaml file that is not already present
     default_trunk='default_'
     num_str='[0-9]+'
