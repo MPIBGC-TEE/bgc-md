@@ -1,0 +1,506 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+name: LPJ-GUESS Century SOM dynamics (C-only with some nitrogen influences!!!)
+version: 1
+entryAuthor: "Peter Anthoni"
+entryAuthorOrcid: 0000-0001-5459-6506
+entryCreationDate: 05/24/2018
+lastModification: _lm_
+#modApproach:
+timeScale: "50 to 2000 years"
+#spaceScale: [plot, field, regional, national, global]
+#timeResolution: daily # annual or monthly?
+doi: 10.5194/bg-11-2027-2014
+abstract: ""
+
+# Major problems:
+# - ligcfrac (lignin fractions) and lton (lignin to nitrogen) would need to be calculated based on the amount of transferred carbon from pool to pool and the existing ratios of the pools
+# - litter inputs depend strongly on vegetation dynamics and timing in the year (transfers occur annual or spread out monthly).
+# - in case of nitrogen cycling: decomposition rates might need to get adjusted iteratively (f_reduc_*) to ensure nitrogen balance (immobilisation must be less than available nitrogen)
+# - disturbance (e.g. fire), how to add stochastic disturbance effects on litter and soil pools?
+
+keywords:
+    - "differential equations"
+    - "time variant"
+#    - "analytic"
+
+principles:
+    - "mass balance"
+    - "substrate dependence of decomposition"
+    - "heterogeneity of speed of decay"
+    - "internal transformations of organic matter"
+    - "environmental variability effects"
+#    - "substrate interactions" ???
+
+bibtex: "@article{Smith2014,
+        author = {Smith, Benjamin and W{\aa}rlind, D. and Arneth, Almut and Hickler, Thomas and Leadley, P. and Siltberg, J. and Zaehle, S.},
+        doi = {10.5194/bg-11-2027-2014},
+        file = {:Users/anthoni-p/Documents/Mendeley Desktop/Smith et al.{\_}2014{\_}Implications of incorporating N cycling and N limitations on primary production in an individual-based dynamic vegetat.pdf:pdf},
+        issn = {1726-4189},
+        journal = {Biogeosciences},
+        language = {English},
+        mendeley-groups = {EC-Earth-LRZ-Proposal,LPJG},
+        month = {apr},
+        number = {7},
+        pages = {2027--2054},
+        publisher = {Copernicus GmbH},
+        title = {{Implications of incorporating N cycling and N limitations on primary production in an individual-based dynamic vegetation model}},
+        url = {http://www.biogeosciences.net/11/2027/2014/bg-11-2027-2014.html},
+        volume = {11},
+        year = {2014}
+        }"
+
+#LPJ-GUESS:
+# // pools SURFSTRUCT(sust),SOILSTRUCT(sost),SOILMICRO(somi),SURFHUMUS(suhu),SURFMICRO(sumi),SURFMETA(sume),SURFFWD(sufw),SURFCWD(sucw),SOILMETA(some),SLOWSOM(slso),PASSIVESOM(paso)
+#         C 1         2          3         4         5         6        7       8       9        10      11
+model:
+    - state_variables:
+#            unit: "kg C m^{-2}"
+        - C_sust:
+            desc: SURFSTRUCT structural soil surface litter pool
+        - C_sost:
+            desc: SOILSTRUCT structural soil litter pool
+        - C_somi:
+            desc: SOILMICRO soil microbial pool
+        - C_suhu:
+            desc: SURFHUMUS surface humus pool
+        - C_sumi:
+            desc: SURFMICRO surface microbial pool
+        - C_sume:
+            desc: SURFMETA metabolic soil surface litter pool
+        - C_sufw:
+            desc: SURFFWD surface fine woody depry
+        - C_sucw:
+            desc: SURFCWD surface coarse woody depry
+        - C_some:
+            desc: SOILMETA metabolic soil litter pool
+        - C_slso:
+            desc: SLOWSOM slow soil organic matter pool
+        - C_paso:
+            desc: PASSIVESOM passive soil organic matter pool
+#        - C_LEACHED:
+#            desc: LEACHED soil organic matter leached
+
+    - parameters:
+        #maximum_decomposition_rates:
+        - Kmax_sust:
+            desc: SURFSTRUCT maximum decomposition rate of structural soil surface litter
+            type: parameter
+        - Kmax_sost:
+            desc: SOILSTRUCT maximum decomposition rate of structural soil litter
+            type: parameter
+        - Kmax_somi:
+            desc: SOILMICRO maximum decomposition rate of soil microbial pool
+            type: parameter
+        - Kmax_suhu:
+            desc: SURFHUMUS maximum decomposition rate of surface humus pool
+            type: parameter
+        - Kmax_sumi:
+            desc: SURFMICRO maximum decomposition rate of surface microbial pool
+            type: parameter
+        - Kmax_sume:
+            desc: SURFMETA maximum decomposition rate of metabolic soil surface litter
+            type: parameter
+        - Kmax_sufw:
+            desc: SURFFWD maximum decomposition rate of surface fine woody depry
+            type: parameter
+        - Kmax_sucw:
+            desc: SURFCWD maximum decomposition rate of surface coarse woody depry
+            type: parameter
+        - Kmax_some:
+            desc: SOILMETA maximum decomposition rate of metabolic soil litter
+            type: parameter
+        - Kmax_slso:
+            desc: SLOWSOM maximum decomposition rate of slow soil organic matter
+            type: parameter
+        - Kmax_paso:
+            desc: PASSIVESOM maximum decomposition rate of passive organic matter
+            type: parameter
+
+        - soiltype_awc:
+            desc: "soil volumetric water holding capacity at field capacity minus vol water holding capacity at wilting point (Hmax), as fraction of soil layer depth"
+            type: parameter
+        - soiltype_wp:
+            desc: "soil wilting point as fraction of depth (calculation method described in Prentice et al 1992)"
+            type: parameter
+        - soiltype_wsats:
+            desc: "soil saturation capacity following Cosby (1984)"
+            type: parameter
+        - soiltype_clay_frac:
+            desc: "soil clay fraction"
+            type: parameter
+        - soiltype_sand_frac:
+            desc: "soil sand fraction"
+            type: parameter
+        - soiltype_silt_frac:
+            desc: "soil silt fraction"
+            type: parameter
+        - soil_depth_mm:
+            desc: "soil depth upper soil layer in mm"
+            type: parameter
+        - soil_orgleach_frac:
+            desc: "soil organic leaching fraction (currently fixed value, should be calculated)"
+            type: parameter
+        - lton_leaf:
+            desc: "lignin-to-nitrogen ratio for leafs"
+            type: parameter
+        - lton_root:
+            desc: "lignin-to-nitrogen ratio for roots"
+            type: parameter
+        - ligcfrac_leaf:
+            desc: "leaf litter lignin fractions"
+            type: parameter
+        - ligcfrac_root:
+            desc: "root litter lignin fractions"
+            type: parameter
+        - ligcfrac_wood:
+            desc: "wood litter lignin fractions"
+            type: parameter
+        - ligcfrac_sust:
+            desc: "sust lignin fractions"
+            type: parameter
+        - ligcfrac_sost:
+            desc: "sost lignin fractions"
+            type: parameter
+        - ligcfrac_sufw:
+            desc: "sufw lignin fractions"
+            type: parameter
+        - ligcfrac_sucw:
+            desc: "sucwd lignin fractions"
+            type: parameter
+        - wcont_soil:
+            desc: "soil water content"
+            type: parameter
+        - temp_soil:
+            desc: "soil temperature upper soil layer at 25cm"
+            type: parameter
+
+        # input_components into soil pools:
+        - I_litleaf:
+            desc: leaf litter input to soil
+            type: parameter
+        - I_litroot:
+            desc: root litter input to soil
+            type: parameter
+        - I_litsap:
+            desc: sapwood litter input to soil
+            #  (Note: within LPJ-GUESS annual total is spread out monthly in the next year!)
+            type: parameter
+        - I_litheart:
+            desc: heartwood input to soil
+            #  (Note: within LPJ-GUESS annual total is spread out monthly in the next year!)
+            type: parameter
+
+# DEBUG: define some place holder parameters to reduce the complexity of the resulting html equation
+        - moist_param:
+            desc: moisture modifier
+            type: parameter
+        - temp_param:
+            desc: temperature modifier
+            type: parameter
+        - texture_param:
+            desc: texture modifier
+            type: parameter
+
+
+    - additional_variables:
+        #Split between metabolic and structural
+        #Fm=litter fraction transferred to metabolic pool, transfer to structural Fs=(1-Fm)
+        #Fm, Parton et al 1993, Eqn 1: somdynam.cpp:metabolic_litter_fraction()
+        # *  NB: incorrect/out-of-date intercept and slope given in Eqn 1; values used in
+        # *  code of CENTURY 4.0 used instead (also correct in Parton et al. 1993, figure 1)
+        - Fm_litleaf:
+            desc: "fraction of incoming metabolic leaf litter"
+            exprs: "Fm_litleaf = Max(0.0, 0.85 - lton_leaf * 0.013)"
+        - Fm_litroot:
+            desc: "fraction of incoming metabolic root litter"
+            exprs: "Fm_litroot = Max(0.0, 0.85 - lton_root * 0.013)"
+
+        # for iteratively solved decay reductions to ensure nitrogen balance
+        # most likely would need to define them as parameters, if one wants to change them iteratively
+        #  f_reduc_[*] = 1.0 (1.0 at start, iteratively reduced in four batches of soil pool reduction groups)
+        # 1st reduce soil batch: sust, sume, sufw, sucw, sost, some
+        # 2nd reduce soil batch: sum
+        # 3rd reduce soil batch: suhu
+        # 4th reduce soil batch: somi, slso, paso
+        - f_reduc_sust:
+            exprs: "f_reduc_sust = 1.0"
+            desc: "sust reduction to ensure nitrogen balance"
+        - f_reduc_sost:
+            desc: sost reduction to ensure nitrogen balance
+            exprs: f_reduc_sost = 1.0
+        - f_reduc_somi:
+            desc: somi reduction to ensure nitrogen balance
+            exprs: f_reduc_somi = 1.0
+        - f_reduc_suhu:
+            desc: suhu reduction to ensure nitrogen balance
+            exprs: f_reduc_suhu = 1.0
+        - f_reduc_sumi:
+            desc: sumi reduction to ensure nitrogen balance
+            exprs: f_reduc_sumi = 1.0
+        - f_reduc_sume:
+            desc: sume reduction to ensure nitrogen balance
+            exprs: f_reduc_sume = 1.0
+        - f_reduc_sufw:
+            desc: sufw reduction to ensure nitrogen balance
+            exprs: f_reduc_sufw = 1.0
+        - f_reduc_sucw:
+            desc: sucw reduction to ensure nitrogen balance
+            exprs: f_reduc_sucw = 1.0
+        - f_reduc_some:
+            desc: some reduction to ensure nitrogen balance
+            exprs: f_reduc_some = 1.0
+        - f_reduc_slso:
+            desc: slso reduction to ensure nitrogen balance
+            exprs: f_reduc_slso = 1.0
+        - f_reduc_paso:
+            desc: paso reduction to ensure nitrogen balance
+            exprs: f_reduc_paso = 1.0
+
+        #environmental decomposition rate modifiers
+        - tillage_factor:
+            desc:
+            #exprs: tillage_factor = 33.0 / 17.0; # // (Inverse of "tillage factor" in Chatskikh et al. 2009, Value selected by T.Pugh)
+            exprs: "tillage_factor = 1.0"  # no tillage case
+
+        - texture_mod:
+            desc:  "Modifier for effect of soil texture Eqn 5, Parton et al 1993"
+            # potential range 0.25 .. 1.0, the higher clay plus silt the lower texture_mod
+            exprs: "texture_mod = texture_param"
+#            exprs: "texture_mod = 1.0 - 0.75 * (soiltype_clay_frac + soiltype_silt_frac)"
+        - temp_mod:
+            desc: "Calculate decomposition temperature modifier (in range 0-1)"
+            # [A(T_soil), Eqn A9, Comins & McMurtrie 1993; ET, Friend et al 1997; abiotic effect of soil temperature, Parton et al 1993, Fig 2)
+            # range 0..1 with maximum around 35C
+            exprs: "temp_mod = temp_param"
+#            exprs: "temp_mod = Piecewise((Max(0.0,0.0326 + 0.00351 * pow(temp_soil, 1.652) - pow(temp_soil / 41.748, 7.19)),temp_soil>=0.0),(0.00000001,temp_soil<0.0))"
+        - wfps:
+            desc: "Water Filled Pore Spaces (wfps) of upper soil layer (0..500mm)"
+            # // water holding capacity at wilting point (wp) and saturation capacity (wsats)
+            # // is calculated with the help of Cosby et al 1984;
+            exprs: "wfps = (wcont_soil * soiltype_awc * soil_depth_mm + soiltype_wp * soil_depth_mm) * 100.0 / (soiltype_wsats * soil_depth_mm)"
+            # Note: could remove soil_depth_mm, it is in numerator and denominator
+        - moist_mod:
+            desc: "Calculate decomposition moisture modifier (in range 0-1)"
+            # // Friend et al 1997, Eqn 53 and (Parton et al 1993, Fig 2)
+            #e.g. medium soilcode typ. moist_mod values with wcont=[0.0,0.25,0.5,0.75,1.0] moist_mod=[0.66,0.89,1.0,0.77,0.59]
+            exprs: "moist_mod = moist_param
+            # Piecewise(((exp((wfps - 60.0) * (wfps - 60.0) / -800.0)),(wfps < 60.0)),((0.000371 * wfps * wfps - 0.0748 * wfps + 4.13),wfps >= 60))"
+#            exprs: "moist_mod = Piecewise(((exp((wfps - 60.0) * (wfps - 60.0) / -800.0)),(wfps < 60.0)),((0.000371 * wfps * wfps - 0.0748 * wfps + 4.13),wfps >= 60))"
+
+        #- decomposition_rates:
+        - k_sust:
+            desc: decomposition rate of structural soil surface litter
+            exprs: "k_sust = Kmax_sust * temp_mod * moist_mod * exp(-5.0 * ligcfrac_sust)"
+        - k_sost:
+            desc: decomposition rate of structural soil litter
+            exprs: "k_sost = Kmax_sost * temp_mod * moist_mod * exp(-5.0 * ligcfrac_sost)"
+        - k_somi:
+            desc: decomposition rate of soil microbial pool
+            exprs: "k_somi = Kmax_somi * texture_mod * tillage_factor"
+        - k_suhu:
+            desc: decomposition rate of surface humus pool
+            exprs: "k_suhu = Kmax_suhu * temp_mod * moist_mod * tillage_factor"
+        - k_sumi:
+            desc: decomposition rate of surface microbial pool
+            exprs: "k_sumi = Kmax_sumi * temp_mod * moist_mod * tillage_factor"
+        - k_sume:
+            desc: decomposition rate of metabolic soil surface litter
+            exprs: "k_sume = Kmax_sume * temp_mod * moist_mod"
+        - k_sufw:
+            desc: decomposition rate of surface fine woody depry
+            exprs: "k_sufw = Kmax_sufw * temp_mod * moist_mod * exp(-5.0 * ligcfrac_sufw)"
+        - k_sucw:
+            desc: decomposition rate of surface coarse woody depry
+            exprs: "k_sucw = Kmax_sucw * temp_mod * moist_mod * exp(-5.0 * ligcfrac_sucw)"
+        - k_some:
+            desc: decomposition rate of metabolic soil litter
+            exprs: "k_some = Kmax_some * temp_mod * moist_mod"
+        - k_slso:
+            desc: decomposition rate of slow soil organic matter
+            exprs: "k_slso = Kmax_slso * temp_mod * moist_mod * tillage_factor"
+        - k_paso:
+            desc: decomposition rate of passive organic matter
+            exprs: "k_paso = Kmax_paso * temp_mod * moist_mod"
+
+        # fraction of pool reductions going to respiration (remainder goes to receiver pool)
+        # parameters that are constant, might be better to define them as parameters and not exprs
+        - respfrac_sumi_sust:
+            desc:
+            exprs: respfrac_sumi_sust = 0.6
+        - respfrac_suhu_sust:
+            desc:
+            exprs: respfrac_suhu_sust = 0.3
+        - respfrac_sumi_sume:
+            desc:
+            exprs: respfrac_sumi_sume = 0.6
+        - respfrac_sumi_suhu:
+            desc:
+            exprs: respfrac_sumi_suhu = 0.6
+        - respfrac_sumi_sufw:
+            desc:
+            exprs: respfrac_sumi_sufw = 0.76
+        - respfrac_suhu_sufw:
+            desc:
+            exprs: respfrac_suhu_sufw = 0.4
+        - respfrac_sumi_sucw:
+            desc:
+            exprs: respfrac_sumi_sucw = 0.9
+        - respfrac_suhu_sucw:
+            desc:
+            exprs: respfrac_suhu_sucw = 0.5
+        - respfrac_somi_sost:
+            desc:
+            exprs: respfrac_somi_sost = 0.55
+        - respfrac_slso_sost:
+            desc:
+            exprs: respfrac_slso_sost = 0.3
+        - respfrac_somi_some:
+            desc:
+            exprs: respfrac_somi_some = 0.55
+        - respfrac_suhu_sumi:
+            desc:
+            exprs: respfrac_suhu_sumi = 0.6
+        - respfrac_suhu_slso:
+            desc:
+            exprs: respfrac_suhu_slso = 0.6
+        - respfrac_somi_paso:
+            desc:
+            exprs: respfrac_somi_paso = 0.55
+        - respfrac_xxxx_slso:
+            desc:
+            exprs: respfrac_xxxx_slso = 0.55
+        - respfrac_xxxx_somi:
+            desc:  "Fraction lost to microbial respiration (F_t, Parton et al 1993 Eqn 7)"
+            exprs: "respfrac_xxxx_somi = Max(0.0, 0.85 - 0.68 * (soiltype_clay_frac + soiltype_silt_frac))"
+
+        # fractions of pool reduction transferred to receiver pools (Note: respiration (respfrac_*_*) will also be taken into account before transfers)
+        - frac_suhu_sust:
+            desc:
+            exprs: frac_suhu_sust = ligcfrac_sust
+        - frac_sumi_sust:
+            desc:
+            exprs: frac_sumi_sust = 1.0 - frac_suhu_sust
+        - frac_suhu_sufw:
+            desc:
+            exprs: frac_suhu_sufw = ligcfrac_sufw
+        - frac_sumi_sufw:
+            desc:
+            exprs: frac_sumi_sufw = 1.0 - frac_suhu_sufw
+        - frac_suhu_sucw:
+            desc:
+            exprs: frac_suhu_sucw = ligcfrac_sucw
+        - frac_sumi_sucw:
+            desc:
+            exprs: frac_sumi_sucw = 1.0 - frac_suhu_sucw
+        - frac_slso_sost:
+            desc:
+            exprs: frac_slso_sost = ligcfrac_sost
+        - frac_somi_sost:
+            desc:
+            exprs: frac_somi_sost = 1.0 - frac_slso_sost
+        - frac_sumi_suhu:
+            desc:
+            exprs: frac_sumi_suhu = 1.0
+        - frac_sumi_sume:
+            desc:
+            exprs: frac_sumi_sume = 1.0
+        - frac_somi_some:
+            desc:
+            exprs: frac_somi_some = 1.0
+        - frac_suhu_slso:
+            desc:
+            exprs: frac_suhu_slso = 1.0
+        - frac_paso_slso:
+            desc:
+            exprs: frac_paso_slso = Max(0.0, 0.003 - 0.009 * soiltype_clay_frac)
+        - frac_somi_slso:
+            desc:
+            exprs: frac_somi_slso = 1.0 - frac_paso_slso - respfrac_xxxx_slso
+        - frac_paso_somi:
+            desc:
+            exprs: frac_paso_somi = 0.003 + 0.032 * soiltype_clay_frac
+        - frac_slso_somi:
+            desc:
+            exprs: frac_slso_somi = 1.0 - respfrac_xxxx_somi - soil_orgleach_frac - frac_paso_somi
+        - frac_somi_paso:
+            desc:
+            exprs: frac_somi_paso = 1.0
+        - A:
+            desc: transition operator
+                              # "sust","sost","somi","suhu","sumi","sume","sufw","sucw","some","slso","paso"
+            exprs: "A = Matrix([[-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                [0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                [0, frac_somi_sost * (1.0 - respfrac_somi_sost), -1, 0, 0, 0, 0, 0, frac_somi_some * (1.0 - respfrac_somi_some), frac_somi_slso, frac_somi_paso],
+                                [frac_suhu_sust * (1.0 - respfrac_sumi_suhu), 0, 0, -1, frac_sumi_suhu * (1.0 - respfrac_sumi_suhu), 0, frac_suhu_sufw * (1.0 - respfrac_suhu_sufw), frac_suhu_sucw * (1.0 - respfrac_suhu_sucw), 0, 0, 0],
+                                [frac_sumi_sust * (1.0 - respfrac_sumi_sust), 0, 0, 0, -1, frac_sumi_sume * (1.0 - respfrac_sumi_sume), frac_sumi_sufw * (1.0 - respfrac_sumi_sufw), frac_sumi_sucw * (1.0 - respfrac_sumi_sucw), 0, 0, 0],
+                                [0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0],
+                                [0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0],
+                                [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0],
+                                [0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0],
+                                [0, frac_slso_sost * (1.0 - respfrac_slso_sost), frac_slso_somi, frac_suhu_slso * (1.0 - respfrac_suhu_slso), 0, 0, 0, 0, 0, -1, 0],
+                                [0, 0, frac_paso_somi, 0, 0, 0, 0, 0, 0, frac_paso_slso, -1]
+                               ])"
+        - Kxi:
+            desc: decomposition operator including environmental effects
+            exprs: "Kxi = diag((1.0-exp(-k_sust))*f_reduc_sust,(1.0-exp(-k_sost))*f_reduc_sost,(1.0-exp(-k_somi))*f_reduc_somi,(1.0-exp(-k_suhu))*f_reduc_suhu,(1.0-exp(-k_sumi))*f_reduc_sumi,(1.0-exp(-k_sume))*f_reduc_sume,(1.0-exp(-k_sufw))*f_reduc_sufw,(1.0-exp(-k_sucw))*f_reduc_sucw,(1.0-exp(-k_some))*f_reduc_some,(1.0-exp(-k_slso))*f_reduc_slso,(1.0-exp(-k_paso))*f_reduc_paso)"
+#            exprs: "Kxi = diag(-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1)"
+
+    - components:
+        - C:
+            desc: carbon content
+            exprs: "C = Matrix([C_sust,C_sost,C_somi,C_suhu,C_sumi,C_sume,C_sufw,C_sucw,C_some,C_slso,C_paso])"
+            key: state_vector
+        - I:
+            desc: input vector
+#            exprs: "I = Matrix([-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1])"
+            exprs: "I = Matrix([I_litleaf*(1-Fm_litleaf), I_litroot*(1-Fm_litroot), 0, 0, 0, I_litleaf*Fm_litleaf, I_litsap,  I_litheart, I_litroot*Fm_litroot, 0, 0])"
+            key: input_vector
+        - T:
+            desc: transition operator
+            exprs: "T = A"
+            key: trans_op
+        - N:
+            desc: decomposition operator
+            exprs: "N = Kxi"
+            key: decomp_op_nonlin
+        - f_s:
+            exprs: "f_s = I + T * N * C"
+            desc: the right hand side of the ode
+            key: state_vector_derivative
+
+model_run_data:
+
+    parameter_sets:
+        - "Set1":
+            values: {ligcfrac_sust: 1, ligcfrac_sost: 1, ligcfrac_sufw: 1, ligcfrac_sucw: 1
+            ,Kmax_sust: 9.5e-3, Kmax_sost: 1.9e-2, Kmax_somi: 4.2e-2, Kmax_suhu: 4.8e-4, Kmax_sumi: 2.7e-2, Kmax_sume: 3.8e-2, Kmax_sufw: 1.1e-2, Kmax_sucw: 2.2e-3, Kmax_some: 7.0e-2, Kmax_slso: 1.7e-3, Kmax_paso: 1.9e-6
+            ,temp_soil: 10, wcont_soil: 0.8
+            ,soiltype_awc: 0.150, soiltype_wp: 0.184, soiltype_wsats: 0.439, soiltype_clay_frac: 0.15, soiltype_sand_frac: 0.35, soiltype_silt_frac: 0.5, soil_depth_mm: 500.0
+            ,soil_orgleach_frac: 0.1
+            ,lton_leaf: 15.0, lton_root: 25.0
+            ,ligcfrac_leaf: 0.2, ligcfrac_root: 0.16, ligcfrac_wood: 0.3
+            ,I_litleaf: 0.12, I_litroot: 0.30, I_litsap: 0.020,  I_litheart: 0.032
+            ,moist_param: 0.888, temp_param: 0.777, texture_param: 0.444
+            }
+            desc: "Parameter values as ..."
+            # soiltype parameter for medium soilcode: see parameters.cpp:soilparameters()
+            # ligcfrac: Leaf and root lignin fractions see somdynam.cpp:transfer_litter(): Comins & McMurtrie 1993; Friend et al 1997, Not sure of wood fraction
+            # lton: wild guess
+            # litter input: annual average at Duke Forest IPBES ssp585xrcp85 2006..2100
+    initial_values:
+        - "IV1":
+            desc: "Initial values: average at Duke Forest run IPBES ssp585xrcp85 for years 2006..2010 in kgC m-2"
+            #     LeafC   SapwoodC HeartwoodC      RootC     Litter SURFSTRUCT SOILSTRUCT  SOILMICRO  SURFHUMUS  SURFMICRO   SURFMETA    SURFFWD    SURFCWD   SOILMETA    SLOWSOM PASSIVESOM
+            #     0.229      0.770      1.069      0.353      0.339      0.054      0.048      0.041      0.535      0.009      0.005      0.062      0.616      0.002      0.542      5.348
+            values: {C_sust: 0.054, C_sost: 0.048, C_somi: 0.041, C_suhu: 0.535, C_sumi: 0.009, C_sume: 0.005, C_sufw: 0.062, C_sucw: 0.616, C_some: 0.002, C_slso: 0.542, C_paso: 5.348}
+
+    run_times:
+        - "RT1":
+            #not sure what can be defined here, start and end day, month, or year, step_size in what?
+            start: 0
+            end: 200
+            step_size: 0.1
+
+    possible_combinations:
+        - ["Set1", "IV1", "RT1"]
+
