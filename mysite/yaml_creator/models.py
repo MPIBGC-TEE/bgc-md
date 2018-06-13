@@ -31,3 +31,18 @@ class Variable(models.Model):
     name=models.CharField(max_length=200)
     model_descriptor=models.ForeignKey(ModelDescriptor,on_delete=models.CASCADE)
     reverse_execution_order_position=models.IntegerField(default=0)
+
+class ComponentScheme(models.Model):
+    model_descriptor=models.ForeignKey(ModelDescriptor,on_delete=models.CASCADE)
+    stateVector=models.CharField(max_length=200)
+    reverse_execution_order_position=models.IntegerField(default=0)
+
+class FluxRepresentation(models.Model):
+    ComponentScheme=models.ForeignKey(ComponentScheme,on_delete=models.CASCADE)
+
+class CompartmentalMatrixAndInputVec(FluxRepresentation):
+    pass
+
+class FluxDict(FluxRepresentation):
+    pass
+
