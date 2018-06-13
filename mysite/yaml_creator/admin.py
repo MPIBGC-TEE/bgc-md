@@ -5,9 +5,21 @@ from .models import ModelDescriptor,Variable,ComponentScheme,FluxRepresentation,
 #admin.site.register(ModelDescriptor)
 
 #class VariableInline(admin.StackedInline):
-class CompartmentSchemeInline(admin.TabularInline):
+
+class FluxDictInline(admin.StackedInline):
+    model = FluxDict
+    fields=['fluxes']
+
+
+class ComponentSchemeAdmin(admin.ModelAdmin):
     model = ComponentScheme 
     extra = 1
+    inlines = [FluxDictInline]
+
+class ComponentSchemeInline(admin.StackedInline):
+    model = ComponentScheme 
+    extra = 1
+    inlines = [FluxDictInline]
 
 class VariableInline(admin.TabularInline):
     model = Variable
@@ -18,10 +30,11 @@ class ModelDescriptorAdmin(admin.ModelAdmin):
     (None,              {'fields':['doi']}),
     ('Date Information',{'fields':['pub_date'],'classes':['collapse']}),
     ]
-    #inlines = [VariableInline,CompartmentSchemeInline]
-    inlines = [CompartmentSchemeInline]
+    inlines = [VariableInline,ComponentSchemeInline]
+    #inlines = [ComponentSchemeInline]
     list_display = ('filename','pub_date')
     list_filter=['pub_date']
     search_fields = ['filename']
 
 admin.site.register(ModelDescriptor,ModelDescriptorAdmin)
+admin.site.register(ComponentScheme,ComponentSchemeAdmin)
