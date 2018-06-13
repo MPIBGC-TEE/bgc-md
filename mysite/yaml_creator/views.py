@@ -21,9 +21,9 @@ class IndexView(generic.ListView):
     	"""Return the last five published ModelDescriptors."""
     	return ModelDescriptor.objects.order_by('-pub_date')[:5]
 
-class DetailView(generic.DetailView):
-	model=ModelDescriptor
-	template_name='yaml_creator/detail.html'
+#class DetailView(generic.DetailView):
+#	model=ModelDescriptor
+#	template_name='yaml_creator/detail.html'
 
 # Create your views here.
 #def data_base_index(request):
@@ -33,12 +33,13 @@ class DetailView(generic.DetailView):
 #    }
 #	return render(request,'yaml_creator/data_base_index.html',context)
 
-#def detail(request,modeldescriptor_filename):
-#	try:
-#		modeldescriptor = ModelDescriptor.objects.get(pk=modeldescriptor_filename)
-#	except Question.DoesNotExist:
-#		raise Http404("Question does not exist")
-#	return render(request, 'yaml_creator/detail.html', {'modeldescriptor': modeldescriptor})	
+def detail(request,modeldescriptor_filename):
+    try:
+        modeldescriptor = ModelDescriptor.objects.get(pk=modeldescriptor_filename)
+        print(modeldescriptor.componentscheme)
+    except Question.DoesNotExist:
+        raise Http404("Question does not exist")
+    return render(request, 'yaml_creator/detail.html', {'modeldescriptor': modeldescriptor})	
 
 def index(request):
     ap=defaults()['paths']['data'].joinpath('all_records')
