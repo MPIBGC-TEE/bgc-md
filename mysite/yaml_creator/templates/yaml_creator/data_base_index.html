@@ -2,8 +2,13 @@
 <link rel="stylesheet" type="text/css" href="{% static 'yaml_creator/style.css' %}" />
 <ul
     {% for md in latest_modeldescriptor_list   %}
-    <li><a href="    {%url 'detail' md.filename%}">{{md.filename}}</a></li>
+
+    <li><a href="{%url 'detail' md.filename%}">{{md.filename}}</a></li>
     {% endfor %}     
 </ul>            	
                  	
+<form action="{% url 'create' yaml_file_name_default %}" method="post">
+	{% csrf_token %}
+	<input type="submit" value="create new model" />
+</form>
                  	
