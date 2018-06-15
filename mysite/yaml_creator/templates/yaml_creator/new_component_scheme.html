@@ -1,0 +1,12 @@
+<form action="{% url 'detail' modeldescriptor.filename%}" method="post">
+   {% csrf_token %}
+  <select name="component_scheme">
+	{% for choice in  subclasses%}
+	 <option value="{{ forloop.counter }}">
+		{{ choice }}
+	</option>
+	{% endfor %}
+  </select>
+  <input type="submit" value="chose component_scheme" />
+</form>
+
