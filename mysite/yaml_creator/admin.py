@@ -1,6 +1,10 @@
 from django.contrib import admin
 # Register your models here.
-from .models import ModelDescriptor,Variable,ComponentScheme,FluxRepresentation,FluxDict
+from .models.ModelDescriptor    import ModelDescriptor
+from .models.Variable           import Variable
+from .models.ComponentScheme    import ComponentScheme
+from .models.FluxRepresentation import FluxRepresentation
+from .models.FluxDict           import FluxDict
 
 #admin.site.register(ModelDescriptor)
 

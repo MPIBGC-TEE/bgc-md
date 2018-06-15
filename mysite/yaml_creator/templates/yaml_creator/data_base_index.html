@@ -7,8 +7,10 @@
     {% endfor %}     
 </ul>            	
                  	
-<form action="{% url 'create' yaml_file_name_default %}" method="post">
+<form action="{% url 'create_new_ModelDescriptor'%}" method="post">
 	{% csrf_token %}
-	<input type="submit" value="create new model" />
+
+	<input type="text" name="filename" value="{{ yaml_file_name_default }}" />
+  	<input type="submit" value="create new model" />
 </form>
                  	
