@@ -3,19 +3,18 @@ from yaml_creator.models.ModelDescriptor import ModelDescriptor
 from yaml_creator.models.ComponentScheme import ComponentScheme
 from django.utils import timezone
 from django.template import loader
+from django.urls import reverse
 
 def create_new_ModelDescriptor(request):
-    print(request.POST)
     key='filename'
-    print('#########################')
     if key in request.POST.keys():
-        print(request.POST[key])
-        #md3=ModelDescriptor.objects.create(filename=modeldescriptor_filename,pub_date=md.pub_date)
-    print('#########################')
-    #modeldescriptor = ModelDescriptor.objects.create(
-    #    filename=modeldescriptor_filename,
-    #    pub_date=timezone.now()
-    #)
+        yaml_file_name=request.POST[key]
+        modeldescriptor = ModelDescriptor.objects.create(
+            filename=yaml_file_name,
+            pub_date=timezone.now()
+        )
+        modeldescriptor.save()
+        return HttpResponseRedirect(reverse("set_statevector",kwargs={"file_name":yaml_file_name}))
     #cs=ComponentScheme.objects.create(model_descriptor=modeldescriptor)
     #cs.save()
     #template=loader.get_template('yaml_creator/new_component_scheme.html')
