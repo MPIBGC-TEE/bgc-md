@@ -1,3 +1,11 @@
 {{ modeldescriptor.filename }}<br> 
-{{ modeldescriptor.statevector}}<br> 
-
+{{ modeldescriptor.componentscheme.statevector}}<br> 
+{{var_list}}
+<form action="{% url 'set_statevector' modeldescriptor.filename %}" method="post">
+{% for var  in var_list %}
+	<li> 
+	  	{{var}}
+		<input type="text" name="{{ var }}" value="describe your variable here">
+    	</li>
+{% endfor %}     
+</form>

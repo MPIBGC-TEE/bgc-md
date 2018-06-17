@@ -14,17 +14,8 @@ def create_new_ModelDescriptor(request):
             pub_date=timezone.now()
         )
         modeldescriptor.save()
+        # also created the (one to one) related Component scheme
+        cs=ComponentScheme.objects.create(model_descriptor=modeldescriptor)
+        cs.save()
         return HttpResponseRedirect(reverse("set_statevector",kwargs={"file_name":yaml_file_name}))
-    #cs=ComponentScheme.objects.create(model_descriptor=modeldescriptor)
-    #cs.save()
-    #template=loader.get_template('yaml_creator/new_component_scheme.html')
-    #content= {'modeldescriptor': modeldescriptor}
-    #out=template.render(content,request)
-    ##return HttpResponse("Create the model here")
-    #template=loader.get_template('yaml_creator/new_component_scheme.html')
-    #content.update({'subclasses': subclassNames})
-    #CreateCs=template.render(content,request)
-    #out+=CreateCs
-    #return HttpResponse(out)
-    return HttpResponse(request)
 

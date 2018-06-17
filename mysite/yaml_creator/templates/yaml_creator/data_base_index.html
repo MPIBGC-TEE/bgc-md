@@ -1,8 +1,10 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'yaml_creator/style.css' %}" />
-<ul
+<ul>
     {% for md in latest_modeldescriptor_list   %}
-    <li><a href="{%url 'detail' md.filename%}">{{md.filename}}</a></li>
+    	<li> 
+	    <a href="{%url 'detail' md.filename%}">{{md.filename}}</a>
+	</li>
     {% endfor %}     
 </ul>            	
                  	
