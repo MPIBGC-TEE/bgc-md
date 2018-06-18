@@ -5,7 +5,10 @@ from .views.model_overview import model_overview
 from .views.create import create_new_ModelDescriptor
 from .views.detail import detail
 from .views.set_statevector import set_statevector
+from .views.set_Matrices import set_Matrices
+from .views.set_Fluxes import set_Fluxes
 from .views.set_statevariable_descriptions import set_statevariable_descriptions
+from .views.set_FluxRepresentation import set_FluxRepresentation
 from .views.data_base_index import data_base_index
 
 urlpatterns=[
@@ -16,6 +19,9 @@ urlpatterns=[
     path('create_new_ModelDescriptor',create_new_ModelDescriptor, name='create_new_ModelDescriptor'),
     path('<str:file_name>/set_statevector/',set_statevector, name='set_statevector'),
     path('<str:file_name>/set_statevariable_descriptions/',set_statevariable_descriptions, name='set_statevariable_descriptions'),
+    path('<str:file_name>/set_FluxRepresentation/',set_FluxRepresentation, name='set_FluxRepresentation'),
+    path('<str:file_name>/set_Fluxes/',set_Fluxes, name='set_Fluxes'),
+    path('<str:file_name>/set_Matrices/',set_Matrices, name='set_Matrices'),
     #path('<str:file_name>/model_overview/',model_overview, name='model_overview'),
     path('<str:file_name>/detail/',detail, name='detail'),
 ]
