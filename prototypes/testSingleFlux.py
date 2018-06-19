@@ -14,5 +14,5 @@ ac=SingleFlux(source=a,target=c)
 ac.save()
 bc=SingleFlux(source=b,target=c)
 bc.save()
-print(a.donates.all())
+print(a.donating.all())
 
