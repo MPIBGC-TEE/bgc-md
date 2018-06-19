@@ -1,5 +1,5 @@
 from django.db import models
-from . ModelDescriptor import ModelDescriptor
+from .ModelDescriptor import ModelDescriptor
 
 class Variable(models.Model):
     name=models.CharField(max_length=200)

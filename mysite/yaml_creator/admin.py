@@ -4,26 +4,19 @@ from .models.ModelDescriptor    import ModelDescriptor
 from .models.Variable           import Variable
 from .models.ComponentScheme    import ComponentScheme
 from .models.FluxRepresentation import FluxRepresentation
-from .models.FluxDict           import FluxDict
 
 #admin.site.register(ModelDescriptor)
 
 #class VariableInline(admin.StackedInline):
 
-class FluxDictInline(admin.StackedInline):
-    model = FluxDict
-    fields=['fluxes']
-
 
 class ComponentSchemeAdmin(admin.ModelAdmin):
     model = ComponentScheme 
     extra = 1
-    inlines = [FluxDictInline]
 
 class ComponentSchemeInline(admin.StackedInline):
     model = ComponentScheme 
     extra = 1
-    inlines = [FluxDictInline]
 
 class VariableInline(admin.TabularInline):
     model = Variable

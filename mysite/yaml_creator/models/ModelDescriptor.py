@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 import re
-from bgc_md.reports import defaults
 
 # Create your models here.
 def default_yaml_file_name():
