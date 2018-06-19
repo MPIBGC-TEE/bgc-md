@@ -1,7 +1,7 @@
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import loader
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect,Http404
 from django.views.decorators.csrf import csrf_protect
 from sympy import sympify
 from django.urls import reverse
