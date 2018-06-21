@@ -15,7 +15,8 @@ def set_FluxRepresentation(request,file_name):
     try:
         md = ModelDescriptor.objects.get(pk=file_name)
         try:
-            sv=md.componentscheme.statevector
+            cs=md.componentscheme
+            sv=cs.statevector
             # fixme check if the variable are set and redirect to set_state_variable_descriptions if not
             subClasses=FluxRepresentation.get_subclasses()
             subClassNames=[f.__name__ for f in subClasses]
@@ -34,7 +35,18 @@ def set_FluxRepresentation(request,file_name):
                 target=reverse("set_"+className,kwargs={"file_name":file_name})
                 print('########################################333')
                 print(target)
-                return HttpResponse('here you will be redirectet to the side that helps you add fluxes')
+                print('########################################333')
+                cls=globals()[className]
+                print('########################################333')
+                print(cls)
+                try:
+                    fr=cs.fluxrepresentation
+                    cs.fluxrepresentation.delete()
+                except ObjectDoesNotExist as e:
+                    print(e)
+                    fr=cls(componentScheme=cs)
+                    fr.save()
+                return HttpResponseRedirect(target)
         except ComponentScheme.DoesNotExist as e:
             return HttpResponseRedirect(reverse("set_statevector",kwargs={"file_name":file_name}))
 

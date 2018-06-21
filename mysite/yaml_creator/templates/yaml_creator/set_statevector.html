@@ -2,6 +2,6 @@
 <form action="{% url 'set_statevector' modeldescriptor.filename %}" method="post">
 	{% csrf_token %}
 	
-	<input type="text" name="statevector" value=" Matrix([C_1,C_2])" />
+	<input type="text" name="statevector" value=" Matrix([C_1,C_2,C_3])" />
   	<input type="submit" value="set state vector" />
 </form>

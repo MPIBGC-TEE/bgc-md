@@ -1,0 +1,24 @@
+set a Flux 
+{{ modeldescriptor.filename }}<br> 
+{{ modeldescriptor.cs}}<br> 
+{{ modeldescriptor.variable_set.all}}<br> 
+<form action="{% url 'set_Fluxes' modeldescriptor.filename%}" method="post">
+   {% csrf_token %}
+  Source
+  <select name="Source">
+	{% for name in source_pool_names%}
+	 <option value="{{ name }}">
+		{{ name }}
+	</option>
+	{% endfor %}
+  </select>
+  Target
+  <select name="Target">
+	{% for name in target_pool_names%}
+	 <option value="{{ name }}">
+		{{ name }}
+	</option>
+	{% endfor %}
+  </select>
+  <input type="submit" value="add flux" />
+</form>

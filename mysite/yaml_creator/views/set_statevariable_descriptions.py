@@ -30,7 +30,6 @@ def set_statevariable_descriptions(request,file_name):
             else:
                 for var_name in var_list:
                     v=Variable.objects.create(name=var_name,model_descriptor=md)
-                    v.save()
 
                 return HttpResponseRedirect(reverse("set_FluxRepresentation",kwargs={"file_name":file_name}))
 
