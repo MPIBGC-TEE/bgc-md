@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+		function getOptions() {
+		    var x = document.getElementById("sourceSelect");
+		    var txt = "";
+		    var i;
+		    for (i = 0; i < x.length; i++) {
+		        txt = txt + " " + x.options[i].text;
+		    }
+		    document.getElementById("demo").innerHTML = txt;
+		}
+		function getForm() {
+		    var x = document.getElementById("sourceSelect");
+		    var txt = "";
+		    var i;
+		    for (i = 0; i < x.length; i++) {
+		        txt = txt + "<option>" + x.options[i].text + "</option>";
+		    }
+		    txt= '<select id="targetSelect">' + txt +'</select>' 
+		    document.getElementById("targetDiv").innerHTML = txt;
+		}
+		function getForm2() {
+
+		    var x = document.getElementById("sourceSelect");
+		    var s = x.cloneNode(true);
+		    s.remove(x.selectedIndex)
+		    d=document.getElementById("targetDiv2")
+		    l=d.childNodes.length;
+		    document.getElementById("demo").innerHTML = l;
+		    if (l > 0){
+			oldf=d.childNodes[0]
+			d.replaceChild(s,oldf);
+		    }
+		    if (l = 0){
+			d.appendChild(s);
+		    }
+		}
+		</script>
+	</head>
+<body>
+	<form id="sourceForm">
+	<select id="sourceSelect">
+	  <option>C_1</option>
+	  <option>C_2</option>
+	  <option>C_3</option>
+	  <option>C_4</option>
+	</select>
+	<input type="button" onclick="getForm2()" value="build form2 ">
+	<div id="targetDiv"> </div>
+	<div id="targetDiv2"> </div>
+	<input type="button" onclick="getOptions()" value="Output all options">
+	</form>
+	
+	<p>The options are:<p>
+	<p id="demo"></p>
+	
+	
+	
+</body>
+</html>
+
+

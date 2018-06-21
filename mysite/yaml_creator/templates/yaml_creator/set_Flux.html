@@ -14,16 +14,6 @@ set a Flux
 	{% endfor %}
   </select>
  <input type="button" onclick="removeOption(org)" value="set Source">
-  Target
-  <select name="Target" id="target_form">
-	{% for name in target_pool_names%}
-	 <option value="{{ name }}">
-		{{ name }}
-	</option>
-	{% endfor %}
-  </select>
-  <input type="submit" value="add flux" />
-</form>
 <script>
 var sel = document.createElement('select');
 sel.name = 'drop1';
@@ -46,23 +36,33 @@ var sel2
 sel2 = sel.cloneNode(true);
 var sel3
 sel3 = sel.cloneNode(true);
-window.onload = function() {
-  document.body.appendChild(sel);
-  document.body.appendChild(sel2);
-  document.body.appendChild(sel3);
-};
+//window.onload = function() {
+//  document.body.appendChild(sel);
+//  document.body.appendChild(sel2);
+//  document.body.appendChild(sel3);
+//};
 
 var org  = document.getElementById("target_form");
 var source_org  = document.getElementById("source_form");
 
-function removeOption() {
-    //var x = document.getElementById("mySelect");
-    f= document.getElementById("target_form");
-    pn=f.parentNode;
-    pn.removeChild(f);
-    org.remove(source_org.selectedIndex);
-    org.id = 'target_form';
-    pn.appendChild(org);
+function removeOption(org) {
+	var sel = document.createElement('select');
+	sel.name = 'drop1';
+	sel.id = 'Select1';
+	
+	var cars = [
+	  "volvo",
+	  "saab",
+	  "mercedes",
+	  "audi"
+	];
+	var options_str = "";
+	cars.forEach( function(car) {
+	  options_str += '<option value="' + car + '">' + car + '</option>';
+	});
+	sel.innerHTML = options_str;
+   	//var x = document.getElementById("mySelect");
+   	document.body.appendChild(sel);
 }
 </script>
 
