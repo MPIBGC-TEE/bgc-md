@@ -31,7 +31,7 @@ model:
             unit: "s?"
             key: time_symbol
         - Q_p:
-            desc: Flux density of photosynthetically acive radiation absorbed by the leaf
+            desc: Flux density of photosynthetically active radiation absorbed by the leaf
             unit: "Einstein*m^{-2}*s^{-1}"
         - alpha_3:
             desc: "Intrinsic quantum efficiency for CO_2 uptake in C_3 plants"
@@ -41,7 +41,7 @@ model:
             desc: "Atmospheric [O_2] (value: 0.209)"
             unit: "mol*mol^{-1}"
         - tau:
-            desc: Ratio of kinetic parameters decribing the partitioning of enzyme activity to carboxylase or oxygenase function
+            desc: Ratio of kinetic parameters describing the partitioning of enzyme activity to carboxylase or oxygenase function
         - Gamma:
             desc: "Gamma^* is the compensation point for gross photosynthesis"
             unit: "mol*mol^{-1}"
@@ -55,8 +55,8 @@ model:
 #       there is a variable for each PFTs, e.g. ciub, ciuc, cils, cil3, cil4.
 #   
 #   - physiology.f: This file contains all the relevant equations for photosynthesis
-#       line 175 -> ci values are constrainedd to acceptable bounds.
-#       line 218 -> je (here J_e, see fuction below) is defined as in the paper, using the variables for the PFT: ciub, they also add another coefficient: 4.59e-06
+#       line 175 -> ci values are constrained to acceptable bounds.
+#       line 218 -> je (here J_e, see function below) is defined as in the paper, using the variables for the PFT: ciub, they also add another coefficient: 4.59e-06
 #       line 235 -> calculate agub (here A_g, see below) by solving the quadratic equation in lines 228 - 233.
 #       line 425 -> A_g of each PFT (agub, aguc...) is scaled -to the canopy?- = agcub... A_n as well... = ancub
 #   - stats.f:
