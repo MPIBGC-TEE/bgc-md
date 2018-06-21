@@ -14,7 +14,7 @@ def template(model_list):
 #        Text("# Variables"), 
 #        Text("# Parameters"), 
         Text("Partitioning of photosynthetic input"), 
-        Text("C exchange between compartments?"), 
+        Text("Diagonal matrix?"), 
         Text("Structure"), 
  #       Text("Right hand side of ODE"), 
         Text("Source")])
