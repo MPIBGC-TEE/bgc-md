@@ -1,0 +1,14 @@
+set the Flux Representation
+{{ modeldescriptor.filename }}<br> 
+{{ modeldescriptor.cs}}<br> 
+<form action="{% url 'set_FluxRepresentation' modeldescriptor.filename%}" method="post">
+   {% csrf_token %}
+  <select name="FluxRepresentation">
+	{% for class in  subClassNames%}
+	 <option value="{{ class }}">
+		{{ class }}
+	</option>
+	{% endfor %}
+  </select>
+  <input type="submit" value="chose flux representation" />
+</form>

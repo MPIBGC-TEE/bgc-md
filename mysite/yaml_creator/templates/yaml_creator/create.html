@@ -1,0 +1,7 @@
+{{ modeldescriptor.filename }}<br> 
+<ul>
+	{% for variable in modeldescriptor.variable_set.all %}
+	    <li>{{ variable.name}}</li>
+	{% endfor %}
+</ul>
+

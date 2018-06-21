@@ -1,0 +1,12 @@
+{{ modeldescriptor.filename }}<br> 
+{{ modeldescriptor.componentscheme.statevector}}<br> 
+<form action="{% url 'set_statevariable_descriptions' modeldescriptor.filename %}" method="post">
+	{% csrf_token %}
+ 	{% for var  in var_list %}
+	<li> 
+	  	{{var}}
+		<input type="text" name="{{ var }}" value="describe your variable here">
+    	</li>
+	{% endfor %}     
+  	<input type="submit" value="save" />
+</form>

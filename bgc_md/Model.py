@@ -594,6 +594,9 @@ def load_model_run_combinations(model_run_data, parameter_sets, initial_values, 
                 if  len(free_symbols)==0:
                     result.append(dic)
                 else:
+                    print("##########################################")
+                    print(free_symbols)
+                    print("##########################################")
                     msg = "Model run combination  '" + str(pc) + "' is invalid. There are free symbols but no parameter set is given"
 
             
@@ -656,6 +659,11 @@ class Model:
 
         model.__init__(complete_dict,id=name)
         return model
+
+    def editable_vars(self):
+        # fixme: this is still under construction
+        #return ['yaml_file_path','id','bibtex_entry']
+        return ['bibtex_entry']
 
     @property
     def name(self):

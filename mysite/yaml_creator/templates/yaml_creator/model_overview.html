@@ -1,0 +1,19 @@
+<h1>Overview: {{ yaml_file_name}}</h1>
+{{choices}}
+<form action="{% url 'model_overview' yaml_file_name%}" method="post">
+   {% csrf_token %}
+  <!--
+  the imput fields contain raw html so we have to bypass django's automatic
+  html escape with the |safe filter
+   -->
+  {{input_fields|safe}}
+  <select name="component_scheme">
+	{% for choice in  choices %}
+	 <option value="{{ forloop.counter }}">
+		{{ choice }}
+	</option>
+	{% endfor %}
+  </select>
+  <input type="submit" value="chose component_scheme" />
+</form>
+
