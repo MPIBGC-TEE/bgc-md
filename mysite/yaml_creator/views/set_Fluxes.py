@@ -1,10 +1,11 @@
-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.template import loader
 from yaml_creator.models.ModelDescriptor import ModelDescriptor
 from yaml_creator.models.FluxRepresentation import FluxRepresentation
-from yaml_creator.models.SingleFlux import SingleFlux
+from yaml_creator.models.InternalFlux import InternalFlux
+from yaml_creator.models.InFlux import InFlux
+from yaml_creator.models.OutFlux import OutFlux
 
 def set_Fluxes(request,file_name):
     try:
@@ -33,7 +34,7 @@ def set_Fluxes(request,file_name):
                 print(s,t)
                 source=md.variable_set.get(name=s)
                 target=md.variable_set.get(name=t)
-                sf=SingleFlux( source=source, target=target)
+                sf=InternalFlux( source=source, target=target)
                 sf.save()
                 return HttpResponse('some fluxes have been set')
         except FluxRepresentation.DoesNotExist as e:
