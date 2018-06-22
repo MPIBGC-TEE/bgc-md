@@ -2,67 +2,36 @@
 set a Flux 
 {{ modeldescriptor.filename }}<br> 
 {{ modeldescriptor.cs}}<br> 
-{{ modeldescriptor.variable_set.all}}<br> 
-<form action="{% url 'set_Fluxes' modeldescriptor.filename%}" method="post">
-   {% csrf_token %}
-  Source
-  <select name="Source" id="source_form" >
-	{% for name in source_pool_names%}
-	 <option value="{{ name }}">
-		{{ name }}
-	</option>
-	{% endfor %}
-  </select>
- <input type="button" onclick="removeOption(org)" value="set Source">
-<script>
-var sel = document.createElement('select');
-sel.name = 'drop1';
-sel.id = 'Select1';
-
-var cars = [
-  "volvo",
-  "saab",
-  "mercedes",
-  "audi"
-];
-var options_str = "";
-cars.forEach( function(car) {
-  options_str += '<option value="' + car + '">' + car + '</option>';
-});
-sel.innerHTML = options_str;
-
-
-var sel2
-sel2 = sel.cloneNode(true);
-var sel3
-sel3 = sel.cloneNode(true);
-//window.onload = function() {
-//  document.body.appendChild(sel);
-//  document.body.appendChild(sel2);
-//  document.body.appendChild(sel3);
-//};
-
-var org  = document.getElementById("target_form");
-var source_org  = document.getElementById("source_form");
-
-function removeOption(org) {
-	var sel = document.createElement('select');
-	sel.name = 'drop1';
-	sel.id = 'Select1';
 	
-	var cars = [
-	  "volvo",
-	  "saab",
-	  "mercedes",
-	  "audi"
-	];
-	var options_str = "";
-	cars.forEach( function(car) {
-	  options_str += '<option value="' + car + '">' + car + '</option>';
-	});
-	sel.innerHTML = options_str;
-   	//var x = document.getElementById("mySelect");
-   	document.body.appendChild(sel);
-}
+<script>
+	function getForm() {
+		    var x = document.getElementById("sourceSelect");
+		    var s = x.cloneNode(true);
+		    s.remove(x.selectedIndex)
+				s.name="Target"
+		    var d=document.getElementById("targetDiv")
+		    var l=d.childNodes.length;
+	      var b = document.createElement("BUTTON");
+	      var submit = document.createElement("INPUT");
+				submit.setAttribute("type","submit")
+				submit.setAttribute("value","add Flux")
+			  if (l == 1){
+					d.appendChild(s);
+			    d.appendChild(submit);
+		    }
+		    if (l > 1){
+					var oldf=d.childNodes[1];
+					d.replaceChild(s,oldf);
+			  }
+	}
 </script>
-
+<form id="sourceForm" action="{% url 'set_Fluxes' modeldescriptor.filename %}" method="post">
+	{% csrf_token %}
+	<select id="sourceSelect" name='Source'>
+	  	{% for var in modeldescriptor.variable_set.all %}
+			<option> {{ var.name }}</option> 
+			{% endfor %}
+	</select>
+	<input type="button" onclick="getForm()" value="set source pool">
+	<div id="targetDiv"> </div>
+</form>
