@@ -40,12 +40,13 @@ def set_FluxRepresentation(request,file_name):
                 print('########################################333')
                 print(cls)
                 try:
-                    fr=cs.fluxrepresentation
-                    cs.fluxrepresentation.delete()
+                    fr=getattr(cs,className.lower())
+                    fr.delete()
                 except ObjectDoesNotExist as e:
                     print(e)
-                    fr=cls(componentScheme=cs)
+                    fr=cls(componentscheme=cs)
                     fr.save()
+
                 return HttpResponseRedirect(target)
         except ComponentScheme.DoesNotExist as e:
             return HttpResponseRedirect(reverse("set_statevector",kwargs={"file_name":file_name}))

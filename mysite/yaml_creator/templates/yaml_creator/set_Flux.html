@@ -5,24 +5,24 @@ set a Flux
 	
 <script>
 	function getForm() {
-		    var x = document.getElementById("sourceSelect");
-		    var s = x.cloneNode(true);
-		    s.remove(x.selectedIndex)
-				s.name="Target"
-		    var d=document.getElementById("targetDiv")
-		    var l=d.childNodes.length;
-	      var b = document.createElement("BUTTON");
-	      var submit = document.createElement("INPUT");
-				submit.setAttribute("type","submit")
-				submit.setAttribute("value","add Flux")
-			  if (l == 1){
-					d.appendChild(s);
-			    d.appendChild(submit);
-		    }
-		    if (l > 1){
-					var oldf=d.childNodes[1];
-					d.replaceChild(s,oldf);
-			  }
+		var x = document.getElementById("sourceSelect");
+		var s = x.cloneNode(true);
+		s.remove(x.selectedIndex)
+		s.name="Target"
+		var d=document.getElementById("targetDiv")
+		var l=d.childNodes.length;
+	  var b = document.createElement("BUTTON");
+	  var submit = document.createElement("INPUT");
+		submit.setAttribute("type","submit")
+		submit.setAttribute("value","add Flux")
+		if (l == 1){
+			d.appendChild(s);
+		  d.appendChild(submit);
+		}
+		if (l > 1){
+			var oldf=d.childNodes[1];
+			d.replaceChild(s,oldf);
+		}
 	}
 </script>
 <form id="sourceForm" action="{% url 'set_Fluxes' modeldescriptor.filename %}" method="post">

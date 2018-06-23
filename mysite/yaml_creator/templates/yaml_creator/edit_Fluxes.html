@@ -1,0 +1,76 @@
+
+set a Flux 
+{{ modeldescriptor.filename }}<br> 
+{{ modeldescriptor.cs}}<br> 
+{{ flstr|escapejs }}<br>
+{{ fluxes}}
+<script>
+
+	function main(){
+		pool_select();			
+		//tn([1,2]);
+	};
+
+	function getButton(){
+	  var b = document.createElement("BUTTON");
+		b.setAttribute('value','Test')
+		document.body.appendChild(b);
+	};
+	function tn(tup){
+		var t=document.createTextNode(tup)
+	  	var demo = document.getElementById("demo");
+		demo.innerHTML=demo.innerHTML+tup;
+	};
+	function pool_select(){
+		var tuples=JSON.parse("{{ flstr|escapejs }}");
+		for (i=0; i <tuples.length;i++){
+			tn(tuples[i]);
+		}
+		//tuples.forEach(tn);
+	}
+	function getForm(source){
+		var x = document.getElementById("sourceSelect");
+		var s = x.cloneNode(true);
+		s.remove(x.selectedIndex)
+		s.name="Target"
+		var d=document.getElementById(source);
+		var l=d.childNodes.length;
+	  var b = document.createElement("BUTTON");
+	  var submit = document.createElement("INPUT");
+		submit.setAttribute("type","submit")
+		submit.setAttribute("value","add Flux")
+		if (l == 1){
+			d.appendChild(s);
+		  //d.appendChild(submit);
+		}
+		if (l > 1){
+			var oldf=d.childNodes[1];
+			d.replaceChild(s,oldf);
+		}
+	}
+ document.onload=main();
+</script>
+<p id="demo"></p>
+<form id="sourceForm" action="{% url 'set_Fluxes' modeldescriptor.filename %}" method="post">
+	{% csrf_token %}
+	<!--
+	{% for f in fluxes%}
+		<select id="sourceSelect" name='Source'>
+		  	{% for p in pool_names%}
+				<option> {{ p }}</option> 
+				{% endfor %}
+		</select>
+		<input type="button" onclick="getForm( {{ f.source }})" value="set source pool">
+		<div id="{{f.source}}"> </div>
+	{% endfor %}
+	-->
+	Add new flux <br>
+	<select id="sourceSelect" name='Source' onchange="getForm(0)">
+	  	{% for p in pool_names%}
+			<option> {{ p }}</option> 
+			{% endfor %}
+	</select>
+	<input type="button" onclick="getForm(0)" value="set source pool">
+	<div id="0"> </div>
+	<input type="submit" value="set fluxes pool">
+</form>
