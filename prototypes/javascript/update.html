@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+		select_ids=['ss1','ss2'];
+		div_ids=['targetDiv12','targetDiv22'];
+		function update(i){
+			var div_target=document.getElementById(div_ids[i]);
+			var ids=document.getElementById(select_ids[i]);
+			var ts=ids.cloneNode(true);
+			var selind=ids.selectedIndex;
+			document.getElementById('demo_selind').innerHTML=selind;
+			ts.remove(selind);
+		    	l=div_target.childNodes.length;
+		    	document.getElementById("demo_l").innerHTML = l;
+		    	if (l > 0){
+		    	    oldf=div_target.childNodes[0]
+		    	    div_target.replaceChild(ts,oldf);
+		    	}
+		    	if (l = 0){
+		    	    div_target.appendChild(ts);
+		    	}
+		};
+	
+		</script>
+	</head>
+<body>
+	
+		
+
+<form id="sf1">
+ <table style="width:50%">
+  <tr>
+    <th>Source</th>
+    <th>Target</th>
+    <th>Action</th>
+  </tr>
+  <tr>
+    <td>
+	<select id="ss1" oninput='update(0)'>
+	  <option>C_1</option>
+	  <option>C_2</option>
+	  <option>C_3</option>
+	  <option>C_4</option>
+	</select>
+    </td>
+    <td><div id="targetDiv12"> </div></td>
+    <td><div id="targetDiv13"> </div></td>
+  </tr>
+    <td>
+	<select id="ss2" oninput='update(1)'>
+	  <option>C_1</option>
+	  <option>C_2</option>
+	  <option>C_3</option>
+	  <option>C_4</option>
+	</select>
+    </td>
+    <td><div id="targetDiv22"> </div></td>
+    <td><div id="targetDiv23"> </div></td>
+  <tr>
+  </tr>
+ </table> 	
+</form>
+<div id="demo_selind"> </div>
+<div id="demo_l"> </div>
+	
+</body>
+</html>
+
+
