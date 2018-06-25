@@ -7,6 +7,23 @@ set a Flux
 {{ fluxes}}
 -->
 <script>
+	function update(select_id,div_id){
+		var div_target=document.getElementById(div_id);
+		var ids=document.getElementById(select_id);
+		var ts=ids.cloneNode(true);
+		var selind=ids.selectedIndex;
+		document.getElementById('demo_selind').innerHTML=selind;
+		ts.remove(selind);
+	    	l=div_target.childNodes.length;
+	    	document.getElementById("demo_l").innerHTML = l;
+	    	if (l > 0){
+	    	    oldf=div_target.childNodes[0]
+	    	    div_target.replaceChild(ts,oldf);
+	    	}
+	    	if (l = 0){
+	    	    div_target.appendChild(ts);
+	    	}
+	};
 
 	function main(){
 		//var tn =document.createTextNode('BBLLAA');
@@ -71,24 +88,32 @@ document.onload=main();
 <p id="demo"></p>
 <form id="sourceForm" action="{% url 'set_Fluxes' modeldescriptor.filename %}" method="post">
 	{% csrf_token %}
-	<!--
-	{% for f in fluxes%}
-		<select id="sourceSelect" name='Source'>
-		  	{% for p in pool_names%}
-				<option> {{ p }}</option> 
+ <table style="width:50%">
+  <tr>
+    <th>Source</th>
+    <th>Target</th>
+  </tr>
+	{% for f in fluxes %}
+  <tr>
+    <td>
+			<select id="sourceSelect_{{f}}" name='Source' oninput="update('sourceSelect_{{f}}','targetDiv_{{f}}')">
+				{% for p in pool_names%}
+					<option> {{ p }}</option> 
 				{% endfor %}
-		</select>
-		<input type="button" onclick="getForm( {{ f.source }})" value="set source pool">
-		<div id="{{f.source}}"> </div>
+			</select>
+    </td>
+    <td>
+			<div id="targetDiv_{{f}}">
+				<select id="TargetSelect_{{f}}" name='Source' >
+					{% for p in pool_names%}
+						<option> {{ p }}</option> 
+					{% endfor %}
+				</select>
+			</div>
+  </tr>i
 	{% endfor %}
-	-->
-	Add new flux <br>
-	<select id="sourceSelect" name='Source' onchange="getForm(0)">
-	  	{% for p in pool_names%}
-			<option> {{ p }}</option> 
-			{% endfor %}
-	</select>
-	<input type="button" onclick="getForm(0)" value="set source pool">
-	<div id="0"> </div>
-	<input type="submit" value="set fluxes pool">
+ </table> 	
+<input type="submit" value="set fluxes pool">
 </form>
+<div id="demo_selind"> </div>
+<div id="demo_l"> </div>

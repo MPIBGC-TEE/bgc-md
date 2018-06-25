@@ -1,35 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script>
-		select_ids=['ss1','ss2'];
-		div_ids=['targetDiv12','targetDiv22'];
-		function update(i){
-			var div_target=document.getElementById(div_ids[i]);
-			var ids=document.getElementById(select_ids[i]);
-			var ts=ids.cloneNode(true);
-			var selind=ids.selectedIndex;
-			document.getElementById('demo_selind').innerHTML=selind;
-			ts.remove(selind);
-		    	l=div_target.childNodes.length;
-		    	document.getElementById("demo_l").innerHTML = l;
-		    	if (l > 0){
-		    	    oldf=div_target.childNodes[0]
-		    	    div_target.replaceChild(ts,oldf);
-		    	}
-		    	if (l = 0){
-		    	    div_target.appendChild(ts);
-		    	}
-		};
-	
-		</script>
 	</head>
 <body>
 	
 		
 
 <form id="sf1">
- <table style="width:50%">
+ <table id='fluxtable' style="width:50%">
   <tr>
     <th>Source</th>
     <th>Target</th>
@@ -37,7 +15,7 @@
   </tr>
   <tr>
     <td>
-	<select id="ss1" oninput='update(0)'>
+	<select id="ss1" oninput="update_id('ss1','targetDiv12')">
 	  <option>C_1</option>
 	  <option>C_2</option>
 	  <option>C_3</option>
@@ -48,7 +26,7 @@
     <td><div id="targetDiv13"> </div></td>
   </tr>
     <td>
-	<select id="ss2" oninput='update(1)'>
+	<select id="ss2"  oninput="update_id('ss2','targetDiv22')">
 	  <option>C_1</option>
 	  <option>C_2</option>
 	  <option>C_3</option>
@@ -60,9 +38,114 @@
   <tr>
   </tr>
  </table> 	
+	<input type="button" onclick='deletetr()'> delete </input>
 </form>
+<div id="demo_f"> </div>
+<div id="demo_ids"> </div>
 <div id="demo_selind"> </div>
 <div id="demo_l"> </div>
+<div id="demo_divTarget"> </div>
+<script>
+	var select_ids=['ss1','ss2'];
+	var div_ids=['targetDiv12','targetDiv22'];
+	var names=['x_1','x_2','x_3','x_4'];
+	var fluxes=[['x_1','x_2'],['x_3','x_4'],['x_1','x_3'],['x_2','x_4']];
+	var T =document.createElement('TABLE');
+		T.id='fluxTable';
+ 
+  del_maker=function(row){
+		var i=row.parentNode.rowIndex;
+		return function() { T.deleteRow(i)};
+	};
+	 
+	function deletetr(n){
+		T.deleteRow(n);
+	};
+		
+	
+	function createSelect(names,selected_value) {
+	    
+	    var x = document.createElement("SELECT")
+	    x.setAttribute('id','targetSelect');
+	    var txt = "";
+	    var i;
+	    for (i = 0; i < names.length; i++) {
+		var item=names[i];
+	        var o = document.createElement("OPTION");
+		o.setAttribute("value",item);
+	        var t=document.createTextNode(item);
+		o.appendChild(t);
+		x.appendChild(o);
+	    }
+	    x.selectedIndex=names.indexOf(selected_value);
+	    return x;
+	}
+	function update(ids,div_target){
+		var ts=ids.cloneNode(true);
+		var selind=ids.selectedIndex;
+		document.getElementById('demo_selind').innerHTML=selind;
+		ts.remove(selind);
+	    	l=div_target.childNodes.length;
+	    	document.getElementById("demo_l").appendChild(document.createTextNode(l));
+	    	if (l > 0){
+	    	    oldf=div_target.childNodes[0]
+	    	    div_target.replaceChild(ts,oldf);
+	    	}
+	    	if (l == 0){
+	    	    div_target.appendChild(ts);
+	    	}
+	};
+	function update_id(select_id,div_id){
+	  document.getElementById("demo_ids").appendChild(select_id);
+		var ids=document.getElementById(select_id);
+		var div_target=document.getElementById(div_id);
+	  document.getElementById("demo_divTarget").innerHTML = div_id;
+		update(ids,div_target)
+	};
+
+  funcmaker=function(sf,td){
+		var f=function() {
+			update(sf,td);
+		};
+		return f;
+  };
+	function main(){
+		function addRow(flux,ind){
+			var s=flux[0];
+			sf=createSelect(names,s);
+			var t=flux[1];
+			var tf  =document.createTextNode(t);
+			var row =document.createElement("TR");
+			var sd  =document.createElement("TD");
+	
+			sd.appendChild(sf);
+			td =document.createElement("TD");
+
+			update(sf,td);
+			T.appendChild(row);
+			var f=funcmaker(sf,td);
+			sf.oninput=f;
+
+			bd =document.createElement("TD");
+			var b= document.createElement("INPUT");
+			b.setAttribute('type','button');
+      var nr=T.rows.length;
+			b.setAttribute('value','delete flux'+nr);
+			// since at this moment the row has not yet been added the 
+			// rowcount yields the right index
+			var del=del_maker(row);
+			b.onclick=del
+			bd.appendChild(b);
+			row.appendChild(sd);
+			row.appendChild(td);
+			row.appendChild(bd);
+		}
+		fluxes.forEach(addRow);
+		document.body.appendChild(T);
+	}
+	
+	document.onload=main();
+</script>
 	
 </body>
 </html>
