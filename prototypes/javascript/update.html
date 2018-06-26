@@ -50,8 +50,23 @@
 	var div_ids=['targetDiv12','targetDiv22'];
 	var names=['x_1','x_2','x_3','x_4'];
 	var fluxes=[['x_1','x_2'],['x_3','x_4'],['x_1','x_3'],['x_2','x_4']];
+	//prepare the table for the fluxforms
 	var T =document.createElement('TABLE');
-		T.id='fluxTable';
+	T.id='fluxTable';
+	var row =document.createElement("TR");
+	var th1=document.createElement("TH");
+	th1.appendChild(document.createTextNode("Source"));
+
+	var th2=document.createElement("TH")
+	th2.appendChild(document.createTextNode("Target"));
+	
+	var th3=document.createElement("TH")
+	th3.appendChild(document.createTextNode("Expression"));
+
+	row.appendChild(th1);
+	row.appendChild(th2);
+	row.appendChild(th3);
+	T.appendChild(row);
  
   del_maker=function(row){
 		var i=row.parentNode.rowIndex;
@@ -103,7 +118,7 @@
 		update(ids,div_target)
 	};
 
-  funcmaker=function(sf,td){
+  update_maker=function(sf,td){
 		var f=function() {
 			update(sf,td);
 		};
@@ -122,8 +137,10 @@
 			td =document.createElement("TD");
 
 			update(sf,td);
+			var exp=document.createElement("INPUT");
+			exp.id="exp_"+ind;
 			T.appendChild(row);
-			var f=funcmaker(sf,td);
+			var f=update_maker(sf,td);
 			sf.oninput=f;
 
 			bd =document.createElement("TD");
@@ -138,10 +155,30 @@
 			bd.appendChild(b);
 			row.appendChild(sd);
 			row.appendChild(td);
+			row.appendChild(exp);
 			row.appendChild(bd);
 		}
 		fluxes.forEach(addRow);
 		document.body.appendChild(T);
+		var add = document.createElement("INPUT");
+		add.setAttribute("type", "button");
+		add.setAttribute("value", "add flux");
+		//add.style.width="300px"
+		var row_add=document.createElement("TR");
+		var td_add =document.createElement("TD");
+		td_add.colSpan=4;
+		td_add.appendChild(add);
+		row_add.appendChild(td_add);
+		T.appendChild(row_add);
+
+		var row_sub =document.createElement("TR");
+		var sub= document.createElement("INPUT");
+		sub.setAttribute("type", "submit");
+		sub.setAttribute("value","save");
+		var tdl =document.createElement("TD");
+		tdl.appendChild(sub);
+		row_sub.appendChild(tdl);
+		T.appendChild(row_sub);
 	}
 	
 	document.onload=main();
