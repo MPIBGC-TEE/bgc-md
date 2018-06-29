@@ -103,7 +103,7 @@
 \author[1]{Holger Metzler}
 \author[1]{M{arkus M{\"{u}}ller}}
 \author[1]{Carlos A. Sierra}
-\affil[1]{Max Planck for Biogeochemistry, Hans-Knöll-Str. 10, 07745 Jena, Germany}
+\affil[1]{Max Planck Institute for Biogeochemistry, Hans-Knöll-Str. 10, 07745 Jena, Germany}
 
 \begin{document}
 \maketitle
@@ -118,8 +118,8 @@
 \end{minipage}
 \vspace{0.2mm}
 }
-The presented Software is the fruit of genuine teamwork. 
-To be able to compete in the categories of group leaders, postdocs and Ph.D. students 
+The presented software is the fruit of genuine teamwork. 
+To be able to compete in the categories of group leaders, postdocs and Ph.D. students,
 we give a simplified summary.
 
 \begin{table}[ht]
@@ -142,8 +142,8 @@ we give a simplified summary.
 		\end{mmpage}
 		& 
 		\begin{mmpage}
-		database population \\
-		report generation \\
+		database population, \\
+		report generation, \\
 		abstract vegetation model 
 		\end{mmpage}
 		\\
@@ -157,7 +157,7 @@ we give a simplified summary.
 		\begin{mmpage}
 		algorithm development, \\
 		implementation, testing, \\
-		database population \\
+		database population, \\
 		report generation 
 		\end{mmpage}
 		\\
@@ -195,34 +195,36 @@ we give a simplified summary.
 \end{table}
 
 \section{Introduction}
-The presented software framework consists of three open source python packages, 
-that serve to represent, classify and analyse compartmental systems of ordinary differential equations (see \Defref{def:compartmentalModel} in \Appendixref{App:Models})with special emphasis on the computation of age and transit time densities of the content.  
-The packages do not have a graphical user interface and are meant to be used together with other open source software e.g. \href{jupyter.org}{jupyter}. 
+The presented software framework consists of three open source python packages
+which serve to represent, classify and analyse compartmental systems of ordinary differential equations (see \Defref{def:compartmentalModel} in \Appendixref{App:Models}) 
+with special emphasis on the computation of age and transit time densities of the pool content.  
+The packages do not have a graphical user interface and are meant to be used together with other open source software such as \href{jupyter.org}{jupyter}. 
 
 \subsection{CompartmentalSystems package}
 \url{https://github.com/MPIBGC-TEE/CompartmentalSystems}\\
 The package allows the computation of ages and transit times for nonlinear, non autonomous well mixed compartmental systems.
-A brief summary is found under the link above. A more detailed description of the concepts and their application is given in \citet[]{MetzlerMuellerSierra2018PNAS}. A preprint is attached \url{./PNAS.pdf}.
-An example \href{jupyter.org}{jupyter} notebook that shows how to use the package can be found here:
-\url{http://compartmentalsystems.readthedocs.io/en/latest/_downloads/nonl_gcm_3p.html}
+A brief summary is found under the link above. A more detailed description of the concepts and their application is given in \citet[]{MetzlerMuellerSierra2018PNAS}. A preprint is \href{https://github.com/MPIBGC-TEE/bgc-md/blob/master/docs/SiamSoftwareContest/PNAS.pdf}{attached} .
+An example \href{jupyter.org}{jupyter} notebook that shows how to use the package can be found 
+\href{http://compartmentalsystems.readthedocs.io/en/latest/_downloads/nonl_gcm_3p.html}{here}.
 
 \subsection{LAPM package}
 \url{https://github.com/MPIBGC-TEE/LAPM}\\
-LAPM stands for {\bf L}inear {\bf A}utonomous {\bf P}ool {\bf M}odels. It provides a class LinearAutonomousPoolModels that allows the \emph{symbolic} computation of transit time, system age, and pool ages.
+LAPM stands for {\bf L}inear {\bf A}utonomous {\bf P}ool {\bf M}odels. It provides a class LinearAutonomousPoolModels which allows the \emph{symbolic} computation of transit time, system age, and pool ages.
 Since transit time and system age are phase-type distributed, the computations of them rely on properties of this distribution. They are treated in a separate module.
-LAPM can be seen as a symbolic companion to CompartmentalSystems for the special case of linear autonomous compartmental systems.
+LAPM can be seen as a symbolic companion to CompartmentalSystems for the special case of linear autonomous compartmental systems in steady state.
+Again a brief summary is given under the link above while a more detailed one is published, \cite[]{Metzler2017MGS} and \href{https://github.com/MPIBGC-TEE/bgc-md/blob/master/docs/SiamSoftwareContest/markov.pdf}{attached}. 
 
 
-\subsection{The biogeochemical model data base}
+\subsection{The biogeochemical model data base (bgc-md) package}
 \url{https://github.com/MPIBGC-TEE/bgc-md}\\
 Short summaries are found under the link above or on our group website \url{https://www.bgc-jena.mpg.de/TEE/software/bgc-md/}.
 The package provides: 
 \begin{enumerate} 
 	\item
-	Collections of \href{https://github.com/MPIBGC-TEE/bgc-md/tree/master/bgc_md/data/all_records}{yaml files} each encoding a published carbon cycling model  
+	collections of \href{https://github.com/MPIBGC-TEE/bgc-md/tree/master/bgc_md/data/all_records}{yaml files} each encoding a published carbon cycling model,
 	
 	\item 
-		The code to produce (at the moment still static) \href{https://www.bgc-jena.mpg.de/TEE/software/bgc-md/vegetation/list_report_v.html}{html} for user specified queries or can be used in a \href{https://github.com/MPIBGC-TEE/bgc-md/blob/master/jupyter_notebooks/Examples/how_to_apply_toolkit_to_yaml_model.ipynb}{jupyter notebook}. 
+	the code to produce (at the moment still static) \href{https://www.bgc-jena.mpg.de/TEE/software/bgc-md/vegetation/list_report_v.html}{html} for user specified queries or can be used in a \href{https://github.com/MPIBGC-TEE/bgc-md/blob/master/jupyter_notebooks/Examples/how_to_apply_toolkit_to_yaml_model.ipynb}{jupyter notebook}. 
 \end{enumerate} 
 The software simplifies the abstract description of element cycling models and introduces a yaml format to store them. It uses a symbolic mathematical representation based on \href{http://www.sympy.org/en/index.htmlhttp://www.sympy.org/en/index.html}{sympy} but also allows immediate numerical computations using \href{https://scipy.org/}{scipy} and our own packages \href{https://github.com/MPIBGC-TEE/CompartmentalSystems}{CompartmentalSystems} and \href{https://github.com/MPIBGC-TEE/LAPM}{LAPM}. 
 Its main use is to make complex models immediately available for further investigation e.g. in jupyter notebooks, but it also provides a command-line tool to build html reports about single models or sets. Users can create their own templates and yaml files.
@@ -235,13 +237,13 @@ We are developing a web front end that makes it possible to run the whole databa
 
 \subsection{Installation}
 For the purpose of the contest it suffices to install \href{https://github.com/MPIBGC-TEE/bgc-md}{bgc-md} because it will draw in the other packages as dependencies. Detailed instructions are found \href{https://github.com/MPIBGC-TEE/bgc-md#installation}{here}.
-The installation is tested for linux systems. Since the only dependencies are \href{https://pandoc.org/installing.html}{pandoc} and python3 it should be possible to be used on windows or macOs but we do not maintain installation instructions for these operating systems.
+The installation is tested for linux systems. Since the only dependencies are \href{https://pandoc.org/installing.html}{pandoc} and python3 it should be possible to be used on Windows or macOS but we do not maintain installation instructions for these operating systems.
 Instead we provide docker images that are ready to run. {\color{red} I have to upload them to  docker so that they can be installed easily by the users and explain the installation command}
 
 
 \subsection{Documentation}
-CompartmentalSystems has a complete \href{http://compartmentalsystems.readthedocs.io/en/latest/}{documentation}.
-So has \href{http://lapm.readthedocs.io/en/latest/}{LAPM}. The bgc-md package has the documentation of the command-line tool which is available after installation \texttt{render -h} 
+CompartmentalSystems has a complete \href{http://compartmentalsystems.readthedocs.io/en/latest/}{documentation}, for LAPM it is found \href{http://lapm.readthedocs.io/en/latest/}{here}. 
+The bgc-md package has the documentation of the command-line tool which is available after installation via  \texttt{render -h} 
 and is otherwise mostly documented by the report templates, which are constantly tested automatically.
 
 \subsection{Demonstration}
@@ -250,9 +252,9 @@ To be able to see the command-line tool in action you have to install the packag
 To check that you have done so successfully, type \texttt{render -h} which should show the help.
 In the folder \texttt{bgc-md/docs/SiamSoftwareContest/} we provided a small shell script that contains an example call. 
 Then run \texttt{./demo1.sh} (which will take some time).
-Afterward you can look at the result with a web browser.
-\texttt{firefox output/TECO/CompleteSingleModelReport.html}.
-To see an overview report run: \texttt{./demo2.sh} and look at: \texttt{output22/Website.html}
+Afterward you can look at the result with a web browser for instance by typing:\\
+\texttt{firefox output/TECO/CompleteSingleModelReport.html}.\\
+To see an overview report, run \texttt{./demo2.sh} and look at \texttt{output22/Website.html}
 
 {\color{red} I have to update the template for the model links in the website}
 
@@ -263,7 +265,7 @@ To see an overview report run: \texttt{./demo2.sh} and look at: \texttt{output22
 \begin{appendices}
 \section{Compartmental systems}
 \label{App:Models}
-For the purpose of understanding the applications of the software it suffices to interpret
+For the purpose of understanding the applications of the software, it suffices to interpret
 all state variables as contents of reservoirs.
 In the following we treat here reservoir, pool, and compartmental systems as synonymous, 
 and use relevant definitions from \citet[][and references therein]{Jacquez1993SIAM}. 
@@ -273,14 +275,14 @@ However, reservoirs as well as contents can be much more abstract.
 	\label{def:compartmentalModel} 
 	Let 
 	$F_{i,j}$  be the flux from pool $j$  to pool $i ,\text{ for all } i,j\ne i \in \{1 \dots n \}$,
-	$F_{i,0}=I_i$ define the influx to pool $i$ 
+	$F_{i,0}=I_i$ defines the influx to pool $i$ 
 	and 
 	$F_{0,i}=O_i$ the outflux from pool $i$. \\ 
 	If 
 	$F_{i,j}(\vec{C},t)	\ge  0 ,\text{ for all } i,j \in \{0 \dots n\} $ and
 	\begin{align}
 	\label{enum:ZeroFlux}	
-	C_j=0 			\implies  F_{i,j}(\vec{C},t)=0
+	C_j=0 			\implies  F_{i,j}(\vec{C},t)=0,
 	\end{align}
 	we call the ODE system: 
 	\begin{align}
