@@ -127,3 +127,12 @@ model_run_data:
         - "Original initial values of the publication":
             values: {x_1: 37, x_2: 452, x_3: 69, x_4: 81, x_5: 1121}
             desc: "original dataset of the publication. Parameter value of GPP corresponds to an annual average"
+    run_times:
+        - "RT1":
+            start: 0
+            end: 200
+            step_size: 0.1
+
+    possible_combinations:
+        - ["Original parameters of the publication","Original initial values of the publication", "RT1"]
+
