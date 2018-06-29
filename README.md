@@ -3,7 +3,7 @@ This package consists of two components:
 - A folder with yaml files which encode several soil, vegetation, and ecosystem models in a unified way.
 - A python package that can be used (and extended) to run queries against single models or subsets of the encoded models.
 <!--
-#Docker image can be build from Dockerfile or pulled from Docker hub (Not apllouded need to add it there at first).
+#Docker image can be build from Dockerfile or pulled from Docker hub (Not aploded need to add it there at first).
 #To build image from Dockerfile
   $ docker build -t docker_image_name dockerfile_location
 #To pull

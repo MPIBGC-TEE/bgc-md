@@ -1,6 +1,7 @@
 
 \documentclass[a4paper]{article}
 \usepackage{authblk}
+\usepackage{listings}
 \usepackage{array}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -201,12 +202,16 @@ The packages do not have a graphical user interface and are meant to be used tog
 \subsection{CompartmentalSystems package}
 \url{https://github.com/MPIBGC-TEE/CompartmentalSystems}\\
 The package allows the computation of ages and transit times for nonlinear, non autonomous well mixed compartmental systems.
-A brief summary if found under the link above. A more detailed description of the concepts and their application is given in \citet[]{MetzlerMuellerSierra2018PNAS}. A preprint is attached \url{./PNAS.pdf}.
+A brief summary is found under the link above. A more detailed description of the concepts and their application is given in \citet[]{MetzlerMuellerSierra2018PNAS}. A preprint is attached \url{./PNAS.pdf}.
 An example \href{jupyter.org}{jupyter} notebook that shows how to use the package can be found here:
 \url{http://compartmentalsystems.readthedocs.io/en/latest/_downloads/nonl_gcm_3p.html}
 
 \subsection{LAPM package}
 \url{https://github.com/MPIBGC-TEE/LAPM}\\
+LAPM stands for {\bf L}inear {\bf A}utonomous {\bf P}ool {\bf M}odels. It provides a class LinearAutonomousPoolModels that allows the \emph{symbolic} computation of transit time, system age, and pool ages.
+Since transit time and system age are phase-type distributed, the computations of them rely on properties of this distribution. They are treated in a separate module.
+LAPM can be seen as a symbolic companion to CompartmentalSystems for the special case of linear autonomous compartmental systems.
+
 
 \subsection{The biogeochemical model data base}
 \url{https://github.com/MPIBGC-TEE/bgc-md}\\
@@ -219,9 +224,38 @@ The package provides:
 	\item 
 		The code to produce (at the moment still static) \href{https://www.bgc-jena.mpg.de/TEE/software/bgc-md/vegetation/list_report_v.html}{html} for user specified queries or can be used in a \href{https://github.com/MPIBGC-TEE/bgc-md/blob/master/jupyter_notebooks/Examples/how_to_apply_toolkit_to_yaml_model.ipynb}{jupyter notebook}. 
 \end{enumerate} 
-The software simplifies the abstract description of element cycling models and introduces a yaml format to store them. It uses a symbolic mathematical representation based on \href{http://www.sympy.org/en/index.htmlhttp://www.sympy.org/en/index.html}{sympy} but also allows immediate numerical computations using numpy and our own packages. 
-Its main use is to make complex models immediately available for further investigation e.g. in jupyter notebooks, but it also provides a command-line tool to build html reports about single models or sets. Users can create their own templates.
-Although we are developing a web front end that makes it possible to run the whole database as a website with a graphical JavaScript based user interface, so that further simplifies the creation of the database entries the main use case right now is to create a yaml file describing a model  an produce static html reports.
+The software simplifies the abstract description of element cycling models and introduces a yaml format to store them. It uses a symbolic mathematical representation based on \href{http://www.sympy.org/en/index.htmlhttp://www.sympy.org/en/index.html}{sympy} but also allows immediate numerical computations using \href{https://scipy.org/}{scipy} and our own packages \href{https://github.com/MPIBGC-TEE/CompartmentalSystems}{CompartmentalSystems} and \href{https://github.com/MPIBGC-TEE/LAPM}{LAPM}. 
+Its main use is to make complex models immediately available for further investigation e.g. in jupyter notebooks, but it also provides a command-line tool to build html reports about single models or sets. Users can create their own templates and yaml files.
+We are developing a web front end that makes it possible to run the whole database as a website with a graphical JavaScript based user interface. The GUI further simplifies the creation of the database entries. 
+
+
+
+\section{Installation, documentation and demonstrations}
+
+
+\subsection{Installation}
+For the purpose of the contest it suffices to install \href{https://github.com/MPIBGC-TEE/bgc-md}{bgc-md} because it will draw in the other packages as dependencies. Detailed instructions are found \href{https://github.com/MPIBGC-TEE/bgc-md#installation}{here}.
+The installation is tested for linux systems. Since the only dependencies are \href{https://pandoc.org/installing.html}{pandoc} and python3 it should be possible to be used on windows or macOs but we do not maintain installation instructions for these operating systems.
+Instead we provide docker images that are ready to run. {\color{red} I have to upload them to  docker so that they can be installed easily by the users and explain the installation command}
+
+
+\subsection{Documentation}
+CompartmentalSystems has a complete \href{http://compartmentalsystems.readthedocs.io/en/latest/}{documentation}.
+So has \href{http://lapm.readthedocs.io/en/latest/}{LAPM}. The bgc-md package has the documentantion of the commandline tool wich is available after installation \texttt{render -h} 
+and is otherwise mostly documented by the report templates, which are constantly tested automatically.
+
+\subsection{Demonstration}
+To see how bgc-md can be used in conjuction with the other packages look at the foolwing \href{https://github.com/MPIBGC-TEE/bgc-md/blob/master/jupyter_notebooks/Examples/how_to_apply_toolkit_to_yaml_model.ipynb}{jupyter notebook}.
+To be able to see the command-line tool in action you have to install the package and make sure that your virtual environment is activated. 
+To check that you have done so succesfully, type \texttt{render -h} which should show the help.
+In the folder \texttt{bgc-md/docs/SiamSoftwareContest/} we provided a small shell script that contains an example call. 
+Then run \texttt{./demo1.sh} (which will take some time).
+Afterward you can look at the result with a web browser.
+\texttt{firefox output/TECO/CompleteSingleModelReport.html}.
+To see an overview report run: \texttt{./demo2.sh} and look at: \texttt{output22/Website.htm}
+
+{\color{red} I have to update the template for the model links in the website}
+
 
 
 
@@ -328,7 +362,10 @@ For non-negative initial values $\vec{C}_0\in \Rbb{n}$ the pool contents stay no
 		\item
 			usage examples for bgc-md that work
 		\item 
-			automated tests that make sure that all the models in data/
+			automated tests that make sure that all the models in data/tested
 		\item 
+			rebuild the docker images and update the installation instructions
+		\item  
+			update the website template
 \end{enumerate}
 \end{document}
