@@ -6,6 +6,8 @@ def template(model,section=None):
     inv_dic={v:k for k,v in dic.items()}
     
     ps=model.parameter_sets
+    if not(model.has_model_subsection(section)):
+        return Text("The model section in the yaml file has no subsection: ${s}.",s=section )
     df=model.section_pandas_df(section)
     yaml_colnames=list(df.columns)
     # replace missing entries  column with '-'

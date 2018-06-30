@@ -1,5 +1,6 @@
 def template(model):
-    sdp= defaults()["paths"]["report_templates"].joinpath("single_model")
+    rel=ReportElementList()
+    sdp= defaults()["paths"]["report_templates"].joinpath("special_arguments")
     
     srm = model.reservoir_model
     if srm is None:

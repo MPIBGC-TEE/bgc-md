@@ -4,6 +4,7 @@
 # If you want to include another template call you can do so with a line
 # rel+=render(Path("path/to/the/template.py"))
 def template(model_list):
+    from multiprocessing import Pool
     rel=ReportElementList()
     rel+= Meta({"title":"Overview"})
     #fixme:
@@ -17,7 +18,12 @@ def template(model_list):
         Text("Source")])
     table_format = list("lccccc")
     T = Table("Summary of the models in the database of Carbon Allocation in Vegetation models", header_row, table_format)
-    single_tp=defaults()['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
+    #single_tp=defaults()['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
+    single_tp=defaults()['paths']['report_templates'].joinpath('single_model','CompleteSingleModelReport.py')
+
+    #fixme mm 30.06 2018 
+    # parallelize with pool.map
+    pool=Pool(processes=16)
     for i,model in enumerate(model_list):
 
         modelRel=render(single_tp,model=model)

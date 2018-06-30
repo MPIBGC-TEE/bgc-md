@@ -1,6 +1,9 @@
 def template(model):
     #ps=model.parameter_sets
-    df=model.section_pandas_df("allocation_coefficients")
+    section="allocation_coefficients"
+    if not(model.has_model_subsection(section)):
+        return Text("The model section in the yaml file has no subsection: ${s}.",s=section )
+    df=model.section_pandas_df(section)
     # replace missing entries in units column with '-'
     #df["unit"].fillna(value='-',inplace=True) 
     rel=ReportElementList() 

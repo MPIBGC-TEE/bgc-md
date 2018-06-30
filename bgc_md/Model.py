@@ -201,9 +201,11 @@ def section_subdict(complete_dict, target_key):
     model_list = complete_dict["model"]
     matching = [dic for dic in model_list if target_key in dic.keys()]
 
-    if len(matching) != 1:
+    if len(matching) == 0:
         raise(ModelInitializationException('Subsection ' + target_key + ' not found.'))
-   
+    if len(matching) > 1:
+        raise(ModelInitializationException('Subsection ' + target_key + ' not unique.' + 'found:' + str(len(matching))+'.'))
+
     return matching[0]
         
 
@@ -1252,6 +1254,12 @@ class Model:
 
         return df
 
+
+    def has_model_subsection(self,target_key):   
+        # extract the part of the complete_dict with which we are dealing
+        model_list = self.complete_dict["model"]
+        matching = [dic for dic in model_list if target_key in dic.keys()]
+        return len(matching)>0
 
     def section_subdict(self,target_key):   
         return(section_subdict(self.complete_dict,target_key))
