@@ -9,10 +9,11 @@ RUN apt-get install -y texlive-binaries
 RUN apt-get install -y pandoc
 RUN mkdir workingfolder
 WORKDIR /workingfolder
-RUN git clone https://github.com/MPIBGC-TEE/bgc-md.git
+RUN git clone https://github.com/MPIBGC-TEE/bgc-md.git .
 RUN git pull
-RUN python3 -m venv virtual_env
-RUN /bin/bash -c "source /workingfolder/virtual_env/bin/activate; cd /workingfolder/bgc-md/; ./install.sh"
+#RUN python3 -m venv virtual_env
+#RUN /bin/bash -c "source /workingfolder/virtual_env/bin/activate; cd /workingfolder/bgc-md/; ./install.sh"
+RUN ./install_docker.sh
 #
 #
 #
