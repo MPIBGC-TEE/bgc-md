@@ -5,6 +5,7 @@
 # rel+=render(Path("path/to/the/template.py"))
 def template(model_list):
     from multiprocessing import Pool
+
     rel=ReportElementList()
     rel+= Meta({"title":"Overview"})
     #fixme:
@@ -18,14 +19,10 @@ def template(model_list):
         Text("Source")])
     table_format = list("lccccc")
     T = Table("Summary of the models in the database of Carbon Allocation in Vegetation models", header_row, table_format)
-    #single_tp=defaults()['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
-    single_tp=defaults()['paths']['report_templates'].joinpath('single_model','CompleteSingleModelReport.py')
+    single_tp=defaults()['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
+    #single_tp=defaults()['paths']['report_templates'].joinpath('single_model','CompleteSingleModelReport.py')
 
-    #fixme mm 30.06 2018 
-    # parallelize with pool.map
-    pool=Pool(processes=16)
-    for i,model in enumerate(model_list):
-
+    def func(model):
         modelRel=render(single_tp,model=model)
         l = [
             LinkedSubPage(modelRel,model.yaml_file_path.stem,model.name,"html")
@@ -43,6 +40,18 @@ def template(model_list):
         l.append(Math("${eq}",eq=model.rhs, parentheses=False))
         l.append(Citation(model.bibtex_entry, parentheses=False))
         row = TableRow(l)
+        return row
+
+    #fixme mm 30.06 2018 
+    # parallelize with pool.map
+    # pool=Pool(processes=16)
+    # rows=pool.map(func,model_list)
+    # for row in rows:
+    #    T.add_row(row)
+    # does not work :Can't pickle local object 'template.<locals>.func'
+    
+    for i,model in enumerate(model_list):
+        row=func(model)
         T.add_row(row)
     
     rel+=T

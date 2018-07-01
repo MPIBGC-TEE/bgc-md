@@ -49,10 +49,6 @@ def runProtected(rec,command_list,targetPath=Path('.')):
 def f(l):
     tp,rec=l
     targetPath=Path('.')
-    #command_list=['generate_model_run_report']
-    #d=defaults() 
-    #tp=d['paths']['report_templates'].joinpath('single_model',"CompleteSingleModelReport.py")
-    #tp=d['paths']['report_templates'].joinpath('single_model',"SteadyStateFormulas.py")
     print("1 ###################")
     print(tp.stem)
     print(rec.stem)
