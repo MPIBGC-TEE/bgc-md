@@ -1,3 +1,4 @@
-This is a placeholder
-We will explain here how to use the docker images
+
+We provide images that can be downlaoded from the docker cloud.
+
 
