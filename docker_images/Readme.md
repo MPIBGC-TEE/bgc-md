@@ -8,13 +8,16 @@ container and connect with your browser from outside the container.
 This makes it really easy to try out the packages.
 
 ## Getting the images from dockerhub
+```bash
+docker pull markusmueller1g/bgc_md_centos7
+```
 
 ## Run an image
 This directory has a subdirectory for every container we provide. 
 The syubdirectories contain some tiny bash scripts.
 Let us assume we want to run the ubuntu container.
 ```bash
-cd ubuntu
+cd centos7
 ```
 We can then run the container by.
 ```bash
