@@ -11,6 +11,11 @@ This makes it really easy to try out the packages.
 ```bash
 docker pull markusmueller1g/bgc_md_centos7
 ```
+or
+```bash
+docker pull markusmueller1g/bgc_md_ubuntu
+```
+
 
 ## Run an image
 This directory has a subdirectory for every container we provide. 
@@ -26,7 +31,7 @@ We can then run the container by.
 This will map the port 8888 of the container to port 8888 of your computer and start firefox at localhost:8888
 You are connected with the jupyter server in the container
 The required password is just set to "test".
-You do not have to run the scripts. They are just there to demonstrate the docker commands you would have to use.
+You do not have to run the scripts. They are just there to demonstrate the docker commands you would have to use (e.g. on a Windows machine without bash).
 
 ## Changing your image
 You can of course extend and personalize the downloaded image and even use it to contribute.
