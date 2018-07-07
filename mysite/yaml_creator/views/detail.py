@@ -4,7 +4,7 @@ from yaml_creator.models.ModelDescriptor import ModelDescriptor
 from yaml_creator.models.ComponentScheme    import ComponentScheme   
 from yaml_creator.models.FluxRepresentation import FluxRepresentation
 from yaml_creator.models.Fluxes             import Fluxes            
-
+from yaml_creator.forms import NameForm
 
 
 
@@ -15,9 +15,22 @@ def detail(request,file_name):
         modeldescriptor = ModelDescriptor.objects.get(pk=file_name)
     except ModelDescriptor.DoesNotExist:
         raise Http404("ModelDescriptor does not exist")
-    template=loader.get_template('yaml_creator/detail.html')
-    content= {'modeldescriptor': modeldescriptor}
-    out=template.render(content,request)
+   
+    if request.method == 'POST':
+        form = NameForm(request.POST)
+        if form.is_valid():
+            #proces data in form.cleaned_data
+            return HttpResponseRedirect('/data_base_index/')
+    else:
+        # create a blank form
+        form=NameForm()
+        template=loader.get_template('yaml_creator/detail.html')
+        content= {
+            'modeldescriptor': modeldescriptor,
+            'form'           : form
+        }
+        out=template.render(content,request)
+        return HttpResponse(out)
     print('#########################')
     #print(request.POST)
     #key='component_scheme'
@@ -38,4 +51,3 @@ def detail(request,file_name):
     #    
     #
     ##T1= render(request, 'yaml_creator/detail.html',content)	
-    return HttpResponse(out)
