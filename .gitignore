@@ -1,4 +1,9 @@
 *.egg-info/*
 *.pyc
 bgc_md/tests/tmp
+docker_images/ubuntu/LAPM
+docker_images/ubuntu/CompartmentalSystems
+docker_images/centos7/LAPM
+docker_images/centos7/CompartmentalSystems
+
 *.swp

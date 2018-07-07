@@ -734,7 +734,8 @@ class Model:
 
     @property
     def state_variables(self):
-        return(self.section_vars("state_variables").get_column("name"))
+        return [var for var in self.state_vector["expr"]]
+        #return(self.section_vars("state_variables").get_column("name"))
 
     @property
     def time_symbol(self):
