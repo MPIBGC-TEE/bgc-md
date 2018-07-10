@@ -1,4 +1,22 @@
 from django import forms
+from django.forms import ModelForm
+from yaml_creator.models.ModelDescriptor import ModelDescriptor
+from yaml_creator.fields import DOIField
 
 class NameForm(forms.Form):
     your_name = forms.CharField(label='your name',max_length=100)
+
+class ModelDescriptorForm(ModelForm):
+    doi = DOIField(
+	initial="http://doi.org/",
+     	max_length=200,
+        required=False,
+        help_text='The dio of the original publication. It will be used to download bibliographic information including the abstract. If you provide this information yourself it will be used instead.', 
+    )
+    class Meta:
+        model= ModelDescriptor
+        fields=('doi','pub_date')
+        help_texts={
+        	'pub_date': ('The date when this record was first created.'),
+        }
+        

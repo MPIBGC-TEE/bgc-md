@@ -735,6 +735,8 @@ class Model:
     @property
     def state_variables(self):
         return [var for var in self.state_vector["expr"]]
+        
+        # the old code mixed up the order in the reports
         #return(self.section_vars("state_variables").get_column("name"))
 
     @property

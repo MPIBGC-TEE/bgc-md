@@ -45,10 +45,15 @@ class SlowTestSingleYaml(InDirTest):
         d=defaults() 
         template_path=d['paths']['report_templates'].joinpath('single_model')
         tps=[tp for tp in template_path.glob('*.py')]
+        # you can even 
         #tps=[template_path.joinpath('GeneralOverview.py')]
         sp=d['paths']['tested_records']
+
+        # put the file you want to test in the rec_list
         #rec_list=[ rec  for rec in sp.glob('*.yaml')]
-        rec_list=[sp.joinpath("Ceballos2016.yaml")] 
+        #rec_list=[sp.joinpath("Ceballos2016.yaml")] 
+        rec_list=[sp.joinpath("Wang2014BG3p.yaml")] 
+
         #test_list= rec_list
         test_list= [ [tp,rec] for rec in sorted(rec_list) for tp in  tps]
 

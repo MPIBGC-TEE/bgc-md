@@ -23,6 +23,6 @@ def default_yaml_file_name():
 
 class ModelDescriptor(models.Model):
     filename=models.CharField(max_length=200,primary_key=True,default=default_yaml_file_name)
-    doi=models.CharField(max_length=200)
+    doi=models.URLField(max_length=200)
     pub_date=models.DateTimeField('date published')
 

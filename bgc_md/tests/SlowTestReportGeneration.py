@@ -99,26 +99,6 @@ class SlowTestReportGeneration(InDirTest):
             ,msg="The following files caused problems \n%s" % failure_msg
         )
 
-    def test_commandline_generate_model_run_report(self):
-        d=defaults() 
-        sp=d['paths']['tested_records']
-        rec_list=[ rec  for rec in sp.glob('*.yaml')]
-        test_list= rec_list
-        #test_list= sorted(rec_list)[2:3]
-
-        pool=Pool(processes=1)
-        result_list=pool.map(f,test_list)
-       # 
-        failure_list=[
-            r  for r in result_list 
-            if r['returnValue']!=0 or r['fileExists']==False
-        ]
-        self.assertEqual(
-            len(failure_list)
-            ,0
-            ,msg="The following files caused problems %s" % str(failure_list)
-            )
-
 
     def test_commandline_generate_model_run_report_single_file(self):
         # This function is more of a tool to test a 

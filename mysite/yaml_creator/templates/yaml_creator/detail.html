@@ -1,6 +1,28 @@
 {{ modeldescriptor.filename }}<br> 
+{% if error %}
+<h1> {{ error }}</h1>
+{% endif %}
+
 <form action="{% url 'detail' modeldescriptor.filename %}" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="OK">
 </form>
+<!--
+{% for field in form %}
+    <div class="fieldWrapper">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+    </div>
+{% endfor %}
+{% if form.subject.errors %}
+    <ol>
+    {% for error in form.subject.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+    {% endfor %}
+    </ol>
+{% endif %}
+-->
