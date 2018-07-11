@@ -17,9 +17,8 @@ def detail(request,file_name):
         modeldescriptor = ModelDescriptor.objects.get(pk=file_name)
     except ModelDescriptor.DoesNotExist:
         raise Http404("ModelDescriptor does not exist")
-   
+
     if request.method == 'POST':
-        #form = NameForm(request.POST)
         form=ModelDescriptorForm()
         if form.is_valid():
             #proces data in form.cleaned_data
@@ -34,7 +33,7 @@ def detail(request,file_name):
 
             return HttpResponseRedirect('/data_base_index/')
         else:
-	    # reload with error messages
+            # reload with error messages
             # fixme 
             template=loader.get_template('yaml_creator/detail.html')
             content= {
@@ -46,16 +45,31 @@ def detail(request,file_name):
             out=template.render(content,request)
             return HttpResponse(out)
     else:
-        # create a blank form
+        # poputlate the form with date from the data base or create a blank form
         #form=NameForm()
-        form=ModelDescriptorForm(initial={ 'pub_date': timezone.now() })
-        template=loader.get_template('yaml_creator/detail.html')
-        content= {
-            'modeldescriptor': modeldescriptor,
-            'form'           : form
-        }
-        out=template.render(content,request)
-        return HttpResponse(out)
+        try:
+            md= ModelDescriptor.objects.get(pk=file_name)
+            # populate the form with the stored data
+            form=ModelDescriptorForm(initial={ 'pub_date': timezone.now() })
+            template=loader.get_template('yaml_creator/detail.html')
+            content= {
+                'modeldescriptor': modeldescriptor,
+                'form'           : form
+            }
+            out=template.render(content,request)
+            return HttpResponse(out)
+            
+            
+        except ModelDescriptor.DoesNotExist:
+            # create a new one
+            form=ModelDescriptorForm(initial={ 'pub_date': timezone.today() })
+            template=loader.get_template('yaml_creator/detail.html')
+            content= {
+                'modeldescriptor': modeldescriptor,
+                'form'           : form
+            }
+            out=template.render(content,request)
+            return HttpResponse(out)
     print('#########################')
     #print(request.POST)
     #key='component_scheme'

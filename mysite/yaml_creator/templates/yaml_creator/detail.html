@@ -1,12 +1,21 @@
+<!--
+-->
+{% load i18n static admin_urls %}
+
+<script type="text/javascript" src="{% url 'javascript-catalog' %}"></script
+{{ form.media }}
 {{ modeldescriptor.filename }}<br> 
 {% if error %}
-<h1> {{ error }}</h1>
+     <h1> {{ error }}</h1>
 {% endif %}
 
 <form action="{% url 'detail' modeldescriptor.filename %}" method="post">
     {% csrf_token %}
     {{ form }}
+    <p>
     <input type="submit" value="OK">
+    </p>
+
 </form>
 <!--
 {% for field in form %}

@@ -1,3 +1,4 @@
+from django.views.i18n import JavaScriptCatalog
 from django.urls import path
 #from . import views
 from .views.index import index
@@ -12,6 +13,7 @@ from .views.set_FluxRepresentation import set_FluxRepresentation
 from .views.data_base_index import data_base_index
 
 urlpatterns=[
+    path('jsi18n/yaml_creator/',JavaScriptCatalog.as_view(packages=[]),name='javascript-catalog'), # for admin javascript
     #path('data_base_index',views.IndexView.as_view(), name='data_base_index'),
     ##path('<str:pk>/detail',views.DetailView.as_view(), name='detail'),
     #path('',index, name='index'),
