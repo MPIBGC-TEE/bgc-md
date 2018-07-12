@@ -4,18 +4,34 @@
 
 <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script
 {{ form.media }}
-{{ modeldescriptor.filename }}<br> 
-{% if error %}
+{{ file_name }}<br> 
+{% if error %} 
      <h1> {{ error }}</h1>
+     <div>
+	<p class="errornote">
+       	Please correct the errors below.
+        </p>
+     </div>
 {% endif %}
+{{ form.fields.keys }}
+<ul>
+{% for field in form %}
+    	<div class="fieldWrapper">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+    </div>
+{% endfor %}
+</ul>
 
-<form action="{% url 'detail' modeldescriptor.filename %}" method="post">
+<form action="{% url 'detail' file_name %}" method="post">
     {% csrf_token %}
-    {{ form }}
+    {# {{ form }} #}
     <p>
     <input type="submit" value="OK">
     </p>
-
 </form>
 <!--
 {% for field in form %}

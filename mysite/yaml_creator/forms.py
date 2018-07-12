@@ -24,11 +24,19 @@ class ModelDescriptorForm(ModelForm):
     class Media:
         css={
             'all':(
-                'admin/css/base.css',
                 'admin/css/forms.css',
+                'admin/css/base.css',
+                'admin/css/widgets.css',
                   )
         }
         js=[
             "admin/js/core.js", # this is needed for the calendar
-            #but somehow not mentioned int he widgets Media
+            #but somehow not mentioned in the widgets Media class
+            #"admin/js/collapse.js", 
+            #"admin/js/prepopulate.js", 
+            #"admin/js/prepopulate_init.js", 
+            #"admin/js/change_form.js", 
+            #"admin/js/inlines.js", 
+            #"admin/js/actions.js", 
+            #"admin/js/urlify.js", 
         ]

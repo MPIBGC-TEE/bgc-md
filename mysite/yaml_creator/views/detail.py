@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.utils import timezone
+from django.urls import reverse
 from yaml_creator.models.ModelDescriptor import ModelDescriptor
 from yaml_creator.models.ComponentScheme    import ComponentScheme   
 from yaml_creator.models.FluxRepresentation import FluxRepresentation
@@ -11,19 +12,18 @@ from yaml_creator.forms import ModelDescriptorForm
 
 
 def detail(request,file_name):
+    print("########################################")
+    print ('in detail view')
+    print("########################################")
     #subclasses=FluxRepresentation.get_subclasses()
     #subclassNames=[f.__name__ for f in subclasses]
-    try:
-        modeldescriptor = ModelDescriptor.objects.get(pk=file_name)
-    except ModelDescriptor.DoesNotExist:
-        raise Http404("ModelDescriptor does not exist")
 
     if request.method == 'POST':
-        form=ModelDescriptorForm()
+        form=ModelDescriptorForm(request.POST)
         if form.is_valid():
             #proces data in form.cleaned_data
             modeldescriptor = ModelDescriptor.objects.create(
-                filename=yaml_file_name,
+                filename=file_name,
                 pub_date=timezone.now()
             )
             modeldescriptor.save()
@@ -31,15 +31,26 @@ def detail(request,file_name):
             cs=ComponentScheme.objects.create(model_descriptor=modeldescriptor)
             cs.save()
 
-            return HttpResponseRedirect('/data_base_index/')
+            return HttpResponseRedirect(reverse('data_base_index'))
         else:
             # reload with error messages
             # fixme 
+            print("########################################")
+            print('something went wrong')
+            print("########################################")
+            print(form.errors)
+            print(form.data)
+            print(form.changed_data)
+            print(form.is_valid())
+            print(form.has_changed())
+            #for key,row in form.fields.items():
+            #    print(row.)
+            print("########################################")
             template=loader.get_template('yaml_creator/detail.html')
             content= {
-                'modeldescriptor': modeldescriptor,
+                'file_name'      : file_name,
                 'form'           : form,
-		'error'		 : 'something went wrong'
+                 'error'         : 'something went wrong'
             }
 
             out=template.render(content,request)
@@ -50,23 +61,33 @@ def detail(request,file_name):
         try:
             md= ModelDescriptor.objects.get(pk=file_name)
             # populate the form with the stored data
-            form=ModelDescriptorForm(initial={ 'pub_date': timezone.now() })
+            form=ModelDescriptorForm(initial={ 'pub_date': md.pub_date,'doi':md.doi})
             template=loader.get_template('yaml_creator/detail.html')
             content= {
-                'modeldescriptor': modeldescriptor,
+                'file_name'      : file_name
+                ,
                 'form'           : form
+                ,
+                'fieldset'           : form.fields
             }
             out=template.render(content,request)
             return HttpResponse(out)
             
             
-        except ModelDescriptor.DoesNotExist:
+        except Exception as e :#ModelDescriptor.DoesNotExist:
+            print("##########################################")
+            print("The following exception occurred: "+str(e))
+            print("##########################################")
+            print('trying to create a new model')
             # create a new one
-            form=ModelDescriptorForm(initial={ 'pub_date': timezone.today() })
+            form=ModelDescriptorForm(initial={ 'pub_date': timezone.now() })
             template=loader.get_template('yaml_creator/detail.html')
             content= {
-                'modeldescriptor': modeldescriptor,
+                'file_name'      : file_name
+                ,
                 'form'           : form
+                ,
+                'fieldset'           : form.fields
             }
             out=template.render(content,request)
             return HttpResponse(out)
