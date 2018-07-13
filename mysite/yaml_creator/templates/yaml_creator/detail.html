@@ -1,53 +1,39 @@
-<!--
--->
-{% load i18n static admin_urls %}
-
+<p>
+<a href="{%url 'data_base_index' %}">back to overview</a>
+</p>
 <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script
+{% load i18n static admin_urls %}
+{{ file_name }}
 {{ form.media }}
-{{ file_name }}<br> 
 {% if error %} 
-     <h1> {{ error }}</h1>
-     <div>
-	<p class="errornote">
-       	Please correct the errors below.
-        </p>
-     </div>
+<h1>Error</h1>
+{{ error }}
+{{ form.data }}
+<h2>doi_dict</h2>
+{{ doi_dict }}
 {% endif %}
-{{ form.fields.keys }}
-<ul>
-{% for field in form %}
-    	<div class="fieldWrapper">
-        {{ field.errors }}
-        {{ field.label_tag }} {{ field }}
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %}
-    </div>
-{% endfor %}
-</ul>
 
+{% if success%} 
+<h1>Success</h1>
+{{ success }}
+{% endif %}
+
+{% if form %} 
 <form action="{% url 'detail' file_name %}" method="post">
     {% csrf_token %}
     {# {{ form }} #}
-    <p>
-    <input type="submit" value="OK">
-    </p>
+	<ul>
+	{% for field in form %}
+	    	<div class="fieldWrapper">
+	        {{ field.errors }}
+	        {{ field.label_tag }} {{ field }}
+	        {% if field.help_text %}
+	        <p class="help">{{ field.help_text|safe }}</p>
+	        {% endif %}
+	    </div>
+	{% endfor %}
+	</ul>
+    <input type="submit" value="Submit" />
 </form>
-<!--
-{% for field in form %}
-    <div class="fieldWrapper">
-        {{ field.errors }}
-        {{ field.label_tag }} {{ field }}
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %}
-    </div>
-{% endfor %}
-{% if form.subject.errors %}
-    <ol>
-    {% for error in form.subject.errors %}
-        <li><strong>{{ error|escape }}</strong></li>
-    {% endfor %}
-    </ol>
 {% endif %}
--->
+

@@ -1,10 +1,11 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.utils import timezone
 
 from ..forms import NameForm
 from ..forms import ModelDescriptorForm
 
-def get_name(request):
+def detail(request,file_name):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -40,7 +41,11 @@ def get_name(request):
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        initial={'your_name':'http://google.com'}
+        initial={
+            'your_name':'http://google.com'
+             ,
+            'pub_date': timezone.now()
+        }
         #form = NameForm(initial=initial)
         form = ModelDescriptorForm(initial=initial)
         context={'form':form}

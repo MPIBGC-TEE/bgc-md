@@ -20,8 +20,8 @@ class ModelDescriptorForm(Form):
         #required=False,
         help_text='The dio of the original publication. It will be used to download bibliographic information including the abstract. If you provide this information yourself it will be used instead.', 
     )
-    #pub_date = PUB_DATEField(
-    pub_date = DateField(
+    pub_date = PUB_DATEField(
+    #pub_date = DateField(
         help_text='The date when this record was first created.'
     )
     #class Meta:

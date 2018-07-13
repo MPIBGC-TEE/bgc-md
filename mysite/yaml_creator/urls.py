@@ -11,7 +11,7 @@ from .views.set_Fluxes import set_Fluxes
 from .views.set_statevariable_descriptions import set_statevariable_descriptions
 from .views.set_FluxRepresentation import set_FluxRepresentation
 from .views.data_base_index import data_base_index
-from .views.get_name import get_name
+#from .views.get_name import get_name
 
 urlpatterns=[
     path('jsi18n/yaml_creator/',JavaScriptCatalog.as_view(packages=[]),name='javascript-catalog'), # for admin javascript
@@ -19,7 +19,6 @@ urlpatterns=[
     ##path('<str:pk>/detail',views.DetailView.as_view(), name='detail'),
     #path('',index, name='index'),
     path('',data_base_index, name='data_base_index'),
-    path('get_name',get_name, name='get_name'),
     path('create_new_ModelDescriptor',create_new_ModelDescriptor, name='create_new_ModelDescriptor'),
     path('<str:file_name>/set_statevector/',set_statevector, name='set_statevector'),
     path('<str:file_name>/set_statevariable_descriptions/',set_statevariable_descriptions, name='set_statevariable_descriptions'),
@@ -28,4 +27,5 @@ urlpatterns=[
     path('<str:file_name>/set_Matrices/',set_Matrices, name='set_Matrices'),
     #path('<str:file_name>/model_overview/',model_overview, name='model_overview'),
     path('<str:file_name>/detail/',detail, name='detail'),
+    #path('get_name',get_name, name='get_name'),
 ]
