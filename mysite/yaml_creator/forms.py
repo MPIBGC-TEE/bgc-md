@@ -1,26 +1,32 @@
-from django import forms
-from django.forms import ModelForm
+from django.forms import Form,  ModelForm, CharField
 from yaml_creator.models.ModelDescriptor import ModelDescriptor
 from yaml_creator.fields import DOIField
 from yaml_creator.fields import PUB_DATEField
+from django.forms import URLField
+from django.forms import DateField
 
-class NameForm(forms.Form):
-    your_name = forms.CharField(label='your name',max_length=100)
+class NameForm(Form):
+    your_url= URLField(label='your url',max_length=100)
+    pub_date = DateField(
+        help_text='The date when this record was first created.'
+    )
 
-class ModelDescriptorForm(ModelForm):
-    doi = DOIField(
+#class ModelDescriptorForm(ModelForm):
+class ModelDescriptorForm(Form):
+    #doi = DOIField(
+    doi = URLField(
 	initial="http://doi.org/",
      	max_length=200,
-        required=False,
+        #required=False,
         help_text='The dio of the original publication. It will be used to download bibliographic information including the abstract. If you provide this information yourself it will be used instead.', 
     )
-    pub_date = PUB_DATEField()
-    class Meta:
-        model= ModelDescriptor
-        fields=('doi','pub_date')
-        help_texts={
-            'pub_date': ('The date when this record was first created.'),
-        }
+    #pub_date = PUB_DATEField(
+    pub_date = DateField(
+        help_text='The date when this record was first created.'
+    )
+    #class Meta:
+    #    model= ModelDescriptor
+    #    fields=('doi','pub_date')
     class Media:
         css={
             'all':(

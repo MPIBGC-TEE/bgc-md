@@ -1,0 +1,21 @@
+{% if error %} 
+<h1>Error</h1>
+{{ error }}
+{{ form.data }}
+<h2>doi_dict</h2>
+{{ doi_dict }}
+{% endif %}
+
+{% if success%} 
+<h1>Success</h1>
+{{ success }}
+{% endif %}
+
+{% if form %} 
+<form action="{% url 'get_name' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
+{% endif %}
+
