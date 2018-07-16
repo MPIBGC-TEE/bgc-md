@@ -10,6 +10,22 @@ class NameForm(Form):
         help_text='The date when this record was first created.'
     )
 
+class VariableForm(Form):
+    description=CharField(
+        help_text='A short description of the variable.'
+    )
+    class Media:
+        css={
+            'all':(
+                'admin/css/forms.css',
+                'admin/css/base.css',
+                'admin/css/widgets.css',
+                  )
+        }
+        js=[
+            "admin/js/core.js", # this is needed for the calendar
+        ]
+
 #class ModelDescriptorForm(ModelForm):
 class ModelDescriptorForm(Form):
     #doi = DOIField(
