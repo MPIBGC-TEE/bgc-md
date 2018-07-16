@@ -2,8 +2,7 @@ from django.forms import Form,  ModelForm, CharField
 from yaml_creator.models.ModelDescriptor import ModelDescriptor
 from yaml_creator.fields import DOIField
 from yaml_creator.fields import PUB_DATEField
-from django.forms import URLField
-from django.forms import DateField
+from django.forms import URLField , DateField, CharField 
 
 class NameForm(Form):
     your_url= URLField(label='your url',max_length=100)
@@ -24,9 +23,9 @@ class ModelDescriptorForm(Form):
     #pub_date = DateField(
         help_text='The date when this record was first created.'
     )
-    #class Meta:
-    #    model= ModelDescriptor
-    #    fields=('doi','pub_date')
+    statevector=CharField(
+            help_text='Ordered list of state variables, e.g. C_1,C_2,C_3 , that form the state vector'
+    )
     class Media:
         css={
             'all':(
