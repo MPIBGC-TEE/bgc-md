@@ -9,11 +9,38 @@ class NameForm(Form):
     pub_date = DateField(
         help_text='The date when this record was first created.'
     )
-
-class VariableForm(Form):
+class AdditionalVariableForm(Form):
     description=CharField(
+        required=False,
         help_text='A short description of the variable.'
     )
+    expression=CharField(
+        required=False,
+        help_text='sympy expression that relates the variable to others'
+    )
+    class Media:
+        css={
+            'all':(
+                'admin/css/forms.css',
+                'admin/css/base.css',
+                'admin/css/widgets.css',
+                  )
+        }
+        js=[
+            "admin/js/core.js", # this is needed for the calendar
+        ]
+
+
+class StateVariableForm(Form):
+    description=CharField(
+        required=False,
+        help_text='A short description of the variable.'
+    )
+
+    #def __init__(self,*args,name,**kwargs):
+    #    super().__init__(*args,**kwargs)
+    #    self.name=name
+
     class Media:
         css={
             'all':(
@@ -39,6 +66,7 @@ class ModelDescriptorForm(Form):
     #pub_date = DateField(
         help_text='The date when this record was first created.'
     )
+
     statevector=CharField(
             help_text='Ordered list of state variables, e.g. C_1,C_2,C_3 , that form the state vector'
     )

@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from .ModelDescriptor import ModelDescriptor
 
 #class VariableManager(models.Manager):
 #    def create(self,*args,**kwargs):
@@ -15,10 +14,8 @@ from .ModelDescriptor import ModelDescriptor
 class Variable(models.Model):
     name=models.CharField(max_length=200)
     description=models.CharField(max_length=200)
+    unit=models.CharField(max_length=200)
 
-    model_descriptor=models.ForeignKey('ModelDescriptor',on_delete=models.CASCADE)
-    reverse_execution_order_position=models.IntegerField(default=0)
-    #objects=VariableManager()
     
     # opverlaod save to ensure that no duplicated 
     # variables are saved in the database
@@ -39,11 +36,6 @@ class Variable(models.Model):
 
 
 
-    def clean(self):
-        #get all variables targeting the present ModelDescriptor
-        md=self.model_descriptor
-        all_vars=list(md.variable_set.all())
-        self.mm_check(all_vars)
 
     def mm_check(self,all_vars):
         print('##################3')
@@ -53,11 +45,5 @@ class Variable(models.Model):
         print(var_names)
         #now check if we allready have a variable of that name
         if self.name in var_names:
-            raise ValidationError("The names of the variables have to be uniqe per model_descriptor. The variable: {} is already in the list: {}".format(self.name,var_names))
-
-#    def clean_post(self):
-#        md=self.model_descriptor
-#        all_vars=list(md.variable_set.all())
-#        all_vars.remove(self)
-#        self.mm_check(all_vars)
+            raise ValidationError("The names of the variables (StateVariables or AdditionalVaribles) have to be uniqe per model_descriptor. The variable: {} is already in the list: {}".format(self.name,var_names))
 

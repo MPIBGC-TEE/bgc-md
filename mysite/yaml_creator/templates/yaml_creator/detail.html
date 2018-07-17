@@ -4,11 +4,11 @@
 <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script
 {% load i18n static admin_urls %}
 {{ file_name }}
-{{ form.media }}
+{{ ModelDescriptorForm.media }}
 {% if error %} 
 <h1>Error</h1>
 {{ error }}
-{{ form.data }}
+{{ ModelDescriptorForm.data }}
 <h2>doi_dict</h2>
 {{ doi_dict }}
 {% endif %}
@@ -18,12 +18,12 @@
 {{ success }}
 {% endif %}
 
-{% if form %} 
+{% if ModelDescriptorForm %} 
 <form action="{% url 'detail' file_name %}" method="post">
     {% csrf_token %}
-    {# {{ form }} #}
+    {# {{ ModelDescriptorForm }} #}
 	<ul>
-	{% for field in form %}
+	{% for field in ModelDescriptorForm %}
 	    	<div class="fieldWrapper">
 	        {{ field.errors }}
 	        {{ field.label_tag }} {{ field }}
@@ -35,6 +35,10 @@
 	</ul>
 	{% if VariableFormSet %}
 		{% for form in VariableFormSet %}
+			        {{ form.prefix}}
+			        {{ form.id_for_label}}
+			        {{ form.html_name}}
+			        {{ form.user}}
 			{% for field in form %}
 			    	<div class="fieldWrapper">
 			        {{ field.errors }}
