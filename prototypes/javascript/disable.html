@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				    $("select").change(function(e){
+
+    					    var id = $(this).attr("id");
+    					    var value = this.value;
+
+    					    $("select option").each(function(){
+
+    					        var idParent = $(this).parent().attr("id");
+    					    		
+    					        if(id != idParent){
+    					            if(this.value == value){
+    					                this.disabled = true;
+    					                
+    					            }
+    					            
+    					            else if($("#box_g1 option:selected").val()!="Default"){
+    					                
+    					                
+    					                $("#box_g2").prop("disabled", false);
+    					                $("#box_g3").prop("disabled", false);
+    					    	     $("#box_g4").prop("disabled", false);
+    					                $("#box_g5").prop("disabled", false);
+    					            }else{
+    					                
+    					                
+    					                
+    					                defaultValues();
+    					            }
+    					        }
+    					    });
+    					});
+
+ 			});
+	function defaultValues() {
+		if ($("#box_g1").val() == "Default") {
+
+			$('select[id^="box_g"] option').prop("disabled",false);
+
+            		$("#box_g2").attr("disabled", true).val('Disabled');
+
+			$("#box_g3").attr("disabled", true).val('Disabled');
+
+			$("#box_g4").attr("disabled", true).val('Disabled');
+
+			$("#box_g5").attr("disabled", true).val('Disabled');
+
+		} else {
+			$("#box_g2").attr("disabled", false);
+			$("#box_g3").attr("disabled", false);
+			$("#box_g4").attr("disabled", false);
+			$("#box_g5").attr("disabled", false);
+		}
+	}
+
+		</script>
+	</head>
+<body>
+	
+<h2>This is a heading</h2>
+
+<select name="n1" id="box_g1" onChange="dynamicSelect(this)">
+	<option value="Default">Default</option>
+	<option value="A">A</option>
+	<option value="B">B</option>
+	<option value="C">C</option>
+	<option value="D">D</option>
+	<option value="E">E</option>
+</select>
+
+<select name="n2" id="box_g2" disabled="disabled"
+	onChange="dynamicSelect(this)">
+	<option value="Disabled">Disabled</option>
+	<option value="A">A</option>
+	<option value="B">B</option>
+	<option value="C">C</option>
+	<option value="D">D</option>
+	<option value="E">E</option>
+</select>
+
+<select name="n3" id="box_g3" disabled="disabled"
+	onChange="dynamicSelect(this)">
+	<option value="Disabled">Disabled</option>
+	<option value="A">A</option>
+	<option value="B">B</option>
+	<option value="C">C</option>
+	<option value="D">D</option>
+	<option value="E">E</option>
+</select>
+<select name="n4" id="box_g4" disabled="disabled"
+	onChange="dynamicSelect(this)">
+	<option value="Disabled">Disabled</option>
+	<option value="A">A</option>
+	<option value="B">B</option>
+	<option value="C">C</option>
+	<option value="D">D</option>
+	<option value="E">E</option>
+
+</select>
+<select name="n5" id="box_g5" disabled="disabled"
+	onChange="dynamicSelect(this)">
+	<option value="Disabled">Disabled</option>
+	<option value="A">A</option>
+	<option value="B">B</option>
+	<option value="C">C</option>
+	<option value="D">D</option>
+	<option value="E">E</option>
+
+</select>	
+

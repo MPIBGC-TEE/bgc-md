@@ -12,7 +12,7 @@ def set_Fluxes(request,file_name):
     try:
         md = ModelDescriptor.objects.get(pk=file_name)
         try:
-            spn=[var.name for var in md.variable_set.all()]
+            spn=[var.name for var in md.componentscheme.statevector.statevariable_set.all()]
             pkeys=request.POST.keys()
             if len(pkeys)<1:
                 fr=md.componentscheme.fluxes
@@ -21,6 +21,7 @@ def set_Fluxes(request,file_name):
                 print('######################################## flstr 1:')
                 print(type(flstr))
                 print(flstr)
+                print(spn)
                 content= {
                     'modeldescriptor': md,
                     'pool_names':spn,

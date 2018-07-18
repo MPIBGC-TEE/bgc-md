@@ -1,7 +1,10 @@
-from django.forms import Form,  ModelForm, CharField
-from yaml_creator.models.ModelDescriptor import ModelDescriptor
-from yaml_creator.fields import DOIField
-from yaml_creator.fields import PUB_DATEField
+from django.forms import Form,  ModelForm, CharField, ChoiceField
+from .models.ModelDescriptor import ModelDescriptor
+from .models.FluxRepresentation import FluxRepresentation
+from .models.Fluxes import Fluxes
+from .models.Matrices import Matrices
+from .fields import DOIField
+from .fields import PUB_DATEField
 from django.forms import URLField , DateField, CharField 
 
 class NameForm(Form):
@@ -9,6 +12,23 @@ class NameForm(Form):
     pub_date = DateField(
         help_text='The date when this record was first created.'
     )
+class FluxRepresentationForm(Form):
+    subClasses=FluxRepresentation.get_subclasses()
+    subClassNames=[f.__name__ for f in subClasses]
+    
+    fluxrepresentation=ChoiceField(choices=[(name,name) for name in subClassNames])
+    class Media:
+        css={
+            'all':(
+                'admin/css/forms.css',
+                'admin/css/base.css',
+                'admin/css/widgets.css',
+                  )
+        }
+        js=[
+            "admin/js/core.js", # this is needed for the calendar
+        ]
+
 class AdditionalVariableForm(Form):
     description=CharField(
         required=False,

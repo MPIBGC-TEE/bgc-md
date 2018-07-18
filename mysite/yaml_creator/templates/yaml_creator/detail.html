@@ -22,7 +22,10 @@
 <form action="{% url 'detail' file_name %}" method="post">
     {% csrf_token %}
     {# {{ ModelDescriptorForm }} #}
+
+	<h2>Additional information</h2>
 	<ul>
+
 	{% for field in ModelDescriptorForm %}
 	    	<div class="fieldWrapper">
 	        {{ field.errors }}
@@ -32,6 +35,11 @@
 	        {% endif %}
 	    </div>
 	{% endfor %}
+	</ul>
+
+	<h2>State Variables</h2>
+
+	<ul>
 	{% if variableforms %}
 		{% for form in variableforms %}
 			{{ form.prefix}}
@@ -51,6 +59,14 @@
 
 	{% endif %}
 	</ul>
+	
+	<h2>Flux representation</h2>
+	{% if FluxRepresentationForm %}
+		{{ FluxRepresentationForm }}
+	{% endif %}
+	<ul>
+	</ul>
+
     <input type="submit" value="Submit" />
 </form>
 {% endif %}

@@ -7,10 +7,8 @@ from django.forms import formset_factory
 from django.template import loader
 from ..models.ModelDescriptor import ModelDescriptor
 from ..models.ComponentScheme import ComponentScheme
-from ..models.Variable import Variable
-from ..forms import ModelDescriptorForm
-from ..forms import StateVariableForm
-from ..forms import AdditionalVariableForm
+from ..models.FluxRepresentation import FluxRepresentation
+from ..forms import ModelDescriptorForm , StateVariableForm , AdditionalVariableForm , FluxRepresentationForm
 from .get_StateVariableForms import get_StateVariableForms
 
 def get_context(file_name):
@@ -26,6 +24,7 @@ def get_context(file_name):
         initial_md['pub_date']=md.pub_date
         try:
             cs=md.componentscheme
+            
             sv=cs.statevector
             svs=sv.statevariable_set.all()
             initial_md['statevector']=sv.varliststring
@@ -33,6 +32,8 @@ def get_context(file_name):
             StateVariableFormSet=get_StateVariableForms()
             initial_svfs=[{'name': var.name,'description':var.description} for var in svs]
             context["variableforms"]=StateVariableFormSet(initial=initial_svfs)
+            context["FluxRepresentationForm"]=FluxRepresentationForm()
+            
 
         except ComponentScheme.DoesNotExist as e:
             print(str(e))

@@ -26,22 +26,22 @@ set a Flux
 	};
 
 	function main(){
-		//var tn =document.createTextNode('BBLLAA');
-		//var tn2 =document.createTextNode('BBLLAA');
-		//document.body.appendChild(tn)
-		//document.body.appendChild(tn2)
-		//var se=[tn,tn2];
+		var tn =document.createTextNode('BBLLAA');
+		var tn2 =document.createTextNode('BBLLAA');
+		document.body.appendChild(tn)
+		document.body.appendChild(tn2)
+		var se=[tn,tn2];
 		tup=['A','B'];
 		var se=pool_select(tup);
 		se.forEach(myAppend);
-		//var tuples=JSON.parse("{{ flstr|escapejs }}");
-		//for (i=0; i <tuples.length;i++){
-		//	//tn(tuples[i]);
-		//	//var se=pool_select(tuples[i]);			
-		//	var se=[document.createTextNode('BBLLAA')]
-		//	se.forEach(document.body.appendChild);
-		//}
-		////tn([1,2]);
+		var tuples=JSON.parse("{{ flstr|escapejs }}");
+		for (i=0; i <tuples.length;i++){
+			tn(tuples[i]);
+			var se=pool_select(tuples[i]);			
+			var se=[document.createTextNode('BBLLAA')]
+			se.forEach(document.body.appendChild);
+		}
+		//tn([1,2]);
 	};
 
 	function getButton(){
