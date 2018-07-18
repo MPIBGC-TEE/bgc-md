@@ -32,6 +32,11 @@ class AdditionalVariableForm(Form):
 
 
 class StateVariableForm(Form):
+    name=CharField(
+        disabled=True,
+        required=False,
+        help_text='The name of the statevariable as used in the state vector'
+    )
     description=CharField(
         required=False,
         help_text='A short description of the variable.'

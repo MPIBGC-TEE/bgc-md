@@ -32,13 +32,12 @@
 	        {% endif %}
 	    </div>
 	{% endfor %}
-	</ul>
-	{% if VariableFormSet %}
-		{% for form in VariableFormSet %}
-			        {{ form.prefix}}
-			        {{ form.id_for_label}}
-			        {{ form.html_name}}
-			        {{ form.user}}
+	{% if variableforms %}
+		{% for form in variableforms %}
+			{{ form.prefix}}
+			{{ form.id_for_label}}
+			{{ form.html_name}}
+			{{ form.user}}
 			{% for field in form %}
 			    	<div class="fieldWrapper">
 			        {{ field.errors }}
@@ -51,6 +50,7 @@
 		{% endfor %}
 
 	{% endif %}
+	</ul>
     <input type="submit" value="Submit" />
 </form>
 {% endif %}

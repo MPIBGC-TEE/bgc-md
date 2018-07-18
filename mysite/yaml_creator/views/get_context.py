@@ -11,6 +11,7 @@ from ..models.Variable import Variable
 from ..forms import ModelDescriptorForm
 from ..forms import StateVariableForm
 from ..forms import AdditionalVariableForm
+from .get_StateVariableForms import get_StateVariableForms
 
 def get_context(file_name):
     context={ 'file_name'      : file_name}
@@ -29,30 +30,15 @@ def get_context(file_name):
             svs=sv.statevariable_set.all()
             initial_md['statevector']=sv.varliststring
             
-
-            #VariableFormSet=inlineformset_factory(ModelDescriptor,Variable,fields=('description',),help_texts=['x1','x2','x3'])
-            VariableFormSet=[StateVariableForm(prefix=var.name) for var in svs]
-            #VariableFormSet=formset_factory(StateVariableForm,extra=0)
-            #initial_svfs=[{'name': var.name} for var in svs]
-            #vfs=VariableFormSet(initial=initial_svfs)
-
-            template=loader.get_template('yaml_creator/StateVariable.html')
-            
-            #html_snippets=[
-            #        template.render(
-            #            {
-            #                "name":var.name
-            #                ,
-            #                "form":StateVariableForm() 
-            #            } 
-            #        )
-            #        for var in svs
-            #]
-            context["VariableFormSet"]=VariableFormSet
+            StateVariableFormSet=get_StateVariableForms()
+            initial_svfs=[{'name': var.name,'description':var.description} for var in svs]
+            context["variableforms"]=StateVariableFormSet(initial=initial_svfs)
 
         except ComponentScheme.DoesNotExist as e:
             print(str(e))
-            pass
+
+
+
 
         
     except ModelDescriptor.DoesNotExist as e:

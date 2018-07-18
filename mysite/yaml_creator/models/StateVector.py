@@ -22,24 +22,28 @@ class StateVector(models.Model):
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)
 
-        # now update the missing statevariables if necessary
+        # now add the missing or delete the superfluous statevariables if necessary
         sss='Matrix([' + self.varliststring + '])'
-        print('1#######################')
         exp=sympify(sss)
-        print(exp)
         # determine the statevarables that we need
         needed_vars=set([str(symb) for symb in exp.free_symbols])
-        print('needed_vars')
-        print(needed_vars)
+        svs=self.statevariable_set.all()
 
-        saved_vars=set([var.name for  var in  self.statevariable_set.all()])
-        print('saved_vars')
-        print(saved_vars)
-        missing_vars=needed_vars.difference(saved_vars)
+        saved_var_names=set([var.name for  var in  svs])
+        missing_vars=needed_vars.difference(saved_var_names)
 
         for var_name in missing_vars:
             v=StateVariable(name=var_name,statevector=self)
             v.save()
+       
+        # remove the superfluous
+        superfluous_var_names=saved_var_names.difference(needed_vars)
+        print('##########################################')
+        print("superfluous_vars")
+        print(superfluous_var_names)
+        for var in svs:
+            if var.name in superfluous_var_names:
+                var.delete()
 
         self.clean()
 
@@ -49,7 +53,7 @@ class StateVector(models.Model):
         var_names_set=set(var_names_list)
         if len(var_names_list)!=len(var_names_set):
             raise ValidationError(
-                Template("The vartiable names in the  string representation of the statevector were not unique").subs(v=varliststring)
+                Template("The vartiable names in the  string representation of the statevector were not unique").substitute(v=varliststring)
                 )
         
 
@@ -62,7 +66,7 @@ class StateVector(models.Model):
         print('##########################################')
         if state_var_names!=var_names_set:
             raise ValidationError(
-                Template("The variable names in the statevector and the set of state variables are different: ${s} ${svn}").subs(s=var_names_set, svn=state_var_names)
+                Template("The variable names in the statevector and the set of state variables are different: ${s} ${svn}").substitute(s=var_names_set, svn=state_var_names)
                 )
 
                     
