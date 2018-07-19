@@ -3,8 +3,7 @@ from .models.ModelDescriptor import ModelDescriptor
 from .models.FluxRepresentation import FluxRepresentation
 from .models.Fluxes import Fluxes
 from .models.Matrices import Matrices
-from .fields import DOIField
-from .fields import PUB_DATEField
+from .fields import DOIField ,PUB_DATEField, FluxesField
 from django.forms import URLField , DateField, CharField 
 
 class NameForm(Form):
@@ -78,8 +77,41 @@ class StateVariableForm(Form):
             "admin/js/core.js", # this is needed for the calendar
         ]
 
-#class ModelDescriptorForm(ModelForm):
 class ModelDescriptorForm(Form):
+    # Usually  a form is described by a static class definition.
+    # This form is different from most predefined forms since it can actually
+    # add fields dynamically depending on the data in the database or request.
+
+    # E.g. Statevariable descriptions do not make sense if the statevector has not been defined yet (an hence the names of the statevariables are not known)
+    # The fluxes field does not make sense if the component scheme is set to matrix...
+
+    # There are various possibilities to deal with this situation. 
+    # We could use different forms for parts of the model description 
+    # or djangos formsets for repeted subforms.
+
+    # There is however only one HTML form in our template 
+    # (since we want one submit button for the form)
+    # Therefore the most transparent solution is to reflect this fact on the
+    # python side by one Form Class with a dynamic set of fields.\
+
+    # Again there are different ways to achieve this 
+    # (in decending order of power and copmplexity)
+    # - MetaClasses
+    # - a Class factory function (using type that returnes a tailormade class
+    #   with the necessary fields added.
+    # - an overloade __init__ method 
+    # We therefore define our own init method to listen to the data we recieve
+    # we use the fact that the fields are implemented as a dictionary
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        if len(args)>0:
+            data=args[0]
+
+            if 'fluxes' in data.keys():
+                self.fields['fluxes']=FluxesField()
+
+
     #doi = DOIField(
     doi = URLField(
 	initial="http://doi.org/",
@@ -106,11 +138,4 @@ class ModelDescriptorForm(Form):
         js=[
             "admin/js/core.js", # this is needed for the calendar
             #but somehow not mentioned in the widgets Media class
-            #"admin/js/collapse.js", 
-            #"admin/js/prepopulate.js", 
-            #"admin/js/prepopulate_init.js", 
-            #"admin/js/change_form.js", 
-            #"admin/js/inlines.js", 
-            #"admin/js/actions.js", 
-            #"admin/js/urlify.js", 
         ]

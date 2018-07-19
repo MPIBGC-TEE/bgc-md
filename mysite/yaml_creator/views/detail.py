@@ -17,11 +17,14 @@ from ..forms import ModelDescriptorForm
 from .get_StateVariableForms import get_StateVariableForms
 from .get_context import get_context 
 
+
 def detail(request,file_name):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a ModelDescriptoForm instance and populate it with data from the request:
         rp=request.POST
+        print("##########################################")
+        print(rp)
         form = ModelDescriptorForm(rp)
 
         context={

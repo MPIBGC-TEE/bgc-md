@@ -58,15 +58,15 @@
 		{% endfor %}
 
 	{% endif %}
-	</ul>
 	
-	<h2>Flux representation</h2>
 	{% if FluxRepresentationForm %}
+		<h2>Flux representation</h2>
 		{{ FluxRepresentationForm }}
 	{% endif %}
-	<ul>
-	</ul>
 
+	<h2>Fluxes </h2>
+
+        {% include "yaml_creator/Fluxes.html" %}	
     <input type="submit" value="Submit" />
 </form>
 {% endif %}

@@ -1,5 +1,4 @@
-from django.forms import URLField
-from django.forms import DateField
+from django.forms import Field,URLField ,DateField
 from django.contrib.admin.widgets import AdminDateWidget
 
 class DOIField(URLField):
@@ -9,3 +8,6 @@ class DOIField(URLField):
 class PUB_DATEField(DateField):
     widget=AdminDateWidget
     # we could implement a special validation method here
+
+class FluxesField(Field):
+    pass

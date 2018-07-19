@@ -1,0 +1,176 @@
+<!--
+	The   fields at the beginning are actually for communication from django
+	To javascript and backe
+<div id="fluxes" value="{{ fluxes }}">	
+<div id="statevector" value="{{ statevector }}">	
+-->
+<input type ="hidden" id="fluxReturn" name="returnValue" value="default_fake">	
+	
+<div id="TableDiv"> </div>
+<p> 
+	tableLengthDemo: <div id="tableLengthDemo"> </div>
+</p> 
+<p> <div id="AddButtonDiv"> </div> </p>
+<p> <div id="SubmitButtonDiv"> </div> </p>
+
+<script>
+  var sourceClass="Source"
+  var expressionClass="Expression"
+  var targetClass="Target"
+  var select_ids=['ss1','ss2'];
+  var div_ids=['targetDiv12','targetDiv22'];
+
+  var add_button = document.createElement("INPUT");
+  add_button.setAttribute("type", "button");
+  add_button.setAttribute("value", "add flux");
+  add_button.setAttribute("onclick","addRow(['x_1','x_2'],1)");
+  document.getElementById('AddButtonDiv').appendChild(add_button);
+
+  //var submit_button= document.createElement("INPUT");
+  //submit_button.setAttribute("type", "submit");
+  //submit_button.setAttribute("value","save");
+  //document.getElementById('SubmitButtonDiv').appendChild(submit_button);
+
+  var names=['x_1','x_2','x_3','x_4'];
+  var fluxes=[['x_1','x_2'],['x_2','x_4'],['x_3','x_4'],['x_4','x_1']];
+  //prepare the table for the fluxforms
+  var T =document.createElement('TABLE');
+  //var T=document.getElementById('FluxTable')
+  var row =document.createElement("TR");
+	row.setAttribute('id','table_row_'+(1))
+  var th1=document.createElement("TH");
+  th1.appendChild(document.createTextNode("Source"));
+  
+  var th2=document.createElement("TH")
+  th2.appendChild(document.createTextNode("Target"));
+  
+  var th3=document.createElement("TH")
+  th3.appendChild(document.createTextNode("Expression"));
+  
+  row.appendChild(th1);
+  row.appendChild(th2);
+  row.appendChild(th3);
+  T.appendChild(row);
+  //add.style.width="300px"
+  
+  
+ 
+  function createSelect(names,selected_value,ind) {
+      
+      var x = document.createElement("SELECT")
+      var txt = "";
+      var i;
+      for (i = 0; i < names.length; i++) {
+  	var item=names[i];
+          var o = document.createElement("OPTION");
+  	o.setAttribute("value",item);
+          var t=document.createTextNode(item);
+  	o.appendChild(t);
+  	x.appendChild(o);
+      }
+      x.selectedIndex=names.indexOf(selected_value);
+      return x;
+  }
+  function update(ids,div_target){
+  	var ts=ids.cloneNode(true);
+	ts.setAttribute("class",targetClass);
+  	var selind=ids.selectedIndex;
+  	console.log("selind:"+selind);
+  	ts.remove(selind);
+      	l=div_target.childNodes.length;
+  	console.log("l:"+l);
+      	if (l > 0){
+      	    oldf=div_target.childNodes[0]
+      	    div_target.replaceChild(ts,oldf);
+      	}
+      	if (l == 0){
+      	    div_target.appendChild(ts);
+      	}
+  };
+
+  function update_input_ids_table(T){
+  	for( var i =1; i < T.rows.length; i++ )
+  		{
+			row=T.rows[i];
+			update_input_ids(row,i);
+  		};
+  }
+  function update_input_ids(row,index){
+	var ss= row.getElementsByClassName(sourceClass)[0]; 
+	  ss.setAttribute('id',sourceClass+index);
+	var ei= row.getElementsByClassName(expressionClass)[0]; 
+	  ei.setAttribute('id',expressionClass+index);
+	var ts= row.getElementsByClassName(targetClass)[0]; 
+	  ts.setAttribute('id',targetClass+index);
+  };
+  update_maker=function(sf,td){
+		var f=function() {
+			update(sf,td);
+		};
+		return f;
+  };
+  function add_td(row,textnode){
+    	var sd  =document.createElement("TD");
+  	sd.appendChild(textnode);
+  	row.appendChild(sd);
+  }
+  function addRow(flux,ind){
+  	reportTableLength();
+  	var s=flux[0];
+  	sf=createSelect(names,s,ind);
+	sf.setAttribute("class",sourceClass);
+  	var t=flux[1];
+  	var tf  =document.createTextNode(t);
+  	var row =document.createElement("TR");
+  	var sd  =document.createElement("TD");
+  
+  	sd.appendChild(sf);
+  	td =document.createElement("TD");
+  
+  	update(sf,td);
+  	var exp=document.createElement("INPUT");
+	exp.setAttribute("class",expressionClass);
+  	T.appendChild(row);
+  	var f=update_maker(sf,td);
+  	sf.oninput=f;
+  
+  	bd =document.createElement("TD");
+	  
+	var b= document.createElement("INPUT");
+  	b.setAttribute('type','button');
+  	b.setAttribute('value','delete flux');
+	b.onclick=function()
+  		{	
+  			index=this.parentElement.parentElement.rowIndex;
+  			T.deleteRow(index);
+  			console.log(index);
+  			update_input_ids_table(T);
+  		};
+
+  	bd.appendChild(b);
+  	row.appendChild(sd);
+  	row.appendChild(td);
+  	row.appendChild(exp);
+  	row.appendChild(bd);
+  	update_input_ids_table(T);
+  }
+  function reportTableLength(){
+	  var l=T.rows.length;
+	  console.log("T.length="+l);
+  }
+  function main(){
+  	//create the flux selects for the given fluxes
+  	fluxes.forEach(addRow);
+  	//document.body.appendChild(T);
+  	TD=document.getElementById("TableDiv");
+  	TD.appendChild(T);
+	// write to hidden return field
+	ret=document.getElementById("fluxReturn" );
+	// at the moment this is fake 
+	ret.value=4;	
+
+  
+  }
+  
+  document.onload=main();
+</script>
