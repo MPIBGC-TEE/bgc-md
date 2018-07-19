@@ -6,32 +6,34 @@
 <body>
 	
 <h2>This is a heading</h2>
-The problem with this prototype is that the select fields need a unique identifier
-that survives all adding and deleting rows repeatedly
+The prototype guarantees unique identifiers for the input elements 
+that survives all adding and deleting rows repeatedly.
+This is achieved by updating the ids of the INPUT elements after a row has been added or deleted.
+After the update the ids run continuously from left to right and top to bottom: 
+Source1, Target1 ,Expression1
+Source2, Target2 ,Expression2
+....
 
-Also the deletion of rows does not work properly.
-After a row is added or deleted all form fields should be renumbered with respect to the new table position
+
 <div id="TableDiv"> </div>
-<p>
-tableLengthDemo
-<div id="tableLengthDemo"> </div>
-</p>
-<div id="demo_ids"> </div>
-<div id="demo_selind"> </div>
-<div id="demo_l"> </div>
-<div id="demo_divTarget"> </div>
+
+<p> 
+	tableLengthDemo: <div id="tableLengthDemo"> </div>
+</p> 
 <p> <div id="AddButtonDiv"> </div> </p>
 <p> <div id="SubmitButtonDiv"> </div> </p>
 
 <script>
+  var sourceClass="Source"
+  var expressionClass="Expression"
+  var targetClass="Target"
   var select_ids=['ss1','ss2'];
   var div_ids=['targetDiv12','targetDiv22'];
 
   var add_button = document.createElement("INPUT");
   add_button.setAttribute("type", "button");
   add_button.setAttribute("value", "add flux");
-  //add_button.setAttribute("onclick","addRow(['x_1','x_2'],1)");
-  add_button.setAttribute("onclick","addLastRow()");
+  add_button.setAttribute("onclick","addRow(['x_1','x_2'],1)");
   document.getElementById('AddButtonDiv').appendChild(add_button);
 
   //var submit_button= document.createElement("INPUT");
@@ -63,22 +65,9 @@ tableLengthDemo
   
   
  
-  del_maker=function(id){
-  	//var i=row.parentNode.rowIndex;
-  	return function() {
-		row=document.getElementById(id)
-  		var i=row.parentNode.rowIndex;
-		T.deleteRow(i)
-	};
-  };
-   
-  	
-  
   function createSelect(names,selected_value,ind) {
       
       var x = document.createElement("SELECT")
-      x.setAttribute('ind',ind);
-      x.setAttribute('id','SourceSelect_'+ind);
       var txt = "";
       var i;
       for (i = 0; i < names.length; i++) {
@@ -94,13 +83,12 @@ tableLengthDemo
   }
   function update(ids,div_target){
   	var ts=ids.cloneNode(true);
-	var ind=ids.getAttribute('ind')
-	ts.setAttribute('id','TargetSelect_'+ind)
+	ts.setAttribute("class",targetClass);
   	var selind=ids.selectedIndex;
-  	document.getElementById('demo_selind').innerHTML=selind;
+  	console.log("selind:"+selind);
   	ts.remove(selind);
       	l=div_target.childNodes.length;
-      	document.getElementById("demo_l").appendChild(document.createTextNode(l));
+  	console.log("l:"+l);
       	if (l > 0){
       	    oldf=div_target.childNodes[0]
       	    div_target.replaceChild(ts,oldf);
@@ -110,19 +98,40 @@ tableLengthDemo
       	}
   };
 
+  function update_input_ids_table(T){
+  	for( var i =1; i < T.rows.length; i++ )
+  		{
+			row=T.rows[i];
+			update_input_ids(row,i);
+  		};
+  }
+  function update_input_ids(row,index){
+	var ss= row.getElementsByClassName(sourceClass)[0]; 
+	  ss.setAttribute('id',sourceClass+index);
+	var ei= row.getElementsByClassName(expressionClass)[0]; 
+	  ei.setAttribute('id',expressionClass+index);
+	var ts= row.getElementsByClassName(targetClass)[0]; 
+	  ts.setAttribute('id',targetClass+index);
+  };
   update_maker=function(sf,td){
 		var f=function() {
 			update(sf,td);
 		};
 		return f;
   };
+  function add_td(row,textnode){
+    	var sd  =document.createElement("TD");
+  	sd.appendChild(textnode);
+  	row.appendChild(sd);
+  }
   function addRow(flux,ind){
+  	reportTableLength();
   	var s=flux[0];
   	sf=createSelect(names,s,ind);
+	sf.setAttribute("class",sourceClass);
   	var t=flux[1];
   	var tf  =document.createTextNode(t);
   	var row =document.createElement("TR");
-	row.setAttribute('id','table_row_'+(ind+2))
   	var sd  =document.createElement("TD");
   
   	sd.appendChild(sf);
@@ -130,31 +139,34 @@ tableLengthDemo
   
   	update(sf,td);
   	var exp=document.createElement("INPUT");
-  	exp.id="expression_"+ind;
+	exp.setAttribute("class",expressionClass);
   	T.appendChild(row);
   	var f=update_maker(sf,td);
   	sf.oninput=f;
   
   	bd =document.createElement("TD");
-  	var b= document.createElement("INPUT");
+	  
+	var b= document.createElement("INPUT");
   	b.setAttribute('type','button');
-  	var nr=T.rows.length;
-  	b.setAttribute('value','delete flux'+row.id);
-  	// since at this moment the row has not yet been added the 
-  	// rowcount yields the right index
-	var rw=row.id
-  	var del=del_maker(rw);
-  	b.onclick=del
+  	b.setAttribute('value','delete flux');
+	b.onclick=function()
+  		{	
+  			index=this.parentElement.parentElement.rowIndex;
+  			T.deleteRow(index);
+  			console.log(index);
+  			update_input_ids_table(T);
+  		};
+
   	bd.appendChild(b);
   	row.appendChild(sd);
   	row.appendChild(td);
   	row.appendChild(exp);
   	row.appendChild(bd);
+  	update_input_ids_table(T);
   }
-  function addLastRow(){
-	  var tld=document.getElementById("tableLengthDemo")
+  function reportTableLength(){
 	  var l=T.rows.length;
-	  tld.innerHTML=l;
+	  console.log("T.length="+l);
   }
   function main(){
   	//create the flux selects for the given fluxes

@@ -1,0 +1,129 @@
+The purpose of the prototype is to 
+show how to build a table that has a button in each row that removes it.
+This should also work after several rows have been added and deleted.
+This will be used for the fluxtable.
+<body> 
+<p>
+	<input type="button" onclick='add_row("Table")' value="add row" ></input>
+</p>
+<table id="Table">
+  <tr >
+    <th>Month</th>
+    <th>Savings</th>
+    <th>forms</th>
+  </tr>
+  <tr >
+    <td>January</td>
+    <td>$2</td>
+    <td>
+	<input type="Text" class="Source" value="orig 2" ></input>
+    </td>
+    <td>
+	<input type="Text" class="Target" value="orig 2" ></input>
+    </td>
+    <td>
+	<input type="Text" class="Expression" value="orig 2" ></input>
+    </td>
+
+    <td> delete row by click </td>
+  </tr>
+  <tr >
+    <td>February</td>
+    <td>$3</td>
+    <td>
+	<input type="Text" class="Source" value="orig 3" ></input>
+    </td>
+    <td>
+	<input type="Text" class="Target" value="orig 3" ></input>
+    </td>
+    <td>
+	<input type="Text" class="Expression" value="orig 3" ></input>
+    </td>
+    <td> delete row by click </td>
+  </tr>
+</table> 
+</body> 
+
+<script>
+  var T= document.getElementById('Table')
+  var sourceClass="Source"
+  var expressionClass="Expression"
+  var targetClass="Target"
+  
+  
+  
+  function add_delete_by_click(T){
+  	var index;
+  	for( var i =1; i < T.rows.length; i++ )
+  		{
+			row=T.rows[i];
+  			row.cells[5].onclick=function()
+  			{	
+  				index=this.parentElement.rowIndex;
+  				T.deleteRow(index);
+  				console.log(index);
+  			};
+  		};
+  }
+  // now  add a function to each row
+  function update_input_ids_table(T){
+  	for( var i =1; i < T.rows.length; i++ )
+  		{
+			row=T.rows[i];
+			update_input_ids(row,i);
+  		};
+  }
+  
+  add_delete_by_click(T)
+  // create a function that adds an empty row
+  function add_td(row,textnode){
+    	var sd  =document.createElement("TD");
+  	sd.appendChild(textnode);
+  	row.appendChild(sd);
+  }
+  function update_input_ids(row,index){
+	var ss= row.getElementsByClassName(sourceClass)[0]; 
+	  ss.setAttribute('id',sourceClass+index);
+	var ei= row.getElementsByClassName(expressionClass)[0]; 
+	  ei.setAttribute('id',expressionClass+index);
+	var ts= row.getElementsByClassName(targetClass)[0]; 
+	  ts.setAttribute('id',targetClass+index);
+  };
+  function add_row(id){
+  	var T= document.getElementById(id)
+    	var row =document.createElement("TR");
+        var origRowCount=(T.rows).length;
+	
+  	add_td(row, document.createTextNode(origRowCount+"text 1")); 	
+  	add_td(row, document.createTextNode(origRowCount+"text 2")); 	
+
+	var ss=document.createElement("INPUT")
+	ss.setAttribute("class",sourceClass);
+  	add_td(row, ss); 	
+
+	var ei=document.createElement("INPUT")
+	ei.setAttribute("class",expressionClass);
+  	add_td(row, ei); 	
+
+	var ts=document.createElement("INPUT")
+	ts.setAttribute("class",targetClass);
+  	add_td(row, ts); 	
+  	
+	var b= document.createElement("INPUT");
+  	b.setAttribute('type','button');
+  	b.setAttribute('value','delete flux');
+	b.onclick=function()
+  		{	
+  			index=this.parentElement.parentElement.rowIndex;
+  			T.deleteRow(index);
+  			console.log(index);
+  			update_input_ids_table(T);
+  		};
+
+  	add_td(row, b); 	
+
+  	T.appendChild(row);
+  	update_input_ids_table(T);
+  
+  };
+</script>
