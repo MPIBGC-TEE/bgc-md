@@ -154,6 +154,31 @@
   	row.appendChild(bd);
   	update_input_ids_table(T);
   }
+  function getFlux(row){
+	  var source=row.getElementsByClassName(sourceClass)[0].selectedIndex;
+	  var target=row.getElementsByClassName(targetClass)[0].selectedIndex;
+	  var expression=row.getElementsByClassName(expressionClass)[0].selectedIndex;
+    var arr=[
+      {'source':source}
+      ,
+      {'target':target}
+      ,
+      {'expression':expression}
+    ]
+    return arr
+  };
+
+  function collectFormsValues(){
+     //arr=[{source:1}];
+     arr=[];
+     for( var i =1; i < T.rows.length; i++ )
+  		{
+			  row=T.rows[i];
+        arr.push( getFlux(row));
+  		};
+      return JSON.stringify(arr); 
+  }
+
   function reportTableLength(){
 	  var l=T.rows.length;
 	  console.log("T.length="+l);
@@ -166,8 +191,7 @@
   	TD.appendChild(T);
 	// write to hidden return field
 	ret=document.getElementById("fluxReturn" );
-	// at the moment this is fake 
-	ret.value=4;	
+	ret.value=collectFormsValues();	
 
   
   }

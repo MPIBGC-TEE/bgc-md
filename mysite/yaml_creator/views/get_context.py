@@ -28,11 +28,18 @@ def get_context(file_name):
             sv=cs.statevector
             svs=sv.statevariable_set.all()
             initial_md['statevector']=sv.varliststring
-            
+            try:
+                initial_md['fluxrepresentation']=cs.fluxrepresentation.__class__
+            except Exception as e:
+                print("##########################################")
+                print(e)
+                #initial_md['fluxrepresentation']= [c for c in FluxRepresentation.get_subclasses()[0]
+                initial_md['fluxrepresentation']= "Fluxes"
+
             StateVariableFormSet=get_StateVariableForms()
             initial_svfs=[{'name': var.name,'description':var.description} for var in svs]
             context["variableforms"]=StateVariableFormSet(initial=initial_svfs)
-            context["FluxRepresentationForm"]=FluxRepresentationForm()
+            #context["FluxRepresentationForm"]=FluxRepresentationForm()
             
 
         except ComponentScheme.DoesNotExist as e:
@@ -47,6 +54,12 @@ def get_context(file_name):
         initial_md['doi']='http://doi.org/'
         initial_md['pub_date']=timezone.now()
 
-    context["ModelDescriptorForm"]=ModelDescriptorForm(initial=initial_md)
+    mdf=ModelDescriptorForm(initial=initial_md)
+    print("##########################################")
+    print("initial_md")
+    print(initial_md)
+    print("mdf.fields")
+    print(mdf.fields)
+    context["ModelDescriptorForm"]=mdf 
          
     return context

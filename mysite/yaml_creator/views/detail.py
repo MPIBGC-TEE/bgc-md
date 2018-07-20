@@ -48,9 +48,6 @@ def detail(request,file_name):
 
                 
             except ModelDescriptor.DoesNotExist as e:
-                print("##########################################")
-                print("The following exception occurred: "+str(e))
-                print("##########################################")
                 print('trying to create a new model')
                 # create a new one
                 md = ModelDescriptor.objects.create(
@@ -81,7 +78,6 @@ def detail(request,file_name):
                 #erp.update({'form-TOTAL_FORMS': nf,'form-INITIAL_FORMS': nf,'form-MAX_NUM_FORMS': '',})
                 erp.update({'form-TOTAL_FORMS': nf,'form-INITIAL_FORMS': nf})
                 variableforms=StateVariableFormSet(erp,initial=initial_svfs)
-                print("11##########################################")
                 if variableforms.is_valid():
                     for sf in variableforms:
                         sfcd=sf.cleaned_data
@@ -93,19 +89,24 @@ def detail(request,file_name):
                 print(variableforms.errors)
             except StateVector.DoesNotExist as e:
                 sv=StateVector(componentscheme=cs,varliststring=cd["statevector"])
+            
+            try:
+                fr=cs.fluxRepresentation
+                # Fluxrepresentation is an abstract class
+                # we can only instatiate one of its subclasses
+                # We find out which one by 
+            except:
+                pass
+
+                #fr=Fluxrepresentation(componentscheme=cs,varliststring=cd["statevector"])
 
             sv.save()
-            print("##########################################")
-            print('sv.statevariable_set.all()')
-            print(sv.statevariable_set.all())
-            print("##########################################")
             context=get_context(file_name)
             context['success']=request.POST
             # or redirect to a new URL:
             #return HttpResponseRedirect('/thanks/')
         else:
             # the form was not valid  an error occurred in 
-            print('##########################################')
             for name,field in form.fields.items():
                 print(name)
                 print(field)

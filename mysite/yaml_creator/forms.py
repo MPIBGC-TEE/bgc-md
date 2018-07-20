@@ -105,11 +105,33 @@ class ModelDescriptorForm(Form):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        mycopy=dict()
         if len(args)>0:
             data=args[0]
+            print("##########################################")
+            print('data')
+            mycopy.update(data)
 
-            if 'fluxes' in data.keys():
-                self.fields['fluxes']=FluxesField()
+        if "initial" in kwargs.keys():
+            print('initial')
+            initial=kwargs['initial']
+            mycopy.update(initial)
+
+            if 'statevector' in mycopy.keys():
+                subClasses=FluxRepresentation.get_subclasses()
+                subClassNames=[f.__name__ for f in subClasses]
+                field=ChoiceField(
+                        choices=[(name,name) for name in subClassNames]
+                        ,
+                        required=False
+                )
+                self.fields['fluxrepresentation']= field
+            
+            #if 'fluxes' in data.keys():
+            #    self.fields['fluxes']=FluxesField()
+                
+                
+
 
 
     #doi = DOIField(
