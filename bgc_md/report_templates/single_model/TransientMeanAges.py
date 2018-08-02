@@ -1,4 +1,5 @@
 def template(model):
+    print("say hello ###################################")
     # include mean ages
     rel = EmptyLine()
     rel += Header("Mean ages", 2)

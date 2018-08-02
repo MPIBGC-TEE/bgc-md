@@ -13,8 +13,8 @@ def template(model):
     #rel=ReportElementList()
     rel+= Meta({"title":t})
     #fixme mm 01.07
-    #link broken
-    #rel+= Link("yaml_file",str(model.yaml_file_path))
+    ###link broken
+    ###rel+= Link("yaml_file",str(model.yaml_file_path))
     rel+=Newline()
     rel+=Newline()
     rel+=render(sdp.joinpath("GeneralOverview.py"),model)

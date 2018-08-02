@@ -15,13 +15,15 @@ from bgc_md.ModelList import ModelList
 import bgc_md.gv as gv
 
 
-
 class TestReportGeneration(InDirTest):
     def test_report_template_single_model(self):
+        
         d=defaults() 
         sp=d['paths']['tested_records'].parent.joinpath('TestModels_1').joinpath('Williams2005GCB.yaml')
 
-        tp=d['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
+        #tp=d['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
+        #tp=d['paths']['report_templates'].joinpath('single_model','TransientMeanAges.py')
+        tp=d['paths']['report_templates'].joinpath('single_model','TransientSystemAgeDensity3d.py')
         model=Model.from_path(sp)
         rel=render(tp,model)
 

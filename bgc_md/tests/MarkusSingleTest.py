@@ -10,14 +10,14 @@ from bgc_md.tests.TestReportElements import TestReportElements
 #from bgc_md.tests.TestTsTpField import TestTsTpField
 #from bgc_md.tests.TestTsTpMassFieldsPerPoolPerTimeStep import TestTsTpMassFieldsPerPoolPerTimeStep 
 from bgc_md.tests.TestWriteReportElements import  TestWriteReportElements
-#from bgc_md.tests.TestReportGeneration import TestReportGeneration
-from bgc_md.tests.SlowTestReportGeneration import TestReportGeneration
+from bgc_md.tests.TestReportGeneration import TestReportGeneration
+#from bgc_md.tests.SlowTestReportGeneration import TestReportGeneration
 from bgc_md.tests.Testbibtexc import Testbibtexc
 
 def suite():
     s=unittest.TestSuite()
     #s.addTest(TestReportGeneration('test_report_template_linked_table'))
-    #s.addTest(TestReportGeneration('test_report_template_single_model'))
+    s.addTest(TestReportGeneration('test_report_template_single_model'))
     #s.addTest(TestReportGeneration('test_website_from_template'))
     #s.addTest(Testbibtexc("test_online_entry"))
     #s.addTest(Testbibtexc("test_init"))
@@ -31,7 +31,7 @@ def suite():
     #s.addTest(Test
     #s.addTest(TestWriteReportElements("test_write_html_with_bibliography"))
     #s.addTest(TestWriteReportElements("test_write_html_with_picture"))
-    s.addTest(TestReportElements("test_Meta"))
+    #s.addTest(TestReportElements("test_Meta"))
     #s.addTest(TestReportElements("test_Report"))
     #s.addTest(TestReportElements("test_TableRow"))
     #s.addTest(TestReportElements("test_Text"))
