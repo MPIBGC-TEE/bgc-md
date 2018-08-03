@@ -87,21 +87,25 @@ class ModelDescriptorForm(Form):
 
     # There are various possibilities to deal with this situation. 
     # We could use different forms for parts of the model description 
-    # or djangos formsets for repeted subforms.
+    # or djangos formsets for repeated subforms.
 
-    # There is however only one HTML form in our template 
-    # (since we want one submit button for the form)
+    # There is however only ONE HTML form in our template 
+    # (since we want ONE submit button for the form)
     # Therefore the most transparent solution is to reflect this fact on the
     # python side by one Form Class with a dynamic set of fields.\
 
     # Again there are different ways to achieve this 
     # (in decending order of power and copmplexity)
     # - MetaClasses
-    # - a Class factory function (using type that returnes a tailormade class
-    #   with the necessary fields added.
-    # - an overloade __init__ method 
-    # We therefore define our own init method to listen to the data we recieve
-    # we use the fact that the fields are implemented as a dictionary
+    #
+    # - a Class factory function (using pythons type builting that returns 
+    #   a tailormade class with the necessary fields added.
+    #
+    # - an overloaded __init__ method 
+    #
+    # We choose the simplest approach and define our own init method to 
+    # listen to the data we recieve.
+    # We use the fact that the fields are implemented as a dictionary
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -118,6 +122,7 @@ class ModelDescriptorForm(Form):
             mycopy.update(initial)
 
             if 'statevector' in mycopy.keys():
+                #sv.varliststring=mycopy["statevector"]
                 subClasses=FluxRepresentation.get_subclasses()
                 subClassNames=[f.__name__ for f in subClasses]
                 field=ChoiceField(

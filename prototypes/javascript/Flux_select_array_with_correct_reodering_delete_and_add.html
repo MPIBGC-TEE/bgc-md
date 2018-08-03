@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
+	<!--
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	-->
 	</head>
 <body>
 	
 <h2>This is a heading</h2>
 The prototype guarantees unique identifiers for the input elements 
-that survives all adding and deleting rows repeatedly.
+that survives adding and deleting rows repeatedly.
 This is achieved by updating the ids of the INPUT elements after a row has been added or deleted.
 After the update the ids run continuously from left to right and top to bottom: 
 Source1, Target1 ,Expression1
@@ -15,6 +17,8 @@ Source2, Target2 ,Expression2
 ....
 
 
+<div id="SvTableDiv"> </div>
+<p> <div id="AddSvButtonDiv"> </div> </p>
 <div id="TableDiv"> </div>
 
 <p> 
@@ -24,11 +28,11 @@ Source2, Target2 ,Expression2
 <p> <div id="SubmitButtonDiv"> </div> </p>
 
 <script>
+  var names=['x_1','x_2','x_3','x_4'];
+  var fluxes=[['x_1','x_2'],['x_2','x_4'],['x_3','x_4'],['x_4','x_1']];
   var sourceClass="Source"
   var expressionClass="Expression"
   var targetClass="Target"
-  var select_ids=['ss1','ss2'];
-  var div_ids=['targetDiv12','targetDiv22'];
 
   var add_button = document.createElement("INPUT");
   add_button.setAttribute("type", "button");
@@ -36,13 +40,36 @@ Source2, Target2 ,Expression2
   add_button.setAttribute("onclick","addRow(['x_1','x_2'],1)");
   document.getElementById('AddButtonDiv').appendChild(add_button);
 
+  var add_button = document.createElement("INPUT");
+  add_button.setAttribute("type", "button");
+  add_button.setAttribute("value", "add pool");
+  add_button.setAttribute("onclick","addSvRow('x_1')");
+  document.getElementById('AddSvButtonDiv').appendChild(add_button);
+
   //var submit_button= document.createElement("INPUT");
   //submit_button.setAttribute("type", "submit");
   //submit_button.setAttribute("value","save");
   //document.getElementById('SubmitButtonDiv').appendChild(submit_button);
+  
+  //prepare the table for the Statevariables
+  var T_sv =document.createElement('TABLE');
+  //var T=document.getElementById('FluxTable')
+  var row =document.createElement("TR");
+	row.setAttribute('id','table_row_'+(1))
+  var th1=document.createElement("TH");
+  th1.appendChild(document.createTextNode("Name"));
+  
+  var th2=document.createElement("TH")
+  th2.appendChild(document.createTextNode("Unit"));
+  
+  var th3=document.createElement("TH")
+  th3.appendChild(document.createTextNode("Description"));
+  
+  row.appendChild(th1);
+  row.appendChild(th2);
+  row.appendChild(th3);
+  T_sv.appendChild(row);
 
-  var names=['x_1','x_2','x_3','x_4'];
-  var fluxes=[['x_1','x_2'],['x_2','x_4'],['x_3','x_4'],['x_4','x_1']];
   //prepare the table for the fluxforms
   var T =document.createElement('TABLE');
   //var T=document.getElementById('FluxTable')
@@ -81,6 +108,23 @@ Source2, Target2 ,Expression2
       x.selectedIndex=names.indexOf(selected_value);
       return x;
   }
+  function relatedFluxRows(sv)
+    {
+      return 1 
+    };
+  function collectResults(T)
+    {
+       var fluxes=[];
+       for (var i =1 ; i< T.rows.length; i++)
+	    {
+		row=T.rows[i];
+		cs=row.childNodes;
+		sf=cs[0].firstChild
+		console.log(sf.value)
+		fluxes[i]=sf.value
+		
+	    }
+    }
   function update(ids,div_target){
   	var ts=ids.cloneNode(true);
 	ts.setAttribute("class",targetClass);
@@ -155,6 +199,7 @@ Source2, Target2 ,Expression2
   			T.deleteRow(index);
   			console.log(index);
   			update_input_ids_table(T);
+  			collectResults(T);
   		};
 
   	bd.appendChild(b);
@@ -163,18 +208,58 @@ Source2, Target2 ,Expression2
   	row.appendChild(exp);
   	row.appendChild(bd);
   	update_input_ids_table(T);
+  };
+  function addSvRow(s){
+  	reportTableLength();
+  	var row =document.createElement("TR");
+  	
+	var nd  =document.createElement("TD");
+  	var nF=document.createElement("INPUT");
+	  nF.setAttribute('value',s);
+  	nd.appendChild(nF);
+  
+	var ud  =document.createElement("TD");
+  	var uF=document.createElement("INPUT");
+  	ud.appendChild(uF);
+  
+	var dd  =document.createElement("TD");
+  	var dF=document.createElement("INPUT");
+	  dF.setAttribute('value','mass of ...');
+  	dd.appendChild(dF);
+  
+  	bd =document.createElement("TD");
+	var b= document.createElement("INPUT");
+  	b.setAttribute('type','button');
+  	b.setAttribute('value','delete pool (and related fluxes)');
+	b.onclick=function()
+  		{	
+  			index=this.parentElement.parentElement.rowIndex;
+      			rl=relatedFluxRows();
+  			T_sv.deleteRow(index);
+  			console.log(rl);
+  			//update_input_ids_table(T);
+  		};
+
+  	bd.appendChild(b);
+  	row.appendChild(nd);
+  	row.appendChild(ud);
+  	row.appendChild(dd);
+  	row.appendChild(bd);
+  	T_sv.appendChild(row);
+  	//update_input_ids_table(T);
   }
   function reportTableLength(){
 	  var l=T.rows.length;
 	  console.log("T.length="+l);
   }
   function main(){
+  	names.forEach(addSvRow);
   	//create the flux selects for the given fluxes
   	fluxes.forEach(addRow);
-  	//document.body.appendChild(T);
   	TD=document.getElementById("TableDiv");
   	TD.appendChild(T);
-  
+  	SvTD=document.getElementById("SvTableDiv");
+  	SvTD.appendChild(T_sv);
   }
   
   document.onload=main();
