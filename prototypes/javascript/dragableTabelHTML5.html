@@ -23,7 +23,11 @@ function dragStart(e) {
   _el = e.target;
 }
 function reportOrder(){
-var l =document.getElementbyId('mylist')
+var l =document.getElementById('mylist')
+ c=l.children
+ for (i=0; i < c.length; i++){
+ 	console.log(c[i].childNodes[0].nodeValue);
+	}
 }
 function isBefore(el1, el2) {
     if (el2.parentNode === el1.parentNode)
@@ -42,7 +46,7 @@ function isBefore(el1, el2) {
     <li draggable="true" ondragend="dragEnd()" ondragover="dragOver(event)" ondragstart="dragStart(event)">Bananas</li>
     <li draggable="true" ondragend="dragEnd()" ondragover="dragOver(event)" ondragstart="dragStart(event)">Strawberries</li>
 </ul>
-<input type="BUTTON" value="report order"></input>
+<input type="BUTTON" value="report order" onclick='reportOrder()'></input>
 <div class="more">
   See more examples at <a href="https://codepen.io/askfinney" target="_top">https://codepen.io/askfinney</a>
 </div>
