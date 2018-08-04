@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Image</p>
+<img id="scream" width="220" height="277"
+src="pic_the_scream.jpg" alt="The Scream">
+
+<p>Canvas</p>
+<canvas id="myCanvas" width="240" height="297"
+style="border:1px solid #d3d3d3;">
+</canvas> 
+<script>
+window.onload=function(){
+	var canvas = document.getElementById("myCanvas");
+	var ctx = canvas.getContext("2d");
+	
+	// Images
+	var img = document.getElementById("scream");
+	    ctx.drawImage(img, 10, 10);
+	
+	//Rectangle
+	ctx.fillStyle = "#FF0000";
+	ctx.fillRect(0,0,150,75);
+	
+	//Line
+	ctx.moveTo(0,0);
+	ctx.lineTo(200,100);
+	ctx.stroke(); 
+	// Create gradient
+	var grd=ctx.createLinearGradient(0,0,200,0);
+	grd.addColorStop(0,"red");
+	grd.addColorStop(1,"white");
+	
+	// Fill with gradient
+	ctx.fillStyle=grd;
+	ctx.fillRect(10,10,150,80); 
+	
+	//Circle
+	ctx.beginPath();
+	ctx.arc(95,50,40,0,2*Math.PI);
+	ctx.stroke(); 
+	
+	//Texts
+	ctx.font = "20px Arial";
+	ctx.fillText("Hello World",10,50); 
+	ctx.strokeText("Hello World",10,50); 
+	
+	//CenteredText
+	ctx.font = "30px Comic Sans MS";
+	ctx.fillStyle = "red";
+	ctx.textAlign = "center";
+	ctx.fillText("Hello World", canvas.width/2, canvas.height/2); 
+};
+</script>
+
+</body>
+</html>
