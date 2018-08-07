@@ -430,22 +430,27 @@ def check_parameter_set_valid(par_set, syms_by_type):
 
     par_dict = par_set['values']
 
-    l = deepcopy(syms_by_type)
-    l['par_dict'] = par_dict
-    g = copy(l)
-    #fixme mm 05.18.2018:
-    #the following line looks realy dangerous
-    exec("from sympy import *", g, l)
-    for name in par_dict.keys():
-        cmd = name + " = " + name + ".subs(par_dict)"
-        try:
-            exec(cmd, g, l)
-        except Exception as e:
-            ex_str = "Invalid parameter set: " + par_set['table_head']
-            ex_str += "\nCould not substitute '" + name + "'"
-            raise(ModelInitializationException(ex_str + "\n" + e.__str__()))
+    #l = deepcopy(syms_by_type)
+    #l['par_dict'] = par_dict
+    #g = copy(l)
+    ##fixme mm 05.18.2018:
+    ##the following line looks realy dangerous
+    #exec("from sympy import *", g, l)
+    #for name in par_dict.keys():
+    #    
+    #    cmd = name + " = " + name + ".subs(par_dict)"
+    #    print('############################33333')
+    #    print(cmd)
+    #    print(par_dict)
+    #    print('############################33333')
+    #    try:
+    #        exec(cmd, g, l)
+    #    except Exception as e:
+    #        ex_str = "Invalid parameter set: " + par_set['table_head']
+    #        ex_str += "\nCould not substitute '" + name + "'"
+    #        raise(ModelInitializationException(ex_str + "\n" + e.__str__()))
 
-            return False   
+    #        return False   
     return True
 
 
