@@ -1050,10 +1050,8 @@ class Model:
         # avoid complete_dict references outside init
 
     def jacobian(self):
-        state_vec=self.state_vector['expr']
-        vec=self.rhs
-        dim = self.rhs.rows
-        return(Matrix(dim,dim,lambda i,j: diff(vec[i],state_vec[j])))
+        rm=self.reservoir_model
+        return rm.jacobian
 
     # fixme mm 14.5.2018
     # deprecate! 
