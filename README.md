@@ -9,7 +9,15 @@ This package consists of two components:
 #To pull
   $ docker pull image_name
 -->
+## CONTRIBUTIONS
+The main work has been done by the [Theoretical Ecosystem Ecology Group](https://www.bgc-jena.mpg.de/TEE/index.html) 
+lead by Carlos Sierra, especially by Veronika Ceballos, Holger Metzler and Markus Müller.
+Many people outside the group have also helped.
 
+We want to thank:
+- Volodymyr Saruta 
+  for kicking off the work that lead to the docker image support
+ 
 ## INSTALLATION
 ### Prerequisites:
   - To install we recommend using a virtual python environment.
