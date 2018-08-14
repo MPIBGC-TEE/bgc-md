@@ -1,0 +1,157 @@
+## vim:set ff=unix expandtab ts=4 sw=4:
+name: MIMICS
+longName: Microbial-Mineral Carbon Stabilization
+version: 1
+entryAuthor: "Carlos Sierra"
+entryAuthorOrcid: 0000-0003-0009-4169
+entryCreationDate: 14/08/2018 # changeset 3354
+lastModification: _lm_
+timeResolution: hourly 
+doi: 10.5194/bg-11-3899-2014
+
+model:
+    - state_variables:
+        - LIT_m:
+            desc: "Metabolic litter"
+            key: "litter"
+        - LIT_s: 
+            desc: "Structural litter"
+            key: "litter" 
+        - MIC_r:
+            desc: "Copiotrophic microbial biomass"
+            key: "microbes"
+        - MIC_k:
+            desc: "Oligotrophic microbial biomass"
+            key: "microbes"
+        - SOM_p:
+            desc: "Physically protected soil organic matter"
+            key: "som"
+        - SOM_c:
+            desc: "Chemically protected soil organic matter"
+            key: "som"
+    
+    - Fluxes:
+        - F1:
+            desc: "Flux from LIT_m to MIC_r"
+            type: variable
+            key: Flux
+            exprs: "MIC_r * Vmax_r1 * LIT_m /(Km_r1 + LIT_m)"
+        - F2:
+            desc: "Flux from LIT_s to MIC_r"
+            type: variable
+            key: Flux
+            exprs: "MIC_r * Vmax_r2 * LIT_s /(Km_r2 + LIT_s)"
+        - F3:
+            desc: "Flux from SOM_p to MIC_r"
+            type: variable
+            key: Flux
+            exprs: "MIC_r * Vmax_r3 * SOM_p /(Km_r3 + SOM_p)"
+        - F4:
+            desc: "Flux from SOM_c to MIC_r"
+            type: variable
+            key: Flux
+            exprs: "MIC_r * Vmax_r4 * SOM_c /(Km_r4 + SOM_c)"
+        - F5:
+            desc: "Flux from MIC_r to SOM_p"
+            type: variable
+            key: Flux
+            exprs: "MIC_r * tau_r"
+        - F6:
+            desc: "Flux from LIT_m to MIC_k"
+            type: variable
+            key: Flux
+            exprs: "MIC_k * Vmax_k1 * LIT_m /(Km_k1 + LIT_m)"
+        - F7:
+            desc: "Flux from LIT_s to MIC_k"
+            type: variable
+            key: Flux
+            exprs: "MIC_k * Vmax_k2 * LIT_s /(Km_k2 + LIT_s)"
+        - F8:
+            desc: "Flux from SOM_p to MIC_k"
+            type: variable
+            key: Flux
+            exprs: "MIC_k * Vmax_k3 * SOM_p /(Km_k3 + SOM_p)"
+        - F9:
+            desc: "Flux from SOM_c to MIC_k"
+            type: variable
+            key: Flux
+            exprs: "MIC_k * Vmax_k4 * SOM_c /(Km_k4 + SOM_c)"
+        - F10:
+            desc: "Flux from MIC_k to SOM_c"
+            type: variable
+            key: Flux
+            exprs: "MIC_k * tau_k"
+
+    - allocation_coefficients:
+        - a_il:
+            desc: Fraction of annual NPP allocated to leaves for PFT$_i$
+            #type: parameter
+            exprs: "a_il = -0.0025 * S + 0.44 "
+            key: "part_foliage"
+        - a_ir:
+            desc: Fraction of annual NPP allocated to roots for PFT$_i$
+            #type: parameter
+            exprs: "a_ir = 0.0039 * S + 0.137"
+            key: "part_roots"
+        - a_is:
+            desc: Fraction of annual NPP allocated to stem for PFT$_i$
+            #type: parameter
+            exprs: "a_is = 1 - a_il - a_ir"
+            key: "part_wood"
+
+    - cycling_rates:
+        - tau_il: 
+            desc: Residence time of carbon in leaves for PFT$_i$  
+            type: parameter
+            key: "cyc_foliage"
+            unit: 
+        - tau_is:
+            desc: Residence time of carbon in stem for PFT$_i$  
+            type: parameter
+            key: "cyc_wood"
+            unit: 
+        - tau_ir:
+            desc: Residence time of carbon in roots for PFT$_i$ 
+            type: parameter
+            key: "cyc_roots"
+            unit:
+
+    - additional_variables: 
+        - S:
+            desc: Percent sand in soil
+            type: variable
+            unit: percentage
+            key:  "soil_sand"
+
+    - components:
+        # you are required to provide at least expressions for f u x and A
+        # you are allowed to use as many helper expressions as you want to arrive there
+        # e.g.
+        # p= x**2 # allowed just for conviniece
+        # f =p**2.. #required
+        - x: 
+            key: state_vector
+            exprs: "x=Matrix(3,1,[C_il, C_is, C_ir])"
+            desc: vector of states for vegetation
+        - u: 
+            key: scalar_func_phot   
+            exprs: "u=NPP_i"
+            desc: scalar function of photosynthetic inputs
+        - b: 
+            key: part_coeff   
+            exprs: "b=Matrix(3,1,[a_il, a_is, a_ir])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - A: 
+            key: cyc_matrix   
+            exprs: "A=diag(-1/tau_il, -1/tau_is, -1/tau_ir)"
+            desc: matrix of turnover (cycling) rates 
+        - f_v: 
+            key: state_vector_derivative 
+            exprs: "f_v = u*b + A*x"
+            desc: the righthandside of the ode
+# The following parameter set corresponds to a previous version of the model with fixed coefficients
+#model_run_data:
+#    parameter_sets:
+#        - "Tropical evergreen trees":
+#            values: {a_il: 0.25, a_is: 0.5, a_ir: 0.25}
+#            doi: 10.5194/bg-10-2255-2013
