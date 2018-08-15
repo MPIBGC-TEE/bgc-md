@@ -14,6 +14,12 @@ def pp(strng,env,comment=""):
     print(comment+"\n"+strng+"=:")
     print(env[strng])
 
+def pe(strng,env,comment=""):
+    print("\n####################################\n")
+    print(comment+"\n"+strng+"=:")
+    print(eval(strng,env))
+    print("\n####################################\n")
+
 
 def remove_indentation(entry_str):
     lst = entry_str.splitlines()

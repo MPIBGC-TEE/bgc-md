@@ -16,6 +16,20 @@ import bgc_md.gv as gv
 
 
 class TestReportGeneration(InDirTest):
+    def test_report_template_fluxes(self):
+        
+        d=defaults() 
+        sp=d['paths']['tested_records'].joinpath('Fluxes.yaml')
+
+        tp=d['paths']['report_templates'].joinpath('single_model','CompleteSingleModelReport.py')
+        model=Model.from_path(sp)
+        pe('model.get_component_keys()')
+        #rel=render(tp,model)
+
+        #target_dir_path=Path('.').joinpath('html')
+        #target_dir_path.mkdir(parents=True,exist_ok=True)
+        #targetFileName='Report.html'
+        #rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
     def test_report_template_single_model(self):
         
         d=defaults() 

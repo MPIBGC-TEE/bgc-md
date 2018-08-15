@@ -14,7 +14,7 @@ import numpy as np
 
 from .ReportInfraStructure import Text, Math, ReportElementList, TableRow, Table, Header, Newline
 from .bibtexc import BibtexEntry, DoiNotFoundException, online_entry
-from .helpers import remove_indentation, create_symbols_func, eval_expressions, retrieve_or_default, retrieve_this_or_that, py2tex_silent
+from .helpers import remove_indentation, create_symbols_func, eval_expressions, retrieve_or_default, retrieve_this_or_that, py2tex_silent, pp,pe
 from .helpers_reservoir import factor_out_from_matrix
 from .DataFrame import DataFrame
 from .Exceptions import ModelInitializationException
@@ -214,6 +214,7 @@ def get_all_colnames(complete_dict, variables_sections):
     colnames = set()
     for sec in variables_sections:
         section_dic = section_subdict(complete_dict, sec) # {'state_variables': [...]}
+
         colnames |= get_all_colnames_of_section_dict(section_dic)
     return sorted(list(colnames))
 
@@ -233,8 +234,9 @@ def get_all_colnames_of_section_dict(section_dic):
 
 
 def load_df(complete_dict, sections):
-    no_variables_sections = ('parameter_sets', )
+    no_variables_sections = ('parameter_sets','components_new' )
     variables_sections = [el for el in sections if el not in no_variables_sections]
+    pe('variables_sections',locals())
 
     additional_colnames = get_all_colnames(complete_dict, variables_sections)
 
@@ -695,6 +697,7 @@ class Model:
             self.further_references = load_further_references(self.complete_dict)
             self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)
             self.sections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)
+            pe('self.sections',locals())
             #fixme mm:
             # if we want to switch to pandas the load_df should become obsolete
             self.df = load_df(self.complete_dict, self.sections)
@@ -711,22 +714,22 @@ class Model:
                      self.initial_values, self.run_times, self.state_vector, self.time_symbol, 
                      self.state_vector_derivative)
             if msg:
-                print("-------------")
+                print("\n-------------\n")
                 print('Warning at initializing model ' + self.id)
                 if hasattr(self,"yaml_file_path"):
                     print(str(self.yaml_file_path))
                 print(msg)
-                print("-------------")
+                print("\n-------------\n")
             
             #self.parameter_sets=[]
         except Exception as ex:
 
-            print("-------------")
+            print("\n-------------\n")
             print('Initializing model ' + self.id + ' failed.')
             if hasattr(self,"yaml_file_path"):
                 print(str(self.yaml_file_path))
             print(ex)
-            print("-------------")
+            print("\n-------------\n")
             raise(ex)
 
     @property
