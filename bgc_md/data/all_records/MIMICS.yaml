@@ -29,7 +29,39 @@ model:
         - SOM_c:
             desc: "Chemically protected soil organic matter"
             key: "som"
-    
+   
+    - additional_variables: 
+        - Vmax: 
+            desc: 
+            exprs: "exp(V_slope * T + V_int) * av"
+        - Vmax_r1:
+            desc: 
+            exprs: "Vmax * Vmod_r1" 
+        - Vmax_r2:
+            desc: 
+            exprs: "Vmax * Vmod_r2" 
+        - Vmax_r3:
+            desc: 
+            exprs: "Vmax * Vmod_r3" 
+        - Vmax_r4:
+            desc: 
+            exprs: "Vmax * Vmod_r4"
+        - Km:
+            desc:
+            exprs: "exp(K_slope * T + K_int) * ak" 
+        - Km_r1:
+            desc: 
+            exprs: "Km * Kmod_1" 
+        - Km_r2:
+            desc: 
+            exprs: "Km * Kmod_2" 
+        - Km_r3:
+            desc: 
+            exprs: "Km * Kmod_3" 
+        - Km_r4:
+            desc: 
+            exprs: "Km * Kmod_4" 
+       
     - Fluxes:
         - F1:
             desc: "Flux from LIT_m to MIC_r"
@@ -82,39 +114,6 @@ model:
             key: Flux
             exprs: "MIC_k * tau_k"
 
-    - allocation_coefficients:
-        - a_il:
-            desc: Fraction of annual NPP allocated to leaves for PFT$_i$
-            #type: parameter
-            exprs: "a_il = -0.0025 * S + 0.44 "
-            key: "part_foliage"
-        - a_ir:
-            desc: Fraction of annual NPP allocated to roots for PFT$_i$
-            #type: parameter
-            exprs: "a_ir = 0.0039 * S + 0.137"
-            key: "part_roots"
-        - a_is:
-            desc: Fraction of annual NPP allocated to stem for PFT$_i$
-            #type: parameter
-            exprs: "a_is = 1 - a_il - a_ir"
-            key: "part_wood"
-
-    - cycling_rates:
-        - tau_il: 
-            desc: Residence time of carbon in leaves for PFT$_i$  
-            type: parameter
-            key: "cyc_foliage"
-            unit: 
-        - tau_is:
-            desc: Residence time of carbon in stem for PFT$_i$  
-            type: parameter
-            key: "cyc_wood"
-            unit: 
-        - tau_ir:
-            desc: Residence time of carbon in roots for PFT$_i$ 
-            type: parameter
-            key: "cyc_roots"
-            unit:
 
     - additional_variables: 
         - S:
