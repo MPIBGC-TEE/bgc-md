@@ -22,7 +22,17 @@ bibtex: "@inproceedings{Henin1945Annalesagronomiques,
              year = {1945}
             }"
 
+# the model section should be simplified in the following ways:
+# 1. there is now only one subsection: variables
+#    If a veriable has special meaning is decided by the keys or the context
+#    - A state variable can be identified by looking at the state vector)
+#    - A variable that is not a statevariable is a parameter if it is supplied
+#      in a paramter set
+#    - An external driver is a variable for which an external function is 
+#      supplied in the func_set
 model:
+    # the classification as statevariables is actually duplication 
+    # it is here until we get it running withou 
     - state_variables:
         - A:
             desc: labile pool
@@ -33,7 +43,7 @@ model:
 #            key: "wood"
             unit: "MgC*ha^{-1}" 
     
-    - decomposition_rates:
+    - other_variables:
         - alpha:
             desc: annual decomposition rate of labile pool
             unit: "yr^{-1}"
@@ -43,36 +53,39 @@ model:
             unit: "yr^{-1}"
             type: parameter
 
-    - input_components:
         - m:
             desc: annual organic matter input
             unit: "MgC yr^{-1}"
             type: parameter
 
-    - transfer_coefficients:
         - K:
             desc: isohumic coefficient
             type: parameter
+        
+        # from here the essentials of a compartmental model are defined
+        - C: 
+            exprs: "C=Matrix(2,1,[A,B])"
+            key: 'state_vector'
+        # fluxes are normal variables that have :
+        # internal fluxes have source and target
+        - F1:
+            source: A
+            target: B
+            exprs: "F1=alpha*K*A"
 
-    - components_new:
-        - statevector:
-            desc: carbon content
-            exprs: "C = Matrix(2, 1, [A, B])"
-        - fluxes:
-            internal:
-                '0,1':
-                    desc: "optional description, the whole line can be missing"
-                    exprs: "alpha*K*A"
-            externalIn:
-                '0':
-                    exprs: "m"
-                '1':
-                    exprs: "0"
-            externalOut:
-                '0':
-                    exprs: "alpha*A"
-                '1':
-                    exprs: "beta*B"
+        # external inputs have only a target
+        - F2:
+            target: A
+            exprs: "F2=m"
+        # external outputs have only a source
+        - F3:
+            source: A 
+            exprs: "F3=alpha*A"
+        - F4:
+            source: B
+            exprs: "F3=beta*B"
+
+        #
 
             #        - I:
             #            desc: input vector

@@ -16,6 +16,7 @@ import bgc_md.gv as gv
 
 
 class TestReportGeneration(InDirTest):
+    #@unittest.skip
     def test_report_template_fluxes(self):
         
         d=defaults() 

@@ -17,6 +17,7 @@ from .bibtexc import BibtexEntry, DoiNotFoundException, online_entry
 from .helpers import remove_indentation, create_symbols_func, eval_expressions, retrieve_or_default, retrieve_this_or_that, py2tex_silent, pp,pe
 from .helpers_reservoir import factor_out_from_matrix
 from .DataFrame import DataFrame
+from .ComponentScheme import ComponentScheme
 from .Exceptions import ModelInitializationException
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
@@ -196,6 +197,11 @@ def load_sections_and_titles(complete_dict):
     return (new_section_names, section_titles, new_complete_dict)
 
 
+
+def section_subdict_without_target_key(complete_dict, target_key):   
+    sd=section_subdict(complete_dict, target_key)   
+    return sd[target_key]
+
 def section_subdict(complete_dict, target_key):   
     # extract the part of the complete_dict with which we are dealing
     model_list = complete_dict["model"]
@@ -232,10 +238,7 @@ def get_all_colnames_of_section_dict(section_dic):
                             colnames |= {colname}
     return colnames
 
-
-def load_df(complete_dict, sections):
-    no_variables_sections = ('parameter_sets','components_new' )
-    variables_sections = [el for el in sections if el not in no_variables_sections]
+def load_df(complete_dict, variables_sections):
     pe('variables_sections',locals())
 
     additional_colnames = get_all_colnames(complete_dict, variables_sections)
@@ -280,8 +283,9 @@ def load_expressions_and_symbols(complete_df):
     exprs_list = []
     symbols_list = []
 
+    #pe('complete_df.rows_as_dictionary',locals())
     for row_dic in complete_df.rows_as_dictionary:
-        if row_dic['exprs']:
+        if row_dic['exprs'] is not None:
             exprs_list.append(row_dic['exprs'])
             exprs_list = flatten(exprs_list)
         else:
@@ -621,6 +625,10 @@ def load_model_run_combinations(model_run_data, parameter_sets, initial_values, 
             
 ######### Class #############
 class Model:
+    @classmethod
+    def no_variables_sections(cls):
+        return ('parameter_sets','components_new' )
+
     
     @classmethod
     def from_str(cls,yaml_str, id):
@@ -700,9 +708,19 @@ class Model:
             pe('self.sections',locals())
             #fixme mm:
             # if we want to switch to pandas the load_df should become obsolete
-            self.df = load_df(self.complete_dict, self.sections)
+            # at the moment we exclude some sections that we do not want to be handeld
+            target_sections=set(self.sections).difference(set(self.no_variables_sections()))
+
+            self.df = load_df(self.complete_dict,target_sections)
+            pe('self.df',locals())
+            # we now check if we can get a component scheme from df (as traditionally or if we have to look for extra sections)
             self.syms_dict, self.exprs_dict, self.symbols_by_type = load_expressions_and_symbols(self.df) 
             self.set_component_keys()
+            #cs=ComponentScheme.from_yaml_subdict(sd)
+            #cs_sym_dict=cs.state_variable_symbols
+            #pe('cs_sym_dict',locals())
+                
+                
 
             self.model_run_data = load_model_run_data(self.complete_dict)
             self.parameter_sets = load_parameter_sets(self.model_run_data)

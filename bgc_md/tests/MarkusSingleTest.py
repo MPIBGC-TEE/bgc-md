@@ -10,6 +10,7 @@ from bgc_md.tests.TestReportElements import TestReportElements
 #from bgc_md.tests.TestTsTpMassFieldsPerPoolPerTimeStep import TestTsTpMassFieldsPerPoolPerTimeStep 
 from bgc_md.tests.TestWriteReportElements import  TestWriteReportElements
 from bgc_md.tests.TestReportGeneration import TestReportGeneration
+from bgc_md.tests.TestCompleteModelList import TestCompleteModelList
 #from bgc_md.tests.SlowTestReportGeneration import TestReportGeneration
 from bgc_md.tests.Testbibtexc import Testbibtexc
 
@@ -17,11 +18,20 @@ def suite():
     s=unittest.TestSuite()
     #s.addTest(TestReportGeneration('test_report_template_single_model'))
     s.addTest(TestReportGeneration('test_report_template_fluxes'))
+    s.addTest(TestReportGeneration('test_create_old_overview_report'))
+    s.addTest(TestReportGeneration('test_website_from_template'))
+    s.addTest(TestReportGeneration('test_report_template_single_model'))
+
+    s.addTest(TestModel("test_jacobian"))
+    s.addTest(TestModel("test_check_parameter_set_and_initial_value_set_valid"))
+    s.addTest(TestCompleteModelList("test_plot_model_key_dependencies_scatter_plot"))
+
     #s.addTest(TestReportGeneration('test_report_template_linked_table'))
     #s.addTest(TestReportGeneration('test_website_from_template'))
     #s.addTest(Testbibtexc("test_online_entry"))
     #s.addTest(Testbibtexc("test_init"))
     #s.addTest(TestCompleteModelList("test_scatter_plus_hist_nr_vars_vs_nr_ops"))
+
     #s.addTest(TestReportGeneration("test_commandline_generate_model_run_report_with_targetdir"))
     #s.addTest(TestReportGeneration("test_commandline_gnerate_website"))
     #s.addTest(TestReportGeneration("test_commandline_generate_model_run_report_single_file"))
@@ -44,7 +54,6 @@ def suite():
     #s.addTest(TestTsTpMassFieldsPerPoolPerTimeStep("test_mean_age_distribution_for_BW"))
     #s.addTest(TestModel("test_load_bibtex_entry_from_doi"))
     #s.addTest(TestModel("test_load_model_runs_dict"))
-    #s.addTest(TestModel("test_jacobian"))
     #s.addTest(TestModel("test_key_relations"))
     #s.addTest(TestReportGeneration("test_histogram"))
     #s.addTest(TestReportGeneration("test_commandline_tools"))

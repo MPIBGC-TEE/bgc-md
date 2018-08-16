@@ -11,14 +11,14 @@ from pytexit import py2tex
 
 
 def pp(strng,env,comment=""):
-    print(comment+"\n"+strng+"=:")
-    print(env[strng])
+    pe(strng,env,comment)
 
 def pe(strng,env,comment=""):
-    print("\n####################################\n")
-    print(comment+"\n"+strng+"=:")
-    print(eval(strng,env))
-    print("\n####################################\n")
+    pass
+    #print("\n####################################\n")
+    #print(comment+"\n"+strng+"=:")
+    #print(eval(strng,env))
+    #print("\n####################################\n")
 
 
 def remove_indentation(entry_str):
@@ -43,12 +43,13 @@ def create_symbols_func(symbols, g={}, l={}):
 
 def eval_expressions(expression_list, g, l):
     for expr in expression_list:
+        #pe('expr',locals())
         not_expr = []
         if expr not in not_expr:
             try:
                 exec(expr, g, l)
             except BaseException as e:
-               raise Exception("The expression that could not be evaluated was: " + expr + "\n" + e.__str__())
+               raise Exception("The expression that could not be evaluated was: " + str(expr) + "\n" + str(e))
 
         
 def retrieve_or_default(complete_dict,key):
