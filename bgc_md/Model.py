@@ -715,9 +715,19 @@ class Model:
             pe('self.df',locals())
             # we now check if we can get a component scheme from df (as traditionally or if we have to look for extra sections)
             self.syms_dict, self.exprs_dict, self.symbols_by_type = load_expressions_and_symbols(self.df) 
+            # fixme mm 08-17-2018
+            # the next method call is dangerous since it uses the Model instance as a dict
+            # and overpopulates the namespace with ARBITRARY keys from the yaml files.
             self.set_component_keys()
+            # I advertise the following alternative.
+            comp_keys=self.get_component_keys()
+            # find the subclass of ComponentScheme that is compatible with
+            # the component_keys found in the yaml file
 
-            #cs=ComponentScheme.from_yaml_subdict(sd)
+            css=[ cls for cls in ComponentScheme.__subclasses__() if cls.init_arg_set()==comp_keys ]
+
+
+            cs=ComponentScheme.from_yaml_subdict(sd)
             #cs_sym_dict=cs.state_variable_symbols
             #pe('cs_sym_dict',locals())
                 
@@ -795,18 +805,22 @@ class Model:
         ed = self.exprs_dict
         syms = self.symbols_by_type
         comp_keys = flatten([keys for i, keys in enumerate(df.get_column('key')) if df[i, 'category'] == 'components'])
+        comp_keys = [key for key in comp_keys if key is not None]
         pe('comp_keys',locals())
-        comp_keys = [key for key in comp_keys if key]
         return(comp_keys)
 
-    # fixme:
-    # a bit dangerous since the name space inside the Model class
+    
+    
+    # fixme mm 17.08 2018:
+    # Setting properties of the model object is a bit dangerous since the name space inside the Model class
     # gets crowded by keys from the yaml file 
-    # Instead of usign itself as a dict a Model instance could delegate this
-    # task to a dict instead which would prevent possible collissions automatically
-    # We have to think about a strategy for this
-
+    # I would prefer an extra class ComponentScheme that stores the information 
+    # to build a SmoothReservoirModel instance. 
+    # It can have different constructors depending on 
+    # different key combinations  that are sufficiently informative to infer the main building blocks of a 
+    # SmoothReservoirModel 
     def set_component_keys(self):
+        
 #        df = self.df
         ed = self.exprs_dict
         syms = self.symbols_by_type
@@ -826,18 +840,6 @@ class Model:
                 raise(ModelInitializationException("Invalid component key: '" + comp_key + "'"))
 
             setattr(self, comp_key, dic)
-
-
-#    def set_state_vector(self):
-#        df=self.df
-#        ed=self.exprs_dict
-#        for i,name in enumerate(df.get_column("name")): 
-#            entry= df[i,"keys"]
-#            if entry:
-#                if not(isinstance(entry,list)):
-#                    entry=[entry]
-#                if "state_vector" in entry:
-#                    return(ed[name])
 
    
     def _varlist_by_type(self,typestr): 
