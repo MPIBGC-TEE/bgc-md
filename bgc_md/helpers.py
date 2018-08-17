@@ -14,11 +14,10 @@ def pp(strng,env,comment=""):
     pe(strng,env,comment)
 
 def pe(strng,env,comment=""):
-    pass
-    #print("\n####################################\n")
-    #print(comment+"\n"+strng+"=:")
-    #print(eval(strng,env))
-    #print("\n####################################\n")
+    print("\n####################################\n")
+    print(comment+"\n"+strng+"=:")
+    print(eval(strng,env))
+    print("\n####################################\n")
 
 
 def remove_indentation(entry_str):

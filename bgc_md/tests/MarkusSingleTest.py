@@ -18,13 +18,15 @@ def suite():
     s=unittest.TestSuite()
     #s.addTest(TestReportGeneration('test_report_template_single_model'))
     s.addTest(TestReportGeneration('test_report_template_fluxes'))
-    s.addTest(TestReportGeneration('test_create_old_overview_report'))
-    s.addTest(TestReportGeneration('test_website_from_template'))
-    s.addTest(TestReportGeneration('test_report_template_single_model'))
+#    s.addTest(TestReportGeneration('test_create_old_overview_report'))
+#    s.addTest(TestReportGeneration('test_website_from_template'))
+#    s.addTest(TestReportGeneration('test_report_template_single_model'))
+#
+#    s.addTest(TestModel("test_jacobian"))
+#    s.addTest(TestModel("test_check_parameter_set_and_initial_value_set_valid"))
+#    s.addTest(TestCompleteModelList("test_plot_model_key_dependencies_scatter_plot"))
 
-    s.addTest(TestModel("test_jacobian"))
-    s.addTest(TestModel("test_check_parameter_set_and_initial_value_set_valid"))
-    s.addTest(TestCompleteModelList("test_plot_model_key_dependencies_scatter_plot"))
+
 
     #s.addTest(TestReportGeneration('test_report_template_linked_table'))
     #s.addTest(TestReportGeneration('test_website_from_template'))

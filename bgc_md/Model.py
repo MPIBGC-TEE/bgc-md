@@ -716,6 +716,7 @@ class Model:
             # we now check if we can get a component scheme from df (as traditionally or if we have to look for extra sections)
             self.syms_dict, self.exprs_dict, self.symbols_by_type = load_expressions_and_symbols(self.df) 
             self.set_component_keys()
+
             #cs=ComponentScheme.from_yaml_subdict(sd)
             #cs_sym_dict=cs.state_variable_symbols
             #pe('cs_sym_dict',locals())
@@ -794,6 +795,7 @@ class Model:
         ed = self.exprs_dict
         syms = self.symbols_by_type
         comp_keys = flatten([keys for i, keys in enumerate(df.get_column('key')) if df[i, 'category'] == 'components'])
+        pe('comp_keys',locals())
         comp_keys = [key for key in comp_keys if key]
         return(comp_keys)
 
