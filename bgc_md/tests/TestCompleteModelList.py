@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 from pathlib import Path
 from bgc_md.IncompleteModel import IncompleteModel
-from bgc_md.Model import Model, load_bibtex_entry, load_abstract, load_further_references, load_reviews, load_sections_and_titles, load_df, load_expressions_and_symbols, section_subdict, load_model_run_data, load_parameter_sets, load_initial_values, check_parameter_set_valid, check_parameter_sets_valid, check_parameter_set_complete, check_initial_values_set_valid, check_initial_values_complete, load_run_times, load_model_run_combinations
+from bgc_md.Model import Model, load_bibtex_entry, load_abstract, load_further_references, load_reviews, load_sections_and_titles, load_expressions_and_symbols,  load_model_run_data, load_parameter_sets, load_initial_values, check_parameter_set_valid, check_parameter_sets_valid, check_parameter_set_complete, check_initial_values_set_valid, check_initial_values_complete, load_run_times, load_model_run_combinations
 from bgc_md.ModelList import ModelList
 from bgc_md.reports import defaults
 

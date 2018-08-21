@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import shutil
 from pathlib import Path
 from bgc_md.IncompleteModel import IncompleteModel
-from bgc_md.Model import Model, load_further_references, load_reviews, load_sections_and_titles, load_df, load_expressions_and_symbols, section_subdict, load_model_run_data, load_parameter_sets, load_initial_values, check_parameter_set_valid, check_parameter_sets_valid, check_parameter_set_complete, check_initial_values_set_valid, check_initial_values_complete, load_run_times, load_model_run_combinations
+from bgc_md.Model import Model, load_further_references, load_reviews, load_sections_and_titles, load_expressions_and_symbols, load_model_run_data, load_parameter_sets, load_initial_values, check_parameter_set_valid, check_parameter_sets_valid, check_parameter_set_complete, check_initial_values_set_valid, check_initial_values_complete, load_run_times, load_model_run_combinations
 from bgc_md.Exceptions import ModelInitializationException
 from bgc_md.ModelList import ModelList
 from bgc_md.reports import  defaults
@@ -36,8 +36,8 @@ class TestModelList(InDirTest):
                     key: state_vector_derivative
         """
         model_0 = IncompleteModel(yaml_str,"mod0")
-        model_0.sections, model_0.section_titles, model_0.complete_dict = load_sections_and_titles(model_0.complete_dict)
-        model_0.df = load_df(model_0.complete_dict, model_0.sections)
+        model_0.model_subsections, model_0.section_titles, model_0.complete_dict = load_sections_and_titles(model_0.complete_dict)
+        model_0.df = model_0.load_df(model_0.model_subsections)
         model_0.syms_dict, model_0.exprs_dict, model_0.symbols_by_type = load_expressions_and_symbols(model_0.df) 
         model_0.set_component_keys()
 
@@ -64,8 +64,8 @@ class TestModelList(InDirTest):
                     key: state_vector_derivative
         """
         model_1 = IncompleteModel(yaml_str,"mod1")
-        model_1.sections, model_1.section_titles, model_1.complete_dict = load_sections_and_titles(model_1.complete_dict)
-        model_1.df = load_df(model_1.complete_dict, model_1.sections)
+        model_1.model_subsections, model_1.section_titles, model_1.complete_dict = load_sections_and_titles(model_1.complete_dict)
+        model_1.df = model_1.load_df( model_1.model_subsections)
         model_1.syms_dict, model_1.exprs_dict, model_1.symbols_by_type = load_expressions_and_symbols(model_1.df) 
         model_1.set_component_keys()
         

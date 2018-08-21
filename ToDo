@@ -1,2 +1,4 @@
 - test if all the variables used in an expression are already defined (This would help finding the mistake in the yaml file)
-
+- rename the method Model.section_subdict Model.get_subdict_of_model_section
+- use section_pandas_df 
+-try to shorten the init method of Model so that only the complete_dict is created and everything else is done on demand

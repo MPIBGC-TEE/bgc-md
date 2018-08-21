@@ -198,31 +198,25 @@ def load_sections_and_titles(complete_dict):
 
 
 
-def section_subdict_without_target_key(complete_dict, target_key):   
-    sd=section_subdict(complete_dict, target_key)   
-    return sd[target_key]
-
-def section_subdict(complete_dict, target_key):   
-    # extract the part of the complete_dict with which we are dealing
-    model_list = complete_dict["model"]
-    matching = [dic for dic in model_list if target_key in dic.keys()]
-
-    if len(matching) == 0:
-        raise(ModelInitializationException('Subsection ' + target_key + ' not found.'))
-    if len(matching) > 1:
-        raise(ModelInitializationException('Subsection ' + target_key + ' not unique.' + 'found:' + str(len(matching))+'.'))
-
-    return matching[0]
+#fixme: mm 8-18-2018
+#deprecate  
+# the function is not general but assumes a lot about the structure of the 
+# yaml file. It should be a method of a model instance
+#def section_subdict_without_target_key(complete_dict, target_key):   
+#    sd=section_subdict(complete_dict, target_key)   
+#    return sd[target_key]
+#def section_subdict(complete_dict, target_key):   
+#    # extract the part of the complete_dict with which we are dealing
+#    model_list = complete_dict["model"]
+#    matching = [dic for dic in model_list if target_key in dic.keys()]
+#
+#    if len(matching) == 0:
+#        raise(ModelInitializationException('Subsection ' + target_key + ' not found.'))
+#    if len(matching) > 1:
+#        raise(ModelInitializationException('Subsection ' + target_key + ' not unique.' + 'found:' + str(len(matching))+'.'))
+#
+#    return matching[0]
         
-
-# helper function for load_df
-def get_all_colnames(complete_dict, variables_sections):
-    colnames = set()
-    for sec in variables_sections:
-        section_dic = section_subdict(complete_dict, sec) # {'state_variables': [...]}
-
-        colnames |= get_all_colnames_of_section_dict(section_dic)
-    return sorted(list(colnames))
 
 # helper function for get_all_colnames
 def get_all_colnames_of_section_dict(section_dic):
@@ -238,45 +232,6 @@ def get_all_colnames_of_section_dict(section_dic):
                             colnames |= {colname}
     return colnames
 
-def load_df(complete_dict, variables_sections):
-    pe('variables_sections',locals())
-
-    additional_colnames = get_all_colnames(complete_dict, variables_sections)
-
-    row_list = []
-    colnames = ['name', 'category'] + additional_colnames
-    row_list.append(colnames)
-    for sec in variables_sections:
-        section_dic = section_subdict(complete_dict, sec) # {'state_variables': [...]}
-        for sec_name, var_list in section_dic.items():
-            for var_dic in var_list:
-                # var_dic = {'C': {'exprs': 'C=...', 'desc': '...'}}
-                # or var_dic = {'C': }
-                if type(var_dic) == builtins.dict:
-                    for var, props in var_dic.items():
-                        row = [var, sec]
-                        for colname in additional_colnames:
-                            # props might be empty if var_dic = {'C:}
-                            if props and colname in props.keys(): 
-                                row.append(props[colname])
-                            else:
-                                row.append(None)
-                elif type(var_dic) == builtins.str:
-                    row = [var_dic, sec]
-                    for colname in additional_colnames:
-                        row.append(None)
-                else:
-                    raise(ModelInitializationException('Variable description wrong in ' + sec + '.'))
-                row_list.append(row)
-
-    df = DataFrame(row_list)
-
-    var_list = df.get_column('name')
-    for v in var_list:
-        if var_list.count(v) > 1:
-            raise(ModelInitializationException("Variable '" + v + "' defined more than once."))
-
-    return df
 
         
 def load_expressions_and_symbols(complete_df):
@@ -627,7 +582,7 @@ def load_model_run_combinations(model_run_data, parameter_sets, initial_values, 
 class Model:
     @classmethod
     def no_variables_sections(cls):
-        return ('parameter_sets','components_new' )
+        return ('parameter_sets','componentscheme' )
 
     
     @classmethod
@@ -681,6 +636,11 @@ class Model:
         # fixme: this is still under construction
         #return ['yaml_file_path','id','bibtex_entry']
         return ['bibtex_entry']
+    
+    @property
+    def model_dict_list(self): 
+        model_list = self.complete_dict["model"]
+        return model_list
 
     @property
     def name(self):
@@ -704,14 +664,25 @@ class Model:
 
             self.further_references = load_further_references(self.complete_dict)
             self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)
-            self.sections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)
-            pe('self.sections',locals())
+            self.model_subsections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)
+            pe('self.model_subsections',locals())
+            pe('self.section_titles',locals())
+          
+            # check if the yaml file contains a componentscheme entry 
+            # and load it if
+            key= "componentscheme"
+            if self.has_model_subsection(key):
+                csd=self.section_subdict_without_target_key("componentscheme")
+                pe('csd',locals())
+                css=[ cls for cls in ComponentScheme.__subclasses__() if cls.init_arg_sets()==comp_keys ]
+
+            # load the variables dataframe  
             #fixme mm:
             # if we want to switch to pandas the load_df should become obsolete
             # at the moment we exclude some sections that we do not want to be handeld
-            target_sections=set(self.sections).difference(set(self.no_variables_sections()))
-
-            self.df = load_df(self.complete_dict,target_sections)
+            target_sections=set(self.model_subsections).difference(set(self.no_variables_sections()))
+            
+            self.df =self.load_df(target_sections)
             pe('self.df',locals())
             # we now check if we can get a component scheme from df (as traditionally or if we have to look for extra sections)
             self.syms_dict, self.exprs_dict, self.symbols_by_type = load_expressions_and_symbols(self.df) 
@@ -724,12 +695,8 @@ class Model:
             # find the subclass of ComponentScheme that is compatible with
             # the component_keys found in the yaml file
 
-            css=[ cls for cls in ComponentScheme.__subclasses__() if cls.init_arg_set()==comp_keys ]
 
 
-            cs=ComponentScheme.from_yaml_subdict(sd)
-            #cs_sym_dict=cs.state_variable_symbols
-            #pe('cs_sym_dict',locals())
                 
                 
 
@@ -764,7 +731,7 @@ class Model:
     @property
     def nr_state_v(self):
         nr_state_v = 0
-        for sec in self.sections:
+        for sec in self.model_subsections:
             if sec == "state_variables":
                 nr_state_v = self.section_vars('state_variables').nrow
         return nr_state_v
@@ -1285,6 +1252,52 @@ class Model:
 
         return df
 
+# helper function for load_df
+    def load_df(self, variables_sections):
+        additional_colnames = self.get_all_colnames( variables_sections)
+    
+        row_list = []
+        colnames = ['name', 'category'] + additional_colnames
+        row_list.append(colnames)
+        for sec in variables_sections:
+            section_dic = self.section_subdict(sec) # {'state_variables': [...]}
+            for sec_name, var_list in section_dic.items():
+                for var_dic in var_list:
+                    # var_dic = {'C': {'exprs': 'C=...', 'desc': '...'}}
+                    # or var_dic = {'C': }
+                    if type(var_dic) == builtins.dict:
+                        for var, props in var_dic.items():
+                            row = [var, sec]
+                            for colname in additional_colnames:
+                                # props might be empty if var_dic = {'C:}
+                                if props and colname in props.keys(): 
+                                    row.append(props[colname])
+                                else:
+                                    row.append(None)
+                    elif type(var_dic) == builtins.str:
+                        row = [var_dic, sec]
+                        for colname in additional_colnames:
+                            row.append(None)
+                    else:
+                        raise(ModelInitializationException('Variable description wrong in ' + sec + '.'))
+                    row_list.append(row)
+    
+        df = DataFrame(row_list)
+    
+        var_list = df.get_column('name')
+        for v in var_list:
+            if var_list.count(v) > 1:
+                raise(ModelInitializationException("Variable '" + v + "' defined more than once."))
+    
+        return df
+    def get_all_colnames(self, variables_sections):
+        colnames = set()
+        for sec in variables_sections:
+            section_dic = self.section_subdict(sec) # {'state_variables': [...]}
+    
+            colnames |= get_all_colnames_of_section_dict(section_dic)
+        return sorted(list(colnames))
+
 
     def has_model_subsection(self,target_key):   
         # extract the part of the complete_dict with which we are dealing
@@ -1292,13 +1305,26 @@ class Model:
         matching = [dic for dic in model_list if target_key in dic.keys()]
         return len(matching)>0
 
+    def section_subdict_without_target_key(self, target_key):   
+        sd=self.section_subdict(target_key)   
+        return sd[target_key]
+
     def section_subdict(self,target_key):   
-        return(section_subdict(self.complete_dict,target_key))
+        # extract the part of the complete_dict with which we are dealing
+        model_list = self.complete_dict["model"]
+        matching = [dic for dic in model_list if target_key in dic.keys()]
+
+        if len(matching) == 0:
+            raise(ModelInitializationException('Subsection ' + target_key + ' not found.'))
+        if len(matching) > 1:
+            raise(ModelInitializationException('Subsection ' + target_key + ' not unique.' + 'found:' + str(len(matching))+'.'))
+
+        return matching[0]
     
     def section_pandas_df(self,target_key):   
         # pandas can create a DataFrame from a dictionary of array like objects
         # so we assemble it columnwise
-        sd=section_subdict(self.complete_dict,target_key)
+        sd=self.section_subdict(target_key)
         dict_list=sd[target_key]
         additional_colnames = list(get_all_colnames_of_section_dict(sd))
         first_key=lambda d :list(d.keys())[0]
@@ -1367,7 +1393,7 @@ class Model:
                     b = self.part_coeff['expr']
                     I = u*b
                 else:
-                    I = zeros(x.rows, 1)
+                    I = zeros(C.rows, 1)
             if hasattr(self, 'cyc_matrix'):
                 A = self.cyc_matrix['expr']
                 if f != I + A*C:

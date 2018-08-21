@@ -31,6 +31,14 @@ def sigma_alg(myset):
         result.add(myset)   
         return frozenset(result)
 
+def chooseComponentScheme(model):
+    # some old yaml files of Veronika and Holger lack
+    # a 'compoentscheme' scheme entry 
+    # An entry in the database should definitely 
+    # have and explicit entry and so all new yaml files.
+    pass
+
+
 class ComponentScheme(metaclass=ABCMeta):
     # this class will be merged with the corresponing class in the yaml_creator app 
     # It is an abstract class that can not be directly instanciated.

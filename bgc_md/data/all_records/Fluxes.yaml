@@ -34,7 +34,13 @@ bibtex: "@inproceedings{Henin1945Annalesagronomiques,
 #      supplied in the func_set
 # 2. The variables that are defined by an expression should not repeat their name in the expression
 #    The part left of the equal sign is obsolete.
+#
+#'model' is hardcoded in python
 model:
+    # The componentscheme Variable is new. 
+    # It determines from which constituents the reservoir model is to be constructed
+    - componentscheme: "Fluxes"
+
     # the classification as statevariables is actually duplication 
     # it is here until we get it running without 
     - state_variables:

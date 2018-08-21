@@ -16,9 +16,11 @@ from bgc_md.tests.Testbibtexc import Testbibtexc
 
 def suite():
     s=unittest.TestSuite()
-    #s.addTest(TestReportGeneration('test_report_template_single_model'))
-    s.addTest(TestReportGeneration('test_report_template_fluxes'))
-#    s.addTest(TestReportGeneration('test_create_old_overview_report'))
+    s.addTest(TestReportGeneration('test_report_template_single_model'))
+    #s.addTest(TestModelList("test_create_overview_table"))
+    #s.addTest(TestReportGeneration('test_report_template_fluxes'))
+    #s.addTest(TestCompleteModelList('test_plot_model_key_dependencies_scatter_plot'))
+    #s.addTest(TestReportGeneration('test_create_old_overview_report'))
 #    s.addTest(TestReportGeneration('test_website_from_template'))
 #    s.addTest(TestReportGeneration('test_report_template_single_model'))
 #
@@ -39,7 +41,6 @@ def suite():
     #s.addTest(TestReportGeneration("test_commandline_generate_model_run_report_single_file"))
 
     #s.addTest(TestReportGeneration("test_create_overview_report"))
-    #s.addTest(TestModelList("test_create_overview_table"))
     #s.addTest(Test
     #s.addTest(TestWriteReportElements("test_write_html_with_bibliography"))
     #s.addTest(TestWriteReportElements("test_write_html_with_picture"))
