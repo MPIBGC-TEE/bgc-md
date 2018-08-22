@@ -1,4 +1,4 @@
-from scipy.optimize import root 
+from scipy.optimize import root,fsolve
 from sympy import symbols,Matrix,sin,cos,zeros,lambdify
 from CompartmentalSystems.helpers_reservoir import jacobian
 import numpy as np
@@ -45,3 +45,25 @@ res = root(fun=ex_func,jac=jac_func,x0=x0,tol=1e-12)
 print(res.x)
 print(ex_func(res.x))
 print(jac_func(res.x))
+
+# in general our models will contain func_sets (external function u1(x,y,t),u2(t) ...)
+# in this case the jacobian would contain expressions of the form du1/dx du1/dy and so on, which might not be available
+# in this situation we have to call the root function with jac=False 
+x0=1e-1*np.ones(stateVec.shape)
+res = root(fun=ex_func,jac=False,x0=x0)
+print(res.x)
+print(ex_func(res.x))
+print(jac_func(res.x))
+# or a method that does not use the jacobian
+res = root(fun=ex_func,method='krylov',x0=x0)
+print(res.x)
+print(ex_func(res.x))
+print(jac_func(res.x))
+
+# we can also try fsove
+res = fsolve(func=ex_func,x0=x0,xtol=1e-12)
+print(res)
+print(ex_func(res))
+print(jac_func(res))
+# all methods depend very much non the startvalues
+
