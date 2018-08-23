@@ -73,38 +73,27 @@ class TestModelList(InDirTest):
         self.ml=ModelList([model_0,model_1])
 
 ####################################################################################################
-    def test_plot_model_key_dependencies_scatter_plot(self):
-        ml=self.ml
-        fig = plt.figure()
-        ax=fig.add_subplot(1,2,1)
-        ml.plot_model_key_dependencies_scatter_plot("scalar_func_phot",ax)
-        ax=fig.add_subplot(1,2,2)
-        ml.plot_model_key_dependencies_scatter_plot("state_vector_derivative",ax)
-        fig.savefig("plot.pdf")
-        plt.close(fig.number)
+    def test_create_overview_table(self):
+        # we create a target directory populated with only a few files and create a overview html from it
+        d=defaults() 
+        sp=d['paths']['tested_records']
+        src_dir_name='localDataBase'
+        src_dir_path=Path(src_dir_name)
+        src_dir_path.mkdir()
+        rec_list=[ rec  for rec in sp.glob('*.yaml')][0:1]
         
-#####################################################################################################
-#    def test_create_overview_table(self):
-#        # we create a target directory populated with only a few files and create a overview html from it
-#        d=defaults() 
-#        sp=d['paths']['tested_records']
-#        src_dir_name='localDataBase'
-#        src_dir_path=Path(src_dir_name)
-#        src_dir_path.mkdir()
-#        rec_list=[ rec  for rec in sp.glob('*.yaml')][0:1]
-#        
-#        for rec in rec_list:
-#            print(rec)
-#            src=(sp.joinpath(rec)).as_posix()
-#            target=(src_dir_name)
-#            shutil.copy(src,src_dir_name)
-#         
-#        ml=ModelList.from_dir_path(src_dir_path)
-#        target_dir_path=Path('.').joinpath('html')
-#        rel=ml.create_overview_table(target_dir_path)
-#        targetFileName='table.html'
-#        targetPath=target_dir_path.joinpath(targetFileName)
-#        rel.write_pandoc_html(targetPath)
-#        print(targetPath)
-#        self.assertTrue(targetPath.exists())
-#
+        for rec in rec_list:
+            print(rec)
+            src=(sp.joinpath(rec)).as_posix()
+            target=(src_dir_name)
+            shutil.copy(src,src_dir_name)
+         
+        ml=ModelList.from_dir_path(src_dir_path)
+        target_dir_path=Path('.').joinpath('html')
+        rel=ml.create_overview_table(target_dir_path)
+        targetFileName='table.html'
+        targetPath=target_dir_path.joinpath(targetFileName)
+        rel.write_pandoc_html(targetPath)
+        print(targetPath)
+        self.assertTrue(targetPath.exists())
+
