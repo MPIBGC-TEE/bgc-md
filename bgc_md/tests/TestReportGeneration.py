@@ -45,48 +45,47 @@ class TestReportGeneration(InDirTest):
     #    #targetFileName='Report.html'
     #    #rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
 
-    ##@skip
-    #def test_report_template_single_model(self):
-    #    
-    #    d=defaults() 
-    #    sp=d['paths']['tested_records'].parent.joinpath('TestModels_1').joinpath('Williams2005GCB.yaml')
+    def test_report_template_single_model(self):
+        
+        d=defaults() 
+        sp=d['paths']['tested_records'].parent.joinpath('TestModels_1').joinpath('Williams2005GCB.yaml')
 
-    #    #tp=d['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
-    #    #tp=d['paths']['report_templates'].joinpath('single_model','TransientMeanAges.py')
-    #    tp=d['paths']['report_templates'].joinpath('single_model','TransientSystemAgeDensity3d.py')
-    #    model=Model.from_path(sp)
-    #    rel=render(tp,model)
+        #tp=d['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
+        #tp=d['paths']['report_templates'].joinpath('single_model','TransientMeanAges.py')
+        tp=d['paths']['report_templates'].joinpath('single_model','TransientSystemAgeDensity3d.py')
+        model=Model.from_path(sp)
+        rel=render(tp,model)
 
-    #    target_dir_path=Path('.').joinpath('html')
-    #    target_dir_path.mkdir(parents=True,exist_ok=True)
-    #    targetFileName='Report.html'
-    #    rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
+        target_dir_path=Path('.').joinpath('html')
+        target_dir_path.mkdir(parents=True,exist_ok=True)
+        targetFileName='Report.html'
+        rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
 
-    #def test_create_old_overview_report(self):
-    #    # fixme:
-    #    # The tested method is deprecated and should be replaced by templates as soon as possible.
-    #    # we create a target directory populated with only a few files and create a overview html from it
-    #    d=defaults() 
-    #    #sp=d['paths']['tested_records']
-    #    sp=d['paths']['tested_records'].parent.joinpath('VerosTestModels')
-    #    src_dir_name='localDataBase'
-    #    src_dir_path=Path(src_dir_name)
-    #    src_dir_path.mkdir()
-    #    rec_list=[ rec  for rec in sp.glob('*.yaml')]#[0:2]
-    #    
-    #    for rec in rec_list:
-    #        src=str(sp.joinpath(rec))
-    #        target=(src_dir_name)
+    def test_create_old_overview_report(self):
+        # fixme:
+        # The tested method is deprecated and should be replaced by templates as soon as possible.
+        # we create a target directory populated with only a few files and create a overview html from it
+        d=defaults() 
+        #sp=d['paths']['tested_records']
+        sp=d['paths']['tested_records'].parent.joinpath('VerosTestModels')
+        src_dir_name='localDataBase'
+        src_dir_path=Path(src_dir_name)
+        src_dir_path.mkdir()
+        rec_list=[ rec  for rec in sp.glob('*.yaml')]#[0:2]
+        
+        for rec in rec_list:
+            src=str(sp.joinpath(rec))
+            target=(src_dir_name)
 
-    #        shutil.copy(src,src_dir_name)
-    #     
-    #    ml=ModelList.from_dir_path(src_dir_path)
+            shutil.copy(src,src_dir_name)
+         
+        ml=ModelList.from_dir_path(src_dir_path)
 
-    #    target_dir_path=Path('.').joinpath('html')
-    #    targetFileName='overview.html'
-    #    create_overview_report(ml,target_dir_path,targetFileName)
-    #    targetPath=target_dir_path.joinpath(targetFileName)
-    #    self.assertTrue(targetPath.exists())
+        target_dir_path=Path('.').joinpath('html')
+        targetFileName='overview.html'
+        create_overview_report(ml,target_dir_path,targetFileName)
+        targetPath=target_dir_path.joinpath(targetFileName)
+        self.assertTrue(targetPath.exists())
 
     #def test_website_from_template(self):
     #    d=defaults() 

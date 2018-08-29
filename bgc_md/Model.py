@@ -678,12 +678,15 @@ class Model:
 
             # load the variables dataframe  
             #fixme mm:
-            # if we want to switch to pandas the load_df should become obsolete
-            # at the moment we exclude some sections that we do not want to be handeld
-            target_sections=set(self.model_subsections).difference(set(self.no_variables_sections()))
+            # 1.)  if we want to switch to pandas the load_df should become obsolete
+            # 2.)  we exclude some sections that we do not want to be handled but we have to keep the order 
+            #      so we cant use set.difference 
+            target_sections=self.model_subsections
+            for sec in self.no_variables_sections():
+                if sec in target_sections:
+                    target_sections.remove(sec)
             
             self.df =self.load_df(target_sections)
-            pe('self.df',locals())
             # we now check if we can get a component scheme from df (as traditionally or if we have to look for extra sections)
             self.syms_dict, self.exprs_dict, self.symbols_by_type = load_expressions_and_symbols(self.df) 
             # fixme mm 08-17-2018
