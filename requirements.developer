@@ -8,8 +8,8 @@ future==0.14.3
 # in develop mode  (by setup.py develop in the source code dir of the packages)
 #
 #-e git+https://git@github.com/MPIBGC-TEE/LAPM.git#egg=LAPM
--e git+https://git@github.com/mamueller/testinfrastructure.git#egg=testinfrastructure 
+#-e git+https://git@github.com/mamueller/testinfrastructure.git#egg=testinfrastructure 
 #-e git+https://git@github.com/MPIBGC-TEE/CompartmentalSystems.git#egg=CompartmentalSystems
- -e git+https://git@github.com/MPIBGC-TEE/pytexit.git#egg=pytexit
+# -e git+https://git@github.com/MPIBGC-TEE/pytexit.git#egg=pytexit
  
  
