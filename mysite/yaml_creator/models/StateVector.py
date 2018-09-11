@@ -38,9 +38,9 @@ class StateVector(models.Model):
        
         # remove the superfluous
         superfluous_var_names=saved_var_names.difference(needed_vars)
-        print('##########################################')
-        print("superfluous_vars")
-        print(superfluous_var_names)
+        #print('##########################################')
+        #print("superfluous_vars")
+        #print(superfluous_var_names)
         for var in svs:
             if var.name in superfluous_var_names:
                 var.delete()
@@ -58,12 +58,12 @@ class StateVector(models.Model):
         
 
         state_var_names=set([ var.name for var in self.statevariable_set.all()])
-        print('##########################################')
-        print("state_var_names")
-        print(state_var_names)
-        print("var_name_set")
-        print(var_names_set)
-        print('##########################################')
+        #print('##########################################')
+        #print("state_var_names")
+        #print(state_var_names)
+        #print("var_name_set")
+        #print(var_names_set)
+        #print('##########################################')
         if state_var_names!=var_names_set:
             raise ValidationError(
                 Template("The variable names in the statevector and the set of state variables are different: ${s} ${svn}").substitute(s=var_names_set, svn=state_var_names)

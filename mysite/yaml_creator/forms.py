@@ -1,3 +1,4 @@
+import re
 from django.forms import Form,  ModelForm, CharField, ChoiceField
 from .models.ModelDescriptor import ModelDescriptor
 from .models.FluxRepresentation import FluxRepresentation
@@ -5,6 +6,7 @@ from .models.Fluxes import Fluxes
 from .models.Matrices import Matrices
 from .fields import DOIField ,PUB_DATEField, FluxesField
 from django.forms import URLField , DateField, CharField 
+
 
 class NameForm(Form):
     your_url= URLField(label='your url',max_length=100)
@@ -114,6 +116,7 @@ class ModelDescriptorForm(Form):
             data=args[0]
             print("##########################################")
             print('data')
+            print(data)
             mycopy.update(data)
 
         if "initial" in kwargs.keys():
@@ -122,7 +125,7 @@ class ModelDescriptorForm(Form):
             mycopy.update(initial)
 
             if 'statevector' in mycopy.keys():
-                #sv.varliststring=mycopy["statevector"]
+    
                 subClasses=FluxRepresentation.get_subclasses()
                 subClassNames=[f.__name__ for f in subClasses]
                 field=ChoiceField(
@@ -132,6 +135,26 @@ class ModelDescriptorForm(Form):
                 )
                 self.fields['fluxrepresentation']= field
             
+
+
+            stvFieldKey="statevariable_name"
+            stvNames=[ k  for k in mycopy.keys() if re.match(stvFieldKey+'.*',k)]
+            if len(stvNames)>0:
+                varliststring=mycopy["statevector"]
+                var_names_list=varliststring.split(',')
+                #var_names_set=set(var_names_list)
+                for var_name in var_names_list:
+                    name=CharField(
+                        disabled=True,
+                        required=False,
+                        help_text='The name of the statevariable as used in the state vector'
+                    )
+                    description=CharField(
+                        required=False,
+                        help_text='A short description of the variable.'
+                    )
+                    self.fields['statevariable_name'+var_name]= name 
+                    self.fields['statevariable_desc'+var_name]= description 
             #if 'fluxes' in data.keys():
             #    self.fields['fluxes']=FluxesField()
                 
