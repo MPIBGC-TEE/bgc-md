@@ -42,12 +42,13 @@ def create_symbols_func(symbols, g={}, l={}):
 
 def eval_expressions(expression_list, g, l):
     for expr in expression_list:
-        #pe('expr',locals())
         not_expr = []
         if expr not in not_expr:
             try:
                 exec(expr, g, l)
             except BaseException as e:
+               pe('l',locals())
+               pe('g',locals())
                raise Exception("The expression that could not be evaluated was: " + str(expr) + "\n" + str(e))
 
         

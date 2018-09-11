@@ -9,8 +9,8 @@ from bgc_md.tests.TestReportElements import TestReportElements
 #from bgc_md.tests.TestTsTpField import TestTsTpField
 #from bgc_md.tests.TestTsTpMassFieldsPerPoolPerTimeStep import TestTsTpMassFieldsPerPoolPerTimeStep 
 from bgc_md.tests.TestWriteReportElements import  TestWriteReportElements
-from bgc_md.tests.TestReportGeneration import TestReportGeneration
-from bgc_md.tests.TestCompleteModelList import TestCompleteModelList
+from bgc_md.tests.FailingTestReportGeneration import TestReportGeneration
+#from bgc_md.tests.TestCompleteModelList import TestCompleteModelList
 #from bgc_md.tests.SlowTestReportGeneration import TestReportGeneration
 from bgc_md.tests.Testbibtexc import Testbibtexc
 

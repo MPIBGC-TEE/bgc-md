@@ -48,7 +48,7 @@ model:
             range: "50 - 300" # Initial value 
     - phenology_parameters:
         - t:
-            desc: time step
+            desc: time 
             unit: "day"
             type: variable
             key: time_symbol

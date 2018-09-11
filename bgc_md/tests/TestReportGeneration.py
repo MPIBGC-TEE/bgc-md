@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # vim:set ff=unix expandtab ts=4 sw=4:
-import unittest
+from unittest import skip
 import sys
 from multiprocessing import Pool
 from subprocess import run,CalledProcessError
@@ -16,21 +16,35 @@ import bgc_md.gv as gv
 
 
 class TestReportGeneration(InDirTest):
-    #@unittest.skip
-    def test_report_template_fluxes(self):
-        
+
+
+    def test_flagstaff_templates_commandline(self):
         d=defaults() 
-        sp=d['paths']['tested_records'].joinpath('Fluxes.yaml')
+        sp=d['paths']['data'].joinpath('FlagstaffTemplates')
+        tp=d['paths']['report_templates'].joinpath('single_model','FlagstaffVegetationTemplate.py')
+        rec_list=[ rec  for rec in sp.glob('*.yaml')]#[0:2]
+        for rec in rec_list:
+            #print(rec)
+            run(["render", str(tp.absolute()),"-y",str(rec.absolute()),"-t","."])
+            #m=Model.from_path(rec)
+            #rel=render(tp,model=m)
+#
+        
+    #def test_report_template_fluxes(self):
+    #    
+    #    d=defaults() 
+    #    sp=d['paths']['tested_records'].joinpath('Fluxes.yaml')
 
-        tp=d['paths']['report_templates'].joinpath('single_model','CompleteSingleModelReport.py')
-        model=Model.from_path(sp)
-        pe('model.get_component_keys()')
-        #rel=render(tp,model)
+    #    tp=d['paths']['report_templates'].joinpath('single_model','CompleteSingleModelReport.py')
+    #    model=Model.from_path(sp)
+    #    pe('model.get_component_keys()')
+    #    #rel=render(tp,model)
 
-        #target_dir_path=Path('.').joinpath('html')
-        #target_dir_path.mkdir(parents=True,exist_ok=True)
-        #targetFileName='Report.html'
-        #rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
+    #    #target_dir_path=Path('.').joinpath('html')
+    #    #target_dir_path.mkdir(parents=True,exist_ok=True)
+    #    #targetFileName='Report.html'
+    #    #rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
+
     def test_report_template_single_model(self):
         
         d=defaults() 
@@ -47,32 +61,6 @@ class TestReportGeneration(InDirTest):
         targetFileName='Report.html'
         rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
 
-
-    def test_website_from_template(self):
-        d=defaults() 
-        sp=d['paths']['tested_records'].parent.joinpath('TestModels_1')
-        model_list=ModelList.from_dir_path(sp)
-
-        list_tp=d['paths']['report_templates'].joinpath('multiple_model','Website.py')
-        #rel=render(list_tp,model_list=model_list)
-        rel=render(list_tp,model_list)
-
-        target_dir_path=Path('.')
-        target_dir_path.mkdir(parents=True,exist_ok=True)
-        targetFileName='overview.html'
-        rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
-
-    def test_flagstaff_templates_commandline(self):
-        d=defaults() 
-        sp=d['paths']['data'].joinpath('FlagstaffTemplates')
-        tp=d['paths']['report_templates'].joinpath('single_model','FlagstaffVegetationTemplate.py')
-        rec_list=[ rec  for rec in sp.glob('*.yaml')]#[0:2]
-        for rec in rec_list:
-            #print(rec)
-            run(["render", str(tp.absolute()),"-y",str(rec.absolute()),"-t","."])
-            #m=Model.from_path(rec)
-            #rel=render(tp,model=m)
-#
     def test_create_old_overview_report(self):
         # fixme:
         # The tested method is deprecated and should be replaced by templates as soon as possible.
@@ -98,6 +86,19 @@ class TestReportGeneration(InDirTest):
         create_overview_report(ml,target_dir_path,targetFileName)
         targetPath=target_dir_path.joinpath(targetFileName)
         self.assertTrue(targetPath.exists())
-        
+
+    #def test_website_from_template(self):
+    #    d=defaults() 
+    #    sp=d['paths']['tested_records'].parent.joinpath('TestModels_1')
+    #    model_list=ModelList.from_dir_path(sp)
+
+    #    list_tp=d['paths']['report_templates'].joinpath('multiple_model','Website.py')
+    #    #rel=render(list_tp,model_list=model_list)
+    #    rel=render(list_tp,model_list)
+
+    #    target_dir_path=Path('.')
+    #    target_dir_path.mkdir(parents=True,exist_ok=True)
+    #    targetFileName='overview.html'
+    #    rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
 
 
