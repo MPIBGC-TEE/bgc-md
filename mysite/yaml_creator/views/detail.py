@@ -11,6 +11,7 @@ from ..models.StateVector import StateVector, StateVariable
 from ..models.ComponentScheme    import ComponentScheme   
 from ..models.FluxRepresentation import FluxRepresentation
 from ..models.Fluxes             import Fluxes            
+from ..models.Matrices import Matrices 
 from ..forms import ModelDescriptorForm
 #from ..forms import NameForm
 #from .show_detail_page import show_detail_page
@@ -23,16 +24,21 @@ def formDataFromDatabase(file_name):
     new_rp={}
     try:
         md= ModelDescriptor.objects.get(pk=file_name)
-        print('ModelDescriptor existed already #####')
+        #print('ModelDescriptor existed already #####')
+        
+        new_rp.update({
+            "doi":md.doi,
+            "pub_date":md.pub_date
+            })
         # populate the existing md with the form data
         try:
            # we find out if the model_descriptor contains a componentscheme
             cs=md.componentscheme
-            print('componentschem existed already #####')
+            #print('componentschem existed already #####')
             try:
                 sv=cs.statevector
-                print('statevector existed already #####')
-                new_rp.update({"StateVector":sv})
+                #print('statevector existed already #####')
+                new_rp.update({ModelDescriptorForm.stateVectorKey:sv.varliststring})
                 # to initialize the form for the statevariable descriptions makes only
                 # sense if there are some
                 svs=sv.statevariable_set.all()
@@ -47,21 +53,26 @@ def formDataFromDatabase(file_name):
 
 
                 try:
-                    new_rp['fluxrepresentation']=cs.fluxrepresentation.__class__
+                    new_rp.update({ModelDescriptorForm.fluxRepKey:cs.fluxrepresentation.__class__.__name__})
                 except Exception as e:
+                    print("########################################### e read:")     
+                    print(e)
                     #new_rp['fluxrepresentation']= [c for c in FluxRepresentation.get_subclasses()[0]
-                    new_rp['fluxrepresentation']= "Fluxes"
+                    new_rp.update({ModelDescriptorForm.fluxRepKey:"dreadfull"})
                 
             except StateVector.DoesNotExist as e:
-                print('StateVector did not exist #####')
+                pass
+                #print('StateVector did not exist #####')
         except ComponentScheme.DoesNotExist as e:
-            print('componentscheme did not exist #####')
+            pass
+            #print('componentscheme did not exist #####')
     except ModelDescriptor.DoesNotExist as e:
-        print('ModelDescriptor did not exist #####')
+        pass
+        #print('ModelDescriptor did not exist #####')
     
-    print("###########################################")     
-    print("############# new_rp ##############################")     
-    print(new_rp)
+    #print("###########################################")     
+    #print("############# new_rp ##############################")     
+    #print(new_rp)
     return new_rp
 
 # a helper function that updated the model entry with the clean data
@@ -96,42 +107,73 @@ def updateModelDescriptor(file_name,cd):
         #print('################## componentscheme did not exist #####')
         cs=ComponentScheme.objects.create(model_descriptor=md)
      
-    try:
-        sv=cs.statevector
-        #print('################## statevector existed already #####')
-        sv.varliststring=cd["statevector"]
-       
-       #svs=sv.statevariable_set.all()
-        #initial_svfs=[{'name': var.name} for var in svs]
-        #nf=len(initial_svfs)
-        #StateVariableFormSet=get_StateVariableForms()
-        #erp=deepcopy(rp)
-        ##erp.update({'form-TOTAL_FORMS': nf,'form-INITIAL_FORMS': nf,'form-MAX_NUM_FORMS': '',})
-        #erp.update({'form-TOTAL_FORMS': nf,'form-INITIAL_FORMS': nf})
-        #variableforms=StateVariableFormSet(erp,initial=initial_svfs)
-        #if variableforms.is_valid():
-        #    for sf in variableforms:
-        #        sfcd=sf.cleaned_data
-        #        var=sv.statevariable_set.get(name=sfcd['name'])
-        #        var.description=sfcd['description']
-        #        var.save()
     
+    if ModelDescriptorForm.stateVectorKey in cd.keys():
+        try:
+            sv=cs.statevector
+            #print('################## statevector existed already #####')
+            sv.varliststring=cd[ModelDescriptorForm.stateVectorKey]
+        except StateVector.DoesNotExist as e:
+            #svs=sv.statevariable_set.all()
+            sv=StateVector(componentscheme=cs,varliststring=cd[ModelDescriptorForm.stateVectorKey])
+           
+            svs=sv.statevariable_set.all()
+
+            for var in svs:
+                key=ModelDescriptorForm.stateVarDescKey+var.name
+                if key in cd.keys():
+                    var.description=cd[key]
+                    var.save()
+                #new_rp.update( {
+                #    name_key:var.name ,
+                #    desc_key:var.description
+                #    })
+           #svs=sv.statevariable_set.all()
+            #initial_svfs=[{'name': var.name} for var in svs]
+            #nf=len(initial_svfs)
+            #StateVariableFormSet=get_StateVariableForms()
+            #erp=deepcopy(rp)
+            ##erp.update({'form-TOTAL_FORMS': nf,'form-INITIAL_FORMS': nf,'form-MAX_NUM_FORMS': '',})
+            #erp.update({'form-TOTAL_FORMS': nf,'form-INITIAL_FORMS': nf})
+            #variableforms=StateVariableFormSet(erp,initial=initial_svfs)
+            #if variableforms.is_valid():
+            #    for sf in variableforms:
+            #        sfcd=sf.cleaned_data
+            #        var=sv.statevariable_set.get(name=sfcd['name'])
+            #        var.description=sfcd['description']
+            #        var.save()
         
-    except StateVector.DoesNotExist as e:
-        #svs=sv.statevariable_set.all()
-        sv=StateVector(componentscheme=cs,varliststring=cd["statevector"])
+        
     
     sv.save()
     
-    try:
-        fr=cs.fluxRepresentation
-        # Fluxrepresentation is an abstract class
-        # we can only instatiate one of its subclasses
-        # We find out which one by 
-    except:
-        pass
-    
-        #fr=Fluxrepresentation(componentscheme=cs,varliststring=cd["statevector"])
+    if ModelDescriptorForm.fluxRepKey in cd.keys():
+        try:
+            fr=cs.fluxrepresentation
+            # if we already have a fluxrepresentation we can try to convert it 
+            # but we should not try to create an additional one, 
+            # since a Componentscheme can only have ONE
+            # At the moment we just delete it 
+            fr.delete()
+            
+        except Exception as e:
+            print("########################################### e write:")     
+            print(e)
+            
+        possibleClasses=FluxRepresentation.get_subclassDict()
+        desiredClassName=cd[ModelDescriptorForm.fluxRepKey]
+        if desiredClassName in possibleClasses.keys():
+            desiredClass=possibleClasses[desiredClassName]
+            fr=Matrices(componentscheme=cs)
+            fr.save()
+            #fr=desiredClass()
+            #cs.save()
+            # find out which arguments are required and check
+            # if we can find all of them in the cleaned form data
+            # at the moment we just do not call init 
+
+                
+            
     
 
 def detail(request,file_name):
@@ -222,6 +264,9 @@ def detail(request,file_name):
         # with different fields 
 
 
+        #print("###########################################")     
+        #print("############# rp ##############################")     
+        #print(rp)
         old_form = ModelDescriptorForm(rp)
 
         # check whether it's valid:
@@ -229,6 +274,13 @@ def detail(request,file_name):
             # process the data in form.cleaned_data as required
             # ...
             cd = old_form.cleaned_data
+            #print("###########################################")     
+            #print("############# cd ##############################")     
+            #print(cd)
+            #print("############# old_form.data ##############################")     
+            #print(old_form.data)
+            #print("############# old_form.fields ##############################") 
+            #print(old_form.fields)
             # update the database
             updateModelDescriptor(file_name,cd)
             
