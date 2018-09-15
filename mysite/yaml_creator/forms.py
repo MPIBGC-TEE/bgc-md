@@ -6,6 +6,7 @@ from .models.Fluxes import Fluxes
 from .models.Matrices import Matrices
 from .fields import DOIField ,PUB_DATEField, FluxesField
 from django.forms import URLField , DateField, CharField 
+from .helpers import var_names_from_state_vector_string
 
 
 
@@ -46,7 +47,13 @@ class ModelDescriptorForm(Form):
     stateVarNamePattern=stateVarNameKey+'.*'
     stateVarDescKey=stateVarKey+"_description_"
     stateVarDescPattern=stateVarDescKey+'.*'
+   
 
+    # since Form uses a Django Metaclass that 
+    # recognizes class variables that are instances of Field
+    # we can just list the static fields here. They will
+    # automatically end up in the internal fields property of every
+    # instance.
     #doi = DOIField(
     doi = URLField(
 	initial="http://doi.org/",
@@ -74,7 +81,16 @@ class ModelDescriptorForm(Form):
             "admin/js/core.js", # this is needed for the calendar
             #but somehow not mentioned in the widgets Media class
         ]
-    
+	
+	
+    fluxes= FluxesField(
+        initial='[[{"source":x},{"target":y},{"bla"}],[{"source":y},{"target":z},{"b"}]]',
+	help_text="the target option will change when you change the source",
+	required=False
+    ) 
+
+    # we have to adapt our init method since we want the set of fields to be displayed
+    # depend on the data the instance is initialized with.
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         cls=self.__class__
@@ -90,25 +106,19 @@ class ModelDescriptorForm(Form):
 
         d_keys=mycopy.keys()
         
-        stvNames=[ k.replace(cls.stateVarDescKey,"")  for k in d_keys if re.match(cls.stateVarDescPattern,k)]
+        #stvNames=[ k.replace(cls.stateVarDescKey,"")  for k in d_keys if re.match(cls.stateVarDescPattern,k)]
+        stvNames=cls.present_state_var_names(d_keys)
         #print("##########################################")
         #print('mycopy')
         #print(mycopy)
         #print('stvName')
         #print(stvNames)
         for name in stvNames:
-            nameField=CharField(
-                disabled=True,
-                required=False,
-                help_text='The name of the statevariable as used in the state vector',
-                label="Name"
-            )
             descField=CharField(
                 required=False,
                 help_text='A short description of the variable.',
-                label="Description"
+                label="State variable {0} Description".format(name)
             )
-            self.fields[cls.stateVarNameKey+name]= nameField 
             self.fields[cls.stateVarDescKey+name]= descField
            #if 'fluxes' in data.keys():
            #    self.fields['fluxes']=FluxesField()
@@ -123,10 +133,50 @@ class ModelDescriptorForm(Form):
             )
             self.fields[cls.fluxRepKey]= field
         
+    
+############################################# new (not overloaded) mothods    
+    @ classmethod
+    def descKey(cls,var_name):
+        return cls.stateVarDescKey+var_name
+    @classmethod
+    def present_state_var_names(cls,keys):
+        stvNames=[ k.replace(cls.stateVarDescKey,"")  for k in keys if re.match(cls.stateVarDescPattern,k)]
+        return stvNames
 
+    def extended_instance(self):
+        cls=self.__class__
+        cd=self.cleaned_data 
+        # we add new key:initialValue pairs to the data dict
+        # based on the data already available
+        # The adaptive form class will add the required fields when it receives
+        # this extended data dict
+        ks=cd.keys()
+    
+        k=cls.stateVectorKey
+        if k in ks:
+            varliststring=cd[k]
+            var_names=var_names_from_state_vector_string(varliststring)
+            
+            #now check which of the required fields for the statevariables are already
+            #present
+            pvn=cls.stateVarDescPattern
+            stvNames=[ k.replace(cls.stateVarDescKey,"")  for k in ks if re.match(cls.stateVarDescPattern,k)]
+            StateVector_var_name_set=set(var_names)
+            present_var_name_set=set(stvNames)
 
+            if StateVector_var_name_set!=present_var_name_set:
+                # add description fields for all the variables 
+                # present in the state vector
+                for var_name in StateVector_var_name_set.difference(present_var_name_set):
+                    cd.update({cls.descKey(var_name):None})
                 
-                
+                # delete description fields for all the variables 
+                # NOT present in the state vector
+                for var_name in present_var_name_set.difference(StateVector_var_name_set):
+                    cd.pop(cls.descKey(var_name))
+            k=cls.fluxRepKey
+            if not (k in ks):
+                cd.update({k:None})
 
-
-
+        # we return a new instance
+        return cls(initial=cd),cd

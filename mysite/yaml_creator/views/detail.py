@@ -13,6 +13,7 @@ from ..models.FluxRepresentation import FluxRepresentation
 from ..models.Fluxes             import Fluxes            
 from ..models.Matrices import Matrices 
 from ..forms import ModelDescriptorForm
+from ..helpers import var_names_from_state_vector_string
 #from ..forms import NameForm
 #from .show_detail_page import show_detail_page
 #from .get_StateVariableForms import get_StateVariableForms
@@ -44,10 +45,8 @@ def formDataFromDatabase(file_name):
                 svs=sv.statevariable_set.all()
 
                 for var in svs:
-                    name_key=ModelDescriptorForm.stateVarNameKey+var.name
                     desc_key=ModelDescriptorForm.stateVarDescKey+var.name
                     new_rp.update( {
-                        name_key:var.name ,
                         desc_key:var.description
                         })
 
@@ -175,6 +174,10 @@ def updateModelDescriptor(file_name,cd):
                 
             
     
+        
+    
+    
+
 
 def detail(request,file_name):
     context={
@@ -286,11 +289,13 @@ def detail(request,file_name):
             
             # extend the form by new fields required in the next step
             #new_rp=deepcopy(rp)
-            new_rp=formDataFromDatabase(file_name)
+            #new_rp=formDataFromDatabase(file_name)
+            #new_form = ModelDescriptorForm(initial=new_rp)
+            new_form,new_rp=old_form.extended_instance()
 
-            new_form = ModelDescriptorForm(initial=new_rp)
             context['ModelDescriptorForm'] =new_form
             context['success']=request.POST
+            context['inspect']={"new_rp":new_rp}
         
     
             #context=get_context(file_name)

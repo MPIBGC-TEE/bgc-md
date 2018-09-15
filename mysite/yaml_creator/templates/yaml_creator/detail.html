@@ -18,6 +18,11 @@
 {{ success }}
 {% endif %}
 
+{% if inspect %} 
+<h1>inspection</h1>
+{{ inspect }}
+{% endif %}
+
 {% if ModelDescriptorForm %} 
 <form action="{% url 'detail' file_name %}" method="post">
     {% csrf_token %}
@@ -60,10 +65,10 @@
 	{% endif %}
 	
 
-	<h2>Fluxes </h2>
-
-        {% include "yaml_creator/Fluxes.html" %}	
-    <input type="submit" value="Submit" />
+    <input 
+	type="submit" 
+	value="Submit" 
+    />
 </form>
 {% endif %}
 
