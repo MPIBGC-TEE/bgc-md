@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr" class="no-js">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<body> 
+The purpose of the prototype is to 
+show how to add different addRow methods to different Tables.
+</body> 
+
+<script>
+function main(){
+var tbl = document.createElement('table');
+var thead = document.createElement("thead");
+var tbody = document.createElement("tbody")
+
+var tr_head = document.createElement("tr");
+
+var th_id = document.createElement("th");
+var th_name = document.createElement("th");
+var th_price = document.createElement("th");
+
+th_id.textContent = "Id";
+th_name.textContent = "Name";
+th_price.textContent = "Price";
+
+tr_head.appendChild(th_id);
+tr_head.appendChild(th_name);
+tr_head.appendChild(th_price);
+
+thead.appendChild(tr_head);
+tbl.appendChild(thead);
+
+document.body.append(tbl);	
+
+}
+document.onload=main();
+</script>
