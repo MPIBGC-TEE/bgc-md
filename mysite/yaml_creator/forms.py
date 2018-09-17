@@ -75,21 +75,27 @@ class ModelDescriptorForm(Form):
                 'admin/css/forms.css',
                 'admin/css/base.css',
                 'admin/css/widgets.css',
-                  )
-        }
+                )
+            }
         js=[
-            "admin/js/core.js", # this is needed for the calendar
-            #but somehow not mentioned in the widgets Media class
-        ]
-	
-	
-    fluxes= FluxesField(
-        initial='[[{"source":x},{"target":y},{"bla"}],[{"source":y},{"target":z},{"b"}]]',
-	help_text="the target option will change when you change the source",
-	required=False
-    ) 
+                "admin/js/core.js", # this is needed for the calendar
+                #but somehow not mentioned in the widgets Media class
+                ]
 
-    # we have to adapt our init method since we want the set of fields to be displayed
+#######################################################################
+    fluxes= FluxesField(
+        initial= {
+                "names":["x","y"],
+                "fluxes":[
+                    {"source":"x", "target":"y","expression":"bla"},
+                    {"source":"y", "target":"z","expression":"blub"}
+                ]
+            }
+        ,help_text="the target option will change when you change the source"
+        ,required=False
+        ) 
+
+        # we have to adapt our init method since we want the set of fields to be displayed
     # depend on the data the instance is initialized with.
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)

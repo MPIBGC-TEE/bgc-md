@@ -1,10 +1,9 @@
 <h2>Fluxes</h2>
 
 <!--
-	The   fields at the beginning are actually for communication from django
-	To javascript and back
-<div id="fluxes" value="{{ fluxes }}">	
-<div id="statevector" value="{{ statevector }}">	
+	The following (hidden) input field is used for the communication between 
+	the python widget and the javascript code
+	Both write a JSON string in it
 -->
 <input 
 	type ="{{ widget.type }}" 
@@ -18,7 +17,11 @@
 <p> 
 	tableLengthDemo: <div id="tableLengthDemo"> </div>
 </p> 
-<p> <div id="AddButtonDiv"> </div> </p>
+<p> 
+	<div id="AddButtonDiv"> </div> 
+	<div id="AddInputDiv"> </div> 
+	<div id="AddOutputDiv"> </div> 
+</p>
 <p> <div id="SubmitButtonDiv"> </div> </p>
 
 <script>
@@ -28,15 +31,10 @@
   var select_ids=['ss1','ss2'];
   var div_ids=['targetDiv12','targetDiv22'];
 
-  var add_button = document.createElement("INPUT");
-  add_button.setAttribute("type", "button");
-  add_button.setAttribute("value", "add flux");
-  add_button.setAttribute("onclick","addRow(['x_1','x_2'],1);writeHiddenTextField();");
-  document.getElementById('AddButtonDiv').appendChild(add_button);
 
   //
-  var names=['x_1','x_2','x_3','x_4'];
-  var fluxes=[['x_1','x_2'],['x_2','x_4'],['x_3','x_4'],['x_4','x_1']];
+  //var names=['x_1','x_2','x_3','x_4'];
+  //var fluxes=[['x_1','x_2'],['x_2','x_4'],['x_3','x_4'],['x_4','x_1']];
   //prepare the table for the fluxforms
   var T =document.createElement('TABLE');
   //var T=document.getElementById('FluxTable')
@@ -59,7 +57,7 @@
   
   
  
-  function createSelect(names,selected_value,ind) {
+  function createSelect(names,selected_value) {
       
       var x = document.createElement("SELECT")
       var txt = "";
@@ -120,12 +118,12 @@
   	sd.appendChild(textnode);
   	row.appendChild(sd);
   }
-  function addRow(flux,ind){
+  function addRow(names,flux){
   	reportTableLength();
-  	var s=flux[0];
-  	sf=createSelect(names,s,ind);
+  	var s=flux['source'];
+  	sf=createSelect(names,s);
 	sf.setAttribute("class",sourceClass);
-  	var t=flux[1];
+  	var t=flux['target'];
   	var tf  =document.createTextNode(t);
   	var row =document.createElement("TR");
   	var sd  =document.createElement("TD");
@@ -136,6 +134,7 @@
   	update(sf,td);
   	var exp=document.createElement("INPUT");
 	exp.setAttribute("class",expressionClass);
+	exp.value=flux["expression"];
   	T.appendChild(row);
   	var f=update_maker(sf,td);
   	sf.oninput=function(){
@@ -195,14 +194,49 @@
   }
   function main(){
   	//create the flux selects for the given fluxes
-	var fluxes=readHiddenTextField();
+	
+      	names=arr=getNames();
+      	fluxes=getFluxes();
+	
 	console.log(fluxes);
-  	fluxes.forEach(addRow);
+      	fluxes.forEach(
+		function(flux){
+      			addRow(names,flux);
+		}	
+      	);
   	//document.body.appendChild(T);
   	TD=document.getElementById("TableDiv");
   	TD.appendChild(T);
-	// write to hidden return field
-	writeHiddenTextField()
+
+  	add_button = document.createElement("INPUT");
+  	add_button.setAttribute("type", "button");
+  	add_button.setAttribute("value", "add internal flux");
+  	add_button.onclick=function(){
+		defaultFlux={'source':names[0],'target':names[1],'expression':""};
+		addRow(names,defaultFlux);
+		writeHiddenTextField()
+  	};
+  	document.getElementById('AddButtonDiv').appendChild(add_button);
+	
+  	add_input = document.createElement("INPUT");
+  	add_input.setAttribute("type", "button");
+  	add_input.setAttribute("value", "add influx");
+  	add_input.onclick=function(){
+		defaultFlux={'source':names[0],'target':names[1],'expression':""};
+		addRow(names,defaultFlux);
+		writeHiddenTextField()
+  	};
+  	document.getElementById('AddInputDiv').appendChild(add_input);
+  	
+	add_output = document.createElement("INPUT");
+  	add_output.setAttribute("type", "button");
+  	add_output.setAttribute("value", "add outflux");
+  	add_output.onclick=function(){
+		defaultFlux={'source':names[0],'target':names[1],'expression':""};
+		addRow(names,defaultFlux);
+		writeHiddenTextField()
+  	};
+  	document.getElementById('AddOutputDiv').appendChild(add_output);
   }
   function writeHiddenTextField(){
 	ret=document.getElementById("fluxReturn" );
@@ -212,6 +246,15 @@
 	ret=document.getElementById("fluxReturn" );
 	arr=JSON.parse(ret.value);
 	return arr
+  }
+  function getNames(){
+      arr=readHiddenTextField();
+      return arr['names']
+  }
+
+  function getFluxes(){
+      arr=readHiddenTextField();
+      return arr['fluxes']
   }
   
   document.onload=main();

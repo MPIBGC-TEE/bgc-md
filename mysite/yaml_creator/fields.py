@@ -19,8 +19,8 @@ class FluxesField(Field):
     }
     re_decimal = re.compile(r'\.0*\s*$')
 
-    def __init__(self, *, max_value=None, min_value=None, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
 
         #if max_value is not None:
         #    self.validators.append(validators.MaxValueValidator(max_value))
