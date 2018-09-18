@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en-US" dir="ltr" class="no-js">
-<head prefix="og: http://ogp.me/ns#">
+<html lang="en-US" >
+<head >
   <meta charset="utf-8">
 
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -8,32 +8,140 @@
 The purpose of the prototype is to 
 show how to add different addRow methods to different Tables.
 </body> 
-
+  <div id='AddInternalFluxButtonDiv' ></div>
+  <div id='AddInFluxButtonDiv' ></div>
+  <div id='InternalFluxTableDiv' ></div>
+  <div id='InFluxTableDiv' ></div>
 <script>
-function main(){
-var tbl = document.createElement('table');
-var thead = document.createElement("thead");
-var tbody = document.createElement("tbody")
-
-var tr_head = document.createElement("tr");
-
-var th_id = document.createElement("th");
-var th_name = document.createElement("th");
-var th_price = document.createElement("th");
-
-th_id.textContent = "Id";
-th_name.textContent = "Name";
-th_price.textContent = "Price";
-
-tr_head.appendChild(th_id);
-tr_head.appendChild(th_name);
-tr_head.appendChild(th_price);
-
-thead.appendChild(tr_head);
-tbl.appendChild(thead);
-
-document.body.append(tbl);	
-
-}
-document.onload=main();
-</script>
+  function createInFluxTableWithAddButton(){
+    var tbl = document.createElement('table');
+    var thead = document.createElement("thead");
+    tbl.myBody= document.createElement("tbody")
+    tbl.appendChild(tbl.myBody);
+    
+    var tr_head = document.createElement("tr");
+    
+    var th_id = document.createElement("th");
+    var th_name = document.createElement("th");
+  
+    th_id.textContent = "Source";
+    th_name.textContent = "Target ";
+    
+    tr_head.appendChild(th_id);
+    tr_head.appendChild(th_name);
+    
+    thead.appendChild(tr_head);
+    tbl.appendChild(thead);
+    tbl.addRow=function (){
+    	var source=document.createTextNode('x1');
+    	var target=document.createTextNode('x2');
+    	var row =document.createElement("TR");
+    	var sd  =document.createElement("TD");
+    	sd.appendChild(source);
+    
+    	var bd =document.createElement("TD");
+  	    
+  	  var b= document.createElement("INPUT");
+      b.setAttribute('type','button');
+      b.setAttribute('value','delete flux');
+      var T=this;// we need this local variable in the onclick function of the button
+  	  b.onclick=function() {	
+        row=this.parentElement.parentElement;
+      	index=row.rowIndex;
+        console.log(T);
+        console.log(index);
+      	T.deleteRow(index);
+      };
+  
+      bd.appendChild(b);
+      row.appendChild(sd);
+      row.appendChild(bd);
+      this.myBody.appendChild(row);
+    };
+  	var b= document.createElement("INPUT");
+    b.type='button';
+    b.value='add Influx';
+    b.onclick=function(){
+      tbl.addRow();
+    }
+    tbl.addFluxButton=b;
+    return tbl
+  }
+  function createInternalFluxTableWithAddButton(){
+    var tbl = document.createElement('table');
+    var thead = document.createElement("thead");
+    tbl.myBody= document.createElement("tbody")
+    tbl.appendChild(tbl.myBody);
+    
+    var tr_head = document.createElement("tr");
+    var th_id = document.createElement("th");
+    var th_name = document.createElement("th");
+    var th_price = document.createElement("th");
+  
+    th_id.textContent = "Source";
+    th_name.textContent = "Target ";
+    th_price.textContent = "Expression";
+    
+    tr_head.appendChild(th_id);
+    tr_head.appendChild(th_name);
+    tr_head.appendChild(th_price);
+    
+    thead.appendChild(tr_head);
+    tbl.appendChild(thead);
+    tbl.addRow=function (){
+    	var source=document.createTextNode('x1');
+    	var target=document.createTextNode('x2');
+    	var row =document.createElement("TR");
+    	var sd  =document.createElement("TD");
+    	sd.appendChild(source);
+    	var td =document.createElement("TD");
+    	td.appendChild(target);
+    
+    	var bd =document.createElement("TD");
+  	    
+  	  var b= document.createElement("INPUT");
+      b.setAttribute('type','button');
+      b.setAttribute('value','delete flux');
+      var T=this;// we need this local variable in the onclick function of the button
+  	  b.onclick=function() {	
+        row=this.parentElement.parentElement;
+      	index=row.rowIndex;
+        console.log(T);
+        console.log(index);
+      	T.deleteRow(index);
+      };
+  
+      bd.appendChild(b);
+      row.appendChild(sd);
+      row.appendChild(td);
+      row.appendChild(bd);
+      this.myBody.appendChild(row);
+    };
+    // add a botton to the Table object which does not mean that it is visible
+    // But it can later be displayed wherever we want
+  	var b= document.createElement("INPUT");
+    b.type='button';
+    b.value='add internal Flux';
+    b.onclick=function(){
+      tbl.addRow();
+    }
+    tbl.addFluxButton=b;
+    return tbl
+  }
+  function main(){
+    // input fluxes
+    t1=createInFluxTableWithAddButton(); 
+    d1=document.getElementById("InFluxTableDiv");	
+    b1=document.getElementById("AddInFluxButtonDiv");	
+    d1.appendChild(t1);
+    b1.appendChild(t1.addFluxButton);
+    // internal fluxes
+    t2=createInternalFluxTableWithAddButton(); 
+    d2=document.getElementById("InternalFluxTableDiv");	
+    b2=document.getElementById("AddInternalFluxButtonDiv");	
+    d2.appendChild(t2);
+    b2.appendChild(t2.addFluxButton);
+  };
+  document.onload=main();
+  </script>
+</html>
