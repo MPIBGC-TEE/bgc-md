@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<form id="myForm">
+Select your favorite fruit:
+<select id="mySelect">
+  <option>Apple</option>
+  <option>Orange</option>
+  <option >Pineapple</option>
+  <option>StackOverFlow</option>
+</select>
+</form>
+
+<p>Click the button to return the id of the form the dropdown list belongs to.</p>
+
+<button type="button" onclick="myFunction()">Try it</button>
+
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+    var x = document.getElementById("mySelect").form.id;
+    document.getElementById("demo").innerHTML = x;
+}
+// Get all options within <select id='foo'>...</select>
+var op = document.getElementById("mySelect").getElementsByTagName("option");
+console.log(op);
+for (var i = 0; i < op.length; i++) {
+  // lowercase comparison for case-insensitivity
+  (op[i].value.toLowerCase() == "stackoverflow") 
+    ? op[i].disabled = true 
+    : op[i].disabled = false ;
+}
+</script>
+
+</body>
+</html>
+
