@@ -1,0 +1,111 @@
+<h2>Fluxes</h2>
+
+<!--
+	The following (hidden) input field is used for the communication between 
+	the python widget and the javascript code
+	Both write a JSON string in it
+-->
+
+<!--
+<input 
+	type ="{{ widget.type }}" 
+	id="fluxReturn" 
+	name="{{ widget.name }}"   
+	{% if widget.value != None %} value="{{ widget.value }}"{% endif %}
+	{% include "django/forms/widgets/attrs.html" %}
+>	
+-->
+	
+<p> 
+  <div id="SubmitButtonDiv"> </div> 
+</p>
+<p> 
+  <div id='AddInternalFluxButtonDiv' ></div>
+</p>
+<p> 
+  <div id='AddInFluxButtonDiv' ></div>
+</p>
+<p> 
+  <div id='InternalFluxTableDiv' ></div>
+</p>
+<p> 
+  <div id='InFluxTableDiv' ></div>
+</p>
+
+<script>
+  update_maker=function(sf,tf){
+		var f=function() {
+			update(sf,tf);
+		};
+		return f;
+  };
+  update=function(sf,tf){
+    var si=sf.selectedIndex;
+    var tos=tf.options;
+    var l=tos.length;
+
+    console.log('update si:'+si);
+    //clean up old disablements
+    for (var i = 0; i < l; i++) {
+      tos[i].disabled=false;
+    }
+    //disable the source pool
+    tos[si].disabled=true;
+    if (tf.selectedIndex==si){
+      tf.selectedIndex=(si+1)%l;
+    }
+  }
+  function createSelect(names,selected_value) {
+    var x = document.createElement("SELECT")
+    var i;
+    for (i = 0; i < names.length; i++) {
+  	  var item=names[i];
+      var o = document.createElement("OPTION");
+  	  o.value=item;
+      var t=document.createTextNode(item);
+  	  o.appendChild(t);
+  	  x.appendChild(o);
+    }
+    x.selectedIndex=names.indexOf(selected_value);
+    //x.oninput=writeHiddenTextField;
+    return x;
+  }
+  class FluxField{
+    constructor(names,flux) {
+      var ss=createSelect(names,flux['source']);
+      var ts=createSelect(names,flux['target']);
+      ss.oninput=update_maker(ss,ts);
+      this.sourceSelect=ss;
+      this.targetSelect=ts;
+    }
+    get values(){
+      return {'source':this.sourceSelect.selectedIndex}
+    }
+    set reporter(f){
+        console.log('fake');
+        // call the reporter with the flux as it is at the moment
+     
+    }
+
+  }
+  function readHiddenTextFieldFake(){
+	  ret=document.getElementById("fluxReturn" );
+    arr={'names':['x','y','z'],'fluxes':[{'source':'x','target':'y','expression':'x**3'}]}
+    console.log(arr);
+	  return arr
+  }
+//create the selects for the given flux
+var arr=readHiddenTextFieldFake();
+var names=arr['names']
+var fluxes=arr['fluxes']
+var flux=fluxes[0];
+console.log(flux);
+var d2=document.getElementById("InternalFluxTableDiv");	
+// create a FluxField instance 
+var ds= new FluxField(names,flux);
+ds.update;
+ds.update;
+ds.reporter=function(x){console.log('report'+x)}
+d2.appendChild(ds.sourceSelect);
+d2.appendChild(ds.targetSelect);
+</script>
