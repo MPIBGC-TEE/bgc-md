@@ -85,7 +85,7 @@ class ModelDescriptorForm(Form):
 #######################################################################
     fluxes= FluxesField(
         initial= {
-                "names":["x","y"],
+                "names":["x","y","z"],
                 "fluxes":[
                     {"source":"x", "target":"y","expression":"bla"},
                     {"source":"y", "target":"z","expression":"blub"}
