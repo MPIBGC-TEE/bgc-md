@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<HTML>
+<head>
+    <title>javascript test</title>
+    <script src="FluxFields.js" type="text/javascript"></script>
+</head>
+<h2>Fluxes</h2>
+<body>
+  <!--
+  	The following (hidden) input field is used for the communication between 
+  	the python widget and the javascript code
+  	Both write a JSON string in it
+  -->
+  
+  <input 
+  	type ="{{ widget.type }}" 
+  	id="fluxReturn" 
+  	name="{{ widget.name }}"   
+  	{% if widget.value != None %} value="{{ widget.value }}"{% endif %}
+  	{% include "django/forms/widgets/attrs.html" %}
+  >	
+  	
+  <div id="TableDiv"> </div>
+  <p> 
+  	tableLengthDemo: <div id="tableLengthDemo"> </div>
+  </p> 
+  <p> 
+    <div id="AddButtonDiv"> </div> 
+  </p>
+  <p> 
+    <div id="SubmitButtonDiv"> </div> 
+  </p>
+  <p> 
+    <div id='AddInternalFluxButtonDiv' ></div>
+  </p>
+  <p> 
+    <div id='AddInFluxButtonDiv' ></div>
+  </p>
+  <p> 
+    <div id='InternalFluxTableDiv' ></div>
+  </p>
+  <p> 
+    <div id='InFluxTableDiv' ></div>
+  </p>
+
+</body>
+<script>
+  //var select_ids=['ss1','ss2'];
+  //var div_ids=['targetDiv12','targetDiv22'];
+
+  //var add_button = document.createElement("INPUT");
+  //add_button.setAttribute("type", "button");
+  //add_button.setAttribute("value", "add flux");
+  //add_button.onclick=function(){
+  //  //for testing
+  //  var arr=readHiddenTextField();
+  //  var names=getNames(arr);
+  //  var default_flux={'source':names[0],'target':names[1],'expression':''}
+	//  addRow(names,default_flux);
+	//  writeHiddenTextField();
+  //}
+  //document.getElementById('AddButtonDiv').appendChild(add_button);
+
+  ////
+  //var names=['x_1','x_2','x_3','x_4'];
+  //var fluxes=[['x_1','x_2'],['x_2','x_4'],['x_3','x_4'],['x_4','x_1']];
+  ////prepare the table for the fluxforms
+  //var T =document.createElement('TABLE');
+  ////var T=document.getElementById('FluxTable')
+  //var row =document.createElement("TR");
+	//row.setAttribute('id','table_row_'+(1))
+  //var th1=document.createElement("TH");
+  //th1.appendChild(document.createTextNode("Source"));
+  //
+  //var th2=document.createElement("TH")
+  //th2.appendChild(document.createTextNode("Target"));
+  //
+  //var th3=document.createElement("TH")
+  //th3.appendChild(document.createTextNode("Expression"));
+  //
+  //row.appendChild(th1);
+  //row.appendChild(th2);
+  //row.appendChild(th3);
+  //T.appendChild(row);
+  ////add.style.width="300px"
+  
+  
+ 
+  function createSelect(names,selected_value) {
+    var x = document.createElement("SELECT")
+    var i;
+    for (i = 0; i < names.length; i++) {
+  	  var item=names[i];
+      var o = document.createElement("OPTION");
+  	  o.setAttribute("value",item);
+      var t=document.createTextNode(item);
+  	  o.appendChild(t);
+  	  x.appendChild(o);
+    }
+    x.selectedIndex=names.indexOf(selected_value);
+    x.oninput=writeHiddenTextField;
+    return x;
+  }
+  function update(ids,div_target){
+  	var ts=ids.cloneNode(true);
+	  ts.setAttribute("class",targetClass);
+    ts.oninput=writeHiddenTextField;
+  	var selind=ids.selectedIndex;
+  	console.log("selind:"+selind);
+  	// ts.remove(selind);
+    var os=ts.options;
+    os[selind].disabled=true;
+
+    l=div_target.childNodes.length;
+  	console.log("l:"+l);
+      	//if (l > 0){
+      	    oldf=div_target.childNodes[0]
+            selIndOld=oldf.selectedIndex;
+            if (selIndOld == selind){ 
+              ts.selectedIndex=((selind+1)%l);
+            }else{
+              ts.selectedIndex=selIndOld;
+            }
+      	    div_target.replaceChild(ts,oldf);
+      	//}
+      	//if (l == 0){
+      	//    div_target.appendChild(ts);
+      	//}
+  };
+
+  function update_input_ids_table(T){
+  	for( var i =1; i < T.rows.length; i++ )
+  		{
+			row=T.rows[i];
+			update_input_ids(row,i);
+  		};
+  }
+  function update_input_ids(row,index){
+	var ss= row.getElementsByClassName(sourceClass)[0]; 
+	  ss.setAttribute('id',sourceClass+index);
+	var ei= row.getElementsByClassName(expressionClass)[0]; 
+	  ei.setAttribute('id',expressionClass+index);
+	var ts= row.getElementsByClassName(targetClass)[0]; 
+	  ts.setAttribute('id',targetClass+index);
+  };
+  update_maker=function(sf,td){
+		var f=function() {
+			update(sf,td);
+		};
+		return f;
+  };
+  function add_td(row,textnode){
+    	var sd  =document.createElement("TD");
+  	sd.appendChild(textnode);
+  	row.appendChild(sd);
+  }
+  //function addRow(names,flux){
+  //	var s=flux['source'];
+  //	sf=createSelect(names,s);
+	//  sf.setAttribute("class",sourceClass);
+  //	var t=flux['target'];
+  //	var tf  =document.createTextNode(t);
+  //	var row =document.createElement("TR");
+  //	var sd  =document.createElement("TD");
+  //
+  //	sd.appendChild(sf);
+  //	td =document.createElement("TD");
+  //
+  //	update(sf,td);
+  //	var exp=document.createElement("INPUT");
+	//  exp.setAttribute("class",expressionClass);
+	//  exp.value=flux["expression"];
+  //	T.appendChild(row);
+  //	var f=update_maker(sf,td);
+  //	sf.oninput=function(){
+	//	  f();
+	//	  writeHiddenTextField();
+	//  };
+  //
+  //	bd =document.createElement("TD");
+	//  
+	//  var b= document.createElement("INPUT");
+  //	b.setAttribute('type','button');
+  //	b.setAttribute('value','delete flux');
+	//  b.onclick=function() {	
+  //    index=this.parentElement.parentElement.rowIndex;
+  //    T.deleteRow(index);
+  //    console.log(index);
+  //    update_input_ids_table(T);
+  //    writeHiddenTextField()
+  //  };
+
+  //	bd.appendChild(b);
+  //	row.appendChild(sd);
+  //	row.appendChild(td);
+  //	row.appendChild(exp);
+  //	row.appendChild(bd);
+  //	update_input_ids_table(T);
+  //}
+//  function collectFormsValues(){
+//     //arr=[{source:1}];
+//     arr=[];
+//     for( var i =1; i < T.rows.length; i++ )
+//  		{
+//			  row=T.rows[i];
+//        arr.push( getFlux(row));
+//  		};
+//      return JSON.stringify(arr); 
+//  }
+
+  function getFlux(row){
+	  var source=row.getElementsByClassName(sourceClass)[0].selectedIndex;
+	  var target=row.getElementsByClassName(targetClass)[0].selectedIndex;
+	  var expression=row.getElementsByClassName(expressionClass)[0].selectedIndex;
+    var arr=[
+      {'source':source}
+      ,
+      {'target':target}
+      ,
+      {'expression':expression}
+    ]
+    return arr
+  };
+
+  function getInternalFluxes(arr){
+    var fluxes=arr["fluxes"];
+    console.log(fluxes);
+    return fluxes
+  }
+  function getNames(arr){
+    var names=arr["names"];
+    return names
+  }
+  
+  function createInternalFluxTableWithAddButton(names,fluxes){
+
+    var sourceClass="Source"
+    var expressionClass="Expression"
+    var targetClass="Target"
+    var tbl = document.createElement('table');
+    var thead = document.createElement("thead");
+    tbl.myBody= document.createElement("tbody")
+    tbl.appendChild(tbl.myBody);
+    
+    var tr_head = document.createElement("tr");
+    var th_id = document.createElement("th");
+    var th_name = document.createElement("th");
+    var th_price = document.createElement("th");
+  
+    th_id.textContent = "Source";
+    th_name.textContent = "Target ";
+    th_price.textContent = "Expression";
+    
+    tr_head.appendChild(th_id);
+    tr_head.appendChild(th_name);
+    tr_head.appendChild(th_price);
+    
+    thead.appendChild(tr_head);
+    tbl.appendChild(thead);
+    console.log(names,fluxes);
+    tbl.names=names;
+    tbl.fluxes=fluxes;
+    tbl.default_flux={'source':tbl.names[0],'target':tbl.names[1],'expression':''};
+
+    tbl.collectFormsValues=function(){
+       //arr=[{source:1}];
+       arr=[];
+       for( var i =1; i < this.rows.length; i++ )
+    		{
+	  		  row=this.rows[i];
+          arr.push( getFlux(row));
+    		};
+        return JSON.stringify(arr); 
+    }
+    tbl.addRow = function (names,flux){
+        var T=this;// we need this local variable in the onclick function of the button
+
+      	var row =document.createElement("TR");
+
+      	var s=flux['source'];
+      	sf=createSelect(names,s);
+	      sf.setAttribute("class",sourceClass);
+      	var sd  =document.createElement("TD");
+      	sd.appendChild(sf);
+
+      	//var tf  =document.createTextNode(t);
+      
+      	var tf=createSelect(names,flux['target']);
+	      tf.setAttribute("class",targetClass);
+      	td =document.createElement("TD");
+      	td.appendChild(tf);
+      
+      	update(sf,td); // this is necessary to disable the field chosen in the
+      // source in the target
+      	var exp=document.createElement("INPUT");
+	      exp.setAttribute("class",expressionClass);
+	      exp.value=flux["expression"];
+      	T.appendChild(row);
+      	var f=update_maker(sf,td);
+      	sf.oninput=function(){
+	    	  f();
+	    	  writeHiddenTextField();
+	      };
+  	    bd =document.createElement("TD");
+	      
+	      var b= document.createElement("INPUT");
+  	    b.setAttribute('type','button');
+  	    b.setAttribute('value','delete flux');
+	      b.onclick=function() {	
+          index=this.parentElement.parentElement.rowIndex;
+          T.deleteRow(index);
+          console.log(index);
+          update_input_ids_table(T);
+          writeHiddenTextField()
+        };
+
+  	    bd.appendChild(b);
+  	    row.appendChild(sd);
+  	    row.appendChild(td);
+  	    row.appendChild(exp);
+  	    row.appendChild(bd);
+  	    update_input_ids_table(T);
+    };
+    
+    // add a botton to the Table object which does not mean that it is visible
+    // But it can later be displayed wherever we want
+    var b= document.createElement("INPUT");
+    b.type='button';
+    b.value='add internal Flux';
+    b.onclick=function(){
+      tbl.addRow(names,tbl.default_flux);
+    };
+    tbl.addFluxButton=b;
+    return tbl
+  };
+
+  // To do:
+  // - Use this instead of T everywhere we can.
+  // - get rid of the global variables
+
+  // define global variables
+  var sourceClass="Source"
+  var expressionClass="Expression"
+  var targetClass="Target"
+  var arr=readHiddenTextFieldFake();
+  var fluxes=getInternalFluxes(arr);
+  var names=getNames(arr);
+  var t2=createInternalFluxTableWithAddButton(names,fluxes); 
+  // functions with side effects using global vars
+  function writeHiddenTextField(){
+	  ret=document.getElementById("fluxReturn" );
+	  ret.value=t2.collectFormsValues();	
+  }
+  function readHiddenTextFieldFake(){
+    ret=document.getElementById("fluxReturn" );
+    arr={'names':['x','y','z'],'fluxes':[{'source':'x','target':'y','expression':'x**3'}]}
+    console.log(arr);
+    return arr
+  }
+  function readHiddenTextField(){
+	  ret=document.getElementById("fluxReturn" );
+	  arr=JSON.parse(ret.value);
+    console.log(arr);
+	  return arr
+  }
+  function main(){
+    //create the flux selects for the given fluxes
+
+    // internal fluxes
+	  console.log(fluxes);
+    fluxes.forEach(
+      function(flux){
+    	  t2.addRow(names,flux);
+      }
+    );
+    d2=document.getElementById("InternalFluxTableDiv");	
+    b2=document.getElementById("AddInternalFluxButtonDiv");	
+    d2.appendChild(t2);
+    b2.appendChild(t2.addFluxButton);
+  }
+  document.onload=main();
+</script>
