@@ -86,10 +86,18 @@ class ModelDescriptorForm(Form):
     fluxes= FluxesField(
         initial= {
                 "names":["x","y","z"],
-                "fluxes":[
+                "in_fluxes":[
+                    {"target":"y","expression":"in "},
+                    {"target":"z","expression":"in"}
+                ],
+                "internal_fluxes":[
                     {"source":"x", "target":"y","expression":"bla"},
                     {"source":"y", "target":"z","expression":"blub"}
-                ]
+                ],
+                "out_fluxes":[
+                    {"source":"x","expression":"out"},
+                    {"source":"y","expression":"out"}
+                ],
             }
         ,help_text="the target option will change when you change the source"
         ,required=False
