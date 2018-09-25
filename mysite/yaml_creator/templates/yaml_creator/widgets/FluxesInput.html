@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <title>javascript test</title>
   <!--
-  <script src="FluxFields.js" type="text/javascript"></script>
   -->
+  <script src="../../../static/yaml_creator/js/FluxFields.js" type="text/javascript"></script>
 </head>
 <h2>Fluxes</h2>
 <body>
@@ -15,18 +15,19 @@
   	Both write a JSON string in it
   
   <input 
-  	id="fluxReturn", 
-    value='{"names":["x","y","z"],"internal_fluxes":[{"source":"x","target":"y","expression":"x**3"}]}'
-  >	
-  -->
-  <input 
   	type ="{{ widget.type }}" 
   	id="fluxReturn" 
   	name="{{ widget.name }}"   
   	{% if widget.value != None %} value="{{ widget.value }}"{% endif %}
   	{% include "django/forms/widgets/attrs.html" %}
   >	
+  -->
   	
+  <input 
+  	id="fluxReturn", 
+    value='{"names":["x","y","z"],"internal_fluxes":[{"source":"x","target":"y","expression":"x**3"}]}'
+  >	
+
   <div id="TableDiv"> </div>
   <p> 
   	tableLengthDemo: <div id="tableLengthDemo"> </div>
@@ -92,15 +93,25 @@ class FluxTable{
     ed.appendChild(ff.expression);
 
     var bd = row.insertCell(3);
-    var b= document.createElement("INPUT");
-    b.setAttribute('type','button');
-    b.setAttribute('value','delete flux');
-    var f=this.delFuncMaker(tbody,b);
-    b.onclick=f;
-    // store a reference to the Button in the row 
-    row.deleteButton=b;
-  	bd.appendChild(b);
-  	//     update_input_ids_table(T);
+
+    //update ALL delete buttons in the tbody
+    //this avoids a problem with the binding 
+    //Since the tbody object changes the references in
+    //the onclick functions of thedelete buttons seem to get 
+    //invalidated and funny things start to happen  
+    for (let row of tbody.rows){
+      row.deleteCell[3];
+      var b= document.createElement("INPUT");
+      b.setAttribute('type','button');
+      b.setAttribute('value','delete flux');
+      var f=this.delFuncMaker(tbody,b);
+      b.onclick=f;
+      // store a reference to the Button in the row 
+      bd=row.cells[3]
+  	  bd.appendChild(b);
+  	  //     update_input_ids_table(T);
+      row.deleteButton=b;
+    }
     return tbody;
   };
 
