@@ -36,6 +36,47 @@ class FluxField{
   }
 
 }
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+class OutFluxField{
+  constructor(names,flux){
+    var ss=FluxField.createSelect(names,flux['target']);
+    var exp=document.createElement("INPUT");
+    //exp.setAttribute("class",expressionClass);
+    exp.value=flux["expression"];
+    this.names=names;
+    this.select1=ss;
+    this.expression=exp;
+  }
+
+  //class method  
+  static createSelect(names,selected_value) {
+    var x = document.createElement("SELECT")
+    var i;
+    for (i = 0; i < names.length; i++) {
+  	  var item=names[i];
+      var o = document.createElement("OPTION");
+  	  o.value=item;
+      var t=document.createTextNode(item);
+  	  o.appendChild(t);
+  	  x.appendChild(o);
+    }
+    x.selectedIndex=names.indexOf(selected_value);
+    return x;
+  }
+
+  //instance setter method  
+  set onchange(func){
+      this.select1.onchange=func;
+      this.expression.onchange=func;
+      // call the reporter with the flux as it is at the moment
+   
+  }
+}
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
 class InternalFluxField extends FluxField{
   static update(sf,tf){
     // given two select fields update the possible and selected value

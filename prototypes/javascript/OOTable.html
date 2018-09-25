@@ -32,8 +32,8 @@
     tbl.appendChild(thead);
 
     var T=this;// we need this local variable in the onclick function of the button
-    this.addRow=function (flux){
-    	var row =descriptor.template_row(flux);
+    this.addRow=function (names,flux){
+    	var row =descriptor.template_row(names,flux);
     	var bd  =document.createElement("TD");
   	  var b= document.createElement("INPUT");
       b.setAttribute('type','button');
