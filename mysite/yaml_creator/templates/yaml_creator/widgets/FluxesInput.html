@@ -4,28 +4,28 @@
   <meta charset="utf-8">
   <title>javascript test</title>
   <!--
-  -->
   <script src="../../../static/yaml_creator/js/FluxFields.js" type="text/javascript"></script>
+  -->
 </head>
 <h2>Fluxes</h2>
 <body>
   <!--
+  <input 
+  	type ="{{ widget.type }}" 
+  	id="fluxReturn", 
+    value='{"names":["x","y","z"],"internal_fluxes":[{"source":"x","target":"y","expression":"x**3"}]}'
+  >	
   	The following (hidden) input field is used for the communication between 
   	the python widget and the javascript code
   	Both write a JSON string in it
   
+  -->
+  	
   <input 
-  	type ="{{ widget.type }}" 
   	id="fluxReturn" 
   	name="{{ widget.name }}"   
   	{% if widget.value != None %} value="{{ widget.value }}"{% endif %}
   	{% include "django/forms/widgets/attrs.html" %}
-  >	
-  -->
-  	
-  <input 
-  	id="fluxReturn", 
-    value='{"names":["x","y","z"],"internal_fluxes":[{"source":"x","target":"y","expression":"x**3"}]}'
   >	
 
   <div id="TableDiv"> </div>
@@ -71,22 +71,19 @@
     this.fluxes=fluxes;
     this.names=names;
     var tbl = document.createElement('table');
-    thead = document.createElement("thead");
-    myBody= document.createElement("tbody")
+    var thead = document.createElement("thead");
 
+    var myBody= document.createElement("tbody")
     tbl.appendChild(myBody);
     this.table=tbl;
     this.myBody=myBody;
-    this.thead=thead;
     
     thead.appendChild(descriptor.tr_head());
     tbl.appendChild(thead);
 
     var T=this;// we need this local variable in the onclick function of the button
     T.addRow=function (flux){
-      console.log(flux)
     	var row =descriptor.template_row(T.names,flux);
-      console.log("mm")
     	var bd  =document.createElement("TD");
   	  var b= document.createElement("INPUT");
       b.setAttribute('type','button');
@@ -96,7 +93,6 @@
       	index=row.rowIndex;
       	T.table.deleteRow(index);
         descriptor.onchange();
-        console.log(index);
       };
   
       bd.appendChild(b);
@@ -115,44 +111,64 @@
       descriptor.onchange();
     }
     this.button=b;
+    
+    //////////////////////////
     this.value=function(){
-      var tbody=this.table.tBodies[0];
-      //console.log(tbody);
-      console.log(tbody.rows);
       var arr=[];
-      
-      for (let row of tbody.rows) {
-          var cells=row.cells;
-          var txtn=cells[0].childNodes[0]
-          console.log(txtn);
-        arr.push({source:txtn});
+      for (let row of this.myBody.rows) {
+          var ff=row.ff;
+          arr.push(ff.value);
   	  }
-      console.log(arr);
       return arr;
     }
 
   }
-  var arr={
-    'names':['x','y','z'],
-    'internal_fluxes':[
-      {'source':'x','target':'y','expression':'x**3'},
-      {'source':'y','target':'z','expression':'x**4'}
-    ],
-    'in_fluxes':[
-      {'target':'x','expression':'x**2'},
-      {'target':'y','expression':'x**3'},
-      {'target':'z','expression':'x**4'}
-    ],
-    'out_fluxes':[
-      {'source':'y','expression':'x**3'},
-      {'source':'z','expression':'x**4'}
-    ]
+  //var arr={
+  //  'names':['x','y','z'],
+  //  'internal_fluxes':[
+  //    {'source':'x','target':'y','expression':'x**3'},
+  //    {'source':'y','target':'z','expression':'x**4'}
+  //  ],
+  //  'in_fluxes':[
+  //    {'target':'x','expression':'x**2'},
+  //    {'target':'y','expression':'x**3'},
+  //    {'target':'z','expression':'x**4'}
+  //  ],
+  //  'out_fluxes':[
+  //    {'source':'y','expression':'x**3'},
+  //    {'source':'z','expression':'x**4'}
+  //  ]
+  //}
+  arr=readHiddenTextField();
+  function readHiddenTextField(){
+    hf=document.getElementById('fluxReturn');
+    return JSON.parse(hf.value);
+  }
+  function writeHiddenTextField(arr){
+    console.log(arr);
+    hf=document.getElementById('fluxReturn');
+    hf.value=JSON.stringify(arr); 
+  }
+  function report_t1(){
+    arr=readHiddenTextField();
+    arr.in_fluxes=t1.value();
+    writeHiddenTextField(arr);
+  }
+  function report_t2(){
+    arr=readHiddenTextField();
+    arr.internal_fluxes=t2.value();
+    writeHiddenTextField(arr);
+  }
+  function report_t3(){
+    arr=readHiddenTextField();
+    arr.out_fluxes=t3.value();
+    writeHiddenTextField(arr);
   }
   function main(){
     // input fluxes
     d_in={
       default_flux:function(names,fluxes){
-        return {'target':names[0]}
+        return {'target':names[0],'expression':names[0]}
       },
       tr_head:function(){
         var tr_head = document.createElement("tr");
@@ -171,22 +187,18 @@
     	  var row =document.createElement("TR");
     	  var td  =document.createElement("TD");
     	  var ed  =document.createElement("TD");
-        var ff=new OutFluxField(names,flux);
+        var ff=new InFluxField(names,flux);
+        ff.onchange=report_t1;
+        //create a reference in each row to its 
+        //FluxForm instance
+        row.ff=ff;
     	  td.appendChild(ff.select1);
     	  ed.appendChild(ff.expression);
         row.appendChild(td);
         row.appendChild(ed);
         return row
       },
-      onchange: function (){
-          //fake the array at the moment
-          //arr=readHiddenTextField();
-          arr.internal_fluxes=t1.value();
-          console.log(arr);
-          //s=JSON.stringify(arr); 
-          //ret.value=s;
-          //console.log(ret.value);
-      },
+      onchange: report_t1, 
       buttonLabel:"add influx"
     }
     t1=new TableWithAddButton(arr.names,arr.in_fluxes,d_in); 
@@ -199,7 +211,7 @@
     // internal fluxes
     d_internal={
       default_flux:function(names,fluxes){
-        return {'source':names[0],'target':names[1]}
+        return {'source':names[0],'target':names[1],'expression':names[0]}
       },
       tr_head:function(){
         var tr_head = document.createElement("tr");
@@ -209,9 +221,11 @@
         var th_expression = document.createElement("th");
   
         th_source.textContent = "Source";
+        th_target.textContent = "Target";
         th_expression.textContent = "Expression";
         
         tr_head.appendChild(th_source);
+        tr_head.appendChild(th_target);
         tr_head.appendChild(th_expression);
         return tr_head;
       },
@@ -221,6 +235,10 @@
     	  var td  =document.createElement("TD");
     	  var ed  =document.createElement("TD");
         var ff=new InternalFluxField(names,flux);
+        ff.onchange=report_t2;
+        //create a reference in each row to its 
+        //FluxForm instande
+        row.ff=ff;
     	  sd.appendChild(ff.select1);
     	  td.appendChild(ff.select2);
     	  ed.appendChild(ff.expression);
@@ -229,15 +247,7 @@
         row.appendChild(ed);
         return row
       },
-      onchange: function (){
-          //fake the array at the moment
-          //arr=readHiddenTextField();
-          arr.internal_fluxes=t2.value();
-          console.log(arr);
-          //s=JSON.stringify(arr); 
-          //ret.value=s;
-          //console.log(ret.value);
-      }, 
+      onchange: report_t2, 
       buttonLabel:"add internal flux"
     }
     t2=new TableWithAddButton(arr.names,arr.internal_fluxes,d_internal); 
@@ -247,7 +257,7 @@
     b2.appendChild(t2.button);
     d_out={
       default_flux:function(names,fluxes){
-        return {'target':names[0]}
+        return {'source':names[0],'expression':names[0]};
       },
       tr_head:function(){
         var tr_head = document.createElement("tr");
@@ -267,21 +277,17 @@
     	  var td  =document.createElement("TD");
     	  var ed  =document.createElement("TD");
         var ff=new OutFluxField(names,flux);
+        ff.onchange=report_t3;
+        //create a reference in each row to its 
+        //FluxForm instande
+        row.ff=ff;
     	  td.appendChild(ff.select1);
     	  ed.appendChild(ff.expression);
         row.appendChild(td);
         row.appendChild(ed);
         return row
       },
-      onchange: function (){
-          //fake the array at the moment
-          //arr=readHiddenTextField();
-          arr.internal_fluxes=t1.value();
-          console.log(arr);
-          //s=JSON.stringify(arr); 
-          //ret.value=s;
-          //console.log(ret.value);
-      },
+      onchange:report_t3,
       buttonLabel:"add outflux"
     }
     t3=new TableWithAddButton(arr.names,arr.out_fluxes,d_out); 
