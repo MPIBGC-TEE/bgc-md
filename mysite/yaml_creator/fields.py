@@ -1,6 +1,7 @@
 from django.forms import Field,URLField ,DateField
 from django.contrib.admin.widgets import AdminDateWidget
 from .widgets import FluxesInput
+import json
 import re
 
 class DOIField(URLField):
@@ -32,6 +33,7 @@ class FluxesField(Field):
         """
         print("########## value")
         print(value)
+
         #value = super().to_python(value)
         #fake values
         #value= [
@@ -40,7 +42,7 @@ class FluxesField(Field):
 		#	[{"source":2},{"target":0},{}],
 		#	[{"source":3},{"target":0},{}]
         #]
-        return value
+        return json.loads(value)
 
     def widget_attrs(self, widget):
         attrs = super().widget_attrs(widget)

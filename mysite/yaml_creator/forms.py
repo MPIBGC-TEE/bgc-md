@@ -38,7 +38,7 @@ class ModelDescriptorForm(Form):
     # We choose the simplest approach and define our own init method to 
     # listen to the data we recieve.
     # We use the fact that the fields are implemented as a dictionary
-    
+    fluxesKey='fluxes'
     fluxRepKey='fluxrepresentation'
     stateVectorKey="statevector"
     
@@ -83,28 +83,28 @@ class ModelDescriptorForm(Form):
                 ]
 
 #######################################################################
-    fluxes= FluxesField(
-        initial= {
-                "names":["x","y","z"],
-                "in_fluxes":[
-                    {"target":"y","expression":"in "},
-                    {"target":"z","expression":"in"}
-                ],
-                "internal_fluxes":[
-                    {"source":"x", "target":"y","expression":"bla"},
-                    {"source":"y", "target":"z","expression":"blub"}
-                ],
-                "out_fluxes":[
-                    {"source":"x","expression":"out"},
-                    {"source":"y","expression":"out"}
-                ],
-            }
-        ,help_text="the target option will change when you change the source"
-        ,required=False
-        ) 
+    #fluxes= FluxesField(
+    #    initial= {
+    #            "names":["x","y","z"],
+    #            "in_fluxes":[
+    #                {"target":"y","expression":"in "},
+    #                {"target":"z","expression":"in"}
+    #            ],
+    #            "internal_fluxes":[
+    #                {"source":"x", "target":"y","expression":"bla"},
+    #                {"source":"y", "target":"z","expression":"blub"}
+    #            ],
+    #            "out_fluxes":[
+    #                {"source":"x","expression":"out"},
+    #                {"source":"y","expression":"out"}
+    #            ],
+    #        }
+    #    ,help_text="the target option will change when you change the source"
+    #    ,required=False
+    #    ) 
 
         # we have to adapt our init method since we want the set of fields to be displayed
-    # depend on the data the instance is initialized with.
+    # to depend on the data the instance is initialized with.
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         cls=self.__class__
@@ -134,8 +134,6 @@ class ModelDescriptorForm(Form):
                 label="State variable {0} Description".format(name)
             )
             self.fields[cls.stateVarDescKey+name]= descField
-           #if 'fluxes' in data.keys():
-           #    self.fields['fluxes']=FluxesField()
 
         if cls.fluxRepKey in d_keys:
             subClassDict=FluxRepresentation.get_subclassDict()
@@ -146,6 +144,28 @@ class ModelDescriptorForm(Form):
                     required=False
             )
             self.fields[cls.fluxRepKey]= field
+
+        if cls.fluxesKey in d_keys:
+            self.fields[cls.fluxesKey]= FluxesField(
+                initial= {
+                        "names":["x","y","z"],
+                        "in_fluxes":[
+                            {"target":"y","expression":"in "},
+                            {"target":"z","expression":"in"}
+                        ],
+                        "internal_fluxes":[
+                            {"source":"x", "target":"y","expression":"bla"},
+                            {"source":"y", "target":"z","expression":"blub"}
+                        ],
+                        "out_fluxes":[
+                            {"source":"x","expression":"out"},
+                            {"source":"y","expression":"out"}
+                        ],
+                    }
+                ,help_text="the target option will change when you change the source"
+                ,required=False
+                ) 
+    
         
     
 ############################################# new (not overloaded) mothods    

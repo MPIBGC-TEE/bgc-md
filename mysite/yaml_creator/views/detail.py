@@ -14,10 +14,82 @@ from ..models.Fluxes             import Fluxes
 from ..models.Matrices import Matrices 
 from ..forms import ModelDescriptorForm
 from ..helpers import var_names_from_state_vector_string
+from ..config import dataDir,defaultYamlFileName
+import os
+from pathlib import Path
+from yaml import dump,load
+
 #from ..forms import NameForm
 #from .show_detail_page import show_detail_page
 #from .get_StateVariableForms import get_StateVariableForms
 #from .get_context import get_context 
+
+def formDataFromYamlFile(file_name):
+    ## before we know which fields our form needs we have to find out 
+    ## what data are already present in the YamlFile
+    p=Path(dataDir).joinpath(file_name)
+    if p.exists():
+        dp=p.joinpath(defaultYamlFileName)
+        with dp.open("r") as f:
+            new_rp=load(f.read())
+    else:
+        # otherwise we provide some sensible defaults
+        new_rp={}
+        new_rp.update({
+            "doi":"http://doi.org",
+            "pub_date":"2018-09-27"
+        })
+            # populate the existing md with the form data
+                    #print('statevector existed already #####')
+        
+        svs=[
+            {'name':'z','description':'blub','position':2},
+            {'name':'x','description':'bli','position':0},
+            {'name':'y','description':'bla','position':1}
+        ]
+        
+        pi={sv["position"]:sv for sv in svs }
+        svs_sorted=[pi[k] for k in range(len(svs))]
+        sv_names=[sv['name'] for sv in svs_sorted]
+        sv_string=",".join(sv_names)
+        new_rp.update({ModelDescriptorForm.stateVectorKey:sv_string})
+
+
+        for var in svs:
+            desc_key=ModelDescriptorForm.stateVarDescKey+var["name"]
+            new_rp.update( {
+                desc_key:var["description"]
+                })
+
+
+        
+        new_rp.update({ModelDescriptorForm.fluxRepKey:"Fluxes"})
+        new_rp.update(
+            {
+                ModelDescriptorForm.fluxesKey:{
+                    "names":sv_names
+                    ,
+                    "in_fluxes":[
+                        {"target":"y","expression":"x**2"},
+                        {"target":"z","expression":"y**2"}
+                    ]
+                    ,
+                    "internal_fluxes":[
+                        {"source":"x", "target":"y","expression":"x"},
+                        {"source":"y", "target":"z","expression":"y"}
+                    ]
+                    ,
+                    "out_fluxes":[
+                        {"source":"x","expression":"0.5*x"},
+                        {"source":"y","expression":"0.3*y"}
+                    ]
+                }
+            }
+        )
+    
+    return new_rp
+
+
 
 def formDataFromDatabase(file_name):
     ## before we know which fields our form needs we have to find out 
@@ -74,7 +146,18 @@ def formDataFromDatabase(file_name):
     #print(new_rp)
     return new_rp
 
-# a helper function that updated the model entry with the clean data
+def updateYamlFile(file_name,cd):
+    print(os.getcwd())
+    p=Path(dataDir).joinpath(file_name)
+    if not p.exists():
+        p.mkdir(parents=True)
+
+    dp=p.joinpath(defaultYamlFileName)
+    with dp.open("w") as f:
+        f.write(dump(cd))
+
+    
+# a helper function that updated the model entry in thd database with the clean data
 def updateModelDescriptor(file_name,cd):
     try:
         md= ModelDescriptor.objects.get(pk=file_name)
@@ -286,6 +369,7 @@ def detail(request,file_name):
             #print(old_form.fields)
             # update the database
             updateModelDescriptor(file_name,cd)
+            updateYamlFile(file_name,cd)
             
             # extend the form by new fields required in the next step
             #new_rp=deepcopy(rp)
@@ -333,7 +417,8 @@ def detail(request,file_name):
         print("############# called without request #############################")
         #context=get_context(file_name)
         context={ 'file_name'      : file_name}
-        new_rp=formDataFromDatabase(file_name)
+        #new_rp=formDataFromDatabase(file_name)
+        new_rp=formDataFromYamlFile(file_name)
 
         #new_form = ModelDescriptorForm()
         new_form = ModelDescriptorForm(initial=new_rp)
