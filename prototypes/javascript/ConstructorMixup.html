@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-US" >
+<head >
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<body> 
+  The purpose of the prototype is to 
+  show how to accidentally mix up variables not properly saved in the instance 
+  The first botton accidentally changes the second line text field
+  <h1> Wrong Constructor</h1>
+  <div id='A1' ></div>
+  <div id='A2' ></div>
+  
+  <h1> Right Constructor</h1>
+  <div id='B1' ></div>
+  <div id='B2' ></div>
+</body> 
+<script>
+
+  //wrong constructor myBody is not saved in the instance 
+  function A(fluxes){
+    this.fluxes=fluxes;
+    var myBody=document.createTextNode('blah');
+    this.text=myBody;
+    T=this;
+  	var b= document.createElement("INPUT");
+    b.type='button';
+    b.value='add Influx';
+    b.onclick=function(){
+      myBody.textContent=fluxes[0].expression;
+    }
+    this.button=b;
+  }
+
+  //correct constructor myBody is saved in the instance 
+  function B(fluxes){
+    this.fluxes=fluxes;
+    var bd=document.createTextNode('blah');
+    this.bd=bd;
+    T=this;
+  	var b= document.createElement("INPUT");
+    b.type='button';
+    b.value='add Influx';
+    b.onclick=function(){
+      T.bd.textContent=fluxes[0].expression;
+    }
+    this.button=b;
+    this.text=bd;
+  }
+  var arr={
+    'names':['x','y','z'],
+    'internal_fluxes':[
+      {'source':'x','target':'y','expression':'x**3'},
+      {'source':'y','target':'z','expression':'x**4'}
+    ],
+    'in_fluxes':[
+      {'target':'x','expression':'x**2'},
+      {'target':'y','expression':'x**3'},
+      {'target':'z','expression':'x**4'}
+    ],
+    'out_fluxes':[
+      {'source':'y','expression':'x**3'},
+      {'source':'z','expression':'x**4'}
+    ]
+  }
+  var a1=new A(arr.in_fluxes); 
+  var ad1=document.getElementById("A1");	
+  ad1.appendChild(a1.text);
+  ad1.appendChild(a1.button);
+// second line
+  var a2=new A(arr.internal_fluxes); 
+  var ad2=document.getElementById("A2");	
+  ad2.appendChild(a2.text);
+  ad2.appendChild(a2.button);
+
+  var b1=new B(arr.names,arr.in_fluxes); 
+  var bd1=document.getElementById("B1");	
+  bd1.appendChild(b1.text);
+  bd1.appendChild(b1.button);
+// second line
+  var b2=new B(arr.names,arr.internal_fluxes); 
+  var d2=document.getElementById("B2");	
+  d2.appendChild(b2.text);
+  d2.appendChild(b2.button);
+  </script>
+</html>
