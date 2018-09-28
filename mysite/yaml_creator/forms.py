@@ -7,15 +7,18 @@ from .models.Matrices import Matrices
 from .fields import DOIField ,PUB_DATEField, FluxesField
 from django.forms import URLField , DateField, CharField 
 from .helpers import var_names_from_state_vector_string
+from datetime import datetime
+import json
 
 
 
 class ModelDescriptorForm(Form):
     # Usually  a form is described by a static class definition.
-    # This form is different from most predefined forms since it can actually
+    # This form is different from predefined forms since it can actually
     # add fields dynamically depending on the data in the database or request.
 
-    # E.g. Statevariable descriptions do not make sense if the statevector has not been defined yet (an hence the names of the statevariables are not known)
+    # E.g. Statevariable descriptions do not make sense if the statevector has not been defined yet 
+    # (an hence the names of the statevariables are not known)
     # The fluxes field does not make sense if the component scheme is set to matrix...
 
     # There are various possibilities to deal with this situation. 
@@ -23,18 +26,11 @@ class ModelDescriptorForm(Form):
     # or djangos formsets for repeated subforms.
 
     # There is however only ONE HTML form in our template 
-    # (since we want ONE submit button for the form)
+    # (since we want only ONE submit button for the form)
     # Therefore the most transparent solution is to reflect this fact on the
     # python side by one Form Class with a dynamic set of fields.\
 
     # Again there are different ways to achieve this 
-    # - MetaClasses
-    #
-    # - a Class factory function (using pythons type builtin that returns 
-    #   a tailormade class with the necessary fields added.
-    #
-    # - an overloaded __init__ method 
-    #
     # We choose the simplest approach and define our own init method to 
     # listen to the data we recieve.
     # We use the fact that the fields are implemented as a dictionary
@@ -62,7 +58,7 @@ class ModelDescriptorForm(Form):
         help_text='The dio of the original publication. It will be used to download bibliographic information including the abstract. If you provide this information yourself it will be used instead.', 
     )
     pub_date = PUB_DATEField(
-    #pub_date = DateField(
+	    initial=datetime.now(),
         help_text='The date when this record was first created.'
     )
 
@@ -82,28 +78,8 @@ class ModelDescriptorForm(Form):
                 #but somehow not mentioned in the widgets Media class
                 ]
 
-#######################################################################
-    #fluxes= FluxesField(
-    #    initial= {
-    #            "names":["x","y","z"],
-    #            "in_fluxes":[
-    #                {"target":"y","expression":"in "},
-    #                {"target":"z","expression":"in"}
-    #            ],
-    #            "internal_fluxes":[
-    #                {"source":"x", "target":"y","expression":"bla"},
-    #                {"source":"y", "target":"z","expression":"blub"}
-    #            ],
-    #            "out_fluxes":[
-    #                {"source":"x","expression":"out"},
-    #                {"source":"y","expression":"out"}
-    #            ],
-    #        }
-    #    ,help_text="the target option will change when you change the source"
-    #    ,required=False
-    #    ) 
-
-        # we have to adapt our init method since we want the set of fields to be displayed
+    #######################################################################
+    # we have to adapt our init method since we want the set of fields to be displayed
     # to depend on the data the instance is initialized with.
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -144,27 +120,38 @@ class ModelDescriptorForm(Form):
                     required=False
             )
             self.fields[cls.fluxRepKey]= field
-
-        if cls.fluxesKey in d_keys:
             self.fields[cls.fluxesKey]= FluxesField(
-                initial= {
-                        "names":["x","y","z"],
-                        "in_fluxes":[
-                            {"target":"y","expression":"in "},
-                            {"target":"z","expression":"in"}
-                        ],
-                        "internal_fluxes":[
-                            {"source":"x", "target":"y","expression":"bla"},
-                            {"source":"y", "target":"z","expression":"blub"}
-                        ],
-                        "out_fluxes":[
-                            {"source":"x","expression":"out"},
-                            {"source":"y","expression":"out"}
-                        ],
-                    }
+                initial={
+                    "names":stvNames
+                    ,
+                    "in_fluxes":[]
+                    ,
+                    "internal_fluxes":[]
+                    ,
+                    "out_fluxes":[]
+                }
+                #initial={
+                #    "names":['x','y','z']
+                #    ,
+                #    "in_fluxes":[
+                #        {"target":"y","expression":"x**3"}
+                #       #,{"target":"z","expression":"y**3"}
+                #    ]
+                #    ,
+                #    "internal_fluxes":[
+                #        {"source":"x", "target":"y","expression":"x**3"}
+                #        # ,{"source":"y", "target":"z","expression":"y**3"}
+                #    ]
+                #    ,
+                #    "out_fluxes":[
+                #        {"source":"x","expression":"x"}
+                #       #,{"source":"y","expression":"y"}
+                #    ]
+                #}
                 ,help_text="the target option will change when you change the source"
                 ,required=False
                 ) 
+
     
         
     

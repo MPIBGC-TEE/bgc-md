@@ -26,13 +26,13 @@ class FluxField{
     x.selectedIndex=names.indexOf(selected_value);
     return x;
   }
-  get value(){
-    var val={
-      'target':this.select2.value,
-      'expression':this.expression.value
-    }
-    return val;
-  }
+  //get value(){
+  //  var val={
+  //    'target':this.select1.value,
+  //    'expression':this.expression.value
+  //  }
+  //  return val;
+  //}
 
   //instance setter method  
   set onchange(func){
@@ -57,37 +57,22 @@ class InFluxField extends FluxField{
     this.select1=ss;
     this.expression=exp;
   }
-
-  //class method  
-  //static createSelect(names,selected_value) {
-  //  var x = document.createElement("SELECT")
-  //  var i;
-  //  for (i = 0; i < names.length; i++) {
-  //	  var item=names[i];
-  //    var o = document.createElement("OPTION");
-  //	  o.value=item;
-  //    var t=document.createTextNode(item);
-  //	  o.appendChild(t);
-  //	  x.appendChild(o);
-  //  }
-  //  x.selectedIndex=names.indexOf(selected_value);
-  //  return x;
-  //}
   get value(){
     var val={
-      'source':this.select1.value,
+      'target':this.select1.value,
       'expression':this.expression.value
     }
     return val;
   }
 
+
   //instance setter method  
-  set onchange(func){
-      this.select1.onchange=func;
-      this.expression.onchange=func;
-      // call the reporter with the flux as it is at the moment
-   
-  }
+  //set onchange(func){
+  //    this.select1.onchange=func;
+  //    this.expression.onchange=func;
+  //    // call the reporter with the flux as it is at the moment
+  // 
+  //}
 }
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
@@ -103,22 +88,6 @@ class OutFluxField extends FluxField{
     this.select1=ss;
     this.expression=exp;
   }
-
-  ////class method  
-  //static createSelect(names,selected_value) {
-  //  var x = document.createElement("SELECT")
-  //  var i;
-  //  for (i = 0; i < names.length; i++) {
-  //	  var item=names[i];
-  //    var o = document.createElement("OPTION");
-  //	  o.value=item;
-  //    var t=document.createTextNode(item);
-  //	  o.appendChild(t);
-  //	  x.appendChild(o);
-  //  }
-  //  x.selectedIndex=names.indexOf(selected_value);
-  //  return x;
-  //}
   get value(){
     var val={
       'source':this.select1.value,
@@ -127,13 +96,14 @@ class OutFluxField extends FluxField{
     return val;
   }
 
-  //instance setter method  
-  set onchange(func){
-      this.select1.onchange=func;
-      this.expression.onchange=func;
-      // call the reporter with the flux as it is at the moment
-   
-  }
+
+  ////instance setter method  
+  //set onchange(func){
+  //    this.select1.onchange=func;
+  //    this.expression.onchange=func;
+  //    // call the reporter with the flux as it is at the moment
+  // 
+  //}
 }
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////

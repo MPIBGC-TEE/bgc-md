@@ -2,9 +2,7 @@ import json
 from django.forms.widgets import Widget
 class FluxesInput(Widget):
     #input_type = None  # Subclasses must define this.
-    #template_name = 'django/forms/widgets/input.html'
     input_type = 'hidden'
-    #template_name = 'django/forms/widgets/number.html'
     template_name = 'yaml_creator/widgets/FluxesInput.html'
 
     def __init__(self, attrs=None):
@@ -14,9 +12,6 @@ class FluxesInput(Widget):
         super().__init__(attrs)
 
     def get_context(self, name, value, attrs):
-        print('############# get_context value:')
-        print(type(value))
-        print(value)
         context = {}
         context['widget'] = {
             'name': name,
@@ -30,12 +25,7 @@ class FluxesInput(Widget):
 
         return context
     def format_value(self,value):
-        print('############# format value:')
-        print(type(value))
-        print(value)
         res=json.dumps(value)
-        print(type(res))
-        print(res)
         return res
 
     class Media:

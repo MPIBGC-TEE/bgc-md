@@ -7,7 +7,10 @@ from ..config import dataDir,defaultYamlFileName
 # Create your models here.
 def default_model_descriptor_folder_name():
     #folder_names=[m.filename for m in ModelDescriptor.objects.all()]
-    folder_names=[str(d.stem) for d in Path(dataDir).iterdir() if d.is_dir]
+    pd=Path(dataDir)
+    if not pd.exists():
+        pd.mkdir(parents=True)
+    folder_names=[str(d.stem) for d in pd.iterdir() if d.is_dir]
     print('######################################## folder_names:')
     print(folder_names) 
     # set a default file name for a new yaml file that is not already present

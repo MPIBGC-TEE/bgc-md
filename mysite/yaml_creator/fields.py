@@ -14,7 +14,6 @@ class PUB_DATEField(DateField):
 
 class FluxesField(Field):
     widget = FluxesInput
-    #widget = NumberInput
     default_error_messages = {
         'invalid': ('Enter a whole number.'),
     }
@@ -23,25 +22,9 @@ class FluxesField(Field):
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
 
-        #if max_value is not None:
-        #    self.validators.append(validators.MaxValueValidator(max_value))
-        #if min_value is not None:
-        #    self.validators.append(validators.MinValueValidator(min_value))
-
     def to_python(self, value):
         """
         """
-        print("########## value")
-        print(value)
-
-        #value = super().to_python(value)
-        #fake values
-        #value= [
-		#	[{"source":0},{"target":0},{}],
-		#	[{"source":1},{"target":0},{}],
-		#	[{"source":2},{"target":0},{}],
-		#	[{"source":3},{"target":0},{}]
-        #]
         return json.loads(value)
 
     def widget_attrs(self, widget):
