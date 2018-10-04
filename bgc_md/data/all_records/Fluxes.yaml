@@ -1,4 +1,5 @@
 ## vim:set ff=unix expandtab ts=4 sw=4:
+#This file should be changed to the new format
 name: Henin's model
 version: 1
 entryAuthor: "Holger Metzler"
