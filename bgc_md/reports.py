@@ -257,7 +257,8 @@ def report_from_model(model):
             rel += T
 
     # show the secions of the model data
-    for section_name in model.sections:
+    #for section_name in model.sections:
+    for section_name in model.model_subsections:
         if section_name == 'state_variables':
             rel += Header(model.section_titles[section_name], 1)
             rel += Text("The following table contains the available information regarding this section:")
