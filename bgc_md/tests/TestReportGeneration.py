@@ -87,18 +87,18 @@ class TestReportGeneration(InDirTest):
         targetPath=target_dir_path.joinpath(targetFileName)
         self.assertTrue(targetPath.exists())
 
-    #def test_website_from_template(self):
-    #    d=defaults() 
-    #    sp=d['paths']['tested_records'].parent.joinpath('TestModels_1')
-    #    model_list=ModelList.from_dir_path(sp)
+    def test_website_from_template(self):
+        d=defaults() 
+        sp=d['paths']['tested_records'].parent.joinpath('TestModels_1')
+        model_list=ModelList.from_dir_path(sp)
 
-    #    list_tp=d['paths']['report_templates'].joinpath('multiple_model','Website.py')
-    #    #rel=render(list_tp,model_list=model_list)
-    #    rel=render(list_tp,model_list)
+        list_tp=d['paths']['report_templates'].joinpath('multiple_model','Website.py')
+        #rel=render(list_tp,model_list=model_list)
+        rel=render(list_tp,model_list)
 
-    #    target_dir_path=Path('.')
-    #    target_dir_path.mkdir(parents=True,exist_ok=True)
-    #    targetFileName='overview.html'
-    #    rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
+        target_dir_path=Path('.')
+        target_dir_path.mkdir(parents=True,exist_ok=True)
+        targetFileName='overview.html'
+        rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
 
 
