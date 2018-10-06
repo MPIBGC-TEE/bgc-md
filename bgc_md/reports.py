@@ -930,9 +930,10 @@ def render_parse():
     sources.add_argument('-y', '--yaml', default=None, help="The path to the yaml file containing the description of the record. Either this or -sd must be present." )
     
     parser.epilog= Template("""Examples:\n
-        ${p} report_templates/Overview_table.py -sd data/all_records  -t ${o} 
-        \n
-       ${p} report_templates/Overview_table.py -y data/all_records/Henin1945Annalesagronomiques.yaml  -t ${o} """).substitute(p=parser.prog,o="output" ) 
+        ### example 1:
+        ${p} report_templates/multiple_model/Website.py -sd data/tested_records -t ${o}
+        ### example 2:
+       ${p} report_templates/single_model/MinimalSingleReport.py -y data/tested_records/Henin1945Annalesagronomiques.yaml  -t ${o} """).substitute(p=parser.prog,o="output" ) 
 
     com=parser.parse_args()
     template_path=Path(com.template)
