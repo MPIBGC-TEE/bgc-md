@@ -6,12 +6,12 @@ from django.utils import timezone
 from django.http import HttpResponse, HttpResponseRedirect
 
 
-from ..models.ModelDescriptor import ModelDescriptor
-from ..models.StateVector import StateVector, StateVariable
-from ..models.ComponentScheme    import ComponentScheme   
-from ..models.FluxRepresentation import FluxRepresentation
-from ..models.Fluxes             import Fluxes            
-from ..models.Matrices import Matrices 
+#from ..models.ModelDescriptor import ModelDescriptor
+#from ..models.StateVector import StateVector, StateVariable
+#from ..models.ComponentScheme    import ComponentScheme   
+#from ..models.FluxRepresentation import FluxRepresentation
+#from ..models.Fluxes             import Fluxes            
+#from ..models.Matrices import Matrices 
 from ..forms import ModelDescriptorForm
 from ..helpers import var_names_from_state_vector_string
 from ..config import dataDir,defaultYamlFileName
@@ -59,8 +59,9 @@ def detail(request,file_name):
         rp=request.POST
         # Note that this view will be called several times before a ModelDescriptor     
         # is completed (or even saved for the first time).
-        # 0.)   Before we receive the first POST (and this part of the code is
-        #       executed for the first time) the initial instance of 
+        # 0.)   Before we receive the first POST (and thus BEFORE 
+        #       this part of the code is executed for the first time) 
+        #       the initial instance of 
         #       ModelDescriptorForm had had only some static fields filled
         #       with default values. An html form had been created and rendered.
         #       The user changed some values in the fields and 
@@ -76,8 +77,10 @@ def detail(request,file_name):
         #           and then the is_valid method is called on the instance.
         #
         #           old_form=old_form(rp)
-        #           if old_form.is_valid():
-        #               incorporate data into the database
+        #           if old_form.is_valid()):
+        #               persist data                   
+        #           else
+        #               repeat step 1
         #       b.) 
         #           Before the form instanciated to be  DISPLAYED 
         #           the next time it has to be extended by new fields, 
@@ -92,9 +95,10 @@ def detail(request,file_name):
         #           Create a form instance that contains the same fields
         #           the new_form instance last displayed (under 1 b) had.
         #
-        #           old_form=old_form(rp) 
-        #           if old_form.is_valid():
-        #               incorporate data into the database
+        #           if old_form.is_valid()):
+        #               persist data                   
+        #           else
+        #               repeat step 2
         #       b.) 
         #           Create a new form instance to be DISPLAYED with new fields 
         #           added.
@@ -109,15 +113,17 @@ def detail(request,file_name):
         #           the instance last displayed (under N-1 b) had.
         #
         #           old_form=old_form(rp) 
-        #           if old_form.is_valid():
-        #               incorporate data into the database
+        #           if old_form.is_valid()):
+        #               persist data                   
+        #           else
+        #               repeat step N
         #       b.) 
         #           Create a new form instance to be DISPLAYED with new fields 
         #           added.
         # 
         #           new_form=new_form(rp,newFieldsWithDefaults)
         #       
-        # Notice that in steps 2-N a) we must choose the fields of the form depending
+        # Notice that in steps from 2 to N a) we must choose the fields of the form depending
         # on the POST data rp. 
         # We cuold do that by building the a form class cls on demand by a 
         # class factory function e.g. FormClassByData and then using the tailormade
@@ -128,7 +134,8 @@ def detail(request,file_name):
         # new_cls=FormClassByData(rp.keys()+MewFieldsWithDefaults.keys())
         # new_form=new_cls(rp+NewFieldsWithDefaults)
 
-        # or we could tailormake the instance by moving the adaptation in the
+        # But since we only need ONE instance we can move the 
+        # adaptation in the
         # __init__ method of a class that stays constant but can produce instances
         # with different fields 
 
@@ -170,13 +177,10 @@ def detail(request,file_name):
 
 
     
-    # if a GET (or any other method) we'll create a form 
-    # filled from the database (or yaml file) or a blank form
     else:
+        # if we received a GET (or any other method but POST) we'll create a form 
+        # filled from the yaml file(if we have one) or a blank form (with some defaults)
         print("############# called without request #############################")
-        # different forms are created and initialized either 
-        # either  with stored content (if the yaml file exists) 
-        # or default values
         context={ 'file_name'      : file_name}
         #new_rp=formDataFromDatabase(file_name)
         new_rp=formDataFromYamlFile(file_name)

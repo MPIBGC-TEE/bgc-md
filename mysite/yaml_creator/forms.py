@@ -8,6 +8,8 @@ from .fields import DOIField ,PUB_DATEField, FluxesField
 from django.forms import URLField , DateField, CharField 
 from .helpers import var_names_from_state_vector_string
 from datetime import datetime
+from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
+from testinfrastructure.helpers import pe,pp
 import json
 
 
@@ -178,7 +180,7 @@ class ModelDescriptorForm(Form):
             varliststring=cd[k]
             var_names=var_names_from_state_vector_string(varliststring)
             
-            #now check which of the required fields for the statevariables are already
+            #now check which of the required description fields for the statevariables are already
             #present
             pvn=cls.stateVarDescPattern
             stvNames=[ k.replace(cls.stateVarDescKey,"")  for k in ks if re.match(cls.stateVarDescPattern,k)]
@@ -198,6 +200,15 @@ class ModelDescriptorForm(Form):
             k=cls.fluxRepKey
             if not (k in ks):
                 cd.update({k:None})
+
+            k=cls.fluxesKey
+            if k in ks:
+                d=cd[k]
+                pe('d["names"]',locals())
+                # sympify all fluxexpressions
+                # and find the union of all symbols
+                # that have to be defined
+                # than add description fields for 
 
         # we return a new instance
         return cls(initial=cd),cd
