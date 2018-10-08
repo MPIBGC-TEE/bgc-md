@@ -11,6 +11,7 @@ from datetime import datetime
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from testinfrastructure.helpers import pe,pp
 import json
+from sympy import sympify,Matrix
 
 
 
@@ -205,6 +206,11 @@ class ModelDescriptorForm(Form):
             if k in ks:
                 d=cd[k]
                 pe('d["names"]',locals())
+                inF=d["in_fluxes"]
+                outF=d["out_fluxes"]
+                intF=d["internal_fluxes"]
+                stateVec=Matrix(sympify(varliststring))
+
                 # sympify all fluxexpressions
                 # and find the union of all symbols
                 # that have to be defined
