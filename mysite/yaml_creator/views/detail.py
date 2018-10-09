@@ -144,7 +144,7 @@ def detail(request,file_name):
 
         # check whether it's valid:
         if old_form.is_valid():
-            # process the data in form.cleaned_data as required
+            # process the data in old_form.cleaned_data as required
             # ...
             cd = old_form.cleaned_data
             # update the database
@@ -161,7 +161,7 @@ def detail(request,file_name):
 
         else:
             # the form was not valid  an error occurred 
-            for name,field in form.fields.items():
+            for name,field in old_form.fields.items():
                 print(name)
                 print(field)
 
@@ -170,9 +170,9 @@ def detail(request,file_name):
                 ,
                 'form':old_form
                 ,
-                'doi_dict':form.fields['doi'].__dict__
+                'doi_dict':old_form.fields['doi'].__dict__
                 ,
-                'error':form.errors
+                'error':old_form.errors
             }
 
 

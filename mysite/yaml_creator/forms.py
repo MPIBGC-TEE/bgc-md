@@ -40,6 +40,7 @@ class ModelDescriptorForm(Form):
     fluxesKey='fluxes'
     fluxRepKey='fluxrepresentation'
     stateVectorKey="statevector"
+    timeSymbolKey="timesymbol"
     
     stateVarKey="statevariable"
     stateVarNameKey=stateVarKey+"_name_"
@@ -67,6 +68,11 @@ class ModelDescriptorForm(Form):
 
     statevector=CharField(
             help_text='Ordered list of state variables, e.g. C_1,C_2,C_3 , that form the state vector'
+    )
+    timesymbol=CharField(
+            initial="t",
+            help_text='the symbol used to represent time'
+
     )
     class Media:
         css={
@@ -204,12 +210,28 @@ class ModelDescriptorForm(Form):
 
             k=cls.fluxesKey
             if k in ks:
-                d=cd[k]
-                pe('d["names"]',locals())
-                inF=d["in_fluxes"]
-                outF=d["out_fluxes"]
-                intF=d["internal_fluxes"]
-                stateVec=Matrix(sympify(varliststring))
+                fluxes=cd[k]
+                print(type(fluxes))
+                pe('fluxes.keys()',locals())
+                names=fluxes["names"]
+                pe('names',locals())
+                outF=fluxes["out_fluxes"]
+                pe('outF',locals())
+                intF=fluxes["internal_fluxes"]
+                state_var_tupel=sympify(varliststring)
+
+                time_symbol=sympify(cd[cls.timeSymbolKey])
+                
+                inSym={sympify(flux['target']):sympify(flux['expression']) for flux in fluxes["in_fluxes"]}
+                outSym={sympify(flux['source']):sympify(flux['expression']) for flux in fluxes["out_fluxes"]}
+                internalSym={(sympify(flux['source']),sympify(flux['target'])):sympify(flux['expression']) for flux in fluxes["internal_fluxes"]}
+                pp('inSym',locals())
+                pp('outSym',locals())
+                pp('internalSym',locals())
+
+                rm = SmoothReservoirModel.from_state_variable_indexed_fluxes(list(state_var_tupel), time_symbol, inSym, outSym, internalSym)
+                pe('rm.free_symbols',locals())
+
 
                 # sympify all fluxexpressions
                 # and find the union of all symbols

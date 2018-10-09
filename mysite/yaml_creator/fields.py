@@ -1,6 +1,7 @@
 from django.forms import Field,URLField ,DateField
 from django.contrib.admin.widgets import AdminDateWidget
 from .widgets import FluxesInput
+from testinfrastructure.helpers import pe,pp
 import json
 import re
 
@@ -15,7 +16,7 @@ class PUB_DATEField(DateField):
 class FluxesField(Field):
     widget = FluxesInput
     default_error_messages = {
-        'invalid': ('Enter a whole number.'),
+        'invalid': ('This is a placeholder message It has to be constructed given the acutual fluxes.'),
     }
     re_decimal = re.compile(r'\.0*\s*$')
 
@@ -25,7 +26,9 @@ class FluxesField(Field):
     def to_python(self, value):
         """
         """
-        return json.loads(value)
+        # the inner application yields a string
+        fluxesDict=json.loads(json.loads(value)) 
+        return fluxesDict
 
     def widget_attrs(self, widget):
         attrs = super().widget_attrs(widget)
