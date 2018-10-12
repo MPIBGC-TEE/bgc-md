@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sqlite3
 conn = sqlite3.connect(':memory:')
 c=conn.cursor()
@@ -49,5 +50,8 @@ c.execute('SELECT * FROM StateVectorPositions WHERE Variables_model_id=?', ('def
 print("Positions",c.fetchall())
 c.execute('SELECT Variables_symbol FROM StateVectorPositions WHERE Variables_model_id=? ORDER BY `pos_id`', ('default_1.yaml',))
 print("Statevector",c.fetchall())
+
+
+
 #conn.commit()
 #print(c.fetchone())
