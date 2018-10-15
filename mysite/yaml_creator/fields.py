@@ -27,7 +27,7 @@ class FluxesField(Field):
         """
         """
         # the inner application yields a string
-        fluxesDict=json.loads(json.loads(value)) 
+        fluxesDict=json.loads(value) 
         return fluxesDict
 
     def widget_attrs(self, widget):

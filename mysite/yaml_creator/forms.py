@@ -43,10 +43,13 @@ class ModelDescriptorForm(Form):
     timeSymbolKey="timesymbol"
     
     stateVarKey="statevariable"
+    additionalVarKey="additional_variable"
     stateVarNameKey=stateVarKey+"_name_"
     stateVarNamePattern=stateVarNameKey+'.*'
-    stateVarDescKey=stateVarKey+"_description_"
-    stateVarDescPattern=stateVarDescKey+'.*'
+    stateVarDescPrefix=stateVarKey+"_description_"
+    stateVarDescPattern=stateVarDescPrefix+'.*'
+    additionalVarDescPrefix=additionalVarKey+"_description_"
+    additionalVarDescPattern=additionalVarDescPrefix+'.*'
    
 
     # since Form uses a Django Metaclass that 
@@ -105,7 +108,7 @@ class ModelDescriptorForm(Form):
 
         d_keys=mycopy.keys()
         
-        #stvNames=[ k.replace(cls.stateVarDescKey,"")  for k in d_keys if re.match(cls.stateVarDescPattern,k)]
+        #stvNames=[ k.replace(cls.stateVarDescPrefix,"")  for k in d_keys if re.match(cls.stateVarDescPattern,k)]
         stvNames=cls.present_state_var_names(d_keys)
         #print("##########################################")
         #print('mycopy')
@@ -118,7 +121,7 @@ class ModelDescriptorForm(Form):
                 help_text='A short description of the variable.',
                 label="State variable {0} Description".format(name)
             )
-            self.fields[cls.stateVarDescKey+name]= descField
+            self.fields[cls.stateVarDescPrefix+name]= descField
 
         if cls.fluxRepKey in d_keys:
             subClassDict=FluxRepresentation.get_subclassDict()
@@ -166,11 +169,14 @@ class ModelDescriptorForm(Form):
     
 ############################################# new (not overloaded) mothods    
     @ classmethod
+    def additionalVarDescKey(cls,var_name):
+        return cls.additionalVarDescPrefix+var_name
+    @ classmethod
     def descKey(cls,var_name):
-        return cls.stateVarDescKey+var_name
+        return cls.stateVarDescPrefix+var_name
     @classmethod
     def present_state_var_names(cls,keys):
-        stvNames=[ k.replace(cls.stateVarDescKey,"")  for k in keys if re.match(cls.stateVarDescPattern,k)]
+        stvNames=[ k.replace(cls.stateVarDescPrefix,"")  for k in keys if re.match(cls.stateVarDescPattern,k)]
         return stvNames
 
     def extended_instance(self):
@@ -190,7 +196,7 @@ class ModelDescriptorForm(Form):
             #now check which of the required description fields for the statevariables are already
             #present
             pvn=cls.stateVarDescPattern
-            stvNames=[ k.replace(cls.stateVarDescKey,"")  for k in ks if re.match(cls.stateVarDescPattern,k)]
+            stvNames=[ k.replace(cls.stateVarDescPrefix,"")  for k in ks if re.match(cls.stateVarDescPattern,k)]
             StateVector_var_name_set=set(var_names)
             present_var_name_set=set(stvNames)
 
@@ -230,7 +236,23 @@ class ModelDescriptorForm(Form):
                 pp('internalSym',locals())
 
                 rm = SmoothReservoirModel.from_state_variable_indexed_fluxes(list(state_var_tupel), time_symbol, inSym, outSym, internalSym)
-                pe('rm.free_symbols',locals())
+                # find the yet undefined variables to
+                fs=rm.free_symbols
+                undefined=fs.difference(state_var_tupel)
+                pe('undefined',locals())
+                if len(undefined)>0:
+                    # add description fields for all the variables 
+                    # present in the state vector
+                    for var_name in map(str,undefined):
+                        cd.update({cls.additionalVarDescKey(var_name):None})
+                    
+                    # delete description fields for all the variables 
+                    # NOT present in the state vector
+                    for var_name in map(str,undefined):
+                        cd.pop(cls.additionalVarDescKey(var_name))
+
+
+                
 
 
                 # sympify all fluxexpressions
