@@ -42,14 +42,19 @@ class ModelDescriptorForm(Form):
     stateVectorKey="statevector"
     timeSymbolKey="timesymbol"
     
+    #stateVarNameKey=stateVarKey+"_name_"
+    #stateVarNamePattern=stateVarNameKey+'.*'
     stateVarKey="statevariable"
-    additionalVarKey="additional_variable"
-    stateVarNameKey=stateVarKey+"_name_"
-    stateVarNamePattern=stateVarNameKey+'.*'
     stateVarDescPrefix=stateVarKey+"_description_"
     stateVarDescPattern=stateVarDescPrefix+'.*'
+
+    additionalVarKey="additional_variable"
     additionalVarDescPrefix=additionalVarKey+"_description_"
     additionalVarDescPattern=additionalVarDescPrefix+'.*'
+
+    funcKey="function"
+    funcDescPrefix=funcKey+"_description_"
+    funcDescPattern=funcDescPrefix+'.*'
    
 
     # since Form uses a Django Metaclass that 
@@ -142,6 +147,7 @@ class ModelDescriptorForm(Form):
                     ,
                     "out_fluxes":[]
                 }
+                # example structure
                 #initial={
                 #    "names":['x','y','z']
                 #    ,
@@ -164,13 +170,26 @@ class ModelDescriptorForm(Form):
                 ,required=False
                 ) 
 
+        for name in cls.present_additional_var_names(d_keys):
+            descField=CharField(
+                required=False,
+                help_text='A short description of the variable.',
+                label="{0} Description".format(name)
+            )
+            self.fields[cls.additionalVarDescPrefix+name]= descField
+
+        for name in cls.present_func_names(d_keys):
+            descField=CharField(
+                required=False,
+                help_text='A short description of the function.',
+                label="{0} Description".format(name)
+            )
+            self.fields[cls.funcDescPrefix+name+'(...)']= descField
+
     
         
     
 ############################################# new (not overloaded) mothods    
-    @ classmethod
-    def additionalVarDescKey(cls,var_name):
-        return cls.additionalVarDescPrefix+var_name
     @ classmethod
     def descKey(cls,var_name):
         return cls.stateVarDescPrefix+var_name
@@ -179,15 +198,29 @@ class ModelDescriptorForm(Form):
         stvNames=[ k.replace(cls.stateVarDescPrefix,"")  for k in keys if re.match(cls.stateVarDescPattern,k)]
         return stvNames
 
-    def extended_instance(self):
-        cls=self.__class__
-        cd=self.cleaned_data 
-        # we add new key:initialValue pairs to the data dict
-        # based on the data already available
-        # The adaptive form class will add the required fields when it receives
-        # this extended data dict
-        ks=cd.keys()
+    @ classmethod
+    def additionalVarDescKey(cls,var_name):
+        field_name=cls.additionalVarDescPrefix+var_name
+        return field_name
+
+    @classmethod
+    def present_additional_var_names(cls,keys):
+        Names=[ k.replace(cls.additionalVarDescPrefix,"")  for k in keys if re.match(cls.additionalVarDescPattern,k)]
+        return Names
     
+    @ classmethod
+    def funcDescKey(cls,var_name):
+        field_name=cls.funcDescPrefix+var_name
+        return field_name
+
+    @classmethod
+    def present_func_names(cls,keys):
+        Names=[ k.replace(cls.funcDescPrefix,"")  for k in keys if re.match(cls.funcDescPattern,k)]
+        return Names
+
+    @classmethod
+    def update_state_var_keys(cls,cd):
+        ks=cd.keys()
         k=cls.stateVectorKey
         if k in ks:
             varliststring=cd[k]
@@ -210,55 +243,192 @@ class ModelDescriptorForm(Form):
                 # NOT present in the state vector
                 for var_name in present_var_name_set.difference(StateVector_var_name_set):
                     cd.pop(cls.descKey(var_name))
+        return(cd)
+    @classmethod
+    def update_external_func_keys(cls,cd):
+        ks=cd.keys()
+        fluxes=cd[cls.fluxesKey]
+        varliststring=cd[cls.stateVectorKey]
+        print(type(fluxes))
+        pe('fluxes.keys()',locals())
+        names=fluxes["names"]
+        pe('names',locals())
+        outF=fluxes["out_fluxes"]
+        pe('outF',locals())
+        intF=fluxes["internal_fluxes"]
+        state_var_tupel=sympify(varliststring)
+
+        time_symbol=sympify(cd[cls.timeSymbolKey])
+        
+        inSym={sympify(flux['target']):sympify(flux['expression']) for flux in fluxes["in_fluxes"]}
+        outSym={sympify(flux['source']):sympify(flux['expression']) for flux in fluxes["out_fluxes"]}
+        internalSym={(sympify(flux['source']),sympify(flux['target'])):sympify(flux['expression']) for flux in fluxes["internal_fluxes"]}
+
+        rm = SmoothReservoirModel.from_state_variable_indexed_fluxes(list(state_var_tupel), time_symbol, inSym, outSym, internalSym)
+        # find the yet additional variables to
+
+        fs=rm.function_expressions
+        func_names=[fn for fn in map(lambda f:str(type(f)),fs)]
+        pe('func_names',locals())
+        pfn=cls.present_func_names(ks)
+        pe('pfn',locals())
+        
+        if pfn!=func_names:
+            # add description fields for all additiona variables 
+            # present in any expression
+            for var_name in set(func_names).difference(pfn):
+                cd.update({cls.funcDescKey(var_name):None})
+            
+
+            # delete description fields for all the variables 
+            # NOT present in any expression
+            del_names=set(pfn).difference(func_names)
+            pe('del_names',locals())
+            for var_name in del_names :
+                cd.pop(cls.funcDescKey(var_name))
+        return cd
+
+    @classmethod
+    def update_additional_var_keys(cls,cd):
+        ks=cd.keys()
+        fluxes=cd[cls.fluxesKey]
+        varliststring=cd[cls.stateVectorKey]
+        print(type(fluxes))
+        pe('fluxes.keys()',locals())
+        names=fluxes["names"]
+        pe('names',locals())
+        outF=fluxes["out_fluxes"]
+        pe('outF',locals())
+        intF=fluxes["internal_fluxes"]
+        state_var_tupel=sympify(varliststring)
+
+        time_symbol=sympify(cd[cls.timeSymbolKey])
+        
+        inSym={sympify(flux['target']):sympify(flux['expression']) for flux in fluxes["in_fluxes"]}
+        outSym={sympify(flux['source']):sympify(flux['expression']) for flux in fluxes["out_fluxes"]}
+        internalSym={(sympify(flux['source']),sympify(flux['target'])):sympify(flux['expression']) for flux in fluxes["internal_fluxes"]}
+
+        rm = SmoothReservoirModel.from_state_variable_indexed_fluxes(list(state_var_tupel), time_symbol, inSym, outSym, internalSym)
+        # find the yet additional variables to
+        fs=rm.free_symbols
+        additional=fs.difference(state_var_tupel).difference([rm.time_symbol])
+        additional_names=[n for n in map(str,additional)]
+        pe('additional_names',locals())
+        pavn=cls.present_additional_var_names(ks)
+        pe('pavn',locals())
+        
+        if pavn!=additional_names:
+            # add description fields for all additiona variables 
+            # present in any expression
+            for var_name in set(additional_names).difference(pavn):
+                cd.update({cls.additionalVarDescKey(var_name):None})
+            
+
+            # delete description fields for all the variables 
+            # NOT present in any expression
+            del_names=set(pavn).difference(additional_names)
+            pe('del_names',locals())
+            for var_name in del_names :
+                cd.pop(cls.additionalVarDescKey(var_name))
+        return cd
+
+    def extended_instance(self):
+        cls=self.__class__
+        cd=self.cleaned_data 
+        # we add new key:initialValue pairs to the data dict
+        # based on the data already available
+        # The adaptive form class will add the required fields when it receives
+        # this extended data dict
+        ks=cd.keys()
+        k=cls.stateVectorKey
+        if k in ks:
+            cd=cls.update_state_var_keys(cd) 
+            #varliststring=cd[k]
+
             k=cls.fluxRepKey
             if not (k in ks):
                 cd.update({k:None})
 
-            k=cls.fluxesKey
-            if k in ks:
-                fluxes=cd[k]
-                print(type(fluxes))
-                pe('fluxes.keys()',locals())
-                names=fluxes["names"]
-                pe('names',locals())
-                outF=fluxes["out_fluxes"]
-                pe('outF',locals())
-                intF=fluxes["internal_fluxes"]
-                state_var_tupel=sympify(varliststring)
-
-                time_symbol=sympify(cd[cls.timeSymbolKey])
-                
-                inSym={sympify(flux['target']):sympify(flux['expression']) for flux in fluxes["in_fluxes"]}
-                outSym={sympify(flux['source']):sympify(flux['expression']) for flux in fluxes["out_fluxes"]}
-                internalSym={(sympify(flux['source']),sympify(flux['target'])):sympify(flux['expression']) for flux in fluxes["internal_fluxes"]}
-                pp('inSym',locals())
-                pp('outSym',locals())
-                pp('internalSym',locals())
-
-                rm = SmoothReservoirModel.from_state_variable_indexed_fluxes(list(state_var_tupel), time_symbol, inSym, outSym, internalSym)
-                # find the yet undefined variables to
-                fs=rm.free_symbols
-                undefined=fs.difference(state_var_tupel)
-                pe('undefined',locals())
-                if len(undefined)>0:
-                    # add description fields for all the variables 
-                    # present in the state vector
-                    for var_name in map(str,undefined):
-                        cd.update({cls.additionalVarDescKey(var_name):None})
-                    
-                    # delete description fields for all the variables 
-                    # NOT present in the state vector
-                    for var_name in map(str,undefined):
-                        cd.pop(cls.additionalVarDescKey(var_name))
-
-
-                
-
-
-                # sympify all fluxexpressions
-                # and find the union of all symbols
-                # that have to be defined
-                # than add description fields for 
+            if cls.fluxesKey in ks:
+                cd=cls.update_external_func_keys(cd)
+                cd=cls.update_additional_var_keys(cd)
 
         # we return a new instance
         return cls(initial=cd),cd
+
+    #def _html_output(self, normal_row, error_row, row_ender, help_text_html, errors_on_separate_row):
+    #    "Output HTML. Used by as_table(), as_ul(), as_p()."
+    #    top_errors = self.non_field_errors()  # Errors that should be displayed above all fields.
+    #    output, hidden_fields = [], []
+
+    #    for name, field in self.fields.items():
+    #        html_class_attr = ''
+    #        bf = self[name]
+    #        bf_errors = self.error_class(bf.errors)
+    #        if bf.is_hidden:
+    #            if bf_errors:
+    #                top_errors.extend(
+    #                    [_('(Hidden field %(name)s) %(error)s') % {'name': name, 'error': str(e)}
+    #                     for e in bf_errors])
+    #            hidden_fields.append(str(bf))
+    #        else:
+    #            # Create a 'class="..."' attribute if the row should have any
+    #            # CSS classes applied.
+    #            css_classes = bf.css_classes()
+    #            if css_classes:
+    #                html_class_attr = ' class="%s"' % css_classes
+
+    #            if errors_on_separate_row and bf_errors:
+    #                output.append(error_row % str(bf_errors))
+
+    #            if bf.label:
+    #                label = conditional_escape(bf.label)
+    #                label = bf.label_tag(label) or ''
+    #            else:
+    #                label = ''
+
+    #            if field.help_text:
+    #                help_text = help_text_html % field.help_text
+    #            else:
+    #                help_text = ''
+
+    #            output.append(normal_row % {
+    #                'errors': bf_errors,
+    #                'label': label,
+    #                'field': bf,
+    #                'help_text': help_text,
+    #                'html_class_attr': html_class_attr,
+    #                'css_classes': css_classes,
+    #                'field_name': bf.html_name,
+    #            })
+
+    #    if top_errors:
+    #        output.insert(0, error_row % top_errors)
+
+    #    if hidden_fields:  # Insert any hidden fields in the last row.
+    #        str_hidden = ''.join(hidden_fields)
+    #        if output:
+    #            last_row = output[-1]
+    #            # Chop off the trailing row_ender (e.g. '</td></tr>') and
+    #            # insert the hidden fields.
+    #            if not last_row.endswith(row_ender):
+    #                # This can happen in the as_p() case (and possibly others
+    #                # that users write): if there are only top errors, we may
+    #                # not be able to conscript the last row for our purposes,
+    #                # so insert a new, empty row.
+    #                last_row = (normal_row % {
+    #                    'errors': '',
+    #                    'label': '',
+    #                    'field': '',
+    #                    'help_text': '',
+    #                    'html_class_attr': html_class_attr,
+    #                    'css_classes': '',
+    #                    'field_name': '',
+    #                })
+    #                output.append(last_row)
+    #            output[-1] = last_row[:-len(row_ender)] + str_hidden + row_ender
+    #        else:
+    #            # If there aren't any rows in the output, just append the
+    #            # hidden fields.
+    #            output.append(str_hidden)
+    #    return mark_safe('\n'.join(output))

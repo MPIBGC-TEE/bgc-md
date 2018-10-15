@@ -36,39 +36,14 @@
 	        {{ field.errors }}
 	        {{ field.label_tag }} {{ field }}
 	        {% if field.help_text %}
-	        <p class="help">{{ field.help_text|safe }}</p>
+	          <p class="help">{{ field.help_text|safe }}</p>
 	        {% endif %}
 	    </div>
 	{% endfor %}
 	</ul>
-
-	<h2>State Variables</h2>
-
-	<ul>
-	{% if variableforms %}
-		{% for form in variableforms %}
-			{{ form.prefix}}
-			{{ form.id_for_label}}
-			{{ form.html_name}}
-			{{ form.user}}
-			{% for field in form %}
-			    	<div class="fieldWrapper">
-			        {{ field.errors }}
-			        {{ field.label_tag }} {{ field }}
-			        {% if field.help_text %}
-			        <p class="help">{{ field.help_text|safe }}</p>
-			        {% endif %}
-			    </div>
-			{% endfor %}
-		{% endfor %}
-
-	{% endif %}
 	
 
-    <input 
-	type="submit" 
-	value="Submit" 
-    />
+    <input type="submit" value="Submit" />
 </form>
 {% endif %}
 
