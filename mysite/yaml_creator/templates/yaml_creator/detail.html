@@ -23,6 +23,8 @@
 {{ inspect }}
 {% endif %}
 
+ {{ plot|safe }}
+
 {% if ModelDescriptorForm %} 
 <form action="{% url 'detail' file_name %}" method="post">
     {% csrf_token %}

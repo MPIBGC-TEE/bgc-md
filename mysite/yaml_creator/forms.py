@@ -244,32 +244,18 @@ class ModelDescriptorForm(Form):
                 for var_name in present_var_name_set.difference(StateVector_var_name_set):
                     cd.pop(cls.descKey(var_name))
         return(cd)
+
+
     @classmethod
     def update_external_func_keys(cls,cd):
-        ks=cd.keys()
-        fluxes=cd[cls.fluxesKey]
-        varliststring=cd[cls.stateVectorKey]
-        print(type(fluxes))
-        pe('fluxes.keys()',locals())
-        names=fluxes["names"]
-        pe('names',locals())
-        outF=fluxes["out_fluxes"]
-        pe('outF',locals())
-        intF=fluxes["internal_fluxes"]
-        state_var_tupel=sympify(varliststring)
-
-        time_symbol=sympify(cd[cls.timeSymbolKey])
-        
-        inSym={sympify(flux['target']):sympify(flux['expression']) for flux in fluxes["in_fluxes"]}
-        outSym={sympify(flux['source']):sympify(flux['expression']) for flux in fluxes["out_fluxes"]}
-        internalSym={(sympify(flux['source']),sympify(flux['target'])):sympify(flux['expression']) for flux in fluxes["internal_fluxes"]}
-
-        rm = SmoothReservoirModel.from_state_variable_indexed_fluxes(list(state_var_tupel), time_symbol, inSym, outSym, internalSym)
+        rm=cls.SmoothReservoirModel(cd)
         # find the yet additional variables to
 
         fs=rm.function_expressions
         func_names=[fn for fn in map(lambda f:str(type(f)),fs)]
         pe('func_names',locals())
+
+        ks=cd.keys()
         pfn=cls.present_func_names(ks)
         pe('pfn',locals())
         
@@ -288,17 +274,14 @@ class ModelDescriptorForm(Form):
                 cd.pop(cls.funcDescKey(var_name))
         return cd
 
+    
     @classmethod
-    def update_additional_var_keys(cls,cd):
-        ks=cd.keys()
+    def SmoothReservoirModel(cls,cd):
         fluxes=cd[cls.fluxesKey]
         varliststring=cd[cls.stateVectorKey]
         print(type(fluxes))
-        pe('fluxes.keys()',locals())
         names=fluxes["names"]
-        pe('names',locals())
         outF=fluxes["out_fluxes"]
-        pe('outF',locals())
         intF=fluxes["internal_fluxes"]
         state_var_tupel=sympify(varliststring)
 
@@ -309,11 +292,20 @@ class ModelDescriptorForm(Form):
         internalSym={(sympify(flux['source']),sympify(flux['target'])):sympify(flux['expression']) for flux in fluxes["internal_fluxes"]}
 
         rm = SmoothReservoirModel.from_state_variable_indexed_fluxes(list(state_var_tupel), time_symbol, inSym, outSym, internalSym)
+        return(rm)
+
+
+    @classmethod
+    def update_additional_var_keys(cls,cd):
+        rm=cls.SmoothReservoirModel(cd)
         # find the yet additional variables to
         fs=rm.free_symbols
+        state_var_tupel=tuple(rm.state_vector)
         additional=fs.difference(state_var_tupel).difference([rm.time_symbol])
         additional_names=[n for n in map(str,additional)]
         pe('additional_names',locals())
+        
+        ks=cd.keys()
         pavn=cls.present_additional_var_names(ks)
         pe('pavn',locals())
         
@@ -356,79 +348,80 @@ class ModelDescriptorForm(Form):
         # we return a new instance
         return cls(initial=cd),cd
 
-    #def _html_output(self, normal_row, error_row, row_ender, help_text_html, errors_on_separate_row):
-    #    "Output HTML. Used by as_table(), as_ul(), as_p()."
-    #    top_errors = self.non_field_errors()  # Errors that should be displayed above all fields.
-    #    output, hidden_fields = [], []
+    def _html_output(self, normal_row, error_row, row_ender, help_text_html, errors_on_separate_row):
+        "Output HTML. Used by as_table(), as_ul(), as_p()."
+        top_errors = self.non_field_errors()  # Errors that should be displayed above all fields.
+        output, hidden_fields = [], []
+        def body():
+            html_class_attr = ''
+            bf = self[name]
+            bf_errors = self.error_class(bf.errors)
+            if bf.is_hidden:
+                if bf_errors:
+                    top_errors.extend(
+                        [_('(Hidden field %(name)s) %(error)s') % {'name': name, 'error': str(e)}
+                         for e in bf_errors])
+                hidden_fields.append(str(bf))
+            else:
+                # Create a 'class="..."' attribute if the row should have any
+                # CSS classes applied.
+                css_classes = bf.css_classes()
+                if css_classes:
+                    html_class_attr = ' class="%s"' % css_classes
 
-    #    for name, field in self.fields.items():
-    #        html_class_attr = ''
-    #        bf = self[name]
-    #        bf_errors = self.error_class(bf.errors)
-    #        if bf.is_hidden:
-    #            if bf_errors:
-    #                top_errors.extend(
-    #                    [_('(Hidden field %(name)s) %(error)s') % {'name': name, 'error': str(e)}
-    #                     for e in bf_errors])
-    #            hidden_fields.append(str(bf))
-    #        else:
-    #            # Create a 'class="..."' attribute if the row should have any
-    #            # CSS classes applied.
-    #            css_classes = bf.css_classes()
-    #            if css_classes:
-    #                html_class_attr = ' class="%s"' % css_classes
+                if errors_on_separate_row and bf_errors:
+                    output.append(error_row % str(bf_errors))
 
-    #            if errors_on_separate_row and bf_errors:
-    #                output.append(error_row % str(bf_errors))
+                if bf.label:
+                    label = conditional_escape(bf.label)
+                    label = bf.label_tag(label) or ''
+                else:
+                    label = ''
 
-    #            if bf.label:
-    #                label = conditional_escape(bf.label)
-    #                label = bf.label_tag(label) or ''
-    #            else:
-    #                label = ''
+                if field.help_text:
+                    help_text = help_text_html % field.help_text
+                else:
+                    help_text = ''
 
-    #            if field.help_text:
-    #                help_text = help_text_html % field.help_text
-    #            else:
-    #                help_text = ''
+                output.append(normal_row % {
+                    'errors': bf_errors,
+                    'label': label,
+                    'field': bf,
+                    'help_text': help_text,
+                    'html_class_attr': html_class_attr,
+                    'css_classes': css_classes,
+                    'field_name': bf.html_name,
+                })
+        for name, field in self.fields.items():
+            body()
 
-    #            output.append(normal_row % {
-    #                'errors': bf_errors,
-    #                'label': label,
-    #                'field': bf,
-    #                'help_text': help_text,
-    #                'html_class_attr': html_class_attr,
-    #                'css_classes': css_classes,
-    #                'field_name': bf.html_name,
-    #            })
+        if top_errors:
+            output.insert(0, error_row % top_errors)
 
-    #    if top_errors:
-    #        output.insert(0, error_row % top_errors)
-
-    #    if hidden_fields:  # Insert any hidden fields in the last row.
-    #        str_hidden = ''.join(hidden_fields)
-    #        if output:
-    #            last_row = output[-1]
-    #            # Chop off the trailing row_ender (e.g. '</td></tr>') and
-    #            # insert the hidden fields.
-    #            if not last_row.endswith(row_ender):
-    #                # This can happen in the as_p() case (and possibly others
-    #                # that users write): if there are only top errors, we may
-    #                # not be able to conscript the last row for our purposes,
-    #                # so insert a new, empty row.
-    #                last_row = (normal_row % {
-    #                    'errors': '',
-    #                    'label': '',
-    #                    'field': '',
-    #                    'help_text': '',
-    #                    'html_class_attr': html_class_attr,
-    #                    'css_classes': '',
-    #                    'field_name': '',
-    #                })
-    #                output.append(last_row)
-    #            output[-1] = last_row[:-len(row_ender)] + str_hidden + row_ender
-    #        else:
-    #            # If there aren't any rows in the output, just append the
-    #            # hidden fields.
-    #            output.append(str_hidden)
-    #    return mark_safe('\n'.join(output))
+        if hidden_fields:  # Insert any hidden fields in the last row.
+            str_hidden = ''.join(hidden_fields)
+            if output:
+                last_row = output[-1]
+                # Chop off the trailing row_ender (e.g. '</td></tr>') and
+                # insert the hidden fields.
+                if not last_row.endswith(row_ender):
+                    # This can happen in the as_p() case (and possibly others
+                    # that users write): if there are only top errors, we may
+                    # not be able to conscript the last row for our purposes,
+                    # so insert a new, empty row.
+                    last_row = (normal_row % {
+                        'errors': '',
+                        'label': '',
+                        'field': '',
+                        'help_text': '',
+                        'html_class_attr': html_class_attr,
+                        'css_classes': '',
+                        'field_name': '',
+                    })
+                    output.append(last_row)
+                output[-1] = last_row[:-len(row_ender)] + str_hidden + row_ender
+            else:
+                # If there aren't any rows in the output, just append the
+                # hidden fields.
+                output.append(str_hidden)
+        return mark_safe('\n'.join(output))

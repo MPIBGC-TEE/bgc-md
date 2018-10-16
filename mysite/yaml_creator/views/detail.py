@@ -18,6 +18,10 @@ from ..config import dataDir,defaultYamlFileName
 import os
 from pathlib import Path
 from yaml import dump,load
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+from io import StringIO 
 
 def formDataFromYamlFile(file_name):
     ## before we know which fields our form needs we have to find out 
@@ -153,7 +157,14 @@ def detail(request,file_name):
             
             # extend the form by new fields required in the next step
             new_form,new_rp=old_form.extended_instance()
+            
+            imgdata=StringIO()
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            ax.plot([1,2,3])
+            fig.savefig(imgdata,format='svg')
 
+            context['plot']=imgdata.getvalue()
             context['ModelDescriptorForm'] =new_form
             context['success']=request.POST
             context['inspect']={"new_rp":new_rp}
@@ -165,10 +176,11 @@ def detail(request,file_name):
                 print(name)
                 print(field)
 
+
             context={
-                'file_name'      : file_name
+                'file_name'     :file_name
                 ,
-                'form':old_form
+                'form'          :old_form
                 ,
                 'doi_dict':old_form.fields['doi'].__dict__
                 ,
