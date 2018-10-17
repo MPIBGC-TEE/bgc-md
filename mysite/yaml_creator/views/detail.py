@@ -157,12 +157,17 @@ def detail(request,file_name):
             
             # extend the form by new fields required in the next step
             new_form,new_rp=old_form.extended_instance()
-            
-            imgdata=StringIO()
-            fig = plt.figure()
-            ax = fig.add_subplot(111)
-            ax.plot([1,2,3])
-            fig.savefig(imgdata,format='svg')
+           
+            try: 
+                srm=ModelDescriptorForm.SmoothReservoirModel(cd)
+                imgdata=StringIO()
+                #fig = plt.figure()
+                #ax = fig.add_subplot(111)
+                #ax.plot([1,2,3])
+                fig=srm.figure()
+                fig.savefig(imgdata,format='svg')
+            except(Exception):
+                pass
 
             context['plot']=imgdata.getvalue()
             context['ModelDescriptorForm'] =new_form
