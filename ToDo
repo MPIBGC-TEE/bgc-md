@@ -13,4 +13,4 @@ New Webform
  -CSS/Javascript Framework integration for adaptability to different screen sizes
  -public server with most of the possible images (and some other computationally expensive results) cached and ways to look at models but not to change them.
  -caching of images and intermediate results
- 
+- automate start of application (manage runserver...) and browser window

@@ -4,9 +4,8 @@ from .models.ModelDescriptor import ModelDescriptor
 from .models.FluxRepresentation import FluxRepresentation
 from .models.Fluxes import Fluxes
 from .models.Matrices import Matrices
-from .fields import DOIField ,PUB_DATEField, FluxesField
+from .fields import DOIField ,PUB_DATEField, FluxesField,StateVectorField
 from django.forms import URLField , DateField, CharField 
-from .helpers import var_names_from_state_vector_string
 from datetime import datetime
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from testinfrastructure.helpers import pe,pp
@@ -16,6 +15,8 @@ from sympy import sympify,Matrix
 
 
 class ModelDescriptorForm(Form):
+    error_css_class='error'
+    required_css_class='required'
     # Usually  a form is described by a static class definition.
     # This form is different from predefined forms since it can actually
     # add fields dynamically depending on the data in the database or request.
@@ -74,7 +75,7 @@ class ModelDescriptorForm(Form):
         help_text='The date when this record was first created.'
     )
 
-    statevector=CharField(
+    statevector=StateVectorField(
             help_text='Ordered list of state variables, e.g. C_1,C_2,C_3 , that form the state vector'
     )
     timesymbol=CharField(
@@ -223,8 +224,9 @@ class ModelDescriptorForm(Form):
         ks=cd.keys()
         k=cls.stateVectorKey
         if k in ks:
-            varliststring=cd[k]
-            var_names=var_names_from_state_vector_string(varliststring)
+            #varliststring=cd[k]
+            #var_names=var_names_from_state_vector_string(varliststring)
+            var_names=cd[k]
             
             #now check which of the required description fields for the statevariables are already
             #present

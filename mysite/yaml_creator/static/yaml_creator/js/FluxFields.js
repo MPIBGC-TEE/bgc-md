@@ -156,10 +156,19 @@ class InternalFluxField extends FluxField{
     // before we can use 'this' we have to call the constructor of the
     // superclass
     super(names,flux);
+    var ss=this.select1;
+    var si=ss.selectedIndex;
     var ts=FluxField.createSelect(names,flux['target']);
+    
+    var tos=ts.options;
+    tos[si].disabled=true;
     var emptyCallBack=function(){ };
-    this.select1.oninput=InternalFluxField.update_maker(this.select1,ts,emptyCallBack);
+    ss.oninput=InternalFluxField.update_maker(this.select1,ts,emptyCallBack);
+    
     this.select2=ts;
+	  
+	
+	
     
   }
   get value(){

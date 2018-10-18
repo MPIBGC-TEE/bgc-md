@@ -13,7 +13,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 #from ..models.Fluxes             import Fluxes            
 #from ..models.Matrices import Matrices 
 from ..forms import ModelDescriptorForm
-from ..helpers import var_names_from_state_vector_string
 from ..config import dataDir,defaultYamlFileName
 import os
 from pathlib import Path

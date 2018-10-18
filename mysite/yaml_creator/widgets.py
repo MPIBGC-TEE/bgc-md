@@ -1,5 +1,13 @@
 import json
-from django.forms.widgets import Widget
+from django.forms.widgets import Widget,TextInput
+class StateVectorInput(TextInput):
+    template_name = 'yaml_creator/widgets/StateVectorInput.html'
+    
+    def format_value(self,value):
+        res=",".join(value)
+        return res
+
+
 class FluxesInput(Widget):
     #input_type = None  # Subclasses must define this.
     input_type = 'hidden'
