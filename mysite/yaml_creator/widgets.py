@@ -1,15 +1,9 @@
 import json
 from django.forms.widgets import Widget,TextInput
+from testinfrastructure.helpers import pe
 class StateVectorInput(TextInput):
     template_name = 'yaml_creator/widgets/StateVectorInput.html'
     
-    def format_value(self,var_names_list):
-        try:
-            res=",".join(var_names_list)
-        except:
-            res=""
-        return res
-
 
 class FluxesInput(Widget):
     #input_type = None  # Subclasses must define this.

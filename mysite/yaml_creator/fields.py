@@ -7,6 +7,7 @@ import json
 import re
 from string import Template
 from copy import copy
+from sympy import sympify,SympifyError
 
 
 class DOIField(URLField):
@@ -17,9 +18,20 @@ class StateVectorField(CharField):
     widget = StateVectorInput
     default_error_messages={
             'not unique':"The variable names in the  string representation of the statevector were not unique. The following variables appeared more than once:",
-            'wrong format':"We expect the variable names separated by commas."}
-    def validate(self,var_names_list):
-        super().validate(var_names_list)
+            'wrong format':"We expect the variable names separated by commas.",
+            'sympify':"Sympy could not parse the function_expressions."
+            }
+
+    def validate(self,varliststring):
+        try:
+            symtup=sympify(varliststring)
+            var_names_list=[n for n in map(str,symtup)]
+        except SympifyError as e:
+            var_names_list=[]
+            raise ValidationError(
+                Template("${message} ${v}").substitute(message=self.default_error_messages['sympify'],v=str(e)
+            ),code='sympify')
+        super().validate(varliststring)
         
         var_names_set=set(var_names_list)
         nue=copy(var_names_list)
@@ -27,17 +39,9 @@ class StateVectorField(CharField):
             nue.pop(nue.index(var))
         if len(var_names_list)!=len(var_names_set):
             raise ValidationError(
-                    Template("${message} ${v}").substitute(message=self.default_error_messages['not unique'],v=str(nue))
+                    Template("${message} ${v}").substitute(message=self.default_error_messages['not unique'],v=str(nue)),
+                    code='not unique'
             )
-
-        
-    def to_python(self, varliststring):
-        try:
-            var_names_list=varliststring.split(',')
-        except AttributeError:
-            raise ValidationError(self.default_error_messages,code='wrong format')
-        return var_names_list
-
 
 
 class PUB_DATEField(DateField):

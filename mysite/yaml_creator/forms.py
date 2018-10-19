@@ -78,7 +78,7 @@ class ModelDescriptorForm(Form):
     )
 
     statevector=StateVectorField(
-            help_text='Ordered list of state variables, e.g. C_1,C_2,C_3 , that form the state vector'
+            help_text='Ordered, comma separated  list of state variables, e.g. C_1,C_2,C_3 , that form the state vector.'
     )
     timesymbol=CharField(
             initial="t",
@@ -228,7 +228,7 @@ class ModelDescriptorForm(Form):
         if k in ks:
             #varliststring=cd[k]
             #var_names=var_names_from_state_vector_string(varliststring)
-            var_names=cd[k]
+            var_names=[n for n in map(str,sympify(cd[k]))]
             
             #now check which of the required description fields for the statevariables are already
             #present
@@ -252,7 +252,8 @@ class ModelDescriptorForm(Form):
 
     @classmethod
     def update_external_func_keys(cls,cd):
-        rm=cls.SmoothReservoirModel(cd)
+        pe('cd',locals())
+        rm=cls.srm(cd)
         # find the yet additional variables to
 
         fs=rm.function_expressions
@@ -277,10 +278,10 @@ class ModelDescriptorForm(Form):
 
     
     @classmethod
-    def SmoothReservoirModel(cls,cd):
+    def srm(cls,cd):
         fluxes=cd[cls.fluxesKey]
         varliststring=cd[cls.stateVectorKey]
-        print(type(fluxes))
+        pe('type(fluxes)',locals())
         names=fluxes["names"]
         outF=fluxes["out_fluxes"]
         intF=fluxes["internal_fluxes"]
@@ -298,7 +299,7 @@ class ModelDescriptorForm(Form):
 
     @classmethod
     def update_additional_var_keys(cls,cd):
-        rm=cls.SmoothReservoirModel(cd)
+        rm=cls.srm(cd)
         # find the yet additional variables to
         fs=rm.free_symbols
         state_var_tupel=tuple(rm.state_vector)
