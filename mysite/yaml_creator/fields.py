@@ -15,6 +15,9 @@ class DOIField(URLField):
 
 class StateVectorField(CharField):
     widget = StateVectorInput
+    default_error_messages={
+            'not unique':"The variable names in the  string representation of the statevector were not unique. The following variables appeared more than once:",
+            'wrong format':"We expect the variable names separated by commas."}
     def validate(self,var_names_list):
         super().validate(var_names_list)
         
@@ -24,12 +27,15 @@ class StateVectorField(CharField):
             nue.pop(nue.index(var))
         if len(var_names_list)!=len(var_names_set):
             raise ValidationError(
-                    Template("The variable names in the  string representation of the statevector were not unique.The following variables appeared more than once:${v}").substitute(v=str(nue))
+                    Template("${message} ${v}").substitute(message=self.default_error_messages['not unique'],v=str(nue))
             )
 
         
     def to_python(self, varliststring):
-        var_names_list=varliststring.split(',')
+        try:
+            var_names_list=varliststring.split(',')
+        except AttributeError:
+            raise ValidationError(self.default_error_messages,code='wrong format')
         return var_names_list
 
 

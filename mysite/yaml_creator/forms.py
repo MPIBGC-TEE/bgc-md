@@ -6,6 +6,8 @@ from .models.Fluxes import Fluxes
 from .models.Matrices import Matrices
 from .fields import DOIField ,PUB_DATEField, FluxesField,StateVectorField
 from django.forms import URLField , DateField, CharField 
+from django.utils.html import conditional_escape #, html_safe
+from django.utils.safestring import mark_safe
 from datetime import datetime
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from testinfrastructure.helpers import pe,pp
@@ -255,11 +257,9 @@ class ModelDescriptorForm(Form):
 
         fs=rm.function_expressions
         func_names=[fn for fn in map(lambda f:str(type(f)),fs)]
-        pe('func_names',locals())
 
         ks=cd.keys()
         pfn=cls.present_func_names(ks)
-        pe('pfn',locals())
         
         if pfn!=func_names:
             # add description fields for all additiona variables 
@@ -271,7 +271,6 @@ class ModelDescriptorForm(Form):
             # delete description fields for all the variables 
             # NOT present in any expression
             del_names=set(pfn).difference(func_names)
-            pe('del_names',locals())
             for var_name in del_names :
                 cd.pop(cls.funcDescKey(var_name))
         return cd
@@ -354,7 +353,7 @@ class ModelDescriptorForm(Form):
         "Output HTML. Used by as_table(), as_ul(), as_p()."
         top_errors = self.non_field_errors()  # Errors that should be displayed above all fields.
         output, hidden_fields = [], []
-        def body():
+        def per_field():
             html_class_attr = ''
             bf = self[name]
             bf_errors = self.error_class(bf.errors)
@@ -395,7 +394,8 @@ class ModelDescriptorForm(Form):
                     'field_name': bf.html_name,
                 })
         for name, field in self.fields.items():
-            body()
+            per_field()
+
 
         if top_errors:
             output.insert(0, error_row % top_errors)

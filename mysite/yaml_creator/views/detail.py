@@ -157,18 +157,7 @@ def detail(request,file_name):
             # extend the form by new fields required in the next step
             new_form,new_rp=old_form.extended_instance()
            
-            try: 
-                srm=ModelDescriptorForm.SmoothReservoirModel(cd)
-                imgdata=StringIO()
-                #fig = plt.figure()
-                #ax = fig.add_subplot(111)
-                #ax.plot([1,2,3])
-                fig=srm.figure()
-                fig.savefig(imgdata,format='svg')
-            except(Exception):
-                pass
 
-            context['plot']=imgdata.getvalue()
             context['ModelDescriptorForm'] =new_form
             context['success']=request.POST
             context['inspect']={"new_rp":new_rp}
@@ -176,15 +165,15 @@ def detail(request,file_name):
 
         else:
             # the form was not valid  an error occurred 
-            for name,field in old_form.fields.items():
-                print(name)
-                print(field)
+            #for name,field in old_form.fields.items():
+            #    print(name)
+            #    print(field)
 
 
             context={
                 'file_name'     :file_name
                 ,
-                'form'          :old_form
+                'ModelDescriptorForm'          :old_form
                 ,
                 'doi_dict':old_form.fields['doi'].__dict__
                 ,
@@ -205,6 +194,19 @@ def detail(request,file_name):
         new_form = ModelDescriptorForm(initial=new_rp)
         context['ModelDescriptorForm'] =new_form
 
-         
+
+    # add available report data
+    try: 
+        srm=ModelDescriptorForm.SmoothReservoirModel(new_rp)
+        imgdata=StringIO()
+        fig=srm.figure()
+        fig.savefig(imgdata,format='svg')
+        context['plot']=imgdata.getvalue()
+        print("####################")
+        print("success")
+        print("####################")
+    except(Exception):
+        pass
+          
 
     return render(request, 'yaml_creator/detail.html', context)

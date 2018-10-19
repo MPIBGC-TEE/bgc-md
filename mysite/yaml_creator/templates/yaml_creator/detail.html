@@ -6,13 +6,12 @@
 {{ file_name }}
 {{ ModelDescriptorForm.media }}
 {% if error %} 
-<h1>Error</h1>
-{{ error }}
-{{ ModelDescriptorForm.data }}
-<h2>doi_dict</h2>
-{{ doi_dict }}
+	<h1>Error</h1>
+	{{ error }}
+	{{ ModelDescriptorForm.data }}
 {% endif %}
 
+{% comment%}
 {% if success%} 
 <h1>Success</h1>
 {{ success }}
@@ -23,29 +22,24 @@
 {{ inspect }}
 {% endif %}
 
- {{ plot|safe }}
-
-{% if ModelDescriptorForm %} 
-<form action="{% url 'detail' file_name %}" method="post">
-    {% csrf_token %}
-    {# {{ ModelDescriptorForm }} #}
-
-	<h2>Additional information</h2>
-	<ul>
-
-	{% for field in ModelDescriptorForm %}
-	    	<div class="fieldWrapper">
-	        {{ field.errors }}
-	        {{ field.label_tag }} {{ field }}
-	        {% if field.help_text %}
-	          <p class="help">{{ field.help_text|safe }}</p>
-	        {% endif %}
-	    </div>
-	{% endfor %}
-	</ul>
-	
-
-    <input type="submit" value="Submit" />
-</form>
-{% endif %}
-
+{% endcomment %}	
+<table>
+	<tr>
+    <td>
+    {% if ModelDescriptorForm %} 
+    <table>
+      <form action="{% url 'detail' file_name %}" method="post">
+        {% csrf_token %}
+        {{ ModelDescriptorForm }}
+        <input type="submit" value="Submit" />
+      </form>
+    </table>
+    {% endif %}
+    </td>
+    <td>
+    {% if plot %} 
+    {{ plot|safe }}
+    {% endif %}
+    </td>
+	</tr>
+</table>

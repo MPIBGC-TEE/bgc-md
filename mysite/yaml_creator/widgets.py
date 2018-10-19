@@ -3,8 +3,11 @@ from django.forms.widgets import Widget,TextInput
 class StateVectorInput(TextInput):
     template_name = 'yaml_creator/widgets/StateVectorInput.html'
     
-    def format_value(self,value):
-        res=",".join(value)
+    def format_value(self,var_names_list):
+        try:
+            res=",".join(var_names_list)
+        except:
+            res=""
         return res
 
 
