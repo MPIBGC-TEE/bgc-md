@@ -7,7 +7,7 @@ import json
 import re
 from string import Template
 from copy import copy
-from sympy import sympify,SympifyError
+from sympy import sympify,SympifyError,Symbol
 
 
 class DOIField(URLField):
@@ -18,13 +18,23 @@ class StateVectorField(CharField):
     widget = StateVectorInput
     default_error_messages={
             'not unique':"The variable names in the  string representation of the statevector were not unique. The following variables appeared more than once:",
-            'wrong format':"We expect the variable names separated by commas.",
+            'wrong format':"We expect the variable names separated by commas. (without any brackets,or quotation marks)  ",
             'sympify':"Sympy could not parse the function_expressions."
             }
 
     def validate(self,varliststring):
         try:
-            symtup=sympify(varliststring)
+            sym=sympify(varliststring)
+            if isinstance(sym,tuple):
+                symtup=sym
+            elif isinstance(sym,Symbol):    
+                symtup=(sym,)
+            else:
+                raise ValidationError(
+                    self.default_error_messages['wrong format'],
+                    code='wrong format')
+                
+        
             var_names_list=[n for n in map(str,symtup)]
         except SympifyError as e:
             var_names_list=[]
@@ -59,10 +69,12 @@ class FluxesField(Field):
         super().__init__(*args,**kwargs)
 
     def to_python(self, value):
+        pp('value',locals())
         """
         """
         # the inner application yields a string
         fluxesDict=json.loads(value) 
+        pp('fluxesDict',locals())
         return fluxesDict
 
     def widget_attrs(self, widget):

@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
 from django.http import HttpResponse, HttpResponseRedirect
-
+from testinfrastructure.helpers import pe
 
 #from ..models.ModelDescriptor import ModelDescriptor
 #from ..models.StateVector import StateVector, StateVariable
@@ -147,6 +147,9 @@ def detail(request,file_name):
 
         # check whether it's valid:
         if old_form.is_valid():
+            print("#################################################3")
+            print("############## is valid ##########################")
+            print("#################################################3")
             # process the data in old_form.cleaned_data as required
             # ...
             cd = old_form.cleaned_data
@@ -165,17 +168,20 @@ def detail(request,file_name):
 
         else:
             # the form was not valid  an error occurred 
-            #for name,field in old_form.fields.items():
-            #    print(name)
-            #    print(field)
+            pe('old_form.errors',locals())
+            pe('old_form.is_bound',locals())
+            for name,field in old_form.fields.items():
+                pe('name',locals())
+                pe('field',locals())
+                pe('old_form.data[name]',locals())
 
 
             context={
                 'file_name'     :file_name
                 ,
                 'ModelDescriptorForm'          :old_form
-                ,
-                'doi_dict':old_form.fields['doi'].__dict__
+                #,
+                #'doi_dict':old_form.fields['doi'].__dict__
                 ,
                 'error':old_form.errors
             }
@@ -197,7 +203,7 @@ def detail(request,file_name):
 
     # add available report data
     try: 
-        srm=ModelDescriptorForm.SmoothReservoirModel(new_rp)
+        srm=ModelDescriptorForm.srm(new_rp)
         imgdata=StringIO()
         fig=srm.figure()
         fig.savefig(imgdata,format='svg')

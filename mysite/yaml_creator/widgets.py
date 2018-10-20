@@ -30,7 +30,11 @@ class FluxesInput(Widget):
 
         return context
     def format_value(self,value):
-        res=json.dumps(value)
+        if isinstance(value,dict):
+            res=json.dumps(value)
+        elif isinstance(value,str):
+            pe('value',locals())
+            res=value
         return res
 
     class Media:

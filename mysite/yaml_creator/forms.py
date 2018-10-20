@@ -12,7 +12,7 @@ from datetime import datetime
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from testinfrastructure.helpers import pe,pp
 import json
-from sympy import sympify,Matrix
+from sympy import sympify,Matrix,Symbol
 
 
 
@@ -66,19 +66,20 @@ class ModelDescriptorForm(Form):
     # automatically end up in the internal fields property of every
     # instance.
     #doi = DOIField(
-    doi = URLField(
-	initial="http://doi.org/",
-     	max_length=200,
-        #required=False,
-        help_text='The dio of the original publication. It will be used to download bibliographic information including the abstract. If you provide this information yourself it will be used instead.', 
-    )
-    pub_date = PUB_DATEField(
-	    initial=datetime.now(),
-        help_text='The date when this record was first created.'
-    )
+    #doi = URLField(
+	#initial="http://doi.org/",
+    # 	max_length=200,
+    #    #required=False,
+    #    help_text='The dio of the original publication. It will be used to download bibliographic information including the abstract. If you provide this information yourself it will be used instead.', 
+    #)
+    #pub_date = PUB_DATEField(
+	#    initial=datetime.now(),
+    #    help_text='The date when this record was first created.'
+    #)
 
     statevector=StateVectorField(
-            help_text='Ordered, comma separated  list of state variables, e.g. C_1,C_2,C_3 , that form the state vector.'
+            help_text="""Ordered, comma separated  list of state variables, e.g. C_1,C_2,C_3 , that form the state vector. 
+            The content of this field will also influence the list of  state variables,  the flux sources and targets further down."""
     )
     timesymbol=CharField(
             initial="t",
@@ -228,7 +229,12 @@ class ModelDescriptorForm(Form):
         if k in ks:
             #varliststring=cd[k]
             #var_names=var_names_from_state_vector_string(varliststring)
-            var_names=[n for n in map(str,sympify(cd[k]))]
+            sym=sympify(cd[k])
+            if isinstance(sym,tuple):
+                symtup=sym
+            elif isinstance(sym,Symbol):    
+                symtup=(sym,)
+            var_names=[n for n in map(str,symtup)]
             
             #now check which of the required description fields for the statevariables are already
             #present
@@ -252,7 +258,6 @@ class ModelDescriptorForm(Form):
 
     @classmethod
     def update_external_func_keys(cls,cd):
-        pe('cd',locals())
         rm=cls.srm(cd)
         # find the yet additional variables to
 
@@ -281,11 +286,20 @@ class ModelDescriptorForm(Form):
     def srm(cls,cd):
         fluxes=cd[cls.fluxesKey]
         varliststring=cd[cls.stateVectorKey]
-        pe('type(fluxes)',locals())
+        pe('fluxes',locals())
         names=fluxes["names"]
         outF=fluxes["out_fluxes"]
         intF=fluxes["internal_fluxes"]
-        state_var_tupel=sympify(varliststring)
+        # fixme mm 20.10.2018:
+        # the following code is duplicated in the form 
+        # it probably wants to live in the to_python method of 
+        # the Field
+        sym=sympify(varliststring)
+        if isinstance(sym,tuple):
+            symtup=sym
+        elif isinstance(sym,Symbol):    
+            symtup=(sym,)
+        state_var_tupel=symtup
 
         time_symbol=sympify(cd[cls.timeSymbolKey])
         
@@ -296,6 +310,12 @@ class ModelDescriptorForm(Form):
         rm = SmoothReservoirModel.from_state_variable_indexed_fluxes(list(state_var_tupel), time_symbol, inSym, outSym, internalSym)
         return(rm)
 
+
+    @classmethod
+    def update_fluxes_dict(cls,cd):
+        fd=cd[cls.fluxesKey]
+        pe('fd',locals())
+        return cd
 
     @classmethod
     def update_additional_var_keys(cls,cd):
@@ -331,6 +351,10 @@ class ModelDescriptorForm(Form):
         cd=self.cleaned_data 
         # we add new key:initialValue pairs to the data dict
         # based on the data already available
+        # and remove some that are no longer valid (e.g. in case a variable is removed from the statevector 
+        # it will also be removed from the list of state variables and the possible targets and sources in the 
+        # fluxes field.
+
         # The adaptive form class will add the required fields when it receives
         # this extended data dict
         ks=cd.keys()
@@ -344,6 +368,7 @@ class ModelDescriptorForm(Form):
                 cd.update({k:None})
 
             if cls.fluxesKey in ks:
+                cd=cls.update_fluxes_dict(cd)
                 cd=cls.update_external_func_keys(cd)
                 cd=cls.update_additional_var_keys(cd)
 
