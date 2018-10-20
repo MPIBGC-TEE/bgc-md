@@ -143,31 +143,31 @@ class ModelDescriptorForm(Form):
             self.fields[cls.fluxRepKey]= field
             self.fields[cls.fluxesKey]= FluxesField(
                 initial={
-                    "names":stvNames
+                    FluxesField.names_key:stvNames
                     ,
-                    "in_fluxes":[]
+                    FluxesField.in_fluxes_key:[]
                     ,
-                    "internal_fluxes":[]
+                    FluxesField.internal_fluxes_key:[]
                     ,
-                    "out_fluxes":[]
+                    FluxesField.out_fluxes_key:[]
                 }
                 # example structure
                 #initial={
-                #    "names":['x','y','z']
+                #    FluxesField.names_key:['x','y','z']
                 #    ,
-                #    "in_fluxes":[
-                #        {"target":"y","expression":"x**3"}
-                #       #,{"target":"z","expression":"y**3"}
+                #    FluxesField.in_fluxes_key:[
+                #        {FluxesField.target_key:"y",FluxesField.expression_key:"x**3"}
+                #       #,{FluxesField.target_key:"z",FluxesField.expression_key:"y**3"}
                 #    ]
                 #    ,
-                #    "internal_fluxes":[
-                #        {"source":"x", "target":"y","expression":"x**3"}
-                #        # ,{"source":"y", "target":"z","expression":"y**3"}
+                #    FluxesField.internal_fluxes_key:[
+                #        {FluxesField.source_key:"x", FluxesField.target_key:"y",FluxesField.expression_key:"x**3"}
+                #        # ,{FluxesField.source_key:"y", FluxesField.target_key:"z",FluxesField.expression_key:"y**3"}
                 #    ]
                 #    ,
-                #    "out_fluxes":[
-                #        {"source":"x","expression":"x"}
-                #       #,{"source":"y","expression":"y"}
+                #    FluxesField.out_fluxes_key:[
+                #        {FluxesField.source_key:"x",FluxesField.expression_key:"x"}
+                #       #,{FluxesField.source_key:"y",FluxesField.expression_key:"y"}
                 #    ]
                 #}
                 ,help_text="the target option will change when you change the source"
@@ -229,12 +229,13 @@ class ModelDescriptorForm(Form):
         if k in ks:
             #varliststring=cd[k]
             #var_names=var_names_from_state_vector_string(varliststring)
-            sym=sympify(cd[k])
-            if isinstance(sym,tuple):
-                symtup=sym
-            elif isinstance(sym,Symbol):    
-                symtup=(sym,)
-            var_names=[n for n in map(str,symtup)]
+            #sym=sympify(cd[k])
+            #if isinstance(sym,tuple):
+            #    symtup=sym
+            #elif isinstance(sym,Symbol):    
+            #    symtup=(sym,)
+            #var_names=[n for n in map(str,symtup)]
+            var_names=cd[k]
             
             #now check which of the required description fields for the statevariables are already
             #present
@@ -285,27 +286,30 @@ class ModelDescriptorForm(Form):
     @classmethod
     def srm(cls,cd):
         fluxes=cd[cls.fluxesKey]
-        varliststring=cd[cls.stateVectorKey]
-        pe('fluxes',locals())
-        names=fluxes["names"]
-        outF=fluxes["out_fluxes"]
-        intF=fluxes["internal_fluxes"]
+        #pe('fluxes',locals())
+        names=fluxes[FluxesField.names_key]
+        outF=fluxes[FluxesField.out_fluxes_key]
+        intF=fluxes[FluxesField.internal_fluxes_key]
         # fixme mm 20.10.2018:
         # the following code is duplicated in the form 
         # it probably wants to live in the to_python method of 
         # the Field
-        sym=sympify(varliststring)
-        if isinstance(sym,tuple):
-            symtup=sym
-        elif isinstance(sym,Symbol):    
-            symtup=(sym,)
-        state_var_tupel=symtup
+        #varliststring=cd[cls.stateVectorKey]
+        #sym=sympify(varliststring)
+        #if isinstance(sym,tuple):
+        #    symtup=sym
+        #elif isinstance(sym,Symbol):    
+        #    symtup=(sym,)
+        #state_var_tupel=symtup
+        state_var_tupel=sympify(tuple(cd[cls.stateVectorKey]))
+        #pe('state_var_tupel',locals())
 
         time_symbol=sympify(cd[cls.timeSymbolKey])
+        #pe('time_symbol',locals())
         
-        inSym={sympify(flux['target']):sympify(flux['expression']) for flux in fluxes["in_fluxes"]}
-        outSym={sympify(flux['source']):sympify(flux['expression']) for flux in fluxes["out_fluxes"]}
-        internalSym={(sympify(flux['source']),sympify(flux['target'])):sympify(flux['expression']) for flux in fluxes["internal_fluxes"]}
+        inSym={sympify(flux[FluxesField.target_key]):sympify(flux[FluxesField.expression_key]) for flux in fluxes[FluxesField.in_fluxes_key]}
+        outSym={sympify(flux[FluxesField.source_key]):sympify(flux[FluxesField.expression_key]) for flux in fluxes[FluxesField.out_fluxes_key]}
+        internalSym={(sympify(flux[FluxesField.source_key]),sympify(flux[FluxesField.target_key])):sympify(flux[FluxesField.expression_key]) for flux in fluxes[FluxesField.internal_fluxes_key]}
 
         rm = SmoothReservoirModel.from_state_variable_indexed_fluxes(list(state_var_tupel), time_symbol, inSym, outSym, internalSym)
         return(rm)
@@ -313,8 +317,29 @@ class ModelDescriptorForm(Form):
 
     @classmethod
     def update_fluxes_dict(cls,cd):
+        # when the state vector changes
+        # we have to update the fluxes field since
+        # the state variables represent the possible 
+        # targets for the fluxes
+
+        # If we add new statevariables we also gain 
+        # possible flux targets so the FluxesField.names_key field 
+        # of the fluxesField has to be extended to 
+        # add the new choices to the select fields 
+
+        # If we remove a statevariable we will not 
+        # only have to remove 
+
         fd=cd[cls.fluxesKey]
-        pe('fd',locals())
+        names=fd[FluxesField.names_key]
+        stvNames=cd[cls.stateVectorKey]
+        not_in_stv=set(names).difference(stvNames)
+        new_fd=FluxesField.remove_pools(not_in_stv,fd)
+        
+        not_in_names=set(stvNames).difference(names)
+        new_fd=FluxesField.add_pools(not_in_names,new_fd)
+
+        cd[cls.fluxesKey]=new_fd
         return cd
 
     @classmethod
@@ -325,11 +350,11 @@ class ModelDescriptorForm(Form):
         state_var_tupel=tuple(rm.state_vector)
         additional=fs.difference(state_var_tupel).difference([rm.time_symbol])
         additional_names=[n for n in map(str,additional)]
-        pe('additional_names',locals())
+        #pe('additional_names',locals())
         
         ks=cd.keys()
         pavn=cls.present_additional_var_names(ks)
-        pe('pavn',locals())
+        #pe('pavn',locals())
         
         if pavn!=additional_names:
             # add description fields for all additiona variables 
@@ -341,14 +366,16 @@ class ModelDescriptorForm(Form):
             # delete description fields for all the variables 
             # NOT present in any expression
             del_names=set(pavn).difference(additional_names)
-            pe('del_names',locals())
+            #pe('del_names',locals())
             for var_name in del_names :
                 cd.pop(cls.additionalVarDescKey(var_name))
         return cd
 
     def extended_instance(self):
+        pe('self.has_changed()',locals())
         cls=self.__class__
         cd=self.cleaned_data 
+
         # we add new key:initialValue pairs to the data dict
         # based on the data already available
         # and remove some that are no longer valid (e.g. in case a variable is removed from the statevector 

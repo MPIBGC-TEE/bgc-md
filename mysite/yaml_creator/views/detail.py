@@ -18,8 +18,8 @@ import os
 from pathlib import Path
 from yaml import dump,load
 import matplotlib
-matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+plt.switch_backend('Agg')
 from io import StringIO 
 
 def formDataFromYamlFile(file_name):

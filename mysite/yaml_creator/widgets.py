@@ -4,6 +4,8 @@ from testinfrastructure.helpers import pe
 class StateVectorInput(TextInput):
     template_name = 'yaml_creator/widgets/StateVectorInput.html'
     
+    def format_value(self,var_names_list):
+        return ",".join(var_names_list)
 
 class FluxesInput(Widget):
     #input_type = None  # Subclasses must define this.
