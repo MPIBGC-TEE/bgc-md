@@ -5,7 +5,11 @@ class StateVectorInput(TextInput):
     template_name = 'yaml_creator/widgets/StateVectorInput.html'
     
     def format_value(self,var_names_list):
-        return ",".join(var_names_list)
+        if isinstance(var_names_list,list):
+            res = ",".join(var_names_list)
+        else:
+            res=var_names_list    
+        return res
 
 class FluxesInput(Widget):
     #input_type = None  # Subclasses must define this.
