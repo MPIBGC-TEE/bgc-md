@@ -1,0 +1,11 @@
+# - Mysql server and mysql-workbench must be configured for the login you are working with
+# 
+# - to see the ERR diagrams type: mysql-workbench db1_schema.mwb
+# 
+# - the automatically generated sql script that creates the database can be called by
+#   mysql < db1_create.sql (or by source db1_create.sql from the mysql prompt)
+# 
+# - example data are inserted in by running :mysql < dg1_insert.sql 
+# 
+# - example queries are run by: mysql< dg1_queries.sql 
+
