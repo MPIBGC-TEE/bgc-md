@@ -38,7 +38,7 @@ VALUES
 INSERT INTO InFluxes 
 VALUES 
         ("x","default_1.yaml","x**1"),
-        ("y","default_1.yaml","x**1");
+        ("y","default_1.yaml","y**1");
 
 INSERT INTO Outfluxes 
 VALUES 
@@ -47,8 +47,8 @@ VALUES
 
 INSERT INTO InternalFluxes 
 VALUES 
-        ("x","y","default_1.yaml","x**3"),
-        ("y","x","default_1.yaml","x**3");
+        ("x","y","default_1.yaml","x**2"),
+        ("y","x","default_1.yaml","y**2");
 
 INSERT INTO CompartmentalMatricesAndInputVectors
 VALUES 
