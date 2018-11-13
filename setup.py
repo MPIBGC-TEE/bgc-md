@@ -47,6 +47,7 @@ setup(name='bgc_md',
             ,"mendeley "
             ,"PyYAML"
             ,"pandas"
+            ,'netCDF4'
         ],
         include_package_data=True,
         #zip_safe=False

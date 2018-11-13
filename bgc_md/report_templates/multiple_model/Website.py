@@ -15,12 +15,13 @@ def template(model_list):
         Text("# Variables"), 
         Text("# Constants"), 
         Text("Structure"), 
-        Text("Right hand side of ODE"), 
+        #Text("Right hand side of ODE"), 
         Text("Source")])
-    table_format = list("lccccc")
+    #table_format = list("lccccc")
+    table_format = list("lcccc")
     T = Table("Summary of the models in the database of Carbon Allocation in Vegetation models", header_row, table_format)
-    single_tp=defaults()['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
-    #single_tp=defaults()['paths']['report_templates'].joinpath('single_model','CompleteSingleModelReport.py')
+    #single_tp=defaults()['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
+    single_tp=defaults()['paths']['report_templates'].joinpath('single_model','CompleteSingleModelReport.py')
 
     def func(model):
         modelRel=render(single_tp,model=model)
@@ -37,7 +38,7 @@ def template(model_list):
                     fv_fs_entry = exprs_to_element(row_dic['exprs'], model.symbols_by_type)
         l.append(fv_fs_entry)
 
-        l.append(Math("${eq}",eq=model.rhs, parentheses=False))
+        #l.append(Math("${eq}",eq=model.rhs, parentheses=False))
         l.append(Citation(model.bibtex_entry, parentheses=False))
         row = TableRow(l)
         return row
