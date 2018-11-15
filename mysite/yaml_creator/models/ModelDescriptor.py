@@ -4,7 +4,6 @@ from pathlib import Path
 import re
 from ..config import dataDir,defaultYamlFileName
 
-# Create your models here.
 def default_model_descriptor_folder_name():
     #folder_names=[m.filename for m in ModelDescriptor.objects.all()]
     pd=Path(dataDir)
@@ -29,10 +28,15 @@ def default_model_descriptor_folder_name():
 
     return yaml_file_name_default
 ###############################################
+# Create your models here.
 
 class ModelDescriptor(models.Model):
-    filename=models.CharField(max_length=200,primary_key=True,default=default_model_descriptor_folder_name)
-    doi=models.URLField(max_length=200)
+    folder_name=models.CharField(
+            max_length=200,
+            primary_key=True,
+            default=default_model_descriptor_folder_name
+    )
+    #doi=models.URLField(max_length=200)
     #pub_date=models.DateTimeField('date published')
-    pub_date=models.DateField('date published')
-
+    #pub_date=models.DateField('date published')
+#
