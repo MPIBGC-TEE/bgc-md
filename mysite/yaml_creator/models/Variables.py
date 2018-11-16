@@ -5,7 +5,7 @@ from .ModelDescriptor import ModelDescriptor
 
      
 class Variable(models.Model):
-    model_id=models.ForeignKey(ModelDescriptor,on_delete=models.CASCADE)
+    model_id=models.ForeignKey(ModelDescriptor,on_delete=models.CASCADE),primary_key=True
     symbol=models.CharField(
             max_length=200,
             primary_key=True,
