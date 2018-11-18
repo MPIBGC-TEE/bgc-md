@@ -1,8 +1,8 @@
 
 from django.db import models
-from . ComponentScheme import ComponentScheme
+#from . ComponentScheme import ComponentScheme
 class FluxRepresentation(models.Model):
-    componentscheme=models.OneToOneField('ComponentScheme',on_delete=models.CASCADE)
+    #componentscheme=models.OneToOneField('ComponentScheme',on_delete=models.CASCADE)
     @classmethod
     def get_subclassDict(cls):
         classes=cls.__subclasses__()
