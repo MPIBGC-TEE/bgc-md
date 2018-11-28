@@ -48,6 +48,7 @@ setup(name='bgc_md',
             ,"PyYAML"
             ,"pandas"
             ,'netCDF4'
+            ,'sqlalchemy'
         ],
         include_package_data=True,
         #zip_safe=False

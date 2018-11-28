@@ -30,10 +30,26 @@ class TestStructureOfCompartmentalMatrix(unittest.TestCase):
         
         StateVectorPositions= Table('StateVectorPositions', metadata,
         	Column('pos_id', Integer ),
-        	Column('variables_symbol',None),
-        	Column('variables_model_id',None),
-        	ForeignKeyConstraint(['variables_symbol', 'variables_model_id'], ['Variables.symbol', 'Variables.model_id'])
+        	Column('symbol',None),
+        	Column('model_id',None),
+        	ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
         )
+        
+        InFluxes= Table('InFluxes', metadata,
+            Column('expression', String(100)),
+            Column('description', String(100)),
+        	Column('target_symbol',None, primary_key=True),
+        	Column('model_id',None, primary_key=True),
+        	ForeignKeyConstraint(['target_symbol', 'model_id'], ['StateVectorPositions.symbol', 'StateVectorPositions.model_id'])
+        )
+        OutFluxes= Table('OutFluxes', metadata,
+            Column('expression', String(100)),
+            Column('description', String(100)),
+        	Column('source_symbol',None, primary_key=True),
+        	Column('model_id',None, primary_key=True),
+        	ForeignKeyConstraint(['source_symbol', 'model_id'], ['StateVectorPositions.symbol', 'StateVectorPositions.model_id'])
+        )
+        
         metadata.create_all(engine)
         
         # insert data
@@ -59,8 +75,26 @@ class TestStructureOfCompartmentalMatrix(unittest.TestCase):
         conn.execute(
         	StateVectorPositions.insert(),
         	[
-                {'pos_id':0,'variables_symbol':"x",'variables_model_id':"default_1.yaml"},
-                {'pos_id':1,'variables_symbol':"y",'variables_model_id':"default_1.yaml"}
+                {'pos_id':0,'symbol':"x",'model_id':"default_1.yaml"},
+                {'pos_id':1,'symbol':"y",'model_id':"default_1.yaml"}
+        	]
+        )
+        conn.execute(
+        	InFluxes.insert(),
+        	[
+                {'expression':0,'description':'','target_symbol':"x",'model_id':"default_1.yaml"},
+        	]
+        )
+        conn.execute(
+        	OutFluxes.insert(),
+        	[
+                {'expression':'x','description':'','source_symbol':"x",'model_id':"default_1.yaml"},
+        	]
+        )
+        conn.execute(
+        	InternalFluxes.insert(),
+        	[
+                {'expression':'x','description':'','source_symbol':"x",'model_id':"default_1.yaml"},
         	]
         )
         self.conn=                  conn
@@ -75,13 +109,14 @@ class TestStructureOfCompartmentalMatrix(unittest.TestCase):
         Models=               self.Models
         # now query
         # we use the c collection for the columns
-        s = select([StateVectorPositions.c.variables_symbol]).where(StateVectorPositions.c.variables_model_id== 'default_1.yaml').order_by(StateVectorPositions.c.pos_id)
+        s = select([StateVectorPositions.c.symbol]).where(StateVectorPositions.c.model_id== 'default_1.yaml').order_by(StateVectorPositions.c.pos_id)
         sym_list=[Symbol(str(row[0])) for row in conn.execute(s)]
         pe('sym_list',locals())
         stateVector=Matrix(sym_list)
         x,y=symbols('x,y')
         ref=Matrix([x,y])
         self.assertEqual(stateVector,ref)
+
     def test_b_vector(self):
         # we create an extra table outside the database in the usercode
         conn=                 self.conn
