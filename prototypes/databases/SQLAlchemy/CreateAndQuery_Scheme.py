@@ -24,10 +24,20 @@ class TestStructureOfCompartmentalMatrix(unittest.TestCase):
         	Column('folder_name', String(50), primary_key=True),
         	Column('name', String(100))
         )
-        Variables= Table('Variables', metadata,
+        # BaseVariables are Variables which could be replaced by parameters or external functions
+        # They are the leafes of the expression tree 
+        BaseVariables= Table('BaseVariables', metadata,
             Column('symbol', String(100), primary_key=True),
             Column('description', String),
-            Column('unit', String),
+            Column('model_id', None, ForeignKey('Models.folder_name') , primary_key=True)
+        )
+        
+        # Derived Variables are Variables that depend on other variables (derived or base)
+        # They are branches of the expression tree
+        DerivedVariables= Table('Variables', metadata,
+            Column('symbol', String(100), primary_key=True),
+            Column('description', String),
+            Column('expression', String),
             Column('model_id', None, ForeignKey('Models.folder_name') , primary_key=True)
         )
         
@@ -35,32 +45,32 @@ class TestStructureOfCompartmentalMatrix(unittest.TestCase):
         	Column('pos_id', Integer ),
         	Column('symbol',None),
         	Column('model_id',None),
-        	ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
+        	ForeignKeyConstraint(['symbol', 'model_id'], ['BaseVariables.symbol', 'BaseVariables.model_id'])
         )
         
-        InFluxes= Table('InFluxes', metadata,
-            Column('expression', String(100)),
-            Column('description', String(100)),
-        	Column('target_symbol',None, primary_key=True),
-        	Column('model_id',None, primary_key=True),
-        	ForeignKeyConstraint(['target_symbol', 'model_id'], ['StateVectorPositions.symbol', 'StateVectorPositions.model_id'])
-        )
-        OutFluxes= Table('OutFluxes', metadata,
-            Column('expression', String(100)),
-            Column('description', String(100)),
-        	Column('source_symbol',None, primary_key=True),
-        	Column('model_id',None, primary_key=True),
-        	ForeignKeyConstraint(['source_symbol', 'model_id'], ['StateVectorPositions.symbol', 'StateVectorPositions.model_id'])
-        )
-        InternalFluxes= Table('InternalFluxes', metadata,
-            Column('expression', String(100)),
-            Column('description', String(100)),
-        	Column('source_symbol',None, primary_key=True),
-        	Column('target_symbol',None, primary_key=True),
-        	Column('model_id',None, primary_key=True),
-        	ForeignKeyConstraint(['source_symbol', 'model_id'], ['StateVectorPositions.symbol', 'StateVectorPositions.model_id']),
-        	ForeignKeyConstraint(['target_symbol', 'model_id'], ['StateVectorPositions.symbol', 'StateVectorPositions.model_id'])
-        )
+        #InFluxes= Table('InFluxes', metadata,
+        #    Column('expression', String(100)),
+        #    Column('description', String(100)),
+        #	Column('target_symbol',None, primary_key=True),
+        #	Column('model_id',None, primary_key=True),
+        #	ForeignKeyConstraint(['target_symbol', 'model_id'], ['StateVectorPositions.symbol', 'StateVectorPositions.model_id'])
+        #)
+        #OutFluxes= Table('OutFluxes', metadata,
+        #    Column('expression', String(100)),
+        #    Column('description', String(100)),
+        #	Column('source_symbol',None, primary_key=True),
+        #	Column('model_id',None, primary_key=True),
+        #	ForeignKeyConstraint(['source_symbol', 'model_id'], ['StateVectorPositions.symbol', 'StateVectorPositions.model_id'])
+        #)
+        #InternalFluxes= Table('InternalFluxes', metadata,
+        #    Column('expression', String(100)),
+        #    Column('description', String(100)),
+        #	Column('source_symbol',None, primary_key=True),
+        #	Column('target_symbol',None, primary_key=True),
+        #	Column('model_id',None, primary_key=True),
+        #	ForeignKeyConstraint(['source_symbol', 'model_id'], ['StateVectorPositions.symbol', 'StateVectorPositions.model_id']),
+        #	ForeignKeyConstraint(['target_symbol', 'model_id'], ['StateVectorPositions.symbol', 'StateVectorPositions.model_id'])
+        #)
         
         metadata.create_all(engine)
         
@@ -76,17 +86,22 @@ class TestStructureOfCompartmentalMatrix(unittest.TestCase):
         )
         	
         conn.execute(
-        	Variables.insert(),
+        	BaseVariables.insert(),
         	[
-                {'symbol':"v_a"  ,'description':"leaf carbon stock",'unit':"kg",'model_id':"default_1.yaml"},
-                {'symbol':"v_b"  ,'description':"root carbon stock",'unit':"kg",'model_id':"default_1.yaml"},
-                {'symbol':"s_a"  ,'description':"soil carbon stock",'unit':"kg",'model_id':"default_1.yaml"},
-                {'symbol':"s_b"  ,'description':"soil carbon stock",'unit':"kg",'model_id':"default_1.yaml"},
-                {'symbol':"s_c"  ,'description':"soil carbon stock",'unit':"kg",'model_id':"default_1.yaml"},
-                {'symbol':"u_org",'description':"some variable describing the comulativ vegetation input"  ,'unit':"kg",'model_id':"default_1.yaml"},
-                {'symbol':"b_a",'description':"fraction of cumulative vegetation input received by pool v_a"  ,'unit':"kg",'model_id':"default_1.yaml"},
-                {'symbol':"b_b",'description':"fraction of cumulative vegetation input received by pool v_b"  ,'unit':"kg",'model_id':"default_1.yaml"},
-                {'symbol':"k_r",'description':"root decomprate"  ,'unit':"kg",'model_id':"default_1.yaml"}
+                {'symbol':"v_a"  ,'description':"leaf carbon stock",'model_id':"default_1.yaml"},
+                {'symbol':"v_b"  ,'description':"root carbon stock",'model_id':"default_1.yaml"},
+                {'symbol':"s_a"  ,'description':"soil carbon stock",'model_id':"default_1.yaml"},
+                {'symbol':"s_b"  ,'description':"soil carbon stock",'model_id':"default_1.yaml"},
+                {'symbol':"s_c"  ,'description':"soil carbon stock",'model_id':"default_1.yaml"},
+                {'symbol':"u_org",'description':"some variable describing the comulativ vegetation input"  ,
+                    'unit':"kg",
+                    'model_id':"default_1.yaml"},
+                {'symbol':"b_a",'description':"fraction of cumulative vegetation input received by pool v_a"  ,
+                    'model_id':"default_1.yaml"},
+                {'symbol':"b_b",'description':"fraction of cumulative vegetation input received by pool v_b"  ,
+                    'model_id':"default_1.yaml"},
+                {'symbol':"k_r",'description':"root decomprate"  ,
+                    'model_id':"default_1.yaml"}
         	]
         )
         conn.execute(
@@ -99,42 +114,43 @@ class TestStructureOfCompartmentalMatrix(unittest.TestCase):
                 {'pos_id':4,'symbol':"s_c",'model_id':"default_1.yaml"}
         	]
         )
-        conn.execute(
-        	InFluxes.insert(),
-        	[
-                {'expression':'u_org*u_a','description':'','target_symbol':"v_a",'model_id':"default_1.yaml"},
-        	]
-        )
-        conn.execute(
-        	OutFluxes.insert(),
-        	[
-                {'expression':'x','description':'','source_symbol':"x",'model_id':"default_1.yaml"},
-        	]
-        )
-        conn.execute(
-        	InternalFluxes.insert(),
-        	[
-                {'expression':'x','description':'','source_symbol':"x",'target_symbol':"y",'model_id':"default_1.yaml"},
-        	]
-        )
+        #conn.execute(
+        #	InFluxes.insert(),
+        #	[
+        #        {'expression':'u_org*u_a','description':'','target_symbol':"v_a",'model_id':"default_1.yaml"},
+        #        {'expression':'u_org*u_b','description':'','target_symbol':"v_b",'model_id':"default_1.yaml"},
+        #	]
+        #)
+        #conn.execute(
+        #	OutFluxes.insert(),
+        #	[
+        #        {'expression':'k_r*v_a','description':'','source_symbol':"v_a",'model_id':"default_1.yaml"},
+        #	]
+        #)
+        #conn.execute(
+        #	InternalFluxes.insert(),
+        #	[
+        #        {'expression':'x','description':'','source_symbol':"x",'target_symbol':"y",'model_id':"default_1.yaml"},
+        #	]
+        #)
         self.conn                   =  conn
         self.metadata               =  metadata
         self.engine                 =  engine
         self.StateVectorPositions   =  StateVectorPositions
-        self.Variables              =  Variables
+        self.BaseVariables          =  BaseVariables
         self.Models                 =  Models
-        self.InFluxes               =  InFluxes
-        self.OutFluxes              =  OutFluxes
-        self.InternalFluxes         =  InternalFluxes
+        #self.InFluxes              =  InFluxes
+        #self.OutFluxes             =  OutFluxes
+        #self.InternalFluxes        =  InternalFluxes
 
     def test_StateVector(self):
         conn                        =  self.conn
         StateVectorPositions        =  self.StateVectorPositions
-        Variables                   =  self.Variables
+        BaseVariables               =  self.BaseVariables
         Models                      =  self.Models
-        InFluxes                    =  self.InFluxes
-        OutFluxes                   =  self.OutFluxes
-        InternalFluxes              =  self.InternalFluxes
+        #InFluxes                   =  self.InFluxes
+        #OutFluxes                  =  self.OutFluxes
+        #InternalFluxes             =  self.InternalFluxes
         # now query
         # we use the c collection for the columns
         s = select([StateVectorPositions.c.symbol]).where(StateVectorPositions.c.model_id== 'default_1.yaml').order_by(StateVectorPositions.c.pos_id)
@@ -169,37 +185,42 @@ class TestStructureOfCompartmentalMatrix(unittest.TestCase):
         #    ⎢   ⎥ and u 
         #    ⎣b_b⎦
         # can be retrieved from the database
-        # although it is not stored directly in the database
+        # although it is not stored directly in it.
         conn                        =  self.conn
         engine                      =  self.engine
         StateVectorPositions        =  self.StateVectorPositions
-        Variables                   =  self.Variables
+        BaseVariables                   =  self.BaseVariables
         Models                      =  self.Models
-        InFluxes                    =  self.InFluxes
-        OutFluxes                   =  self.OutFluxes
-        InternalFluxes              =  self.InternalFluxes
-        # we create an extra stateVecotorPositions table to reflect our special ordering of variables 
-        # could be the same but does not have to
-        metadata = MetaData()
-        MyStateVectorPositions= Table('MyStateVectorPositions', metadata,
-        	Column('pos_id', Integer ),
-        	Column('symbol',None),
-        	Column('model_id',None),
-        	ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
-        )
-        metadata.create_all(engine)
-        conn.execute(
-        	MyStateVectorPositions.insert(),
-        	[
-                {'pos_id':0,'symbol':"v_a",'model_id':"default_1.yaml"},
-                {'pos_id':1,'symbol':"v_b",'model_id':"default_1.yaml"},
-                {'pos_id':2,'symbol':"s_a",'model_id':"default_1.yaml"},
-                {'pos_id':3,'symbol':"s_b",'model_id':"default_1.yaml"},
-                {'pos_id':4,'symbol':"s_c",'model_id':"default_1.yaml"}
-        	]
-        )
-        # the first way to establish the connection is to refer to variables defined in the original database entry for the model
-        #b=
+        #InFluxes                    =  self.InFluxes
+        #OutFluxes                   =  self.OutFluxes
+        #InternalFluxes              =  self.InternalFluxes
+        # if we can express b dirctly by variables defined in the original database entry for the model
+        # we can do this
+        #s = select([Expressions.c.symbol]).where(Expressions.c.symbol== 'default_1.yaml' and )
+        #b=Matrix([b_a,b_b])
+        
+        
+        
+       # # we create an extra stateVecotorPositions table to reflect our special ordering of variables 
+       # # could be the same but does not have to
+       # metadata = MetaData()
+       # MyStateVectorPositions= Table('MyStateVectorPositions', metadata,
+       # 	Column('pos_id', Integer ),
+       # 	Column('symbol',None),
+       # 	Column('model_id',None),
+       # 	ForeignKeyConstraint(['symbol', 'model_id'], ['BaseVariables.symbol', 'BaseVariables.model_id'])
+       # )
+       # metadata.create_all(engine)
+       # conn.execute(
+       # 	MyStateVectorPositions.insert(),
+       # 	[
+       #         {'pos_id':0,'symbol':"v_a",'model_id':"default_1.yaml"},
+       #         {'pos_id':1,'symbol':"v_b",'model_id':"default_1.yaml"},
+       #         {'pos_id':2,'symbol':"s_a",'model_id':"default_1.yaml"},
+       #         {'pos_id':3,'symbol':"s_b",'model_id':"default_1.yaml"},
+       #         {'pos_id':4,'symbol':"s_c",'model_id':"default_1.yaml"}
+       # 	]
+       # )
 
 
 
