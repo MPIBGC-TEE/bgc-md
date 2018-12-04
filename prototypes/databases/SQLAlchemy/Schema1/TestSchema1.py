@@ -16,7 +16,7 @@ from testinfrastructure.helpers import pe
 from createTables import createTables
 from addFivePoolModel import addFivePoolModel
 from helpers import addModel
-class TestStructureOfCompartmentalMatrix(unittest.TestCase):
+class TestSchema1(unittest.TestCase):
     # The aim is a proof of concept implementation for the retrieval of the structure of the different ways to structure the 
     # compartmental Matrix
     # Conceptually we want to separate this information from the database, which should only hold

@@ -36,7 +36,7 @@ def createTables():
     BaseVariables= Table('BaseVariables', metadata,
         Column('symbol'     ),
         Column('model_id'   ),
-        #Column('dimension', String(1000)),# should be constrained to a table with valid dimensions that could be created by the sympy package
+        Column('dimension', String(1000)),# should be constrained to a table with valid dimensions that could be created by the sympy package
     	ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
         # here shoulb be another constraint ensuring that a symbol that has been added to the 
         # DerivedVariables can not be added here
