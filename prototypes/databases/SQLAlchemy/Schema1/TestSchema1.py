@@ -8,13 +8,13 @@
 #         so the BaseVariables table needs a constraint that blocks the addition of a Symbol already present
 #         in DerivedVariables and vice versa
 import unittest
+import exampleModels
 from sqlalchemy import Table, Column, Integer, String, MetaData,ForeignKey,ForeignKeyConstraint
 from sqlalchemy import create_engine
 from sqlalchemy.sql import select
 from sympy import Matrix,sympify,symbols,Symbol
 from testinfrastructure.helpers import pe
 from createTables import createTables
-from addFivePoolModel import addFivePoolModel
 from helpers import addModel
 class TestSchema1(unittest.TestCase):
     # The aim is a proof of concept implementation for the retrieval of the structure of the different ways to structure the 
@@ -25,96 +25,36 @@ class TestSchema1(unittest.TestCase):
         #engine = create_engine('sqlite:///:memory:', echo=True)
         #metadata = MetaData()
 
-        self.metadata,self.engine=createTables()
+        metadata,engine=createTables()
+        self.metadata=metadata
+        self.engine=engine
 
 
     def test_StateVector(self):
         metadata=self.metadata
         engine=self.engine
         conn=engine.connect()
-        addFivePoolModel(metadata,engine)
+        #exampleModels.addFivePoolModel(metadata,engine)
+        exampleModels.addTwoPoolModel(metadata,engine,'default_2','twoPoolModel')
         StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
         # now query
         # we use the c collection for the columns
-        s = select([StateVectorPositions.c.symbol]).where(StateVectorPositions.c.model_id== 'default_1.yaml').order_by(StateVectorPositions.c.pos_id)
+        s = select([StateVectorPositions.c.symbol]).where(StateVectorPositions.c.model_id== 'default_2.yaml').order_by(StateVectorPositions.c.pos_id)
         sym_list=[Symbol(str(row[0])) for row in conn.execute(s)]
         pe('sym_list',locals())
-        stateVector=Matrix(sym_list)
+        #stateVector=Matrix(sym_list)
 
-        v_a, v_b, s_a, s_b, s_c = symbols('v_a,v_b,s_a,s_b,s_c')
+        #v_a, v_b = symbols('v_a,v_b')
 
-        ref=Matrix([v_a, v_b, s_a, s_b, s_c])
-        self.assertEqual(stateVector,ref)
+        #ref=Matrix([v_a, v_b])
+        #self.assertEqual(stateVector,ref)
 
+#    @unittest.skip
     def test_resolve_derived_Variable(self):
         metadata=self.metadata
         engine=self.engine
+        exampleModels.addFivePoolModel(metadata,engine,'default_1','matrix test')
         conn=engine.connect()
-        base_variables = [
-             { 'symbol':"k_a"  ,'description':"decomprate"                              ,'dimension':"1/time"   }
-            ,{ 'symbol':"kv_a" ,'description':"leaf respiration rate"                   ,'dimension':"1/time"   }
-            ,{ 'symbol':"ki_v_b" ,'description':"leaf respiration rate"                   ,'dimension':"1/time"   }
-    	]
-        derived_variables = [
-             { 'symbol':"u_org"     ,'description':"some variable describing the comulativ vegetation input"    ,'expression':"Iv_a+Iv_b"}
-    	]
-        base_in_fluxes=[
-            {
-                'symbol':"Iv_a" 
-                ,'description':"External influx into compartment v_a"    
-                ,'dimension':"mass/time"# fixme: this should be derived from the target_symbol which must be a state variable
-                ,'target_symbol':"v_a"
-            }
-        ]
-        derived_in_fluxes=[
-            {
-                'symbol':"Iv_b" 
-                ,'description':"External influx into compartment v_b"    
-                ,'expression':"v_b*ki_v_b"
-                ,'target_symbol':"v_b"
-            }
-        ]
-        derived_out_fluxes=[
-            {
-                'symbol':"Ov_a" 
-                ,'description':"External Outflux out of compartment v_a =leaf respiration"    
-                ,'expression':"kv_a*v_a"
-                ,'source_symbol':"v_a"
-            }
-        ]
-        derived_internal_fluxes=[
-            { 
-                'symbol':"INTv_a_v_b"
-                ,'description':"root leaf transfer"                                         
-                ,'expression':"k_a*v_a"  
-                ,'source_symbol':"v_a"
-                ,'target_symbol':"v_b"
-            }
-        ]
-
-        state_variables= [ 
-             { 'symbol':"v_a" ,'description':"leaf pool" }
-            ,{ 'symbol':"v_b" ,'description':"wood pool" }
-        ]
-        
-        addModel(
-            metadata
-            ,engine
-            ,'default_2'
-            ,'MarkusMadeUpVegModel'
-            ,state_variables
-            ,base_variables
-            ,derived_variables
-            ,base_in_fluxes
-            ,derived_in_fluxes
-            ,derived_out_fluxes
-            ,derived_internal_fluxes
-        )
-        #StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
-        # prove that we can reconstruct the fluxes as functions of the BaseVariables
-    #@unittest.skip
-    #def test_b_vector(self):
-    #    # ecosystem models would have a vegetation and soil part
     #    #         .
     #    #       ⎡v_a⎤   ⎡⎡_,_⎤⎡_,_,_⎤⎤   ⎡v_a⎤  ⎡I_a⎤
     #    #       ⎢v_b⎥   ⎢⎣_,_⎦⎣_,_,_⎦⎥   ⎢v_b⎥  ⎢I_b⎥
