@@ -1,7 +1,8 @@
 from sqlalchemy import Table, Column, Integer, String, MetaData,ForeignKey,ForeignKeyConstraint
 from sqlalchemy import create_engine
 def createTables():
-    engine = create_engine('sqlite:///:memory:', echo=True)
+    #engine = create_engine('sqlite:///:memory:', echo=True)
+    engine = create_engine('sqlite:///:memory:')
     metadata = MetaData()
     
     # build the tables

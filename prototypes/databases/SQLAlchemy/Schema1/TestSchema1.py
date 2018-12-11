@@ -15,7 +15,8 @@ from sqlalchemy.sql import select
 from sympy import Matrix,sympify,symbols,Symbol
 from testinfrastructure.helpers import pe
 from createTables import createTables
-from helpers import addModel
+from helpers import addModel,resolve
+
 class TestSchema1(unittest.TestCase):
     # The aim is a proof of concept implementation for the retrieval of the structure of the different ways to structure the 
     # compartmental Matrix
@@ -30,12 +31,11 @@ class TestSchema1(unittest.TestCase):
         self.engine=engine
 
 
-    def test_StateVector(self):
+    def test_state_vector(self):
         metadata=self.metadata
         engine=self.engine
         conn=engine.connect()
-        #exampleModels.addFivePoolModel(metadata,engine)
-        exampleModels.addTwoPoolModel(metadata,engine,'default_2','twoPoolModel')
+        exampleModels.addTwoPoolModel(metadata,engine,'default_1','twoPoolModel')
         StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
         # now query
         # we use the c collection for the columns
@@ -44,19 +44,29 @@ class TestSchema1(unittest.TestCase):
         pe('sym_list',locals())
         #stateVector=Matrix(sym_list)
 
-        #v_a, v_b = symbols('v_a,v_b')
+        #vl, v_b = symbols('vl,v_b')
 
-        #ref=Matrix([v_a, v_b])
+        #ref=Matrix([vl, v_b])
         #self.assertEqual(stateVector,ref)
 
-#    @unittest.skip
-    def test_resolve_derived_Variable(self):
+    #@unittest.skip
+    def test_resolve_derived_variable(self):
         metadata=self.metadata
         engine=self.engine
-        exampleModels.addFivePoolModel(metadata,engine,'default_1','matrix test')
+        model_id='default_2'
+        exampleModels.addOnePoolModel(metadata,engine,model_id,'test')
+
+        res=resolve(metadata,engine,Symbol("NetFlux"),model_id)
+        ref=sympify('kI_vl*vl-kO_vl*vl')
+
+    @unittest.skip
+    def test_matrix_variables(self):
+        metadata=self.metadata
+        engine=self.engine
+        exampleModels.addFivePoolModel(metadata,engine,'default_3','matrix test')
         conn=engine.connect()
     #    #         .
-    #    #       ⎡v_a⎤   ⎡⎡_,_⎤⎡_,_,_⎤⎤   ⎡v_a⎤  ⎡I_a⎤
+    #    #       ⎡vl⎤   ⎡⎡_,_⎤⎡_,_,_⎤⎤   ⎡vl⎤  ⎡I_a⎤
     #    #       ⎢v_b⎥   ⎢⎣_,_⎦⎣_,_,_⎦⎥   ⎢v_b⎥  ⎢I_b⎥
     #    #       ⎢s_a⎥ = ⎢⎡_,_⎤⎡_,_,_⎤⎥ * ⎢s_a⎥ +⎢I_a⎥
     #    #       ⎢s_b⎥   ⎢⎢_,_⎦⎢_,_,_⎦⎥   ⎢s_b⎥  ⎢I_b⎥
@@ -103,7 +113,7 @@ class TestSchema1(unittest.TestCase):
     #   # conn.execute(
     #   # 	MyStateVectorPositions.insert(),
     #   # 	[
-    #   #         {'pos_id':0,'symbol':"v_a",'model_id':"default_1.yaml"},
+    #   #         {'pos_id':0,'symbol':"vl",'model_id':"default_1.yaml"},
     #   #         {'pos_id':1,'symbol':"v_b",'model_id':"default_1.yaml"},
     #   #         {'pos_id':2,'symbol':"s_a",'model_id':"default_1.yaml"},
     #   #         {'pos_id':3,'symbol':"s_b",'model_id':"default_1.yaml"},
