@@ -66,61 +66,58 @@ class TestSchema1(unittest.TestCase):
         engine=self.engine
         exampleModels.addFivePoolModel(metadata,engine,'default_3','matrix test')
         conn=engine.connect()
-    #    #         .
-    #    #       ⎡vl⎤   ⎡⎡_,_⎤⎡_,_,_⎤⎤   ⎡vl⎤  ⎡I_a⎤
-    #    #       ⎢v_b⎥   ⎢⎣_,_⎦⎣_,_,_⎦⎥   ⎢v_b⎥  ⎢I_b⎥
-    #    #       ⎢s_a⎥ = ⎢⎡_,_⎤⎡_,_,_⎤⎥ * ⎢s_a⎥ +⎢I_a⎥
-    #    #       ⎢s_b⎥   ⎢⎢_,_⎦⎢_,_,_⎦⎥   ⎢s_b⎥  ⎢I_b⎥
-    #    #       ⎣s_c⎦   ⎣⎣_,_⎦⎣_,_,_⎦⎦   ⎣s_c⎦  ⎣I_c⎦
-    #    # 
-    #    #  The input to the vegetation is often written like this 
-    #    #
-    #    #   ⎡I_a⎤   ⎡b_a⎤
-    #    #   ⎢   ⎥ = ⎢   ⎥* u 
-    #    #   ⎣I_b⎦   ⎣b_b⎦
+        # We invent a minimal ecosystem model with 2 vegetation in 3 soil pools
+        #        .
+        #       ⎡vl⎤   ⎡⎡_,_⎤⎡_,_,_⎤⎤   ⎡vl⎤  ⎡Il⎤
+        #       ⎢vw⎥   ⎢⎣_,_⎦⎣_,_,_⎦⎥   ⎢vw⎥  ⎢Iw⎥
+        #       ⎢sf⎥ = ⎢⎡_,_⎤⎡_,_,_⎤⎥ * ⎢sf⎥ +⎢If⎥
+        #       ⎢ss⎥   ⎢⎢_,_⎦⎢_,_,_⎦⎥   ⎢ss⎥  ⎢Is⎥
+        #       ⎣sb⎦   ⎣⎣_,_⎦⎣_,_,_⎦⎦   ⎣sb⎦  ⎣Ib⎦
+        # 
+        #  The input to the vegetation is often written as a produkt of distribution vector b and a scalar u
+        #
+        #   ⎡Il⎤   ⎡bl⎤
+        #   ⎢  ⎥ = ⎢  ⎥* u 
+        #   ⎣Iw⎦   ⎣bw⎦
 
 
-    #    # The test demonstrates how 
-    #    #    ⎡b_a⎤
-    #    #    ⎢   ⎥ and u 
-    #    #    ⎣b_b⎦
-    #    # can be retrieved from the database
-    #    # although it is not stored directly in it.
-    #    conn                        =  self.conn
-    #    engine                      =  self.engine
-    #    StateVectorPositions        =  self.StateVectorPositions
-    #    BaseVariables               =  self.BaseVariables
-    #    Models                      =  self.Models
-    #    #InFluxes                    =  self.InFluxes
-    #    #OutFluxes                   =  self.OutFluxes
-    #    #InternalFluxes              =  self.InternalFluxes
-    #    # if we can express b dirctly by variables defined in the original database entry for the model
-    #    # we can do this
-    #    #s = select([Expressions.c.symbol]).where(Expressions.c.symbol== 'default_1.yaml' and )
-    #    #b=Matrix([b_a,b_b])
-    #    
-    #    
-    #    
-    #   # # we create an extra stateVecotorPositions table to reflect our special ordering of variables 
-    #   # # could be the same but does not have to
-    #   # metadata = MetaData()
-    #   # MyStateVectorPositions= Table('MyStateVectorPositions', metadata,
-    #   # 	Column('pos_id', Integer ),
-    #   # 	Column('symbol',None),
-    #   # 	Column('model_id',None),
-    #   # 	ForeignKeyConstraint(['symbol', 'model_id'], ['BaseVariables.symbol', 'BaseVariables.model_id'])
-    #   # )
-    #   # metadata.create_all(engine)
-    #   # conn.execute(
-    #   # 	MyStateVectorPositions.insert(),
-    #   # 	[
-    #   #         {'pos_id':0,'symbol':"vl",'model_id':"default_1.yaml"},
-    #   #         {'pos_id':1,'symbol':"v_b",'model_id':"default_1.yaml"},
-    #   #         {'pos_id':2,'symbol':"s_a",'model_id':"default_1.yaml"},
-    #   #         {'pos_id':3,'symbol':"s_b",'model_id':"default_1.yaml"},
-    #   #         {'pos_id':4,'symbol':"s_c",'model_id':"default_1.yaml"}
-    #   # 	]
-    #   # )
+        # The test demonstrates how 
+        #    ⎡bl⎤
+        #    ⎢  ⎥ and u 
+        #    ⎣bw⎦
+        # can be retrieved from the database although it should not be stored directly in it.
+        
+        # The reason for not storing this information directly in the database is 
+        # that matrix and vector valued variables depend on the ordering of the pools, 
+        # which is actually not relevant scientifically. There are also different orderings 
+        # usefull for different purposes (clustering different soil levels or all microbial pools..)
+        # if we can express b dirctly by variables defined in the original database entry for the model
+        # we can do this
+        #s = select([Expressions.c.symbol]).where(Expressions.c.symbol== 'default_1.yaml' and )
+        #b=Matrix([bl,bw])
+        
+        
+        
+       # # we create an extra stateVecotorPositions table to reflect our special ordering of variables 
+       # # could be the same but does not have to
+       # metadata = MetaData()
+       # MyStateVectorPositions= Table('MyStateVectorPositions', metadata,
+       # 	Column('pos_id', Integer ),
+       # 	Column('symbol',None),
+       # 	Column('model_id',None),
+       # 	ForeignKeyConstraint(['symbol', 'model_id'], ['BaseVariables.symbol', 'BaseVariables.model_id'])
+       # )
+       # metadata.create_all(engine)
+       # conn.execute(
+       # 	MyStateVectorPositions.insert(),
+       # 	[
+       #         {'pos_id':0,'symbol':"vl",'model_id':"default_1.yaml"},
+       #         {'pos_id':1,'symbol':"vw",'model_id':"default_1.yaml"},
+       #         {'pos_id':2,'symbol':"sf",'model_id':"default_1.yaml"},
+       #         {'pos_id':3,'symbol':"ss",'model_id':"default_1.yaml"},
+       #         {'pos_id':4,'symbol':"sb",'model_id':"default_1.yaml"}
+       # 	]
+       # )
 
 
 
