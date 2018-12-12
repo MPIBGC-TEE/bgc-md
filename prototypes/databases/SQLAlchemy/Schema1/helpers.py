@@ -152,6 +152,7 @@ def resolve(metadata,engine,sym,model_id):
     return res
         
 def sym_resolve(targetSym,sl,ed):
+    # actual resolver on symbol basis
     if targetSym in sl:
         return targetSym 
     else:

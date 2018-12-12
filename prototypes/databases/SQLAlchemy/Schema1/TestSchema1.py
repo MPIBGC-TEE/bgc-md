@@ -35,19 +35,20 @@ class TestSchema1(unittest.TestCase):
         metadata=self.metadata
         engine=self.engine
         conn=engine.connect()
-        exampleModels.addTwoPoolModel(metadata,engine,'default_1','twoPoolModel')
+        model_id='default_2'
+        exampleModels.addTwoPoolModel(metadata,engine,model_id,'twoPoolModel')
         StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
         # now query
         # we use the c collection for the columns
-        s = select([StateVectorPositions.c.symbol]).where(StateVectorPositions.c.model_id== 'default_2.yaml').order_by(StateVectorPositions.c.pos_id)
+        s = select([StateVectorPositions.c.symbol]).where(StateVectorPositions.c.model_id== model_id).order_by(StateVectorPositions.c.pos_id)
         sym_list=[Symbol(str(row[0])) for row in conn.execute(s)]
         pe('sym_list',locals())
-        #stateVector=Matrix(sym_list)
+        stateVector=Matrix(sym_list)
 
-        #vl, v_b = symbols('vl,v_b')
+        vl, vw = symbols('vl,vw')
 
-        #ref=Matrix([vl, v_b])
-        #self.assertEqual(stateVector,ref)
+        ref=Matrix([vl, vw])
+        self.assertEqual(stateVector,ref)
 
     #@unittest.skip
     def test_resolve_derived_variable(self):
@@ -57,7 +58,7 @@ class TestSchema1(unittest.TestCase):
         exampleModels.addOnePoolModel(metadata,engine,model_id,'test')
 
         res=resolve(metadata,engine,Symbol("NetFlux"),model_id)
-        ref=sympify('kI_vl*vl-kO_vl*vl')
+        ref=sympify('kIvl*vl-kOvl*vl')
 
     @unittest.skip
     def test_matrix_variables(self):
