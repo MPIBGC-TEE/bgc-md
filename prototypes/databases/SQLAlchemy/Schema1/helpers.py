@@ -3,6 +3,9 @@ from sqlalchemy.sql import select
 from sympy import Matrix,sympify,symbols,Symbol
 from testinfrastructure.helpers import pe
 
+#define some module wide Variables
+defaultOrderingName='default_ordering' # might become a classVariable if we decide to encapsulate the database access
+
 def addVariable(metadata,engine,model_id,symbol,description):
     Variables=Table("Variables",metadata,autoload=True,autoload_with=engine)
     conn=engine.connect()
@@ -70,7 +73,14 @@ def addStateVariables(metadata,engine,model_id,state_variables):
         addVariable(metadata,engine,model_id,v['symbol'],v['description'])
         conn=engine.connect()
         conn.execute(
-    	    StateVectorPositions.insert(), [ {'pos_id':index,'symbol':v['symbol'],'model_id':model_id} ]
+    	    StateVectorPositions.insert(), [
+                {
+                    'pos_id':index
+                    ,'symbol':v['symbol']
+                    ,'model_id':model_id
+                    ,'ordering_id':defaultOrderingName
+                } 
+            ]
         )
 
 

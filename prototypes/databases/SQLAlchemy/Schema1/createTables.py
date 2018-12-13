@@ -35,19 +35,20 @@ def createTables():
     # We could add a dimension column that contains names like mass or length ( 
     # https://docs.sympy.org/latest/modules/physics/units/dimensions.html
     BaseVariables= Table('BaseVariables', metadata,
-        Column('symbol'     ),
-        Column('model_id'   ),
-        Column('dimension', String(1000)),# should be constrained to a table with valid dimensions that could be created by the sympy package
-    	ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
+        Column('symbol'     )
+        ,Column('model_id'   )
+        ,Column('dimension', String(1000))# should be constrained to a table with valid dimensions that could be created by the sympy package
+    	,ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
         # here shoulb be another constraint ensuring that a symbol that has been added to the 
         # DerivedVariables can not be added here
     )
     
     StateVectorPositions= Table('StateVectorPositions', metadata,
-    	Column('pos_id', Integer ),
-    	Column('symbol'          ),
-    	Column('model_id'        ),
-    	ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
+    	Column('pos_id', Integer )
+    	,Column('symbol' , primary_key=True)
+    	,Column('model_id' , primary_key=True)
+    	,Column('ordering_id' , String(100), primary_key=True)
+    	,ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
     )
     
     #Fluxes are just variables 

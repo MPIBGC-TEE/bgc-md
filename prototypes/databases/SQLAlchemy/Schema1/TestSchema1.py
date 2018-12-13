@@ -15,7 +15,7 @@ from sqlalchemy.sql import select
 from sympy import Matrix,sympify,symbols,Symbol
 from testinfrastructure.helpers import pe
 from createTables import createTables
-from helpers import addModel,resolve
+from helpers import defaultOrderingName,addModel,resolve
 
 class TestSchema1(unittest.TestCase):
     # The aim is a proof of concept implementation for the retrieval of the structure of the different ways to structure the 
@@ -64,9 +64,10 @@ class TestSchema1(unittest.TestCase):
     def test_matrix_variables(self):
         metadata=self.metadata
         engine=self.engine
-        exampleModels.addFivePoolModel(metadata,engine,'default_3','matrix test')
+        model_id='default_2'
+        exampleModels.addFivePoolModel(metadata,engine,model_id,'matrix test')
         conn=engine.connect()
-        # We invent a minimal ecosystem model with 2 vegetation in 3 soil pools
+        # We invent a minimal ecosystem model with 2 vegetation and 3 soil pools
         #        .
         #       ⎡vl⎤   ⎡⎡_,_⎤⎡_,_,_⎤⎤   ⎡vl⎤  ⎡Il⎤
         #       ⎢vw⎥   ⎢⎣_,_⎦⎣_,_,_⎦⎥   ⎢vw⎥  ⎢Iw⎥
@@ -74,7 +75,7 @@ class TestSchema1(unittest.TestCase):
         #       ⎢ss⎥   ⎢⎢_,_⎦⎢_,_,_⎦⎥   ⎢ss⎥  ⎢Is⎥
         #       ⎣sb⎦   ⎣⎣_,_⎦⎣_,_,_⎦⎦   ⎣sb⎦  ⎣Ib⎦
         # 
-        #  The input to the vegetation is often written as a produkt of distribution vector b and a scalar u
+        #  The input to the vegetation is often written as a product of distribution vector b and a scalar u
         #
         #   ⎡Il⎤   ⎡bl⎤
         #   ⎢  ⎥ = ⎢  ⎥* u 
@@ -89,9 +90,24 @@ class TestSchema1(unittest.TestCase):
         
         # The reason for not storing this information directly in the database is 
         # that matrix and vector valued variables depend on the ordering of the pools, 
-        # which is actually not relevant scientifically. There are also different orderings 
-        # usefull for different purposes (clustering different soil levels or all microbial pools..)
+        # which is actually not relevant for the solution. 
+        # Thurthermore different orderings are usefull for different purposes (clustering different soil levels or all microbial pools, or ..)
         # if we can express b dirctly by variables defined in the original database entry for the model
+
+        # Therefore if  we define vector/or matrix valued variables we always define them along with an ordering 
+        StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
+        conn.execute(
+        	StateVectorPositions.insert(),
+        	[
+                {'pos_id':0,'symbol':"vl",'model_id':model_id,'ordering_id':'veg2'}
+                ,{'pos_id':1,'symbol':"vw",'model_id':model_id,'ordering_id':'veg2'}
+                ,{'pos_id':2,'symbol':"sf",'model_id':model_id,'ordering_id':'veg2'}
+                ,{'pos_id':3,'symbol':"ss",'model_id':model_id,'ordering_id':'veg2'}
+                ,{'pos_id':4,'symbol':"sb",'model_id':model_id,'ordering_id':'veg2'}
+        	]
+        )
+        #
+        #
         # we can do this
         #s = select([Expressions.c.symbol]).where(Expressions.c.symbol== 'default_1.yaml' and )
         #b=Matrix([bl,bw])
@@ -108,16 +124,6 @@ class TestSchema1(unittest.TestCase):
        # 	ForeignKeyConstraint(['symbol', 'model_id'], ['BaseVariables.symbol', 'BaseVariables.model_id'])
        # )
        # metadata.create_all(engine)
-       # conn.execute(
-       # 	MyStateVectorPositions.insert(),
-       # 	[
-       #         {'pos_id':0,'symbol':"vl",'model_id':"default_1.yaml"},
-       #         {'pos_id':1,'symbol':"vw",'model_id':"default_1.yaml"},
-       #         {'pos_id':2,'symbol':"sf",'model_id':"default_1.yaml"},
-       #         {'pos_id':3,'symbol':"ss",'model_id':"default_1.yaml"},
-       #         {'pos_id':4,'symbol':"sb",'model_id':"default_1.yaml"}
-       # 	]
-       # )
 
 
 
