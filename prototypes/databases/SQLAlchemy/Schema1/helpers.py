@@ -141,14 +141,12 @@ def resolve(metadata,engine,sym,model_id):
     
     #sym_strs=['kI_vl','kO_vl']+['vl']
     ss=bss+sss
-    pe('ss',locals())
     sl=[Symbol(s) for s in ss]
 
     expressions={str(row[0]):str(row[1])  for row in 
             conn.execute(
                 select([DerivedVariables.c.symbol,DerivedVariables.c.expression]).where(DerivedVariables.c.model_id==model_id))
     }
-    pe('expressions',locals())
 
     #expressions={
     #        'NetFlux':'Ivl-Ovl'
@@ -167,6 +165,6 @@ def sym_resolve(targetSym,sl,ed):
         return targetSym 
     else:
         e=ed[targetSym]
-        pe('e.free_symbols',locals())
+        #pe('e.free_symbols',locals())
         return e.subs({s:sym_resolve(s,sl,ed) for s in e.free_symbols}) 
 

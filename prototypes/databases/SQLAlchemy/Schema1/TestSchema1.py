@@ -59,8 +59,11 @@ class TestSchema1(unittest.TestCase):
 
         res=resolve(metadata,engine,Symbol("NetFlux"),model_id)
         ref=sympify('kIvl*vl-kOvl*vl')
+        # also base variables should be resolved (just to Symbols) 
+        res=resolve(metadata,engine,Symbol("Ivl"),model_id)
+        ref=sympify('Ivl')
 
-    @unittest.skip
+    #@unittest.skip
     def test_matrix_variables(self):
         metadata=self.metadata
         engine=self.engine
@@ -92,38 +95,35 @@ class TestSchema1(unittest.TestCase):
         # that matrix and vector valued variables depend on the ordering of the pools, 
         # which is actually not relevant for the solution. 
         # Thurthermore different orderings are usefull for different purposes (clustering different soil levels or all microbial pools, or ..)
-        # if we can express b dirctly by variables defined in the original database entry for the model
 
         # Therefore if  we define vector/or matrix valued variables we always define them along with an ordering 
+        my_ordering_name='veg_2'
         StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
         conn.execute(
         	StateVectorPositions.insert(),
         	[
-                {'pos_id':0,'symbol':"vl",'model_id':model_id,'ordering_id':'veg2'}
-                ,{'pos_id':1,'symbol':"vw",'model_id':model_id,'ordering_id':'veg2'}
-                ,{'pos_id':2,'symbol':"sf",'model_id':model_id,'ordering_id':'veg2'}
-                ,{'pos_id':3,'symbol':"ss",'model_id':model_id,'ordering_id':'veg2'}
-                ,{'pos_id':4,'symbol':"sb",'model_id':model_id,'ordering_id':'veg2'}
+                 {'pos_id':0,'symbol':"vl",'model_id':model_id,'ordering_id':my_ordering_name}
+                ,{'pos_id':1,'symbol':"vw",'model_id':model_id,'ordering_id':my_ordering_name}
+                ,{'pos_id':2,'symbol':"sf",'model_id':model_id,'ordering_id':my_ordering_name}
+                ,{'pos_id':3,'symbol':"ss",'model_id':model_id,'ordering_id':my_ordering_name}
+                ,{'pos_id':4,'symbol':"sb",'model_id':model_id,'ordering_id':my_ordering_name}
         	]
         )
         #
-        #
-        # we can do this
-        #s = select([Expressions.c.symbol]).where(Expressions.c.symbol== 'default_1.yaml' and )
-        #b=Matrix([bl,bw])
+        # If we can express b by scalar variables defined in the original database entry for the model
+        # in case we can do this
+        Variables=Table("Variables",metadata,autoload=True,autoload_with=engine)
+        s = select([Variables.c.symbol]).where(Variables.c.model_id== model_id )
+        Ivl=resolve(metadata,engine,Symbol('Ivl'),model_id)
+        Ivw=resolve(metadata,engine,Symbol('Ivw'),model_id)
+        NetVegIn=Ivl+Ivw
+        bl=Ivl/NetVegIn
+        bw=Ivw/NetVegIn
+        b=Matrix([bl,bw])
+        pe('b',locals())
         
         
         
-       # # we create an extra stateVecotorPositions table to reflect our special ordering of variables 
-       # # could be the same but does not have to
-       # metadata = MetaData()
-       # MyStateVectorPositions= Table('MyStateVectorPositions', metadata,
-       # 	Column('pos_id', Integer ),
-       # 	Column('symbol',None),
-       # 	Column('model_id',None),
-       # 	ForeignKeyConstraint(['symbol', 'model_id'], ['BaseVariables.symbol', 'BaseVariables.model_id'])
-       # )
-       # metadata.create_all(engine)
 
 
 

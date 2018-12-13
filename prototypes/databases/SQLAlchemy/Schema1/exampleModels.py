@@ -40,6 +40,7 @@ def addOnePoolModel(metadata,engine,model_id,name):
         ,derived_out_fluxes
         ,[] #derived internal fluxes
     )
+    
 def addTwoPoolModel(metadata,engine,model_id,name):
     base_variables = [
          { 'symbol':"ka"  ,'description':"decomprate"                              ,'dimension':"1/time"   }
@@ -142,7 +143,7 @@ def addFivePoolModel(metadata,engine,model_id,name):
             ,'source_symbol':"vl"
         }
     ]
-    derived_internalfluxes=[
+    derived_internal_fluxes=[
         { 
             'symbol':"INTvlvw"
             ,'description':"root leaf transfer"                                         
