@@ -1,6 +1,7 @@
 from sqlalchemy import Table
 from sqlalchemy.sql import select
 from sympy import Matrix,sympify,symbols,Symbol
+import sympy
 from testinfrastructure.helpers import pe
 
 #define some module wide Variables
@@ -28,7 +29,7 @@ def addDerivedVariable(metadata,engine,model_id,symbol,description,expression):
     DerivedVariables=Table("DerivedVariables",metadata,autoload=True,autoload_with=engine)
     conn=engine.connect()
     conn.execute(
-    	DerivedVariables.insert(), [ { 'symbol':symbol, 'model_id':model_id, 'expression':expression, } ]
+    	DerivedVariables.insert(), [ { 'symbol':symbol, 'model_id':model_id, 'expression':expression } ]
     )
     
 def addBaseInFlux(metadata,engine,model_id,symbol,target_symbol,description,dimension):
@@ -67,7 +68,20 @@ def addDerivedInternalFlux(metadata,engine,model_id,symbol,source_symbol,target_
     	InternalFluxes.insert(), [ { 'symbol':symbol, 'model_id':model_id, 'source_symbol':source_symbol, 'target_symbol':target_symbol} ]
     )
 
-def addStateVariables(metadata,engine,model_id,state_variables):
+def addStateVariables(metadata,engine,model_id,state_variables,ordering_id=defaultOrderingName):
+    Orderings=Table("Orderings",metadata,autoload=True,autoload_with=engine)
+    conn=engine.connect()
+    # check if ordering already exists
+    s = select([Orderings.c.id]).where(Orderings.c.model_id== model_id)
+    res=[row[0] for row in conn.execute(s)]
+    #pe('len(res)',locals())
+    if len(res)==0:
+        conn.execute(
+        	Orderings.insert(),
+        	[
+        		{'model_id':model_id,'id':ordering_id},
+        	]
+        )
     StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
     for index,v in enumerate(state_variables):
         addVariable(metadata,engine,model_id,v['symbol'],v['description'])
@@ -78,12 +92,44 @@ def addStateVariables(metadata,engine,model_id,state_variables):
                     'pos_id':index
                     ,'symbol':v['symbol']
                     ,'model_id':model_id
-                    ,'ordering_id':defaultOrderingName
+                    ,'ordering_id':ordering_id
                 } 
             ]
         )
 
 
+
+def addMatrix(metadata,engine,symbol,description,model_id,ordering_id,row_index,expr_str:str):
+    Orderings=Table("Orderings",metadata,autoload=True,autoload_with=engine)
+    IndexedComponents=Table("IndexedComponents",metadata,autoload=True,autoload_with=engine)
+    #Dimensions=Table("Dimensions",metadata,autoload=True,autoload_with=engine)
+    
+    addDerivedVariable(metadata,engine,model_id,symbol,description,expression=expr_str)
+    
+    conn=engine.connect()
+    # check if ordering already exists
+    s = select([Orderings.c.id]).where(Orderings.c.model_id== model_id)
+    res=[row[0] for row in conn.execute(s)]
+    #pe('len(res)',locals())
+    if len(res)==0:
+        conn.execute(
+        	Orderings.insert(),
+        	[
+        		{'model_id':model_id,'id':ordering_id},
+        	]
+        )
+    mat=resolve(
+        metadata
+        ,engine
+        ,expr=sympify(expr_str)
+        ,model_id=model_id
+    ) 
+    conn.execute(
+    	IndexedComponents.insert(),
+    	[
+            {'symbol':symbol,'model_id':model_id,'ordering_id':ordering_id}
+    	]
+    )
 
 def addModel(
         metadata
@@ -91,12 +137,13 @@ def addModel(
         ,model_id
         ,model_name
         ,state_variables
-        ,base_variables
-        ,derived_variables
-        ,base_in_fluxes
-        ,derived_in_fluxes
-        ,derived_out_fluxes
-        ,derived_internal_fluxes
+        ,base_variables=[]
+        ,derived_variables=[]
+        ,base_in_fluxes=[]
+        ,derived_in_fluxes=[]
+        ,derived_out_fluxes=[]
+        ,derived_internal_fluxes=[]
+        ,vector_components=[]
     ):
     Models=Table("Models",metadata,autoload=True,autoload_with=engine)
     addStateVariables(metadata,engine,model_id,state_variables) 
@@ -125,8 +172,11 @@ def addModel(
 
     for v in derived_internal_fluxes:
         addDerivedInternalFlux(metadata,engine,model_id,v['symbol'],v['source_symbol'],v['target_symbol'],v['description'],v['expression'])
+    
+    #for v in vector_components:
 
-def resolve(metadata,engine,sym,model_id):
+
+def resolve(metadata,engine,expr:sympy.Expr,model_id:str):
     conn=engine.connect()
     #Variables=Table("Variables",metadata,autoload=True,autoload_with=engine)
     BaseVariables=Table("BaseVariables",metadata,autoload=True,autoload_with=engine)
@@ -156,15 +206,21 @@ def resolve(metadata,engine,sym,model_id):
             
     ed={Symbol(k):sympify(v) for k,v in expressions.items()}
 
-    res=sym_resolve(sym,sl,ed)
+    res=symbolic_resolve(expr,sl,ed)
     return res
         
-def sym_resolve(targetSym,sl,ed):
-    # actual resolver on symbol basis
-    if targetSym in sl:
-        return targetSym 
+def symbolic_resolve(expr,sl,ed):
+    # actual resolver that works with sympy Symbols and expressions 
+    if isinstance(expr,Symbol):
+        targetSym=expr
+        if targetSym in sl:
+            return targetSym 
+        else:
+            e=ed[targetSym]
+            #pe('e.free_symbols',locals())
+            return e.subs({s:symbolic_resolve(s,sl,ed) for s in e.free_symbols}) 
     else:
-        e=ed[targetSym]
-        #pe('e.free_symbols',locals())
-        return e.subs({s:sym_resolve(s,sl,ed) for s in e.free_symbols}) 
+        e=expr
+        return e.subs({s:symbolic_resolve(s,sl,ed) for s in e.free_symbols}) 
+
 

@@ -111,7 +111,7 @@ def addFivePoolModel(metadata,engine,model_id,name):
         ,{ 'symbol':"kIvw" ,'description':"leaf respiration rate"                   ,'dimension':"1/time"   }
     ]
     derived_variables = [
-         { 'symbol':"u_org"     ,'description':"some variable describing the comulativ vegetation input"    ,'expression':"Ivl+Ivw"}
+         { 'symbol':"NetVegIn"     ,'description':"some variable describing the comulativ vegetation input"    ,'expression':"Ivl+Ivw"}
     ]
     base_in_fluxes=[
         {
@@ -160,6 +160,9 @@ def addFivePoolModel(metadata,engine,model_id,name):
         ,{ 'symbol':"ss" ,'description':"soil pool slow" }
         ,{ 'symbol':"sb" ,'description':"soil pool bacteria" }
     ]
+    #vector_components=[
+    #     {   
+    #]
     
     addModel(
         metadata
@@ -173,4 +176,5 @@ def addFivePoolModel(metadata,engine,model_id,name):
         ,derived_in_fluxes
         ,derived_out_fluxes
         ,derived_internal_fluxes
+        #,vector_components
     )

@@ -15,7 +15,7 @@ from sqlalchemy.sql import select
 from sympy import Matrix,sympify,symbols,Symbol
 from testinfrastructure.helpers import pe
 from createTables import createTables
-from helpers import defaultOrderingName,addModel,resolve
+from helpers import defaultOrderingName,addModel,resolve,addMatrix
 
 class TestSchema1(unittest.TestCase):
     # The aim is a proof of concept implementation for the retrieval of the structure of the different ways to structure the 
@@ -69,58 +69,65 @@ class TestSchema1(unittest.TestCase):
         engine=self.engine
         model_id='default_2'
         exampleModels.addFivePoolModel(metadata,engine,model_id,'matrix test')
-        conn=engine.connect()
-        # We invent a minimal ecosystem model with 2 vegetation and 3 soil pools
-        #        .
-        #       ⎡vl⎤   ⎡⎡_,_⎤⎡_,_,_⎤⎤   ⎡vl⎤  ⎡Il⎤
-        #       ⎢vw⎥   ⎢⎣_,_⎦⎣_,_,_⎦⎥   ⎢vw⎥  ⎢Iw⎥
-        #       ⎢sf⎥ = ⎢⎡_,_⎤⎡_,_,_⎤⎥ * ⎢sf⎥ +⎢If⎥
-        #       ⎢ss⎥   ⎢⎢_,_⎦⎢_,_,_⎦⎥   ⎢ss⎥  ⎢Is⎥
-        #       ⎣sb⎦   ⎣⎣_,_⎦⎣_,_,_⎦⎦   ⎣sb⎦  ⎣Ib⎦
+        # We invent a minimal ecosystem model with 2 vegetation and 3 soil pools and write it 
+        # in block-matrix-form
+        #          .
+        #       ⎡⎡v_l⎤⎤   ⎡⎡ V_11,  V_12⎤⎡VS_11,VS_12, VS_13⎤⎤   ⎡⎡v l⎤⎤  ⎡⎡I_l⎤⎤
+        #       ⎢⎣v_w⎦⎥   ⎢⎣ V_21,  V_22⎦⎣VS_21,VS_22, VS_23⎦⎥   ⎢⎣v w⎦⎥  ⎢⎣I_w⎦⎥
+        #       ⎢     ⎥   ⎢                                  ⎥   ⎢     ⎥  ⎢     ⎥
+        #       ⎢⎡s_f⎤⎥ = ⎢⎡SV_11, SV_12⎤⎡ S_11, S_12,  S_13⎤⎥ * ⎢⎡s f⎤⎥ +⎢⎡I_f⎤⎥
+        #       ⎢⎢s_s⎦⎥   ⎢⎢SV_21, SV_22⎦⎢ S_21, S_22,  S_23⎦⎥   ⎢⎢s s⎦⎥  ⎢⎢I_s⎦⎥
+        #       ⎣⎣s_b⎦⎦   ⎣⎣SV_31, SV_32⎦⎣ S_31, S_32,  S_33⎦⎦   ⎣⎣s b⎦⎦  ⎣⎣I_b⎦⎦
         # 
-        #  The input to the vegetation is often written as a product of distribution vector b and a scalar u
+        # The input to the vegetation is often written as a product of distribution vector b and a scalar u
         #
         #   ⎡Il⎤   ⎡bl⎤
         #   ⎢  ⎥ = ⎢  ⎥* u 
         #   ⎣Iw⎦   ⎣bw⎦
-
-
-        # The test demonstrates how 
-        #    ⎡bl⎤
-        #    ⎢  ⎥ and u 
-        #    ⎣bw⎦
-        # can be retrieved from the database although it should not be stored directly in it.
-        
-        # The reason for not storing this information directly in the database is 
-        # that matrix and vector valued variables depend on the ordering of the pools, 
-        # which is actually not relevant for the solution. 
-        # Thurthermore different orderings are usefull for different purposes (clustering different soil levels or all microbial pools, or ..)
-
-        # Therefore if  we define vector/or matrix valued variables we always define them along with an ordering 
-        my_ordering_name='veg_2'
-        StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
-        conn.execute(
-        	StateVectorPositions.insert(),
-        	[
-                 {'pos_id':0,'symbol':"vl",'model_id':model_id,'ordering_id':my_ordering_name}
-                ,{'pos_id':1,'symbol':"vw",'model_id':model_id,'ordering_id':my_ordering_name}
-                ,{'pos_id':2,'symbol':"sf",'model_id':model_id,'ordering_id':my_ordering_name}
-                ,{'pos_id':3,'symbol':"ss",'model_id':model_id,'ordering_id':my_ordering_name}
-                ,{'pos_id':4,'symbol':"sb",'model_id':model_id,'ordering_id':my_ordering_name}
-        	]
-        )
         #
-        # If we can express b by scalar variables defined in the original database entry for the model
-        # in case we can do this
-        Variables=Table("Variables",metadata,autoload=True,autoload_with=engine)
-        s = select([Variables.c.symbol]).where(Variables.c.model_id== model_id )
-        Ivl=resolve(metadata,engine,Symbol('Ivl'),model_id)
-        Ivw=resolve(metadata,engine,Symbol('Ivw'),model_id)
-        NetVegIn=Ivl+Ivw
-        bl=Ivl/NetVegIn
-        bw=Ivw/NetVegIn
-        b=Matrix([bl,bw])
-        pe('b',locals())
+        # and models are compared with respect to \vec{b} or \tens{V} 
+        # It is therefore desirable to be able to extract this information from the database.
+
+        # On the other hand storing this information in the database 
+        # requires some thought about the fact that matrix and vector valued variables 
+        # depend on the ordering of the pools, which is actually not relevant for the solution. 
+        # Furthermore different orderings are usefull for different purposes (clustering different soil levels or all microbial pools, or ..)
+        # Therefore if we define vector/or matrix valued variables we implicitly always define them along with an ordering of the state variables 
+        
+        
+        # The test demonstrates how to extract \vec{b} u and \tens{V}
+        # refering to the original ordering in the database 
+        #    ⎡bl⎤
+        # b= ⎢  ⎥ 
+        #    ⎣bw⎦
+        
+        addMatrix(
+            metadata
+            ,engine
+            ,symbol='b'
+            ,description='carbon distribution '
+            ,model_id=model_id
+            ,ordering_id=defaultOrderingName
+            ,row_index=0
+            ,expr_str='Matrix([Ivl/NetVegIn,Ivw/NetVegIn])'
+        )
+        res=resolve(metadata,engine,Symbol('b'),model_id)
+        pe("res",locals())
+        # we could now retrieve the matrices resulting from another ordering of the statevariables
+        # (and the time derivatives)
+        #my_ordering_name='veg_2'
+        #StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
+        #conn=engine.connect()
+        #conn.execute(
+        #	StateVectorPositions.insert(),
+        #	[
+        #         {'pos_id':0,'symbol':"vl",'model_id':model_id,'ordering_id':my_ordering_name}
+        #        ,{'pos_id':1,'symbol':"vw",'model_id':model_id,'ordering_id':my_ordering_name}
+        #        ,{'pos_id':2,'symbol':"sf",'model_id':model_id,'ordering_id':my_ordering_name}
+        #        ,{'pos_id':3,'symbol':"ss",'model_id':model_id,'ordering_id':my_ordering_name}
+        #        ,{'pos_id':4,'symbol':"sb",'model_id':model_id,'ordering_id':my_ordering_name}
+        #	]
+        #)
         
         
         

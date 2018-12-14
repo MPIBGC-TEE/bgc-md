@@ -42,13 +42,29 @@ def createTables():
         # here shoulb be another constraint ensuring that a symbol that has been added to the 
         # DerivedVariables can not be added here
     )
+    # For vector/matrix/tensor valued arguments the 
+    Orderings= Table('Orderings', metadata,
+         Column('model_id'   , primary_key=True)
+        ,Column('id'         , String(100), primary_key=True)
+    	,ForeignKeyConstraint(['model_id'], ['Models.folder_name'])
+    )
+    IndexedComponents= Table('IndexedComponents', metadata,
+        Column('symbol'     ,               primary_key=True) #refers to the whole matrix
+        ,Column('model_id'  ,                primary_key=True )
+        ,Column('ordering_id', String(1000), primary_key=True)
+    	,ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
+    	,ForeignKeyConstraint(['model_id','ordering_id'], ['Orderings.model_id', 'Orderings.id'])
+        # here should be another constraint ensuring that there are indeed rows in the StateVectorPositions Table
+        # for the specified id and every state variable (a complete permuation) 
+    )
     
     StateVectorPositions= Table('StateVectorPositions', metadata,
-    	Column('pos_id', Integer )
-    	,Column('symbol' , primary_key=True)
-    	,Column('model_id' , primary_key=True)
-    	,Column('ordering_id' , String(100), primary_key=True)
+    	Column('pos_id'         , Integer )
+    	,Column('symbol'        , primary_key=True)
+    	,Column('model_id'      , primary_key=True)
+    	,Column('ordering_id'   , primary_key=True)
     	,ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
+    	,ForeignKeyConstraint([ 'model_id','ordering_id'], ['Orderings.model_id', 'Orderings.id'])
     )
     
     #Fluxes are just variables 
