@@ -68,6 +68,33 @@ def addDerivedInternalFlux(metadata,engine,model_id,symbol,source_symbol,target_
     	InternalFluxes.insert(), [ { 'symbol':symbol, 'model_id':model_id, 'source_symbol':source_symbol, 'target_symbol':target_symbol} ]
     )
 
+def addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols,ordering_id):
+    Orderings=Table("Orderings",metadata,autoload=True,autoload_with=engine)
+    conn=engine.connect()
+    # check if ordering already exists
+    s = select([Orderings.c.id]).where(Orderings.c.model_id== model_id and Orderings.c.ordering_id == ordering_id)
+    res=[row[0] for row in conn.execute(s)]
+    #pe('len(res)',locals())
+    if len(res)==0:
+        conn.execute(
+        	Orderings.insert(),
+        	[
+        		{'model_id':model_id,'id':ordering_id},
+        	]
+        )
+    StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
+    for index,s in enumerate(state_variable_symbols):
+        conn=engine.connect()
+        conn.execute(
+    	    StateVectorPositions.insert(), [
+                {
+                    'pos_id':index
+                    ,'symbol':s
+                    ,'model_id':model_id
+                    ,'ordering_id':ordering_id
+                } 
+            ]
+        )
 def addStateVariables(metadata,engine,model_id,state_variables,ordering_id=defaultOrderingName):
     Orderings=Table("Orderings",metadata,autoload=True,autoload_with=engine)
     conn=engine.connect()
@@ -176,20 +203,34 @@ def addModel(
     #for v in vector_components:
 
 def resolveVector(metadata,engine,expr:sympy.Expr,model_id:str,ordering_id:str):
-    im=resolve(metadata,engine,expr:sympy.Expr,model_id:str)
+    im=resolve(metadata,engine,expr,model_id)
+    # now retrieve the original ordering and the target ordering and 
+    # compute the permutation
+    conn=engine.connect()
+    StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
+    s = select(
+            [StateVectorPositions.c.symbol]).where(
+                    StateVectorPositions.c.model_id == model_id and
+                    StateVectorPositions.c.ordering_id == ordering_id).order_by(
+                            StateVectorPositions.c.pos_id)
+    sym_list=[Symbol(str(row[0])) for row in conn.execute(s)]
+    pe('sym_list',locals())
+    pe('model_id',locals())
+    pe('ordering_id',locals())
     orig=["a","b","c","d","e"]
     new=["b","a","c","d","e"]
+    n=len(orig)
     perm=[orig.index(s) for s in new]
-    P=SparseMatrix(3,3,{(i,v):1 for i,v in enumerate(perm)})
-    return  M*im
+    P=SparseMatrix(n,n,{(i,v):1 for i,v in enumerate(perm)})
+    return  P*im
 
 def resolveMatrix(metadata,engine,expr:sympy.Expr,model_id:str,ordering_id:str):
-    im=resolve(metadata,engine,expr:sympy.Expr,model_id:str)
-    orig=["a","b","c","d","e"]
-    new=["b","a","c","d","e"]
-    perm=[orig.index(s) for s in new]
-    P=SparseMatrix(3,3,{(i,v):1 for i,v in enumerate(perm)})
-    return  M*im*M.transpose()
+    im=resolve(metadata,engine,expr,model_id)
+#    orig=["a","b","c","d","e"]
+#    new=["b","a","c","d","e"]
+#    perm=[orig.index(s) for s in new]
+#    P=SparseMatrix(3,3,{(i,v):1 for i,v in enumerate(perm)})
+#    return  P*im*P.transpose()
 
 def resolve(metadata,engine,expr:sympy.Expr,model_id:str):
     conn=engine.connect()

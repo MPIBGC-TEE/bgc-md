@@ -15,7 +15,7 @@ from sqlalchemy.sql import select
 from sympy import Matrix,sympify,symbols,Symbol
 from testinfrastructure.helpers import pe
 from createTables import createTables
-from helpers import defaultOrderingName,addModel,resolve,addMatrix
+from helpers import defaultOrderingName,addModel,resolve,resolveMatrix,resolveVector,addMatrix,addStateVariableOrdering
 
 class TestSchema1(unittest.TestCase):
     # The aim is a proof of concept implementation for the retrieval of the structure of the different ways to structure the 
@@ -49,6 +49,27 @@ class TestSchema1(unittest.TestCase):
 
         ref=Matrix([vl, vw])
         self.assertEqual(stateVector,ref)
+    
+    def test_second_state_variable_ordering(self):
+        metadata=self.metadata
+        engine=self.engine
+        conn=engine.connect()
+        model_id='default_2'
+        exampleModels.addTwoPoolModel(metadata,engine,model_id,'twoPoolModel')
+        StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
+        # now query
+        # we use the c collection for the columns
+        s = select([StateVectorPositions.c.symbol]).where(StateVectorPositions.c.model_id== model_id).order_by(StateVectorPositions.c.pos_id)
+        sym_list=[Symbol(str(row[0])) for row in conn.execute(s)]
+        pe('sym_list',locals())
+        stateVector=Matrix(sym_list)
+
+        vl, vw = symbols('vl,vw')
+
+        ref=Matrix([vl, vw])
+        self.assertEqual(stateVector,ref)
+        
+        addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols=["vw", "vl", "sf", "ss", "sb"],ordering_id=my_ordering_name)
 
     #@unittest.skip
     def test_resolve_derived_variable(self):
@@ -170,47 +191,15 @@ class TestSchema1(unittest.TestCase):
             ,expr_str='Matrix([Ivl/NetVegIn,Ivw/NetVegIn,0,0,0])'
         )
         res=resolve(metadata,engine,Symbol('b'),model_id)
-        ref = sympify("Matrix([[Ivl/(Ivl + kIvw*vw)], [kIvw*vw/(Ivl + kIvw*vw),0,0,0]])")
+        ref = sympify("Matrix([Ivl/(Ivl + kIvw*vw), kIvw*vw/(Ivl + kIvw*vw),0,0,0])")
         self.assertEqual(res,ref)
         pe("res",locals())
 
         # we could now retrieve the matrices resulting from another ordering of the statevariables
         # (and the time derivatives)
         my_ordering_name='veg_2'
-        Orderings=Table("Orderings",metadata,autoload=True,autoload_with=engine)
-        StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
-        conn=engine.connect()
-        s = select([Orderings.c.id]).where(Orderings.c.model_id== model_id)
-        res=[row[0] for row in conn.execute(s)]
-        #pe('len(res)',locals())
-        if len(res)==0:
-            conn.execute(
-            	Orderings.insert(),
-                
-            	[
-            		{'model_id':model_id,'id':ordering_id},
-            	]
-            )
-        conn.execute(
-        	StateVectorPositions.insert(),
-        	[
-                 {'pos_id':0,'symbol':"vw",'model_id':model_id,'ordering_id':my_ordering_name}
-                ,{'pos_id':1,'symbol':"vl",'model_id':model_id,'ordering_id':my_ordering_name}
-                ,{'pos_id':2,'symbol':"sf",'model_id':model_id,'ordering_id':my_ordering_name}
-                ,{'pos_id':3,'symbol':"ss",'model_id':model_id,'ordering_id':my_ordering_name}
-                ,{'pos_id':4,'symbol':"sb",'model_id':model_id,'ordering_id':my_ordering_name}
-        	]
-        )
-        res=resolveMatrix(metadata,engine,Symbol('b'),model_id,my_ordering_name)
-        ref = sympify("Matrix([[kIvw*vw/(Ivl + kIvw*vw)],[Ivl/(Ivl + kIvw*vw)]])")
+        addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols=["vw", "vl", "sf", "ss", "sb"],ordering_id=my_ordering_name)
+        res=resolveVector(metadata,engine,Symbol('b'),model_id,my_ordering_name)
+        ref = sympify("Matrix([kIvw*vw/(Ivl + kIvw*vw),Ivl/(Ivl + kIvw*vw),0,0,0])")
         self.assertEqual(res,ref)
         pe("res",locals())
-        
-        
-        
-
-
-
-
-
-
