@@ -14,3 +14,9 @@ New Webform
  -public server with most of the possible images (and some other computationally expensive results) cached and ways to look at models but not to change them.
  -caching of images and intermediate results
 - automate start of application (manage runserver...) and browser window
+- integrate units and dimensions in a sensible way
+- Javascript for Matrices (Jacob)
+
+
+Thomas:
+

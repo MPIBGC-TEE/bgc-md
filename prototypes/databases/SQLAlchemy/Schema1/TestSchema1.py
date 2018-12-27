@@ -76,7 +76,7 @@ class TestSchema1(unittest.TestCase):
         #       ⎢⎣v_w⎦⎥   ⎢⎣ V_21,  V_22⎦⎣VS_21,VS_22, VS_23⎦⎥   ⎢⎣v w⎦⎥  ⎢⎣I_w⎦⎥
         #       ⎢     ⎥   ⎢                                  ⎥   ⎢     ⎥  ⎢     ⎥
         #       ⎢⎡s_f⎤⎥ = ⎢⎡SV_11, SV_12⎤⎡ S_11, S_12,  S_13⎤⎥ * ⎢⎡s f⎤⎥ +⎢⎡I_f⎤⎥
-        #       ⎢⎢s_s⎦⎥   ⎢⎢SV_21, SV_22⎦⎢ S_21, S_22,  S_23⎦⎥   ⎢⎢s s⎦⎥  ⎢⎢I_s⎦⎥
+        #       ⎢⎢s_s⎥⎥   ⎢⎢SV_21, SV_22⎥⎢ S_21, S_22,  S_23⎥⎥   ⎢⎢s s⎥⎥  ⎢⎢I_s⎥⎥
         #       ⎣⎣s_b⎦⎦   ⎣⎣SV_31, SV_32⎦⎣ S_31, S_32,  S_33⎦⎦   ⎣⎣s b⎦⎦  ⎣⎣I_b⎦⎦
         # 
         # The input to the vegetation is often written as a product of distribution vector b and a scalar u
@@ -89,17 +89,76 @@ class TestSchema1(unittest.TestCase):
         # It is therefore desirable to be able to extract this information from the database.
 
         # On the other hand storing this information in the database 
-        # requires some thought about the fact that matrix and vector valued variables 
-        # depend on the ordering of the pools, which is actually not relevant for the solution. 
+        # has to account for the fact that matrix and vector valued variables 
+        # depend on the ordering of the pools, 
+        # although this is not relevant for the solution. 
+
         # Furthermore different orderings are usefull for different purposes (clustering different soil levels or all microbial pools, or ..)
         # Therefore if we define vector/or matrix valued variables we implicitly always define them along with an ordering of the state variables 
-        
-        
+
+        # The block-matrix-decomposition is NOT preserved under general permutations 
+        # of the order of state variables.(Only for those permutations inside blocks)
+        # On the other hand sums and products of matrices ARE preserved under coordinate transformations. 
+        # In order to be able to retrieve the vegetation part after a variable transformation 
+        # (e.g. a permutation)
+        # We could therefore write the above equation as
+        #          .         .         .
+        #       ⎡⎡v_l⎤⎤   ⎡⎡v_l⎤⎤   ⎡⎡ 0 ⎤⎤ 
+        #       ⎢⎣v_w⎦⎥   ⎢⎣v_w⎦⎥   ⎢⎣ 0 ⎦⎥ 
+        #       ⎢     ⎥ = ⎢     ⎥ + ⎢     ⎥ 
+        #       ⎢⎡s_f⎤⎥   ⎢⎡ 0 ⎤⎥   ⎢⎡s_f⎤⎥ 
+        #       ⎢⎢s_s⎥⎥   ⎢⎢ 0 ⎥⎥   ⎢⎢s_s⎥⎥ 
+        #       ⎣⎣s_b⎦⎦   ⎣⎣ 0 ⎦⎦   ⎣⎣s_b⎦⎦ 
+
+        #                 ⎡ ⎡⎡ V_11,  V_12⎤⎡  0  ,  0  ,   0  ⎤⎤
+        #                 ⎢ ⎢⎣ V_21,  V_22⎦⎣  0  ,  0  ,   0  ⎦⎥
+        #                 ⎢ ⎢                                  ⎥
+        #               = ⎢ ⎢⎡  0  ,   0  ⎤⎡  0  ,  0  ,   0  ⎤⎥
+        #                 ⎢ ⎢⎢  0  ,   0  ⎥⎢  0  ,  0  ,   0  ⎥⎥
+        #                 ⎣ ⎣⎣  0  ,   0  ⎦⎣  0  ,  0  ,   0  ⎦⎦
+        #
+        #                   ⎡⎡  0  ,   0  ⎤⎡VS_11,VS_12, VS_13⎤⎤ 
+        #                   ⎢⎣  0  ,   0  ⎦⎣VS_21,VS_22, VS_23⎦⎥        
+        #                 + ⎢                                  ⎥ 
+        #                   ⎢⎡  0  ,   0  ⎤⎡  0  ,  0  ,   0  ⎤⎥ 
+        #                   ⎢⎢  0  ,   0  ⎥⎢  0  ,  0  ,   0  ⎥⎥ 
+        #                   ⎣⎣  0  ,   0  ⎦⎣  0  ,  0  ,   0  ⎦⎦ 
+        #                   
+        #                   ⎡⎡  0  ,   0  ⎤⎡  0  ,  0  ,   0  ⎤⎤ 
+        #                   ⎢⎣  0  ,   0  ⎦⎣  0  ,  0  ,   0  ⎦⎥ 
+        #                 + ⎢                                  ⎥ 
+        #                   ⎢⎡SV_11, SV_12⎤⎡  0  ,  0  ,   0  ⎤⎥ 
+        #                   ⎢⎢SV_21, SV_22⎥⎢  0  ,  0  ,   0  ⎥⎥ 
+        #                   ⎣⎣SV_31, SV_32⎦⎣  0  ,  0  ,   0  ⎦⎦ 
+        #                   
+        #                   ⎡⎡  0  ,   0  ⎤⎡  0  ,  0  ,   0  ⎤⎤ ⎤   ⎡ ⎡⎡v l⎤⎤   ⎡⎡ 0 ⎤⎤ ⎤  
+        #                   ⎢⎣  0  ,   0  ⎦⎣  0  ,  0  ,   0  ⎦⎥ ⎥   ⎢ ⎢⎣v w⎦⎥   ⎢⎣ 0 ⎦⎥ ⎥  
+        #                 + ⎢                                  ⎥ ⎥ * ⎢ ⎢     ⎥ + ⎢     ⎥ ⎥  
+        #                   ⎢⎡  0  ,   0  ⎤⎡ S_11, S_12,  S_13⎤⎥ ⎥   ⎢ ⎢⎡ 0 ⎤⎥   ⎢⎡s f⎤⎥ ⎥  
+        #                   ⎢⎢  0  ,   0  ⎥⎢ S_21, S_22,  S_23⎥⎥ ⎥   ⎢ ⎢⎢ 0 ⎥⎥   ⎢⎢s s⎥⎥ ⎥  
+        #                   ⎣⎣  0  ,   0  ⎦⎣ S_31, S_32,  S_33⎦⎦ ⎦   ⎣ ⎣⎣ 0 ⎦⎦   ⎣⎣s b⎦⎦ ⎦  
+        #
+        #                   ⎡⎡I_l⎤⎤   ⎡⎡ 0 ⎤⎤
+        #                   ⎢⎣I_w⎦⎥   ⎢⎣ 0 ⎦⎥
+        #                   ⎢     ⎥ + ⎢     ⎥
+        #                   ⎢⎡ 0 ⎤⎥   ⎢⎡I_f⎤⎥
+        #                   ⎢⎢ 0 ⎥⎥   ⎢⎢I_s⎥⎥
+        #                   ⎣⎣ 0 ⎦⎦   ⎣⎣I_b⎦⎦
+
+        # Although we can input sparse matrices matrices and vectors that we store should have full size.
+        # If we wanted to store block matrices we would be compelled to store their positions and would
+        # also be tempted to assemble bigger matrices from them by composition. As mentioned before, it 
+        # would be difficult to transform this assembly to a new ordering.
+        # We therefore store only full sized matrices presently.
+
+
         # The test demonstrates how to extract \vec{b} u and \tens{V}
         # refering to the original ordering in the database 
-        #    ⎡bl⎤
-        # b= ⎢  ⎥ 
-        #    ⎣bw⎦
+        #          ⎡ bl⎤
+        #          ⎢ bv⎥ 
+        # \vec{b} =⎢ 0 ⎥ 
+        #          ⎢ 0 ⎥ 
+        #          ⎣ 0 ⎦
         
         addMatrix(
             metadata
@@ -108,26 +167,44 @@ class TestSchema1(unittest.TestCase):
             ,description='carbon distribution '
             ,model_id=model_id
             ,ordering_id=defaultOrderingName
-            ,row_index=0
-            ,expr_str='Matrix([Ivl/NetVegIn,Ivw/NetVegIn])'
+            ,expr_str='Matrix([Ivl/NetVegIn,Ivw/NetVegIn,0,0,0])'
         )
         res=resolve(metadata,engine,Symbol('b'),model_id)
+        ref = sympify("Matrix([[Ivl/(Ivl + kIvw*vw)], [kIvw*vw/(Ivl + kIvw*vw),0,0,0]])")
+        self.assertEqual(res,ref)
         pe("res",locals())
+
         # we could now retrieve the matrices resulting from another ordering of the statevariables
         # (and the time derivatives)
-        #my_ordering_name='veg_2'
-        #StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
-        #conn=engine.connect()
-        #conn.execute(
-        #	StateVectorPositions.insert(),
-        #	[
-        #         {'pos_id':0,'symbol':"vl",'model_id':model_id,'ordering_id':my_ordering_name}
-        #        ,{'pos_id':1,'symbol':"vw",'model_id':model_id,'ordering_id':my_ordering_name}
-        #        ,{'pos_id':2,'symbol':"sf",'model_id':model_id,'ordering_id':my_ordering_name}
-        #        ,{'pos_id':3,'symbol':"ss",'model_id':model_id,'ordering_id':my_ordering_name}
-        #        ,{'pos_id':4,'symbol':"sb",'model_id':model_id,'ordering_id':my_ordering_name}
-        #	]
-        #)
+        my_ordering_name='veg_2'
+        Orderings=Table("Orderings",metadata,autoload=True,autoload_with=engine)
+        StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
+        conn=engine.connect()
+        s = select([Orderings.c.id]).where(Orderings.c.model_id== model_id)
+        res=[row[0] for row in conn.execute(s)]
+        #pe('len(res)',locals())
+        if len(res)==0:
+            conn.execute(
+            	Orderings.insert(),
+                
+            	[
+            		{'model_id':model_id,'id':ordering_id},
+            	]
+            )
+        conn.execute(
+        	StateVectorPositions.insert(),
+        	[
+                 {'pos_id':0,'symbol':"vw",'model_id':model_id,'ordering_id':my_ordering_name}
+                ,{'pos_id':1,'symbol':"vl",'model_id':model_id,'ordering_id':my_ordering_name}
+                ,{'pos_id':2,'symbol':"sf",'model_id':model_id,'ordering_id':my_ordering_name}
+                ,{'pos_id':3,'symbol':"ss",'model_id':model_id,'ordering_id':my_ordering_name}
+                ,{'pos_id':4,'symbol':"sb",'model_id':model_id,'ordering_id':my_ordering_name}
+        	]
+        )
+        res=resolveMatrix(metadata,engine,Symbol('b'),model_id,my_ordering_name)
+        ref = sympify("Matrix([[kIvw*vw/(Ivl + kIvw*vw)],[Ivl/(Ivl + kIvw*vw)]])")
+        self.assertEqual(res,ref)
+        pe("res",locals())
         
         
         

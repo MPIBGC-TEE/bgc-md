@@ -1,6 +1,6 @@
 from sqlalchemy import Table
 from sqlalchemy.sql import select
-from sympy import Matrix,sympify,symbols,Symbol
+from sympy import Matrix,SparseMatrix,sympify,symbols,Symbol
 import sympy
 from testinfrastructure.helpers import pe
 
@@ -99,7 +99,7 @@ def addStateVariables(metadata,engine,model_id,state_variables,ordering_id=defau
 
 
 
-def addMatrix(metadata,engine,symbol,description,model_id,ordering_id,row_index,expr_str:str):
+def addMatrix(metadata,engine,symbol,description,model_id,ordering_id,expr_str:str):
     Orderings=Table("Orderings",metadata,autoload=True,autoload_with=engine)
     IndexedComponents=Table("IndexedComponents",metadata,autoload=True,autoload_with=engine)
     #Dimensions=Table("Dimensions",metadata,autoload=True,autoload_with=engine)
@@ -118,12 +118,12 @@ def addMatrix(metadata,engine,symbol,description,model_id,ordering_id,row_index,
         		{'model_id':model_id,'id':ordering_id},
         	]
         )
-    mat=resolve(
-        metadata
-        ,engine
-        ,expr=sympify(expr_str)
-        ,model_id=model_id
-    ) 
+    #mat=resolve(
+    #    metadata
+    #    ,engine
+    #    ,expr=sympify(expr_str)
+    #    ,model_id=model_id
+    #) 
     conn.execute(
     	IndexedComponents.insert(),
     	[
@@ -175,6 +175,21 @@ def addModel(
     
     #for v in vector_components:
 
+def resolveVector(metadata,engine,expr:sympy.Expr,model_id:str,ordering_id:str):
+    im=resolve(metadata,engine,expr:sympy.Expr,model_id:str)
+    orig=["a","b","c","d","e"]
+    new=["b","a","c","d","e"]
+    perm=[orig.index(s) for s in new]
+    P=SparseMatrix(3,3,{(i,v):1 for i,v in enumerate(perm)})
+    return  M*im
+
+def resolveMatrix(metadata,engine,expr:sympy.Expr,model_id:str,ordering_id:str):
+    im=resolve(metadata,engine,expr:sympy.Expr,model_id:str)
+    orig=["a","b","c","d","e"]
+    new=["b","a","c","d","e"]
+    perm=[orig.index(s) for s in new]
+    P=SparseMatrix(3,3,{(i,v):1 for i,v in enumerate(perm)})
+    return  M*im*M.transpose()
 
 def resolve(metadata,engine,expr:sympy.Expr,model_id:str):
     conn=engine.connect()
