@@ -15,10 +15,10 @@ from sqlalchemy.sql import select
 from sympy import Matrix,sympify,symbols,Symbol
 from testinfrastructure.helpers import pe
 from createTables import createTables
-from helpers import defaultOrderingName,addModel,resolve,resolveMatrix,resolveVector,addMatrix,addStateVariableOrdering
+from helpers import defaultOrderingName,addModel,resolve,resolveMatrix,resolveVector,addMatrix,addStateVariableOrdering,getStateVector
 
 class TestSchema1(unittest.TestCase):
-    # The aim is a proof of concept implementation for the retrieval of the structure of the different ways to structure the 
+    # The aim is a proof of concept implementation for the retrieval of the information that is neccessary to build the 
     # compartmental Matrix
     # Conceptually we want to separate this information from the database, which should only hold
     # the Variables and the statevectorpositions which together already determine the matrices
@@ -37,16 +37,8 @@ class TestSchema1(unittest.TestCase):
         conn=engine.connect()
         model_id='default_2'
         exampleModels.addTwoPoolModel(metadata,engine,model_id,'twoPoolModel')
-        StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
-        # now query
-        # we use the c collection for the columns
-        s = select([StateVectorPositions.c.symbol]).where(StateVectorPositions.c.model_id== model_id).order_by(StateVectorPositions.c.pos_id)
-        sym_list=[Symbol(str(row[0])) for row in conn.execute(s)]
-        pe('sym_list',locals())
-        stateVector=Matrix(sym_list)
-
+        stateVector=getStateVector(metadata,engine,model_id)
         vl, vw = symbols('vl,vw')
-
         ref=Matrix([vl, vw])
         self.assertEqual(stateVector,ref)
     
@@ -56,20 +48,20 @@ class TestSchema1(unittest.TestCase):
         conn=engine.connect()
         model_id='default_2'
         exampleModels.addTwoPoolModel(metadata,engine,model_id,'twoPoolModel')
-        StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
-        # now query
-        # we use the c collection for the columns
-        s = select([StateVectorPositions.c.symbol]).where(StateVectorPositions.c.model_id== model_id).order_by(StateVectorPositions.c.pos_id)
-        sym_list=[Symbol(str(row[0])) for row in conn.execute(s)]
-        pe('sym_list',locals())
-        stateVector=Matrix(sym_list)
+        # add a new ordering  
+        my_ordering_name='veg_2'
+        # try to add an ordering with more state variables
+        with self.assertRaises(Exception) as cm:
+            addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols=["vw", "vl", "sf", "ss", "sb"],ordering_id=my_ordering_name)
+        #pe('cm.exception',locals())
 
-        vl, vw = symbols('vl,vw')
+        # add a new ordering with positions reversed
+        addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols=["vw", "vl"],ordering_id=my_ordering_name)
 
+        stateVector=getStateVector(metadata,engine,model_id,my_ordering_name)
+        vl, vw = symbols('vw,vl')
         ref=Matrix([vl, vw])
         self.assertEqual(stateVector,ref)
-        
-        addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols=["vw", "vl", "sf", "ss", "sb"],ordering_id=my_ordering_name)
 
     #@unittest.skip
     def test_resolve_derived_variable(self):

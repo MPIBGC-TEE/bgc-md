@@ -1,5 +1,5 @@
 from sqlalchemy import Table
-from sqlalchemy.sql import select
+from sqlalchemy.sql import select,and_
 from sympy import Matrix,SparseMatrix,sympify,symbols,Symbol
 import sympy
 from testinfrastructure.helpers import pe
@@ -72,7 +72,9 @@ def addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols,ord
     Orderings=Table("Orderings",metadata,autoload=True,autoload_with=engine)
     conn=engine.connect()
     # check if ordering already exists
-    s = select([Orderings.c.id]).where(Orderings.c.model_id== model_id and Orderings.c.ordering_id == ordering_id)
+    s = select([Orderings.c.id]).where(
+            and_(Orderings.c.model_id== model_id
+                ,Orderings.c.id == ordering_id))
     res=[row[0] for row in conn.execute(s)]
     #pe('len(res)',locals())
     if len(res)==0:
@@ -82,7 +84,21 @@ def addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols,ord
         		{'model_id':model_id,'id':ordering_id},
         	]
         )
+
+    # now check if statevariables already defined in default ordering
+    # and if so if the new ordering defines the same set of state variables
+    dsv=getStateVector(metadata,engine,model_id,ordering_id=defaultOrderingName)
+    pe('dsv',locals())
+    dsvs=set(dsv)
+    if len(dsvs)!=0:
+        svss=set([Symbol(s) for s in state_variable_symbols])
+        if dsvs!=svss:
+            raise Exception("the set of statevariables defined by the new ordering {0} differs from the set of statevariables defined by the default ordering {1}".format(dsvs,svss))
     StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
+    # If an ordering of the same name has been present
+    # we have to remove the entried in the StateVectorPositions table
+    StateVectorPositions.delete().where(StateVectorPositions.c.model_id== model_id and StateVectorPositions.c.ordering_id==ordering_id)
+    # and add the new entries
     for index,s in enumerate(state_variable_symbols):
         conn=engine.connect()
         conn.execute(
@@ -95,6 +111,10 @@ def addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols,ord
                 } 
             ]
         )
+    #s=select([StateVectorPositions.c.symbol,StateVectorPositions.c.ordering_id,StateVectorPositions.c.pos_id]).where(StateVectorPositions.c.model_id==model_id)
+    #for r in conn.execute(s):
+    #    print(r)
+
 def addStateVariables(metadata,engine,model_id,state_variables,ordering_id=defaultOrderingName):
     Orderings=Table("Orderings",metadata,autoload=True,autoload_with=engine)
     conn=engine.connect()
@@ -157,6 +177,27 @@ def addMatrix(metadata,engine,symbol,description,model_id,ordering_id,expr_str:s
             {'symbol':symbol,'model_id':model_id,'ordering_id':ordering_id}
     	]
     )
+def getStateVector( metadata ,engine ,model_id:str,ordering_id:str=defaultOrderingName):
+        StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
+        # now query
+        # we use the c collection for the columns
+        s = select([StateVectorPositions.c.symbol]).where(
+                and_(StateVectorPositions.c.model_id==model_id,
+                StateVectorPositions.c.ordering_id == ordering_id)).order_by(
+                        StateVectorPositions.c.pos_id)
+        conn=engine.connect()
+        
+        sa=select([StateVectorPositions.c.symbol,StateVectorPositions.c.ordering_id,StateVectorPositions.c.pos_id]).where(
+                and_(StateVectorPositions.c.model_id==model_id,
+                StateVectorPositions.c.ordering_id==ordering_id)
+                )
+        for r in conn.execute(sa):
+            print(r)
+
+        sym_list=[Symbol(str(row[0])) for row in conn.execute(s)]
+        pe('sym_list',locals())
+        stateVector=Matrix(sym_list)
+        return stateVector
 
 def addModel(
         metadata
@@ -210,9 +251,8 @@ def resolveVector(metadata,engine,expr:sympy.Expr,model_id:str,ordering_id:str):
     StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
     s = select(
             [StateVectorPositions.c.symbol]).where(
-                    StateVectorPositions.c.model_id == model_id and
-                    StateVectorPositions.c.ordering_id == ordering_id).order_by(
-                            StateVectorPositions.c.pos_id)
+                    and_(StateVectorPositions.c.model_id == model_id
+                        ,StateVectorPositions.c.ordering_id == ordering_id)).order_by(StateVectorPositions.c.pos_id)
     sym_list=[Symbol(str(row[0])) for row in conn.execute(s)]
     pe('sym_list',locals())
     pe('model_id',locals())
