@@ -105,10 +105,10 @@ def addTwoPoolModel(metadata,engine,model_id,name):
     
 def addFivePoolModel(metadata,engine,model_id,name):
     base_variables = [
-         { 'symbol':"klw"  ,'description':"decomprate"                              ,'dimension':"1/time"   }
-        ,{ 'symbol':"kvl"   ,'description':"leaf respiration rate"                   ,'dimension':"1/time"   }
-        ,{ 'symbol':"ksf"   ,'description':"fast soil respiration rate"              ,'dimension':"1/time"   }
-        ,{ 'symbol':"kIvw" ,'description':"leaf respiration rate"                   ,'dimension':"1/time"   }
+         { 'symbol':"klw"  ,'description':"decomprate"                               ,'dimension':"1/time"   }
+        ,{ 'symbol':"kvl"  ,'description':"leaf respiration rate"                    ,'dimension':"1/time"   }
+        ,{ 'symbol':"ksf"  ,'description':"fast soil respiration rate"               ,'dimension':"1/time"   }
+        ,{ 'symbol':"kIvw" ,'description':"content dependent wood input rate"        ,'dimension':"1/time"   }
     ]
     derived_variables = [
          { 'symbol':"NetVegIn"     ,'description':"some variable describing the comulativ vegetation input"    ,'expression':"Ivl+Ivw"}
@@ -146,7 +146,7 @@ def addFivePoolModel(metadata,engine,model_id,name):
     derived_internal_fluxes=[
         { 
             'symbol':"INTvlvw"
-            ,'description':"root leaf transfer"                                         
+            ,'description':"wood leaf transfer"                                         
             ,'expression':"klw*vl"  
             ,'source_symbol':"vl"
             ,'target_symbol':"vw"

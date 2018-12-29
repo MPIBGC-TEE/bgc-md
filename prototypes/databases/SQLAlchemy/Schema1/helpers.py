@@ -1,8 +1,10 @@
 from sqlalchemy import Table
 from sqlalchemy.sql import select,and_
 from sympy import Matrix,SparseMatrix,sympify,symbols,Symbol
+from sympy.core.sympify import kernS
 import sympy
 from testinfrastructure.helpers import pe
+from typing import List
 
 #define some module wide Variables
 defaultOrderingName='default_ordering' # might become a classVariable if we decide to encapsulate the database access
@@ -22,7 +24,7 @@ def addBaseVariable(metadata,engine,model_id,symbol,description,dimension):
     conn.execute(
     	BaseVariables.insert(), [ { 'symbol':symbol, 'model_id':model_id, 'dimension':dimension, } ]
     )
-def addDerivedVariable(metadata,engine,model_id,symbol,description,expression):
+def addDerivedVariable(metadata,engine,model_id,symbol,description,expression,ordering_id=defaultOrderingName):
     # derived variables are variables
     addVariable(metadata,engine,model_id,symbol,description)
     
@@ -88,7 +90,7 @@ def addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols,ord
     # now check if statevariables already defined in default ordering
     # and if so if the new ordering defines the same set of state variables
     dsv=getStateVector(metadata,engine,model_id,ordering_id=defaultOrderingName)
-    pe('dsv',locals())
+    #pe('dsv',locals())
     dsvs=set(dsv)
     if len(dsvs)!=0:
         svss=set([Symbol(s) for s in state_variable_symbols])
@@ -146,7 +148,7 @@ def addStateVariables(metadata,engine,model_id,state_variables,ordering_id=defau
 
 
 
-def addMatrix(metadata,engine,symbol,description,model_id,ordering_id,expr_str:str):
+def addIndexedVariable(metadata,engine,symbol,description,model_id,ordering_id,expr_str:str):
     Orderings=Table("Orderings",metadata,autoload=True,autoload_with=engine)
     IndexedComponents=Table("IndexedComponents",metadata,autoload=True,autoload_with=engine)
     #Dimensions=Table("Dimensions",metadata,autoload=True,autoload_with=engine)
@@ -159,12 +161,13 @@ def addMatrix(metadata,engine,symbol,description,model_id,ordering_id,expr_str:s
     res=[row[0] for row in conn.execute(s)]
     #pe('len(res)',locals())
     if len(res)==0:
-        conn.execute(
-        	Orderings.insert(),
-        	[
-        		{'model_id':model_id,'id':ordering_id},
-        	]
-        )
+        raise Exception("The ordering with id: {0} does not exist yet.".format(ordering_id))
+    #    conn.execute(
+    #    	Orderings.insert(),
+    #    	[
+    #    		{'model_id':model_id,'id':ordering_id},
+    #    	]
+    #    )
     #mat=resolve(
     #    metadata
     #    ,engine
@@ -177,7 +180,8 @@ def addMatrix(metadata,engine,symbol,description,model_id,ordering_id,expr_str:s
             {'symbol':symbol,'model_id':model_id,'ordering_id':ordering_id}
     	]
     )
-def getStateVector( metadata ,engine ,model_id:str,ordering_id:str=defaultOrderingName):
+
+def getStateVariableList(metadata ,engine ,model_id:str,ordering_id:str=defaultOrderingName)->List[str]:
         StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
         # now query
         # we use the c collection for the columns
@@ -187,15 +191,21 @@ def getStateVector( metadata ,engine ,model_id:str,ordering_id:str=defaultOrderi
                         StateVectorPositions.c.pos_id)
         conn=engine.connect()
         
-        sa=select([StateVectorPositions.c.symbol,StateVectorPositions.c.ordering_id,StateVectorPositions.c.pos_id]).where(
-                and_(StateVectorPositions.c.model_id==model_id,
-                StateVectorPositions.c.ordering_id==ordering_id)
-                )
-        for r in conn.execute(sa):
-            print(r)
+        #sa=select([StateVectorPositions.c.symbol,StateVectorPositions.c.ordering_id,StateVectorPositions.c.pos_id]).where(
+        #        and_(StateVectorPositions.c.model_id==model_id,
+        #        StateVectorPositions.c.ordering_id==ordering_id)
+        #        )
+        #for r in conn.execute(sa):
+        #    print(r)
 
-        sym_list=[Symbol(str(row[0])) for row in conn.execute(s)]
-        pe('sym_list',locals())
+        # remark:
+        # we do not have to make sure that the list is unique because this is implied by the database scheme
+        sym_list=[str(row[0]) for row in conn.execute(s)]
+        return sym_list
+
+def getStateVector( metadata ,engine ,model_id:str,ordering_id:str=defaultOrderingName)->Matrix:
+        str_list=getStateVariableList( metadata ,engine ,model_id,ordering_id=ordering_id)
+        sym_list=[Symbol(s) for s in str_list]
         stateVector=Matrix(sym_list)
         return stateVector
 
@@ -243,36 +253,40 @@ def addModel(
     
     #for v in vector_components:
 
-def resolveVector(metadata,engine,expr:sympy.Expr,model_id:str,ordering_id:str):
-    im=resolve(metadata,engine,expr,model_id)
-    # now retrieve the original ordering and the target ordering and 
-    # compute the permutation
-    conn=engine.connect()
-    StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
-    s = select(
-            [StateVectorPositions.c.symbol]).where(
-                    and_(StateVectorPositions.c.model_id == model_id
-                        ,StateVectorPositions.c.ordering_id == ordering_id)).order_by(StateVectorPositions.c.pos_id)
-    sym_list=[Symbol(str(row[0])) for row in conn.execute(s)]
-    pe('sym_list',locals())
-    pe('model_id',locals())
-    pe('ordering_id',locals())
-    orig=["a","b","c","d","e"]
-    new=["b","a","c","d","e"]
+def getDimension(metadata,engine,model_id:str)->int:
+    svl=getStateVariableList(metadata ,engine ,model_id,defaultOrderingName)
+    return(len(svl))
+
+def getPermutation(metadata,engine,model_id:str,ordering_id:str)->Matrix:
+    orig=getStateVariableList(metadata,engine,model_id,defaultOrderingName)
+    new=getStateVariableList(metadata,engine,model_id,ordering_id)
     n=len(orig)
     perm=[orig.index(s) for s in new]
     P=SparseMatrix(n,n,{(i,v):1 for i,v in enumerate(perm)})
+    return P
+
+def resolveVector(metadata,engine,expr:sympy.Expr,model_id:str,ordering_id:str)->Matrix:
+    im=resolve(metadata,engine,expr,model_id)
+    # now retrieve the original ordering and the target ordering and 
+    # compute the permutation
+    s=im.shape
+    assert(len(s)==2) 
+    assert(s[1]==1)# row vector
+    P=getPermutation(metadata,engine,model_id,ordering_id)
     return  P*im
 
 def resolveMatrix(metadata,engine,expr:sympy.Expr,model_id:str,ordering_id:str):
     im=resolve(metadata,engine,expr,model_id)
-#    orig=["a","b","c","d","e"]
-#    new=["b","a","c","d","e"]
-#    perm=[orig.index(s) for s in new]
-#    P=SparseMatrix(3,3,{(i,v):1 for i,v in enumerate(perm)})
-#    return  P*im*P.transpose()
+    #make sure that we realy deal with an n x n matrix 
+    s=im.shape
+    assert(len(s)==2) #matrix
+    assert(s[0]==s[1])#quadratic
+    
+    P=getPermutation(metadata,engine,model_id,ordering_id)
+    P_inv=P.inverse_LU()
+    return  P*im*P_inv
 
-def resolve(metadata,engine,expr:sympy.Expr,model_id:str):
+def resolve(metadata,engine,expr:sympy.Expr,model_id:str,ordering_id:str=defaultOrderingName)->sympy.Expr:
     conn=engine.connect()
     #Variables=Table("Variables",metadata,autoload=True,autoload_with=engine)
     BaseVariables=Table("BaseVariables",metadata,autoload=True,autoload_with=engine)
@@ -300,7 +314,8 @@ def resolve(metadata,engine,expr:sympy.Expr,model_id:str):
     #        ,'Ovl':'kO_vl*vl'
     #}
             
-    ed={Symbol(k):sympify(v) for k,v in expressions.items()}
+    #ed={Symbol(k):sympify(v) for k,v in expressions.items()}
+    ed={Symbol(k):kernS(v) for k,v in expressions.items()}
 
     res=symbolic_resolve(expr,sl,ed)
     return res

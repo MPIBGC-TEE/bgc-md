@@ -11,21 +11,47 @@ def createTables():
     	Column('name', String(100))
     )
     
+    # For vector/matrix/tensor valued arguments the 
+    Orderings= Table('Orderings', metadata,
+         Column('model_id'   , primary_key=True)
+        ,Column('id'         , String(100), primary_key=True)
+    	,ForeignKeyConstraint(['model_id'], ['Models.folder_name'])
+    )
+
     Variables= Table('Variables', metadata,
         Column('symbol', String(100), primary_key=True),
         Column('model_id', None, ForeignKey('Models.folder_name') , primary_key=True),
         Column('description', String)
     )
     
-    # Derived Variables are Variables that depend on other variables (derived or base)
-    # They are branches of the expression tree
-    # (If we want to include dimensions the framework
-    # the dimensions  of these variables should be computed not stored in the database
-    DerivedVariables= Table('DerivedVariables', metadata,
-        Column('symbol'     ),
-        Column('model_id'   ),
-        Column('expression', String),
-    	ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
+    # 1.) Derived Variables are Variables 
+    #     that depend on other variables (derived or base)
+    # 
+    # 2.) They are branches of the expression tree
+    #     (If we want to include dimensions the framework
+    #     the dimensions  of these variables should 
+    #     be computed not stored in the database
+    #
+    # 3.) Since the expressions could contain indeces like u=I[0] 
+    #     even scalar variables refer to an ordering of 
+    #     statevariables (other coordinates in general)
+    #     so a reference to this ordering has to be stored 
+    #     alongside the expression since an expression
+    #     containing an indexed variable is in general only valid
+    #     in the coordinate system it was defined in.
+    #     The aboxe example u=I[0] for instance would have to change
+    #     to u=I[4] if the position of the first (0) and fith (4)
+    #     statevariables would be exchanged
+
+    DerivedVariables= Table(
+        'DerivedVariables'
+        ,metadata
+        ,Column('symbol')
+        ,Column('model_id')
+        ,Column('expression', String)
+        ,Column('ordering_id', String)
+    	,ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
+    	,ForeignKeyConstraint(['ordering_id','model_id'], ['Orderings.id', 'Orderings.model_id'])
         # here shoulb be another constraint ensuring that a symbol that has been added to the 
         # BaseVariables can not be added here
     )
@@ -41,12 +67,6 @@ def createTables():
     	,ForeignKeyConstraint(['symbol', 'model_id'], ['Variables.symbol', 'Variables.model_id'])
         # here shoulb be another constraint ensuring that a symbol that has been added to the 
         # DerivedVariables can not be added here
-    )
-    # For vector/matrix/tensor valued arguments the 
-    Orderings= Table('Orderings', metadata,
-         Column('model_id'   , primary_key=True)
-        ,Column('id'         , String(100), primary_key=True)
-    	,ForeignKeyConstraint(['model_id'], ['Models.folder_name'])
     )
     IndexedComponents= Table('IndexedComponents', metadata,
         Column('symbol'     ,               primary_key=True) #refers to the whole matrix

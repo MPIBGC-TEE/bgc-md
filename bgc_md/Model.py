@@ -255,7 +255,7 @@ def load_expressions_and_symbols(complete_df):
     # run the commands coming from the equations stored as strings in self.expressions --> new python variables are created --> added to l
     eval_expressions(exprs_list, g, l)
 
-    # store symboks in syms_dict (python variables)
+    # store symbols in syms_dict (python variables)
     syms_dict = {name: l[name] for name in symbols_list}
 
     # store evaluated expressions in exprs_dict (python variables)
@@ -783,7 +783,8 @@ class Model:
     
     
     # fixme mm 17.08 2018:
-    # Setting properties of the model object is a bit dangerous since the name space inside the Model class
+    # Setting properties of the model object is a bit dangerous 
+    # since the name space inside the Model class
     # gets crowded by keys from the yaml file 
     # I would prefer an extra class ComponentScheme that stores the information 
     # to build a SmoothReservoirModel instance. 
