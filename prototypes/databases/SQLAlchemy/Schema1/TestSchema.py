@@ -17,7 +17,7 @@ from testinfrastructure.helpers import pe
 from createTables import createTables
 from helpers import defaultOrderingName,addModel,resolve,resolveMatrix,resolveVector,addIndexedVariable,addStateVariableOrdering,getStateVector,addDerivedVariable
 
-class TestSchema1(unittest.TestCase):
+class TestSchema(unittest.TestCase):
     # The aim is a proof of concept implementation for the retrieval of the information that is neccessary to build the 
     # compartmental Matrix
     # Conceptually we want to separate this information from the database, which should only hold
@@ -74,6 +74,28 @@ class TestSchema1(unittest.TestCase):
         # also base variables should be resolved (just to Symbols) 
         res=resolve(metadata,engine,Symbol("Ivl"),model_id)
         ref=sympify('Ivl')
+        
+        addIndexedVariable(
+            metadata
+            ,engine
+            ,model_id=model_id
+            ,symbol='Iv'
+            ,description='carbon distribution'
+            ,expr_str='Matrix([Ivl,Ivw,0,0,0])'
+            ,ordering_id=defaultOrderingName
+        )
+        addDerivedVariable(
+             metadata
+            ,engine
+            ,model_id=model_id
+            ,symbol='u'
+            ,description='net influx to vegetation pools'
+            ,expression='sum(Iv[0:2])'
+            ,ordering_id=defaultOrderingName
+            
+        )
+        res_0=resolve(metadata,engine,Symbol('u'),model_id,defaultOrderingName)
+        pe('u',locals())
 
     #@unittest.skip
     def test_matrix_variables(self):
