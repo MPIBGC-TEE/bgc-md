@@ -12,10 +12,10 @@ import exampleModels
 from sqlalchemy import Table, Column, Integer, String, MetaData,ForeignKey,ForeignKeyConstraint
 from sqlalchemy import create_engine
 from sqlalchemy.sql import select
-from sympy import Matrix,sympify,symbols,Symbol
+from sympy import Matrix,sympify,symbols,Symbol,IndexedBase
 from testinfrastructure.helpers import pe
 from createTables import createTables
-from helpers import defaultOrderingName,addModel,resolve,resolveMatrix,resolveVector,addIndexedVariable,addStateVariableOrdering,getStateVector,addDerivedVariable
+from helpers import defaultOrderingName,addModel,resolve,symbolic_resolve,resolveMatrix,resolveVector,addIndexedVariable,addStateVariableOrdering,getStateVector,addDerivedVariable,get_name_spaces
 
 class TestSchema(unittest.TestCase):
     # The aim is a proof of concept implementation for the retrieval of the information that is neccessary to build the 
@@ -96,6 +96,27 @@ class TestSchema(unittest.TestCase):
         #)
         #res_0=resolve(metadata,engine,Symbol('u'),model_id,defaultOrderingName)
         #pe('u',locals())
+
+    def test_resolve_indexed_expression(self):
+        # suppose v is a vector (in the physical coordinate independent sense)
+        # in coord system 1 it has components [a,b,c,d]
+        sl=["a","b","c","d"]
+        el=['v=Matrix([a,b,c,d])']
+        gns,lns = get_name_spaces(sl,el)
+        # and the
+        res_exp=sympify('v[1]+v[2]',locals=lns) # unfortunately sympyfy does not recognize 'sum(v[1:3])' which evaluates to the same result
+        ## We confine ourselves here to what sympify can do at the moment
+        #res=geometric_resolve(res_exp,sl,ed) 
+        #pe('res',locals())
+        ## now suppose res is coordinate invariant
+        ## and we want to compute it for a representation of v in different
+        ## and vp is related to v by
+        #vp=Matrix([
+        #    [0,0,0,1]
+        #   ,[0,1,0,0]
+        #   ,[0,0,1,0]
+        #   ,[1,0,0,0]
+        #])
 
     #@unittest.skip
     def test_matrix_variables(self):
@@ -246,7 +267,7 @@ class TestSchema(unittest.TestCase):
             ,description='an incomplete vegetation matrix'
             ,model_id=model_id
             ,expression='SparseMatrix(5,5,{(0,0):kvl})'
-            ,execution_order=21
+            ,execution_order=getHighestExecutionOrder(metadata,engine,model_id)+1
             ,coord_system_id=defaultOrderingName
         )
         res=resolve(metadata,engine,Symbol('V'),model_id)
