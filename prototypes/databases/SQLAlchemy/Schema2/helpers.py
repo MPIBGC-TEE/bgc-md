@@ -235,13 +235,19 @@ def getStateVector( metadata ,engine ,model_id:str,coord_system_id:str=defaultOr
     stateVector=Matrix(sym_list)
     return stateVector
 
+def getDerivedVariablesInOrder(metadata ,engine ,model_id:str)->List[List]:
+    DerivedVariables= Table( 'DerivedVariables' ,metadata,autoload=True,autoload_with=engine)
+
+    s = select([DerivedVariables.c.symbol,DerivedVariables.c.expression]).where( DerivedVariables.c.model_id==model_id).order_by(DerivedVariables.c.execution_order)
+    conn=engine.connect()
+    return ([row for row in conn.execute(s)])
+
 def getHighestExecutionOrder(metadata ,engine ,model_id:str)->int:
     DerivedVariables= Table( 'DerivedVariables' ,metadata,autoload=True,autoload_with=engine)
 
     s = select([DerivedVariables.c.execution_order]).where( DerivedVariables.c.model_id==model_id)
     conn=engine.connect()
     return max([row[0] for row in conn.execute(s)])
-
 
 def addModel(
         metadata
@@ -367,4 +373,30 @@ def symbolic_resolve(expr,sl,ed):
         e=expr
         return e.subs({s:symbolic_resolve(s,sl,ed) for s in e.free_symbols}) 
 
+
+def geometric_resolve(expr,sl,ed):
+    # actual resolver that works with sympy Symbols and expressions 
+    if isinstance(expr,Symbol):
+        targetSym=expr
+        if targetSym in sl:
+            return targetSym 
+        else:
+            e=ed[targetSym]
+            #pe('e.free_symbols',locals())
+            return e.subs({s:symbolic_resolve(s,sl,ed) for s in e.free_symbols}) 
+    else:
+        e=expr
+        return e.subs({s:symbolic_resolve(s,sl,ed) for s in e.free_symbols}) 
+
+def get_name_spaces(sl:List[str],el:List[str])->dict:
+    #create and populate the namespaces with all symbol and expression definitions
+    from sympy.core.compatibility import exec_
+    lns={}
+    gns={}
+    exec_('from sympy import *',gns,lns)
+    for s in sl:
+        exec('{0}=Symbol("{0}")'.format(s),gns,lns)
+    for expr in el:
+        exec(expr,gns,lns)
+    return (gns,lns)
 
