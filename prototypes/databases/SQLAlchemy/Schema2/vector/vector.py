@@ -224,13 +224,13 @@ class Vector(BasisDependent):
         Parameters
         ==========
 
-        system : CoordSys3D
+        system : CoordSysND
             The system wrt which the matrix form is to be computed
 
         Examples
         ========
 
-        >>> from sympy.vector import CoordSys3D
+        >>> from sympy.vector import CoordSysND
         >>> C = CoordSys3D('C')
         >>> from sympy.abc import a, b, c
         >>> v = a*C.i + b*C.j + c*C.k
@@ -243,7 +243,7 @@ class Vector(BasisDependent):
         """
 
         return Matrix([self.dot(unit_vec) for unit_vec in
-                       system.base_vectors()])
+                       system.base_vectors])
 
     def separate(self):
         """
@@ -288,10 +288,10 @@ class BaseVector(Vector, AtomicExpr):
         pretty_str = str(pretty_str)
         latex_str = str(latex_str)
         # Verify arguments
-        if index not in range(0, 3):
+        if not isinstance(system, CoordSysND):
+            raise TypeError("system should be a CoordSysND")
+        if index not in range(system.rank):
             raise ValueError("index must be 0, 1 or 2")
-        #if not isinstance(system, CoordSysND):
-        #    raise TypeError("system should be a CoordSysND")
         name = system._vector_names[index]
         # Initialize an object
         obj = super(BaseVector, cls).__new__(cls, S(index), system)
@@ -478,7 +478,7 @@ def _vect_div(one, other):
         raise TypeError("Invalid division involving a vector")
 
 class CoordSysND(Basic):
-    def __new__(cls,name:str,pools:List[Symbol],parent:str=None,transformation:Matrix=None):
+    def __new__(cls,name:str,vector_names:List[str]=None,parent=None,transformation:tuple=None):
         if parent is not None:
             obj = super(CoordSysND, cls).__new__(
                 cls, Symbol(name), transformation, parent)
@@ -486,10 +486,57 @@ class CoordSysND(Basic):
             obj = super(CoordSysND, cls).__new__(
                 cls, Symbol(name), transformation)
         obj._name = name
-        vector_names = ["i", "j", "k"]
-        #v1 = BaseVector(0, obj, )
-        #v2 = BaseVector(1, obj, )
-        #v3 = BaseVector(2, obj, )
+        rank=len(vector_names)
+        obj.rank=rank
+        #vector_names = [vector_name_prefix+'_'+str(i) for i in range(rank)]
+        #_check_strings('vector_names', vector_names)
+        obj._vector_names = vector_names
+        
+        base_vectors=[BaseVector(i,obj) for i in range(len(vector_names))]
+        obj.base_vectors=base_vectors 
+        for i in range(rank):
+            setattr(obj,vector_names[i],base_vectors[i])
+        
+        return obj
+
+    def create_new(self, name, vector_names, transformation):
+        """
+        Returns a CoordSysND which is connected to self by transformation.
+
+        Parameters
+        ==========
+
+        name : str
+            The name of the new CoordSysND instance.
+
+        transformation : list of lists defining the Matrix P
+
+
+        """
+        #Examples
+        #========
+
+        #>>> from sympy.vector import CoordSys3D
+        #>>> a = CoordSysND('a')
+        #>>> b = a.create_new('b', transformation='spherical')
+        #>>> b.transformation_to_parent()
+        #(b.r*sin(b.theta)*cos(b.phi), b.r*sin(b.phi)*sin(b.theta), b.r*cos(b.theta))
+        #>>> b.transformation_from_parent()
+        #(sqrt(a.x**2 + a.y**2 + a.z**2), acos(a.z/sqrt(a.x**2 + a.y**2 + a.z**2)), atan2(a.y, a.x))
+
+        #"""
+        return CoordSysND(name, vector_names=vector_names,parent=self, transformation=transformation, )
+
+    
+
+
+#def _check_strings(arg_name, arg):
+#    errorstr = arg_name + " must be an iterable of 3 string-types"
+#    if len(arg) != 3:
+#        raise ValueError(errorstr)
+#    for s in arg:
+#        if not isinstance(s, string_types):
+#            raise TypeError(errorstr)
 
 Vector._expr_type = Vector
 Vector._mul_func = VectorMul
