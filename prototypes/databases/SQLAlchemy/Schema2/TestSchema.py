@@ -15,7 +15,23 @@ from sqlalchemy.sql import select
 from sympy import Matrix,sympify,symbols,Symbol,IndexedBase
 from testinfrastructure.helpers import pe
 from createTables import createTables
-from helpers import defaultOrderingName,addModel,resolve,symbolic_resolve,resolveMatrix,resolveVector,addIndexedVariable,addStateVariableOrdering,getStateVector,addDerivedVariable,get_name_spaces
+from sympy import Basic,Symbol,Matrix,symbols
+from sympy.vector import CoordSysND, Vector,express
+from helpers import (
+		 defaultOrderingName
+		,addModel
+		,resolve
+		,symbolic_resolve
+		,resolveMatrix
+		,resolveVector
+		,addIndexedVariable
+		,addStateVariableOrdering
+		,getStateVector
+		,addDerivedVariable
+		,get_name_spaces
+		,getHighestExecutionOrder
+)
+
 
 class TestSchema(unittest.TestCase):
     # The aim is a proof of concept implementation for the retrieval of the information that is neccessary to build the 
@@ -149,7 +165,7 @@ class TestSchema(unittest.TestCase):
         # although this is not relevant for the solution. 
 
         # Furthermore different orderings are usefull for different purposes (clustering different soil levels or all microbial pools, or ..)
-        # Therefore if we define vector/or matrix valued variables we implicitly always define them along with an ordering of the state variables 
+        # Therefore if we define tuple/or matrix valued variables we implicitly always define them along with an ordering of the state variables 
 
         # The block-matrix-decomposition is NOT preserved under general permutations 
         # of the order of state variables.(Only for those permutations inside blocks)
@@ -221,7 +237,7 @@ class TestSchema(unittest.TestCase):
         # compelled to store their positions inside the matrices assembled from them 
         # As mentioned before, it would be impossible to transform the constituents 
         # of the assembly to a new ordering without this information.
-        # As transformable objects we therefore presently store full sized matrices only.
+        # As transformable objects we therefore store vectors and tensors only
 
         # The next test demonstrates how to extract \vec{b} u and \tens{V}
         # refering to the original ordering in the database 
@@ -231,99 +247,128 @@ class TestSchema(unittest.TestCase):
         #          ⎢ 0 ⎥ 
         #          ⎣ 0 ⎦
         
-        addIndexedVariable(
+        vector_names=["e_1","e_2","e_3","e_4"]
+        C=CoordSysND(name="C",vector_names=vector_names,transformation='cartesian')
+        addDerivedVariable(
+            metadata
+            ,engine
+            ,symbol='CS'
+            ,description='coordinate_system'
+            ,model_id=model_id
+            ,expression=''
+            ,execution_order=20
+            ,coord_system_id=defaultOrderingName
+        )
+
+        
+        a,b,c,d=symbols("a,b,c,d")
+        I_l,I_w=symbols("I_l,I_w")
+        v=I_l*C.e_1+I_w*C.e_2
+
+        rotMat=Matrix([
+             [0,0,0,1]
+            ,[0,1,0,0]
+            ,[0,0,1,0]
+            ,[1,0,0,0]
+        ])
+        D=CoordSysND(name="D",parent=C,rotation_matrix=rotMat,location=Vector.zero)
+        w=express(v,D)
+        print(w.to_matrix(D))
+
+        #addIndexedVariable(
+        addDerivedVariable(
             metadata
             ,engine
             ,symbol='b'
             ,description='carbon distribution'
             ,model_id=model_id
-            ,expression='Matrix([Ivl/NetVegIn,Ivw/NetVegIn,0,0,0])'
+            ,expression='Vector.fromComponentTuple((Ivl/NetVegIn,Ivw/NetVegIn,0,0,0]))'
             ,execution_order=20
             ,coord_system_id=defaultOrderingName
         )
-        res=resolve(metadata,engine,Symbol('b'),model_id)
-        ref = sympify("Matrix([Ivl/(Ivl + kIvw*vw), kIvw*vw/(Ivl + kIvw*vw),0,0,0])")
-        self.assertEqual(res,ref)
+        #res=resolve(metadata,engine,Symbol('b'),model_id)
+        #ref = sympify("Matrix([Ivl/(Ivl + kIvw*vw), kIvw*vw/(Ivl + kIvw*vw),0,0,0])")
+        #self.assertEqual(res,ref)
 
-        # we could now retrieve the vector b resulting from another ordering of the statevariables
-        my_ordering_name='veg_2'
-        addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols=["vw", "vl", "sf", "ss", "sb"],coord_system_id=my_ordering_name)
-        res=resolveVector(metadata,engine,Symbol('b'),model_id,my_ordering_name)
-        ref = sympify("Matrix([kIvw*vw/(Ivl + kIvw*vw),Ivl/(Ivl + kIvw*vw),0,0,0])")
-        self.assertEqual(res,ref)
-        
-        # The next test demonstrates how to extract the matrix V
-        # refering to the original ordering in the database 
-        #                  ⎡ V_11,  V_12, 0  ,  0  ,  0  ⎤   ⎡ V_11,   0  ,  0  ,  0  ,  0  ⎤
-        #                  ⎢ V_21,  V_22, 0  ,  0  ,  0  ⎥   ⎢  0  ,  V_22,  0  ,  0  ,  0  ⎥
-        #              V = ⎢  0  ,   0  , 0  ,  0  ,  0  ⎥ = ⎢  0  ,   0  ,  0  ,  0  ,  0  ⎥
-        #                  ⎢  0  ,   0  , 0  ,  0  ,  0  ⎥   ⎢  0  ,   0  ,  0  ,  0  ,  0  ⎥
-        #                  ⎣  0  ,   0  , 0  ,  0  ,  0  ⎦   ⎣  0  ,   0  ,  0  ,  0  ,  0  ⎦
-        
-        addIndexedVariable(
-            metadata
-            ,engine
-            ,symbol='V'
-            ,description='an incomplete vegetation matrix'
-            ,model_id=model_id
-            ,expression='SparseMatrix(5,5,{(0,0):kvl})'
-            ,execution_order=getHighestExecutionOrder(metadata,engine,model_id)+1
-            ,coord_system_id=defaultOrderingName
-        )
-        res=resolve(metadata,engine,Symbol('V'),model_id)
-
-        ref=sympify("Matrix([[kvl, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]])")
-        #pe("res",locals())
-        self.assertEqual(res,ref)
-
-
-        # Since we store derived variables as expression strings it is still possible to (maybe accidentally) use 
-        # matrix and vector variables without being able to transform them to other coordinates, 
-        # So we have to make sure that they are not used without the context of the ordering:
+        ## we could now retrieve the vector b resulting from another ordering of the statevariables
+        #my_ordering_name='veg_2'
+        #addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols=["vw", "vl", "sf", "ss", "sb"],coord_system_id=my_ordering_name)
+        #res=resolveVector(metadata,engine,Symbol('b'),model_id,my_ordering_name)
+        #ref = sympify("Matrix([kIvw*vw/(Ivl + kIvw*vw),Ivl/(Ivl + kIvw*vw),0,0,0])")
+        #self.assertEqual(res,ref)
         #
-        # Assume for example that "NetVegIn" had not been defined by  " NetVegIn = Ivl+Ivw "
-        # but by " u= NetVegIn = sum(Iv[0:2]) " with "Iv=Matrix([Ivl,Ivw,Isf,Iss,Isb])"
-        # After the above Permutation of the second and fifth line the correct way to compute u would be
-        # "u = Iv[0]+Iv[5]" and the original "u = sum(Iv[0:2]) " would be wrong.
-        # Although" sum(Iv[0:2]) "itself is a scalar we can not compute it for a different ordering because it DEPENDS on a vector (and so on the ordering).
-        # lets test that it is reproduced accurately under a change of orderings.
-        # firt define the compelet Inputvector
-        addIndexedVariable(
-            metadata
-            ,engine
-            ,model_id=model_id
-            ,symbol='Iv'
-            ,description='carbon distribution'
-            ,expression='Matrix([Ivl,Ivw,0,0,0])'
-            ,execution_order=22
-            ,coord_system_id=defaultOrderingName
-        )
-        addDerivedVariable(
-             metadata
-            ,engine
-            ,model_id=model_id
-            ,symbol='u'
-            ,description='net influx to vegetation pools'
-            ,expression='sum(Iv[0:2])'
-            ,execution_order=22
-            ,coord_system_id=defaultOrderingName
-            
-        )
-        addDerivedVariable(
-             metadata
-            ,engine
-            ,model_id
-            ,symbol='u_2'
-            ,description='net influx to vegetation pools'
-            ,expression='Iv[0]+Iv[4])'
-            ,execution_order=23
-            ,coord_system_id=defaultOrderingName
-            
-        )
-        res_0=resolve(metadata,engine,Symbol('u'),model_id,defaultOrderingName)
-        res_1=resolve(metadata,engine,Symbol('u_2'),model_id,my_ordering_name)
+        ## The next test demonstrates how to extract the matrix V
+        ## refering to the original ordering in the database 
+        ##                  ⎡ V_11,  V_12, 0  ,  0  ,  0  ⎤   ⎡ V_11,   0  ,  0  ,  0  ,  0  ⎤
+        ##                  ⎢ V_21,  V_22, 0  ,  0  ,  0  ⎥   ⎢  0  ,  V_22,  0  ,  0  ,  0  ⎥
+        ##              V = ⎢  0  ,   0  , 0  ,  0  ,  0  ⎥ = ⎢  0  ,   0  ,  0  ,  0  ,  0  ⎥
+        ##                  ⎢  0  ,   0  , 0  ,  0  ,  0  ⎥   ⎢  0  ,   0  ,  0  ,  0  ,  0  ⎥
+        ##                  ⎣  0  ,   0  , 0  ,  0  ,  0  ⎦   ⎣  0  ,   0  ,  0  ,  0  ,  0  ⎦
+        #
+        #addIndexedVariable(
+        #    metadata
+        #    ,engine
+        #    ,symbol='V'
+        #    ,description='an incomplete vegetation matrix'
+        #    ,model_id=model_id
+        #    ,expression='SparseMatrix(5,5,{(0,0):kvl})'
+        #    ,execution_order=getHighestExecutionOrder(metadata,engine,model_id)+1
+        #    ,coord_system_id=defaultOrderingName
+        #)
+        #res=resolve(metadata,engine,Symbol('V'),model_id)
+
+        #ref=sympify("Matrix([[kvl, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]])")
+        ##pe("res",locals())
+        #self.assertEqual(res,ref)
+
+
+        ## Since we store derived variables as expression strings it is still possible to (maybe accidentally) use 
+        ## matrix and vector variables without being able to transform them to other coordinates, 
+        ## So we have to make sure that they are not used without the context of the ordering:
+        ##
+        ## Assume for example that "NetVegIn" had not been defined by  " NetVegIn = Ivl+Ivw "
+        ## but by " u= NetVegIn = sum(Iv[0:2]) " with "Iv=Matrix([Ivl,Ivw,Isf,Iss,Isb])"
+        ## After the above Permutation of the second and fifth line the correct way to compute u would be
+        ## "u = Iv[0]+Iv[5]" and the original "u = sum(Iv[0:2]) " would be wrong.
+        ## Although" sum(Iv[0:2]) "itself is a scalar we can not compute it for a different ordering because it DEPENDS on a vector (and so on the ordering).
+        ## lets test that it is reproduced accurately under a change of orderings.
+        ## firt define the compelet Inputvector
+        #addIndexedVariable(
+        #    metadata
+        #    ,engine
+        #    ,model_id=model_id
+        #    ,symbol='Iv'
+        #    ,description='carbon distribution'
+        #    ,expression='Matrix([Ivl,Ivw,0,0,0])'
+        #    ,execution_order=22
+        #    ,coord_system_id=defaultOrderingName
+        #)
+        #addDerivedVariable(
+        #     metadata
+        #    ,engine
+        #    ,model_id=model_id
+        #    ,symbol='u'
+        #    ,description='net influx to vegetation pools'
+        #    ,expression='sum(Iv[0:2])'
+        #    ,execution_order=22
+        #    ,coord_system_id=defaultOrderingName
+        #    
+        #)
+        #addDerivedVariable(
+        #     metadata
+        #    ,engine
+        #    ,model_id
+        #    ,symbol='u_2'
+        #    ,description='net influx to vegetation pools'
+        #    ,expression='Iv[0]+Iv[4])'
+        #    ,execution_order=23
+        #    ,coord_system_id=defaultOrderingName
+        #    
+        #)
+        #res_0=resolve(metadata,engine,Symbol('u'),model_id,defaultOrderingName)
+        #res_1=resolve(metadata,engine,Symbol('u_2'),model_id,my_ordering_name)
         # since u is coordinate (permutation invariant) it has to be the same in both orderings
-        self.assertEqual(res_0,res_1)
+        #self.assertEqual(res_0,res_1)
 
 
 

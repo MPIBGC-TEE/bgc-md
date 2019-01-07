@@ -26,7 +26,7 @@ SECRET_KEY = '#m2kc_n76=vhp$k2bjj6+min4cm_hmt7#hi!7ik4#))%x669e^'
 DEBUG = True
 
 #for matagorda and at home
-ALLOWED_HOSTS = ['192.168.1.110','141.5.17.120']
+ALLOWED_HOSTS = ['192.168.1.110','141.5.17.120','127.0.0.1']
 
 
 # Application definition
