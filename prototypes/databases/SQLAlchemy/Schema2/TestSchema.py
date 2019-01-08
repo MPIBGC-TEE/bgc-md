@@ -1,9 +1,9 @@
 # This prototype uses the SQL Expression Language of SQLAlchemy
-# we could have done the same much simpler using the ORM
+# possibly we could have done the it simpler using the ORM
+# The purpose is however to identify the relational model
+
 # to do:
-# 1.) in the tests retrieve the tables from the database instead of attaching them to the TestInstance
-#     since this reflects
-# 2.) There are datbase constraints that are not reflected yet 
+# 1.) There are datbase constraints that are not reflected yet 
 #     1.) A variable can be either BaseVariable or DerivedVariable not both
 #         so the BaseVariables table needs a constraint that blocks the addition of a Symbol already present
 #         in DerivedVariables and vice versa
@@ -18,18 +18,18 @@ from createTables import createTables
 from sympy import Basic,Symbol,Matrix,symbols
 from sympy.vector import CoordSysND, Vector,express
 from helpers import (
-		 defaultOrderingName
-		,addModel
-		,resolve
-		,symbolic_resolve
-		,resolveMatrix
-		,resolveVector
-		,addIndexedVariable
-		,addStateVariableOrdering
-		,getStateVector
-		,addDerivedVariable
-		,get_name_spaces
-		,getHighestExecutionOrder
+         defaultOrderingName
+        ,addModel
+        ,resolve
+        #,geometric_resolve
+        #,symbolic_resolve
+        #,resolveMatrix
+        #,resolveVector
+        ,addStateVariableOrdering
+        ,getStateVector
+        ,addDerivedVariable
+        #,get_name_spaces
+        ,getHighestExecutionOrder
 )
 
 
@@ -85,42 +85,23 @@ class TestSchema(unittest.TestCase):
         model_id='default_2'
         exampleModels.addOnePoolModel(metadata,engine,model_id,'test')
 
-        res=resolve(metadata,engine,Symbol("NetFlux"),model_id)
+        res=resolve(metadata,engine,"NetFlux",model_id)
         ref=sympify('kIvl*vl-kOvl*vl')
         # also base variables should be resolved (just to Symbols) 
-        res=resolve(metadata,engine,Symbol("Ivl"),model_id)
+        res=resolve(metadata,engine,"Ivl",model_id)
         ref=sympify('Ivl')
         
-        #addIndexedVariable(
-        #    metadata
-        #    ,engine
-        #    ,model_id=model_id
-        #    ,symbol='Iv'
-        #    ,description='carbon distribution'
-        #    ,expr_str='Matrix([Ivl,Ivw,0,0,0])'
-        #    ,coord_system_id=defaultOrderingName
-        #)
-        #addDerivedVariable(
-        #     metadata
-        #    ,engine
-        #    ,model_id=model_id
-        #    ,symbol='u'
-        #    ,description='net influx to vegetation pools'
-        #    ,expression='sum(Iv[0:2])'
-        #    ,coord_system_id=defaultOrderingName
-        #    
-        #)
-        #res_0=resolve(metadata,engine,Symbol('u'),model_id,defaultOrderingName)
-        #pe('u',locals())
 
+    @unittest.skip
     def test_resolve_indexed_expression(self):
+        pass
         # suppose v is a vector (in the physical coordinate independent sense)
         # in coord system 1 it has components [a,b,c,d]
-        sl=["a","b","c","d"]
-        el=['v=Matrix([a,b,c,d])']
-        gns,lns = get_name_spaces(sl,el)
-        # and the
-        res_exp=sympify('v[1]+v[2]',locals=lns) # unfortunately sympyfy does not recognize 'sum(v[1:3])' which evaluates to the same result
+        #sl=["a","b","c","d"]
+        #el=['v=Matrix([a,b,c,d])']
+        #gns,lns = get_name_spaces(sl,el)
+        ## and the
+        #res_exp=sympify('v[1]+v[2]',locals=lns) # unfortunately sympyfy does not recognize 'sum(v[1:3])' which evaluates to the same result
         ## We confine ourselves here to what sympify can do at the moment
         #res=geometric_resolve(res_exp,sl,ed) 
         #pe('res',locals())
@@ -161,7 +142,7 @@ class TestSchema(unittest.TestCase):
 
         # On the other hand storing this information in the database 
         # has to account for the fact that matrix and vector valued variables 
-        # depend on the ordering of the pools, 
+        # depend on the ordering of the pools (the coordinate system), 
         # although this is not relevant for the solution. 
 
         # Furthermore different orderings are usefull for different purposes (clustering different soil levels or all microbial pools, or ..)
@@ -247,33 +228,34 @@ class TestSchema(unittest.TestCase):
         #          ⎢ 0 ⎥ 
         #          ⎣ 0 ⎦
         
-        vector_names=["e_1","e_2","e_3","e_4"]
-        C=CoordSysND(name="C",vector_names=vector_names,transformation='cartesian')
+
+        
         addDerivedVariable(
             metadata
             ,engine
-            ,symbol='CS'
+            ,symbol='C'
             ,description='coordinate_system'
             ,model_id=model_id
-            ,expression=''
+            ,expression='CoordSysND(name="C",vector_names=["e_1","e_2","e_3","e_4"],transformation="cartesian")'
+        
             ,execution_order=20
             ,coord_system_id=defaultOrderingName
         )
 
         
-        a,b,c,d=symbols("a,b,c,d")
-        I_l,I_w=symbols("I_l,I_w")
-        v=I_l*C.e_1+I_w*C.e_2
+        #a,b,c,d=symbols("a,b,c,d")
+        #I_l,I_w=symbols("I_l,I_w")
+        #v=I_l*C.e_1+I_w*C.e_2
 
-        rotMat=Matrix([
-             [0,0,0,1]
-            ,[0,1,0,0]
-            ,[0,0,1,0]
-            ,[1,0,0,0]
-        ])
-        D=CoordSysND(name="D",parent=C,rotation_matrix=rotMat,location=Vector.zero)
-        w=express(v,D)
-        print(w.to_matrix(D))
+        #rotMat=Matrix([
+        #     [0,0,0,1]
+        #    ,[0,1,0,0]
+        #    ,[0,0,1,0]
+        #    ,[1,0,0,0]
+        #])
+        #D=CoordSysND(name="D",parent=C,rotation_matrix=rotMat,location=Vector.zero)
+        #w=express(v,D)
+        #print(w.to_matrix(D))
 
         #addIndexedVariable(
         addDerivedVariable(
@@ -282,11 +264,12 @@ class TestSchema(unittest.TestCase):
             ,symbol='b'
             ,description='carbon distribution'
             ,model_id=model_id
-            ,expression='Vector.fromComponentTuple((Ivl/NetVegIn,Ivw/NetVegIn,0,0,0]))'
-            ,execution_order=20
+            #,expression='Vector.fromComponentTuple((Ivl/NetVegIn,Ivw/NetVegIn,0,0,0]))'
+            ,expression='Ivl/NetVegIn*C.e_1+Ivw/NetVegIn*C.e_2'
+            ,execution_order=21
             ,coord_system_id=defaultOrderingName
         )
-        #res=resolve(metadata,engine,Symbol('b'),model_id)
+        res=resolve(metadata,engine,'b',model_id)
         #ref = sympify("Matrix([Ivl/(Ivl + kIvw*vw), kIvw*vw/(Ivl + kIvw*vw),0,0,0])")
         #self.assertEqual(res,ref)
 

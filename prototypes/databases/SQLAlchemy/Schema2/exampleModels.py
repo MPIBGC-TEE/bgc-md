@@ -9,12 +9,7 @@ def addOnePoolModel(metadata,engine,model_id,name):
         ,{ 'symbol':"kIvl"  ,'description':"photasynthesis rate",'dimension':"1/time"   } 
     ]
     derived_variables = [
-         { 'symbol':"NetFlux"     
-          ,'description':"input - output"    
-          ,'expression':"Ivl-Ovl"
-          ,'coord_system_id':defaultOrderingName
-         }
-         ,{
+         {
            'symbol':"Ivl" 
            ,'description':"External influx into leaf compartment"    
            ,'expression':"vl*kIvl"
@@ -28,6 +23,11 @@ def addOnePoolModel(metadata,engine,model_id,name):
            ,'source_symbol':"vl"
            ,'coord_system_id':defaultOrderingName
         }
+         ,{ 'symbol':"NetFlux"     
+          ,'description':"input - output"    
+          ,'expression':"Ivl-Ovl"
+          ,'coord_system_id':defaultOrderingName
+         }
     ]
     addModel(
         metadata
@@ -111,17 +111,17 @@ def addFivePoolModel(metadata,engine,model_id,name):
         }
     ]
     derived_variables = [
-         { 
-             'symbol':"NetVegIn"     
-             ,'description':"some variable describing the comulativ vegetation input"    
-             ,'expression':"Ivl+Ivw"
-            ,'coord_system_id':defaultOrderingName
-         }
-        ,{
+         {
             'symbol':"Ivw" 
             ,'description':"External influx into compartment vw"    
             ,'expression':"vw*kIvw"
             ,'target_symbol':"vw"
+            ,'coord_system_id':defaultOrderingName
+         }
+         ,{ 
+             'symbol':"NetVegIn"     
+             ,'description':"some variable describing the comulativ vegetation input"    
+             ,'expression':"Ivl+Ivw"
             ,'coord_system_id':defaultOrderingName
          }
         ,{
