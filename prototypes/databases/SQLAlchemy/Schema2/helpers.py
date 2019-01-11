@@ -101,16 +101,18 @@ def addStateVariableOrdering(metadata,engine,model_id,state_variable_symbols,coo
 
     # now check if statevariables already defined in default ordering
     # and if so if the new ordering defines the same set of state variables
-    dsv=getStateVector(metadata,engine,model_id,coord_system_id=defaultOrderingName)
-    #pe('dsv',locals())
+    #dsv=getStateVector(metadata,engine,model_id,coord_system_id=defaultOrderingName)
+    dsv=getStateVariableList(metadata,engine,model_id,coord_system_id=defaultOrderingName)
+    pe('dsv',locals())
     dsvs=set(dsv)
     if len(dsvs)!=0:
-        svss=set([Symbol(s) for s in state_variable_symbols])
+        #svss=set([Symbol(s) for s in state_variable_symbols])
+        svss=set(state_variable_symbols)
         if dsvs!=svss:
             raise Exception("the set of statevariables defined by the new ordering {0} differs from the set of statevariables defined by the default ordering {1}".format(dsvs,svss))
     StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
     # If an ordering of the same name has been present
-    # we have to remove the entried in the StateVectorPositions table
+    # we have to remove the entry  in the StateVectorPositions table
     StateVectorPositions.delete().where(StateVectorPositions.c.model_id== model_id and StateVectorPositions.c.coord_system_id==coord_system_id)
     # and add the new entries
     for index,s in enumerate(state_variable_symbols):
@@ -229,6 +231,8 @@ def getStateVariableList(metadata ,engine ,model_id:str,coord_system_id:str=defa
     # we do not have to make sure that the list is unique because this is implied by the database scheme
     sym_list=[str(row[0]) for row in conn.execute(s)]
     return sym_list
+def getDimension( metadata ,engine ,model_id:str)->int:
+    return getStateVector( metadata ,engine ,model_id).shape[0]
 
 def getStateVector( metadata ,engine ,model_id:str,coord_system_id:str=defaultOrderingName)->Matrix:
     str_list=getStateVariableList( metadata ,engine ,model_id,coord_system_id=coord_system_id)
@@ -326,7 +330,7 @@ def getPermutation(metadata,engine,model_id:str,coord_system_id:str)->Matrix:
 #    P_inv=P.inverse_LU()
 #    return  P*im*P_inv
 
-def resolve(metadata,engine,expr_str:str,model_id:str,coord_system_id:str=defaultOrderingName)->sympy.Expr:
+def resolve(metadata,engine,symbol_str:str,model_id:str,coord_system_id:str=defaultOrderingName)->sympy.Expr:
     conn=engine.connect()
     BaseVariables=Table("BaseVariables",metadata,autoload=True,autoload_with=engine)
     StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
@@ -341,9 +345,28 @@ def resolve(metadata,engine,expr_str:str,model_id:str,coord_system_id:str=defaul
     #dvo=getDerivedVariablesInOrder(metadata,engine,model_id)
     pe('sl',locals())
     DerivedVariables= Table( 'DerivedVariables' ,metadata,autoload=True,autoload_with=engine)
-
-    s = select([DerivedVariables.c.symbol,DerivedVariables.c.expression]).where( DerivedVariables.c.model_id==model_id).order_by(DerivedVariables.c.execution_order)
+    # first find out the coordinate system the target variable was defined in 
     conn=engine.connect()
+    res=conn.execute(
+        select([DerivedVariables.c.coord_system_id]).where(
+            and_(
+                 DerivedVariables.c.symbol==symbol_str 
+                ,DerivedVariables.c.model_id==model_id
+            )
+        )
+    )
+
+    target_coord_id=[row for row in res][0][0]
+    pe('target_coord_id',locals())
+    # then collect the variables that have been defined with respect to that ordering
+    s = select(
+            [DerivedVariables.c.symbol,DerivedVariables.c.expression]
+        ).where( 
+            and_(
+                 DerivedVariables.c.model_id==model_id
+                ,DerivedVariables.c.coord_system_id==target_coord_id
+            )
+        ).order_by(DerivedVariables.c.execution_order)
     dvo=[row for row in conn.execute(s)]
     pe('dvo',locals())
     # populate the namespace 
@@ -360,77 +383,25 @@ def resolve(metadata,engine,expr_str:str,model_id:str,coord_system_id:str=defaul
         print(code)
         exec_(code,gns,lns)
     
-    return exec_(expr_str,lns,gns)
+    #return exec_(expr_str,lns,gns)
+    res_org_coord=lns[symbol_str]
+    if coord_system_id != target_coord_id:
+        P=getPermutation(metadata,engine,model_id,coord_system_id)
+        if isinstance(res_org_coord,Matrix):
+            s=res_org_coord.shape
+            n= getDimension( metadata ,engine ,model_id)
+            if s[0]==n and s[1]==1: #columnvector
+                return P*res_org_coord
+            elif s[0]==n and s[1]==n: #quadratic matrix
+                P_inv=P.inverse_LU()
+                return P*res_org_coord*P_inv
+            else:
+                raise Exception("We can only convert Vectors and Matrices of full size")
 
-#def resolve_old(metadata,engine,expr:sympy.Expr,model_id:str,coord_system_id:str=defaultOrderingName)->sympy.Expr:
-#    conn=engine.connect()
-#    #Variables=Table("Variables",metadata,autoload=True,autoload_with=engine)
-#    BaseVariables=Table("BaseVariables",metadata,autoload=True,autoload_with=engine)
-#    StateVectorPositions=Table("StateVectorPositions",metadata,autoload=True,autoload_with=engine)
-#    DerivedVariables=Table("DerivedVariables",metadata,autoload=True,autoload_with=engine)
-#    
-#    sb=select([BaseVariables.c.symbol]).where(BaseVariables.c.model_id==model_id)
-#    bss=[str(row[0])  for row in conn.execute(sb)]
-#    
-#    ss=select([StateVectorPositions.c.symbol]).where(StateVectorPositions.c.model_id==model_id)
-#    sss=[str(row[0])  for row in conn.execute(ss)]
-#    
-#    #sym_strs=['kI_vl','kO_vl']+['vl']
-#    ss=bss+sss
-#    sl=[Symbol(s) for s in ss]
-#
-#    expressions={str(row[0]):str(row[1])  for row in 
-#            conn.execute(
-#                select([DerivedVariables.c.symbol,DerivedVariables.c.expression]).where(DerivedVariables.c.model_id==model_id))
-#    }
-#
-#    ed={Symbol(k):sympify(v) for k,v in expressions.items()}
-#    #ed={Symbol(k):kernS(v) for k,v in expressions.items()}
-#
-#    #res=symbolic_resolve(expr,sl,ed)
-#    res=namespace_resolve(expr,sl,ed)
-#    return res
-#        
-#def symbolic_resolve(expr,sl,ed):
-#    # actual resolver that works with sympy Symbols and expressions 
-#    if isinstance(expr,Symbol):
-#        targetSym=expr
-#        if targetSym in sl:
-#            return targetSym 
-#        else:
-#            e=ed[targetSym]
-#            #pe('e.free_symbols',locals())
-#            return e.subs({s:symbolic_resolve(s,sl,ed) for s in e.free_symbols}) 
-#    else:
-#        e=expr
-#        return e.subs({s:symbolic_resolve(s,sl,ed) for s in e.free_symbols}) 
-#
-#
-#def namespace_resolve(expr,sl,ed):
-#    # actual resolver that works with sympy Symbols and expressions 
-#    if isinstance(expr,Symbol):
-#        targetSym=expr
-#        if targetSym in sl:
-#            return targetSym 
-#        else:
-#            # evaluate all expressions 
-#            lns,gns=get_name_spaces(sl,ed)
-#            return lns[targetSym]
-#    else:
-#        e=expr
-#        print(e)
-#        #execute it in the environment populated by the other expressions and symbols
-#        return exec_(expr,lns,gns)
+        else:# Scalar
+            return res_org_coord
+            
+    else:
+        return res_org_coord
 
-def get_name_spaces(sl:List[str],el:List[str])->tuple:
-    #create and populate the namespaces with all symbol and expression definitions
-    from sympy.core.compatibility import exec_
-    lns={}
-    gns={}
-    exec_('from sympy import *',gns,lns)
-    for s in sl:
-        exec('{0}=Symbol("{0}")'.format(s),gns,lns)
-    for expr in el:
-        exec(expr,gns,lns)
-    return (gns,lns)
 

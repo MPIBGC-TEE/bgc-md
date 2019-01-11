@@ -118,12 +118,12 @@ def addFivePoolModel(metadata,engine,model_id,name):
             ,'target_symbol':"vw"
             ,'coord_system_id':defaultOrderingName
          }
-         ,{ 
-             'symbol':"NetVegIn"     
-             ,'description':"some variable describing the comulativ vegetation input"    
-             ,'expression':"Ivl+Ivw"
-            ,'coord_system_id':defaultOrderingName
-         }
+         #,{ 
+         #    'symbol':"NetVegIn"     
+         #    ,'description':"some variable describing the comulativ vegetation input"    
+         #    ,'expression':"Ivl+Ivw"
+         #   ,'coord_system_id':defaultOrderingName
+         #}
         ,{
             'symbol':"Ovl" 
             ,'description':"External Outflux out of compartment vl =leaf respiration"    
