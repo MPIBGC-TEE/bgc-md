@@ -1,0 +1,6 @@
+# The purpose of this Schema is to work backwards from the minimal requirement that the 
+# an Instance of CompartmentalModel can be created.
+# So a model consists at minimum constructor call.
+# and possibly some variable definitions to populate the namespace in which the constructor is called. 
+
+

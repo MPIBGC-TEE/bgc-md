@@ -21,14 +21,9 @@ from helpers import (
          defaultOrderingName
         ,addModel
         ,resolve
-        #,geometric_resolve
-        #,symbolic_resolve
-        #,resolveMatrix
-        #,resolveVector
         ,addStateVariableOrdering
         ,getStateVector
         ,addDerivedVariable
-        #,get_name_spaces
         ,getHighestExecutionOrder
 )
 
@@ -92,4 +87,34 @@ class TestSchema(unittest.TestCase):
         res=resolve(metadata,engine,"Ivl",model_id)
         ref=sympify('Ivl')
         
+
+    def test_compare_GPP_distribution_for_different_models(self):
+        # many (if not all) vegetation models have similar structure       
+        # and are build from the same components.
+        # E.g. many have a state variable describing the amount of         
+        # carbon in the leafs. 
+        # However the Variable Name (Symbol) will be different in different publications
+        # Let us assume that we have 2 different models that both have 
+        # spread the NetInFlux evenly between leaf and wood pools.
+        # we want to be able to prove that
+        metadata=self.metadata
+        engine=self.engine
+        exampleModels.addFivePoolModel(metadata,engine,"five_pool",'test')
+        exampleModels.addTwoPoolModel(metadata,engine,"two_pool",'test')
+        # now we define a category distribution vector
+        class VegDistVector:
+            @classmethod 
+            def from_compartmentnames(cls,leaf=None,wood=None,root=None):
+                obj=cls.__new__()
+                if leaf is not None:
+                    obj.leaf =leaf
+                
+                if wood is not None:
+                    obj.wood =wood
+                
+                if root is not None:
+                    obj.root =root
+        b_five=VegDistVector(leaf=Ivl/u_org,
+
+
 
