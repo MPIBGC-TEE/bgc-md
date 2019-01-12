@@ -966,7 +966,12 @@ def render(template_path,*args,**kw):
     with template_path.open() as f:
         code=f.read()
     
-    exec(code,globals(),locals()) # this makes the template function defined in the file available   
+    exec(code,globals(),locals()) # this makes the template function defined in the file available 
+    
+    # fixme mm 2019:
+    # the function should not become part of the global namespace
+    # but be executed in a separate environment
+
     # call the function defined in the template
     func=locals()['template']
     rel= func.__call__(*args,**kw)
