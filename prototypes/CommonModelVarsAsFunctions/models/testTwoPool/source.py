@@ -30,7 +30,7 @@ def get_stateVector():
     +vw*C.e_vw
     return s
 
-def get_ModelDescriptor():
+def get_ModelDescriptor():->ModelDescriptor
     I=get_InputVector()
     stateVector=get_stateVector()
     B=get_CompartmentalMatrix()
