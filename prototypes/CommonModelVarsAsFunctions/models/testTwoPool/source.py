@@ -2,7 +2,6 @@ from sympy import symbols
 from sympy.vector import CoordSysND,express
 # fixme mm:
 # add this boilerplatecode automatically
-from bgc_md.ModelDescriptor import ModelDescriptor
 def get_CooordSystem():
     vector_names=["e_vl","e_vw"]
     C=CoordSysND(name="C",vector_names=vector_names,transformation='cartesian')
@@ -29,13 +28,6 @@ def get_stateVector():
      vl*C.e_vl
     +vw*C.e_vw
     return s
-
-def get_ModelDescriptor():->ModelDescriptor
-    I=get_InputVector()
-    stateVector=get_stateVector()
-    B=get_CompartmentalMatrix()
-    md=ModelDescriptor.from_B_I(stateVector,B,I)
-    return md
 
 def get_cumulative_Vegetation_Input():
     C=get_CooordSystem()

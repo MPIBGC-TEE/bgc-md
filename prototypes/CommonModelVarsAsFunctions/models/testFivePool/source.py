@@ -2,7 +2,9 @@ from sympy import symbols
 from sympy.vector import CoordSysND,express
 # fixme mm:
 # add this boilerplatecode automatically
-from bgc_md.ModelDescriptor import ModelDescriptor
+from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
+from bgc_md.prototype_helpers import srm_from_B_u_tens
+
 def get_CooordSystem():
     vector_names=["e_vl","e_vw","e_sf","e_ss","e_sm"]
     C=CoordSysND(name="C",vector_names=vector_names,transformation='cartesian')
@@ -14,7 +16,7 @@ def get_InputVector():
     I= I_vl*C.e_vl +I_vw*C.e_vw
     return I
 
-def get_CompartmentalMatrix():
+def get_CompartmentalDyad():
     C=get_CooordSystem()
     B=-1*( #Fake (diagonal) Tensor  
         (C.e_vl|C.e_vl)
@@ -29,18 +31,22 @@ def get_stateVector():
     C=get_CooordSystem()
     vl,vw,sf,ss,sm= symbols("vl vw sf ss sm")
     s=\
-     vl*C.e_vl
-    +vw*C.e_vw
-    +sf*C.e_sf
-    +ss*C.e_ss
+     vl*C.e_vl\
+    +vw*C.e_vw\
+    +sf*C.e_sf\
+    +ss*C.e_ss\
     +sm*C.e_sm
     return s
 
-def get_ModelDescriptor():
-    I=get_InputVector()
+def time_symbol():
+    return Symbol('t')
+
+def get_SmoothReservoirModel():
+    C=get_CooordSystem()
+    u=get_InputVector()
     stateVector=get_stateVector()
-    B=get_CompartmentalMatrix()
-    md=ModelDescriptor.from_B_I(stateVector,B,I)
+    B=get_CompartmentalDyad()
+    md=srm_from_B_u_tens(C,stateVector,time_symbol,B,u)
     return md
 
 def get_cumulative_Vegetation_Input():

@@ -2,13 +2,9 @@ from sympy import symbols
 from sympy.vector import CoordSysND,express
 # fixme mm:
 # add this boilerplatecode automatically
-from bgc_md.ModelDescriptor import ModelDescriptor
-def get_CooordSystem():
-    vector_names=["e_vl","e_vw"]
-    C=CoordSysND(name="C",vector_names=vector_names,transformation='cartesian')
-    return C
+from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel 
 
-def get_ExternalInputs():
+def get_InFluxes():
     #C=get_CooordSystem()
     I_vl,I_vw= symbols("I_vl I_vw")
     return {
@@ -16,7 +12,7 @@ def get_ExternalInputs():
         ,vw:I_vw
     }
 
-def get_ExternalOutFluxes():
+def get_OutFluxes():
     vl,vw=get_stateVariableTuple()
     k_vl,k_vw= symbols("k_vl k_vw")
     return {
@@ -24,22 +20,23 @@ def get_ExternalOutFluxes():
         ,vw:k_vw*vw
     }
 
-def get_CompartmentalMatrix():
-    C=get_CooordSystem()
-    B=-1*( #Fake (diagonal) Tensor  
-        (C.e_vl|C.e_vl)
-       +(C.e_vw|C.e_vw)
-    )
-    return B
+def get_InternalFluxes():
+    vl,vw=get_stateVariableTuple()
+    k_vl,k_vw= symbols("k_lw k_wl")
+    # the keys of the internal flux dictionary are tuples (source_pool,target_pool)
+    return {
+         (vl,vw):k_vl*vl
+        ,(vw,vl):k_vw*vw
+    }
 
-def get_stateVariableTuple():
+def get_StateVariableTuple():
     vl,vw = symbols("vl vw")
     return (vl,vw)
 
-def get_ModelDescriptor():
-    md=ModelDescriptor.from_Fluxes(
-         get_ExternalInFlux()
-        ,get_ExternalOutFluxes()
+def get_SmoothReservoirModel():
+    md=SmoothReservoirModel.from_state_variable_indexed_fluxes(
+         get_InFlux()
+        ,get_OutFluxes()
         ,get_InternalFluxes()
     )
     return md

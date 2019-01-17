@@ -9,8 +9,8 @@ from testinfrastructure.helpers import pe
 #from sympy import Basic,Symbol,Matrix,symbols
 
 #from sympy.vector import CoordSysND, Vector,express
-from helpers import getModelDescriptor
-from helpers import get
+from bgc_md.prototype_helpers import get_SmoothReservoirModel
+from bgc_md.prototype_helpers import get
 
 
 class TestSchema(unittest.TestCase):
@@ -18,8 +18,11 @@ class TestSchema(unittest.TestCase):
     # compartmental Matrix
     
     def test_CS_creation(self):
-        md=get(model_id='testFivePool',callString='get_ModelDescriptor()')
+        # explicit function in models/testFivePool/source.py
+        md=get(model_id='testFivePool',callString='get_SmoothReservoirModel()')
         pe('md.compartmental_matrix',locals())
+         NO explicit function in models/testTwoPool/source.py
+        md=get_SmoothReservoirModel(model_id='testTwoPool')
 
 
 
