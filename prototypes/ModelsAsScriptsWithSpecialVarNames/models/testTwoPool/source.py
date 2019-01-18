@@ -1,5 +1,5 @@
-from sympy import symbols
-from sympy.vector import CoordSysND,express,Vector,Dyadic,Number
+from sympy import Symbol,symbols,Number
+from sympy.vector import CoordSysND,express,Vector,Dyadic
 # fixme mm:
 # add this boilerplatecode automatically
 vector_names=["e_vl","e_vw"]
@@ -18,15 +18,15 @@ s=\
  vl*C.e_vl\
 +vw*C.e_vw\
 
+time_symbol=Symbol('t')
 Icomp=express(I,C).to_matrix(C)  
 cvi=sum(Icomp[0:2])
 # this dictionary will be analysed the keys have special meaning
-specialVars={
-    'CoordSys':C #Coordinate syste
-    ,'InputVector':I
-    ,'CompartmentalDyad':B
+special_vars={
+    'coord_sys':C #Coordinate syste
+    ,'input_vector':I
+    ,'compartmental_dyad':B
     ,'time_symbol':time_symbol
-    ,'stateVector':s
-    ,'SmoothReservoirModel':srm
-    ,'cumulative_Vegetation_Input':cvi
+    ,'state_vector':s
+    ,'cumulative_vegetation_input':cvi
 }
