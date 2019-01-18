@@ -14,6 +14,34 @@ modelFolderName="models"
 def srcPath(model_id):
     return Path(modelFolderName).joinpath(model_id,srcFileName)
 
+#def get_Constructors(cls):
+#    # look for other constructors  or factories returning that return
+#    # an instance of cls
+#    funcnames=[t[0] for t in getmembers(cls)]
+#    funcs=[getattr(cls,fn) for fn in funcnames]
+#    def isConstructor(func,cls):
+#        if hasattr(func,'__annotations__'):
+#            hints=get_type_hints(func)
+#            if 'return' in hints:
+#                return hints['return']==cls
+#            else:
+#                return False
+#        else:
+#            return False
+#    srm_constructors=[ f for f in funcs if isConstructor(f,cls)]
+#    return srm_constructors
+#
+#def get_factories(module,cls):
+#    # look for constructors in this module
+#    current_module=sys.modules[__name__]
+#    print(current_module)
+#    funcnames= [f[0] for f in getmembers(current_module,isfunction)] 
+#    pe('funcnames',locals())
+#    funcs=[getattr(current_module,fn) for fn in funcnames]
+#    pe('funcs',locals())
+#    factories_in_this_module=[ f for f in funcs if isConstructor(f,cls)]
+#    constructors = srm_constructors+factories_in_this_module 
+#    print(constructors)
 
 def get_SmoothReservoirModel(model_id):
     # this is the proxy function 
@@ -39,32 +67,9 @@ def get_SmoothReservoirModel(model_id):
         md=eval(myName+"()",gns)
         pe('md',locals())
         return md
-    # look for other constructors  or factories returning that return
-    # an instance of SmoothReservoirModel
-    funcnames=[t[0] for t in getmembers(SmoothReservoirModel)]
-    funcs=[getattr(SmoothReservoirModel,fn) for fn in funcnames]
-    def isConstructor(func,cls):
-        if hasattr(func,'__annotations__'):
-            hints=get_type_hints(func)
-            if 'return' in hints:
-                return hints['return']==cls
-            else:
-                return False
-        else:
-            return False
-    srm_constructors=[ f for f in funcs if isConstructor(f,SmoothReservoirModel)]
-    print(srm_constructors)
-    # look for constructors in this module
-    current_module=sys.modules[__name__]
-    print(current_module)
-    funcnames= [f[0] for f in getmembers(current_module,isfunction)] 
-    pe('funcnames',locals())
-    funcs=[getattr(current_module,fn) for fn in funcnames]
-    pe('funcs',locals())
-    factories_in_this_module=[ f for f in funcs if isConstructor(f,SmoothReservoirModel)]
-    constructors = srm_constructors+factories_in_this_module 
-    print(constructors)
     # now recursively find out if we can get one of them to produce a SmoothReservoirModel with ingredients provided by the User
+    elif {
+    
     
      
     
