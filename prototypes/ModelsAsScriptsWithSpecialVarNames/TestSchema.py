@@ -14,16 +14,17 @@ from bgc_md.prototype_helpers_script import get
 
 class TestSchema(unittest.TestCase):
     # The aim is a proof of concept implementation for the retrieval of the information that is neccessary to build the 
-    # compartmental Matrix
+    # compartmental Matrix 
+    # Here we execute a python script in a special sandbox environment
     
     def test_CS_creation(self):
+        # There are many different ways to provide the ingredients for 
         # explicit function in models/testFivePool/source.py
         md=get(var_name="smooth_reservoir_model",model_id='testFivePool')
         #pe('md.compartmental_matrix',locals())
         # NO explicit function in models/testTwoPool/source.py
         md=get(var_name="smooth_reservoir_model",model_id='testTwoPool')
         pe('md',locals())
-
 
 
 
