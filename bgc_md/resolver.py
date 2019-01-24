@@ -27,13 +27,9 @@ class MVar:
             c for c in self.computers 
             if c.is_computable(name_space)
         ]
-        pe('coms',locals())
         return coms
 
     def __call__(self,name_space):
-        print('######### here ##############')
-        print(self.name)
-        print(name_space.keys())
         if self.name in name_space.keys():
             return name_space[self.name]
         # check which computers actually are computable and
@@ -61,7 +57,7 @@ class Computer:
     
     def __call__(self,name_space):
         vals=[arg(name_space) for arg in self.args]
-        pe('vals',locals())
+        #pe('vals',locals())
         return self.func(*vals)
 
     

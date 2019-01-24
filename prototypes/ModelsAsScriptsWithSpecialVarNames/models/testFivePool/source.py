@@ -44,6 +44,6 @@ special_vars={
     ,'time_symbol':time_symbol
     ,'state_vector':s
     ,'smooth_reservoir_model':srm
-    ,'cumulative_vegetation_input':cvi
+    ,'u_func_phot':cvi
 }
 

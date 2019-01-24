@@ -24,8 +24,10 @@ class TestSchema(unittest.TestCase):
         #pe('md.compartmental_matrix',locals())
         # NO explicit function in models/testTwoPool/source.py
         md=get(var_name="smooth_reservoir_model",model_id='testTwoPool')
-        pe('md',locals())
+        #pe('md',locals())
 
+    def test_Symbols_and_Quanteties(self):
+        md=get(var_name="smooth_reservoir_model",model_id='pseudoCable')
 
 
 #    #@unittest.skip
