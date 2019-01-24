@@ -255,7 +255,7 @@ def load_expressions_and_symbols(complete_df):
     # run the commands coming from the equations stored as strings in self.expressions --> new python variables are created --> added to l
     eval_expressions(exprs_list, g, l)
 
-    # store symboks in syms_dict (python variables)
+    # store symbols in syms_dict (python variables)
     syms_dict = {name: l[name] for name in symbols_list}
 
     # store evaluated expressions in exprs_dict (python variables)
@@ -668,13 +668,6 @@ class Model:
             pe('self.model_subsections',locals())
             pe('self.section_titles',locals())
           
-            # check if the yaml file contains a componentscheme entry 
-            # and load it if
-            key= "componentscheme"
-            if self.has_model_subsection(key):
-                csd=self.section_subdict_without_target_key("componentscheme")
-                pe('csd',locals())
-                css=[ cls for cls in ComponentScheme.__subclasses__() if cls.init_arg_sets()==comp_keys ]
 
             # load the variables dataframe  
             #fixme mm:
@@ -697,6 +690,14 @@ class Model:
             comp_keys=self.get_component_keys()
             # find the subclass of ComponentScheme that is compatible with
             # the component_keys found in the yaml file
+            
+            # check if the yaml file contains a componentscheme entry 
+            # and load it 
+            key= "componentscheme"
+            if self.has_model_subsection(key):
+                csd=self.section_subdict_without_target_key("componentscheme")
+                pe('csd',locals())
+                css=[ cls for cls in ComponentScheme.__subclasses__() if cls.init_arg_sets()==comp_keys ]
 
 
 
@@ -782,13 +783,14 @@ class Model:
     
     
     # fixme mm 17.08 2018:
-    # Setting properties of the model object is a bit dangerous since the name space inside the Model class
+    # Setting properties of the model object is a bit dangerous 
+    # since the name space inside the Model class
     # gets crowded by keys from the yaml file 
     # I would prefer an extra class ComponentScheme that stores the information 
     # to build a SmoothReservoirModel instance. 
     # It can have different constructors depending on 
-    # different key combinations  that are sufficiently informative to infer the main building blocks of a 
-    # SmoothReservoirModel 
+    # different key combinations  that are sufficiently informative 
+    # to infer the main building blocks of a SmoothReservoirModel 
     def set_component_keys(self):
         
 #        df = self.df
@@ -1255,7 +1257,9 @@ class Model:
 
         return df
 
-# helper function for load_df
+    # helper function for load_df
+    # fixme mm 5.10 2018
+    # this should be a class mehtod since it does not depend on the instance
     def load_df(self, variables_sections):
         additional_colnames = self.get_all_colnames( variables_sections)
     

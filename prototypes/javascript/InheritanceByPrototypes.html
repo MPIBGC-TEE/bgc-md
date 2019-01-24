@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US" >
+<head >
+  <meta charset="utf-8">
+<body> 
+  The purpose of the prototype is to 
+  show how to inherit from HTMLTableElement
+  <div id='onFluxTableDiv' ></div>
+</body> 
+<script>
+function Person(first, last, age, gender, interests) {
+  this.name = {
+    first,
+    last
+  };
+  this.age = age;
+  this.gender = gender;
+  this.interests = interests;
+};
+Person.prototype.greeting = function() {
+  alert('Hi! I\'m ' + this.name.first + '.');
+};
+function Teacher(first, last, age, gender, interests, subject) {
+    Person.call(this, first, last, age, gender, interests);
+
+    this.subject = subject;
+  }
+Teacher.prototype=Object.create(Person.prototype);
+Teacher.prototype.constructor=Teacher;
+Teacher.prototype.greeting = function() {
+  var prefix;
+
+  if (this.gender === 'male' || this.gender === 'Male' || this.gender === 'm' || this.gender === 'M') {
+    prefix = 'Mr.';
+  } else if (this.gender === 'female' || this.gender === 'Female' || this.gender === 'f' || this.gender === 'F') {
+    prefix = 'Mrs.';
+  } else {
+    prefix = 'Mx.';
+  }
+
+  alert('Hello. My name is ' + prefix + ' ' + this.name.last + ', and I teach ' + this.subject + '.');
+};
+
+var person1 = new Person('Bob', 'Smith', 32, 'male', ['music', 'skiing']);
+console.log(person1);
+var teacher1= new Teacher('Bob', 'Smith', 32, 'male', ['music', 'skiing'],'math');
+console.log(teacher1);
+console.log(Teacher.prototype.constructor);
+teacher1.greeting();
+</script>
+</html>

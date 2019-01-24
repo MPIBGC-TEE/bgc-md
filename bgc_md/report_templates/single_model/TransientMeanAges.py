@@ -1,4 +1,5 @@
 def template(model):
+    from CompartmentalSystems.start_distributions import start_age_moments_from_zero_initial_content
     # include mean ages
     fontsize = 20
     rel = EmptyLine()
@@ -31,10 +32,6 @@ def template(model):
 
     rel +=Header("Steady state start age distribution ",3) 
     rel +=Text("In the general non autonomous case The model can be frozen at a time t_0. The resulting model is in general autonomous but nonlinear and might have fixed points. If fixedpoints can be found we can compute the age distribution that would have developed if the system had stayed in this equilibrium for infinite time. Note that any startvalues given in the model run data section will not influence this start distribution since it will use the equilibrium values if such can be found.")
-    # fixme 08-21-2018
-    # We have to implement the functionality to integrate python functions in the yaml file (or maybe later the directory of a model
-    # since we have to substitute the functions before we can evalueate the Matrix B and vector u at time t0
-    raise Exception("func_sets are not implemented yet") 
         
     return rel
 

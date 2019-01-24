@@ -257,7 +257,8 @@ def report_from_model(model):
             rel += T
 
     # show the secions of the model data
-    for section_name in model.sections:
+    #for section_name in model.sections:
+    for section_name in model.model_subsections:
         if section_name == 'state_variables':
             rel += Header(model.section_titles[section_name], 1)
             rel += Text("The following table contains the available information regarding this section:")
@@ -929,9 +930,10 @@ def render_parse():
     sources.add_argument('-y', '--yaml', default=None, help="The path to the yaml file containing the description of the record. Either this or -sd must be present." )
     
     parser.epilog= Template("""Examples:\n
-        ${p} report_templates/Overview_table.py -sd data/all_records  -t ${o} 
-        \n
-       ${p} report_templates/Overview_table.py -y data/all_records/Henin1945Annalesagronomiques.yaml  -t ${o} """).substitute(p=parser.prog,o="output" ) 
+        ### example 1:
+        ${p} report_templates/multiple_model/Website.py -sd data/tested_records -t ${o}
+        ### example 2:
+       ${p} report_templates/single_model/MinimalSingleReport.py -y data/tested_records/Henin1945Annalesagronomiques.yaml  -t ${o} """).substitute(p=parser.prog,o="output" ) 
 
     com=parser.parse_args()
     template_path=Path(com.template)
@@ -964,7 +966,12 @@ def render(template_path,*args,**kw):
     with template_path.open() as f:
         code=f.read()
     
-    exec(code,globals(),locals()) # this makes the template function defined in the file available   
+    exec(code,globals(),locals()) # this makes the template function defined in the file available 
+    
+    # fixme mm 2019:
+    # the function should not become part of the global namespace
+    # but be executed in a separate environment
+
     # call the function defined in the template
     func=locals()['template']
     rel= func.__call__(*args,**kw)

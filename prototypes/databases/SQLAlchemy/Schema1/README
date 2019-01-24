@@ -1,0 +1,1 @@
+the last test reveals a fundamental problem with this schema. The order of execution for expressions is importantsince sympify can not resolve 'sum(Iv[0:2])' unless it 'knows' beforehand that Iv is a vector

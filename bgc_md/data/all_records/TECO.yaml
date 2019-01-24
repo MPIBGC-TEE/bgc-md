@@ -51,8 +51,89 @@ model:
             key: "soil"
 
     - photosynthetic_parameters:
+        - T_k: 
+            desc: Canopy temperature in Kelvin
+            type: variable
+        - R
+            desc: Universal gas constant
+            exprs: "R = 8.314"
+        - E_p:
+            desc: Activation energy
+            type: parameter # It may differ for each parameter
+        - Arrhenius:
+            desc: Arrhenius multiplier
+            expr: "Arrhenius = exp((E_p * (T_k - 298))/(R * T_k * 298))"
+        - C_a: 
+            desc: Ambient CO2 concentration
+            type: variable # From external atmospheric CO2 concentration data
+        - C_i: 
+            desc: Leaf internal CO2 concentration
+            type: variable
+        - Gamma: 
+            desc: CO2 compensation point without dark respiration
+            type: parameter
+        - L:
+            desc: Leaf area index
+            type: variable
+        - k: 
+            desc: Light extinction coefficient
+            type: parameter
+        - I_0: 
+            desc: Solar radiation at the top of the canopy
+            type: variable
+        - I: 
+            desc: Absorbed photosynthetically active radiation 
+            exprs: "I = I_0 * exp(-k * L)"
+        - alpha_q:
+            desc: Quantum efficiency of photon capture
+        - J_m:
+            desc: Maximum electron transport rate
+            type: parameter
+        - J_e: 
+            desc: Rate of light electron transport
+            exprs: "J_e = ((alpha_q * I * J_m)/(sqrt((J_m)^2 * (alpha_q)^2 * I^2))) * ((C_i - Gamma)/(4*(C_i + 2 * Gamma)))"
+        - V_m: 
+            desc: Maximum carboxylation rate
+            type: parameter
+        - O_x: 
+            desc: Oxygen concentration in the air
+            type: parameter # value: 0.21
+        - K_o:
+            desc: Michaelis-Menten constant for oxygenation
+            type: parameter
+        - K_c:
+            desc: Michaelis-Menten constant for carboxylation
+            type: parameter
+        - J_c: 
+            desc: Rate of carboxilation with CO2 limitation
+            exprs: "J_c = (V_m * (C_i - Gamma))/(C_i + K_c *( 1 + (O_x/K_o) ))"
+        - R_d: 
+            desc: Dark respiration
+            type: variable # Find expression in fortran code
+        - A: 
+            desc: Gross leaf CO2 assimilation rate
+            exprs: "A = min(J_c, J_e) - R_d"
+        - D: 
+            desc: Vapor pressure deficit
+            type: variable
+        - D_0: 
+            desc: Empirical coefficient
+            type: parameter
+        - g_l:
+            desc: Empirical coefficient
+            type: parameter
+        - G_s
+            desc: Stomatal conductance
+            exprs: "g_l * A /((C_i - Gamma) *(1+(D/D_0)))"
+        - A_n:
+            desc: Net photosynthesis rate at leaf level
+            exprs: "A_n = G_s*(C_a - C_i)"
+        - A_c: 
+            desc: Canopy photosynthesis rate
+            exprs: "A_c = A_n *(1-exp(-k*L))/k"
         - GPP:
             desc: Photosynthetic rate (Carbon input) at time t 
+            exprs: "GPP = A_c*3600*12/1000000" # Scaling expression from TECO fortran code, line 667.
             unit: "gC*day^{-1}" 
             type: variable
             key: GPP

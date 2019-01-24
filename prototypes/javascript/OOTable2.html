@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-US" >
+<head >
+  <meta charset="utf-8">
+<body> 
+  The purpose of the prototype is to 
+  show how to inherit from HTMLTableElement
+  <div id='onFluxTableDiv' ></div>
+</body> 
+<script>
+class MyTable{
+	constructor(names,fluxes){
+		this.names=names;
+		this.fluxes=fluxes;
+		// I would like to extend the standard table class
+		// but I did not know how.
+		// so we build a container around it and
+		// delegate 
+  	this.table=document.createElement('table');
+	}
+}
+mt = new MyTable('n','f');
+console.log(mt.names);
+</script>
+</html>

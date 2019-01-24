@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<HTML>
+<head>
+    <title>javascript test</title>
+    <script src="FluxFields.js" type="text/javascript"></script>
+</head>
+<h2>Fluxes</h2>
+<body>
+<!--
+	The following (hidden) input field is used for the communication between 
+	the python widget and the javascript code
+	Both write a JSON string in it
+-->
+
+<!--
+<input 
+	type ="{{ widget.type }}" 
+	id="fluxReturn" 
+	name="{{ widget.name }}"   
+	{% if widget.value != None %} value="{{ widget.value }}"{% endif %}
+	{% include "django/forms/widgets/attrs.html" %}
+>	
+-->
+	
+<p> 
+  <div id="SubmitButtonDiv"> </div> 
+</p>
+<p> 
+  <div id='AddInternalFluxButtonDiv' ></div>
+</p>
+<p> 
+  <div id='AddInFluxButtonDiv' ></div>
+</p>
+<p> 
+  <div id='InternalFluxTableDiv' ></div>
+</p>
+<p> 
+  <div id='InFluxTableDiv' ></div>
+</p>
+</body>
+    <script>
+    function readHiddenTextFieldFake(){
+      ret=document.getElementById("fluxReturn" );
+      arr={'names':['x','y','z'],'fluxes':[{'source':'x','target':'y','expression':'x**3'}]}
+      console.log(arr);
+      return arr
+    }
+    
+    //create the selects for the given flux
+    var arr=readHiddenTextFieldFake();
+    var names=arr['names']
+    var fluxes=arr['fluxes']
+    var flux=fluxes[0];
+    console.log(flux);
+    var d2=document.getElementById("InternalFluxTableDiv");	
+    // create a InternalFluxField instance 
+    var ds= new InternalFluxField(names,flux);
+    function report(){
+      console.log('report'+ds.value);
+    }
+    ds.onchange=report;
+    
+    d2.appendChild(ds.select1);
+    d2.appendChild(ds.select2);
+    d2.appendChild(ds.expression);
+    </script>
+</HTML>
+

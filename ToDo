@@ -2,3 +2,21 @@
 - rename the method Model.section_subdict Model.get_subdict_of_model_section
 - use section_pandas_df 
 -try to shorten the init method of Model so that only the complete_dict is created and everything else is done on demand
+
+New Webform
+ - initialization of internal flux form does not disable the source choice in the target select 
+
+
+
+ Construction sites where somenthing could be done:
+ -tests for the javascript stuff or the whole webinterface
+ -CSS/Javascript Framework integration for adaptability to different screen sizes
+ -public server with most of the possible images (and some other computationally expensive results) cached and ways to look at models but not to change them.
+ -caching of images and intermediate results
+- automate start of application (manage runserver...) and browser window
+- integrate units and dimensions in a sensible way
+- Javascript for Matrices (Jacob)
+
+
+Thomas:
+

@@ -1,0 +1,5 @@
+The last test in Schema1 revealed a fundamental problem with this schema. The order of execution for expressions is important since sympify can not resolve 'sum(Iv[0:2])' unless it 'knows' beforehand that Iv is a vector.So we have to keep track of the order in which a possible user enters the variables.
+Each new variable is thought of in the context of the already defined variables.
+This is espacially important for indexexpressions like "Iv[0]" wich can not even be sympified (converted to expressions) since sympify tries to subscript a Symbol in the process.
+The have to be evaluated (and eveb sympified) in an environment where all previous vars are known.
+We therefore introduce an Execution order for all Variables
