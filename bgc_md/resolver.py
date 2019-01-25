@@ -7,12 +7,12 @@ from testinfrastructure.helpers import pe
 special_var_string="special_vars"
 class MVar:
     # A (M)ultiply defined (Var)iable that can possibly be computed 
-    # in several ways defined by the computers
+    # in several ways defined by its computers
     # and can check if one of them works given a namespace
-    # the default [] for the computers means that the 
-    # only known way to get the variable is that the user 
-    # directly defined it.
     def __init__(self,name,computers:List['Computer']=[]):
+        # The default [] for the computers means that the 
+        # only known way to get the variable is that the user 
+        # directly defined it.
         self.name       = name
         self.computers  = computers
 

@@ -9,6 +9,8 @@ from sympy.vector import Vector,Dyadic,CoordSysND,express
 from sympy import Symbol
 from bgc_md import resolver
 from bgc_md.resolver import special_var_string
+from bgc_md.DescribedSymbol import DesribedSymbol
+from bgc_md.DescribedQuantity import DescribedQuantity
 
 import sys
 
@@ -17,6 +19,16 @@ modelFolderName="models"
 def srcPath(model_id):
     return Path(modelFolderName).joinpath(model_id,srcFileName)
 
+def populated_namespace(model_id):
+    p=srcPath(model_id)
+
+    with p.open() as f:
+        code= compile(f.read(),p,mode='exec')
+        #code= f.read()
+    gns={}
+    #prepare the execution environment
+    exec(code,gns)
+    return gns
 
 def get(var_name,model_id):
     # this is the proxy function 
@@ -41,6 +53,11 @@ def get(var_name,model_id):
     # check if the user has defined it directly 
     
     
+def get_documented_variables(model_id):
+    #gns=populated_namespace(model_id)
+    return [v for v in gns.values() if isinstance(v,DescribedQuantity)]
+    
+
     
      
     

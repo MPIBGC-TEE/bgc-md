@@ -13,7 +13,10 @@ from sympy.physics.units import year,day,second,minute
 from sympy.physics.units import meter, kilogram
 from sympy.physics.units.dimensions import dimsys_SI
 from sympy.physics.units import convert_to
-
+class DerivedVariable:
+    def __init__(self,expr:str):
+        self.expr=expr
+        
 
 vector_names=["e_C_leaf","e_C_root","e_C_wood","e_sf","e_ss","e_sm"]
 C=CoordSysND(name="C",vector_names=vector_names,transformation='cartesian')
@@ -34,17 +37,29 @@ I_C_leaf,I_C_wood= symbols("I_C_leaf I_C_wood")
 I= I_C_leaf*C.e_C_leaf +I_C_wood*C.e_C_wood
 
 #Fake the soil(diagonal) Tensor  
-A=( 
-   -mu_leaf*(C.e_C_leaf|C.e_C_leaf)
-   -mu_root*(C.e_C_root|C.e_C_root)
-   -mu_wood*(C.e_C_wood|C.e_C_wood)
-)
-D= (
-   -(C.e_sf|C.e_sf)
-   -(C.e_ss|C.e_ss)
-   -(C.e_sm|C.e_sm)
-)
-B=A+D
+#A=( 
+#   -mu_leaf*(C.e_C_leaf|C.e_C_leaf)
+#   -mu_root*(C.e_C_root|C.e_C_root)
+#   -mu_wood*(C.e_C_wood|C.e_C_wood)
+#)
+#D= (
+#   -(C.e_sf|C.e_sf)
+#   -(C.e_ss|C.e_ss)
+#   -(C.e_sm|C.e_sm)
+#)
+#B=A+D
+
+
+derivedVariables=[
+        DerivedVariable("""A=( 
+              -mu_leaf*(C.e_C_leaf|C.e_C_leaf) -mu_root*(C.e_C_root|C.e_C_root) -mu_wood*(C.e_C_wood|C.e_C_wood)) """
+        )
+        ,DerivedVariable( """D=( -(C.e_sf|C.e_sf) -(C.e_ss|C.e_ss) -(C.e_sm|C.e_sm)) """
+        )
+        ,DerivedVariable( """B=A+D """) ]
+
+for var in derivedVariables:
+    exec(var.expr)
 
 C_leaf,C_root,C_wood,sf,ss,sm= symbols("C_leaf C_root C_wood sf ss sm")
 s=\
@@ -54,8 +69,7 @@ s=\
 +sf*C.e_sf\
 +ss*C.e_ss\
 +sm*C.e_sm
-
-
+    
 time_symbol=Symbol('t')
 srm=srm_from_B_u_tens(C,s,time_symbol,B,I)
 
