@@ -20,6 +20,10 @@ def srcPath(model_id):
     return Path(modelFolderName).joinpath(model_id,srcFileName)
 
 def populated_namespace(model_id):
+    # this is the proxy function 
+    # It will compile the user code and populate a sandbox by executing the code  
+    
+    # find the user code
     p=srcPath(model_id)
 
     with p.open() as f:
@@ -31,18 +35,8 @@ def populated_namespace(model_id):
     return gns
 
 def get(var_name,model_id):
-    # this is the proxy function 
-    # It will compile the user code and populate a sandbox by executing the code  
-
-    # find the user code
-    p=srcPath(model_id)
-
-    with p.open() as f:
-        code= compile(f.read(),p,mode='exec')
-        #code= f.read()
-    gns={}
-    #prepare the execution environment
-    exec(code,gns)
+    # execute the user code
+    gns=populated_namespace(model_id)
     
     #construct the name of the function to call from the var_name
     mvar=getattr(resolver,var_name)
