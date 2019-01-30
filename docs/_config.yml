@@ -27,5 +27,9 @@ exclude: ["Gemfile", "Gemfile.lock", "LICENSE", "README.md"]
 markdown: kramdown
 highlighter: rouge
 
+# Collections
+collections:
+ reports:
+
 # Permalinks
 permalink: pretty
