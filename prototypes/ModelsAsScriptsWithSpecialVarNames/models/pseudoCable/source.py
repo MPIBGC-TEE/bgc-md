@@ -19,7 +19,8 @@ from pathlib import Path
 import csv
 # local imports
 from allocationFractions import bvec_leaf_num,bvec_wood_num,bvec_fine_root_num
-from interpolationFunctions import timeLine
+from interpolationFunctions import timeLine,timeLine2
+from cable_dict import cable_dict
 
 class DerivedVariable:
     def __init__(self,expr:str):
@@ -63,6 +64,15 @@ CoordS=CoordSysND(name="CoordS",vector_names=vector_names,transformation='cartes
     ,glaimax
     ,phase_2
     ,planttype
+    ,kleaf
+    ,kwood
+    ,kfroot
+    ,kmet
+    ,kstr
+    ,kcwd
+    ,kfast
+    ,kslow
+    ,kpass
 ) =symbols((
     "r_lign_leaf"
     ,"r_lign_fine_root"
@@ -86,6 +96,15 @@ CoordS=CoordSysND(name="CoordS",vector_names=vector_names,transformation='cartes
     ,"glaimax"
     ,"phase_2"
     ,"planttype"
+    ,"kleaf"
+    ,"kwood"
+    ,"kfroot"
+    ,"kmet"
+    ,"kstr"
+    ,"kcwd"
+    ,"kfast"
+    ,"kslow"
+    ,"kpass"
 ))
 #xk_leaf_cold = Function("xk_leaf_cold")
 xk_leaf_dry  = Function("xk_leaf_dry")  
@@ -183,39 +202,52 @@ A=(  fac_l                                          *(CoordS.e_metabolic_lit   |
     -                                                (CoordS.e_cwd             |CoordS.e_cwd)
     -                                                (CoordS.e_fast_soil       |CoordS.e_fast_soil)
     -                                                (CoordS.e_slow_soil       |CoordS.e_slow_soil)
-    -                                                (CoordS.e_passive_soil    |CoordS.e_passive_soil)) 
+    -                                                (CoordS.e_passive_soil    |CoordS.e_passive_soil)
+) 
 
 
 epsilon= (
-     (1 +xk_leaf_cold+xk_leaf_dry)                              * (CoordS.e_leaf            |CoordS.e_leaf)
-    + 1                                                         * (CoordS.e_fine_root       |CoordS.e_fine_root)
-    + 1                                                         * (CoordS.e_wood            |CoordS.e_wood)
-    + xk_opt_litter*xk_temp*xk_water*xk_n_limit(t)              * (CoordS.e_metabolic_lit   |CoordS.e_metabolic_lit)
+     (1 +xk_leaf_cold+xk_leaf_dry)                        * (CoordS.e_leaf            |CoordS.e_leaf)
+    + 1                                                   * (CoordS.e_fine_root       |CoordS.e_fine_root)
+    + 1                                                   * (CoordS.e_wood            |CoordS.e_wood)
+    + xk_opt_litter*xk_temp*xk_water*xk_n_limit(t)        * (CoordS.e_metabolic_lit   |CoordS.e_metabolic_lit)
     + xk_opt_litter*xk_temp*xk_water*xk_n_limit(t)*exp(-3*f_lign_leaf) 
-                                                                * (CoordS.e_structural_lit  |CoordS.e_structural_lit)
-    + xk_opt_litter*xk_temp*xk_water*xk_n_limit(t)              * (CoordS.e_cwd             |CoordS.e_cwd)
-    + xk_opt_soil*xk_temp*xk_water*(1-0.75*(silt+clay))         * (CoordS.e_fast_soil       |CoordS.e_fast_soil)
-    + xk_opt_soil*xk_temp*xk_water                              * (CoordS.e_slow_soil       |CoordS.e_slow_soil)
-    + xk_opt_soil*xk_temp*xk_water                              * (CoordS.e_passive_soil    |CoordS.e_passive_soil)) 
+                                                          * (CoordS.e_structural_lit  |CoordS.e_structural_lit)
+    + xk_opt_litter*xk_temp*xk_water*xk_n_limit(t)        * (CoordS.e_cwd             |CoordS.e_cwd)
+    + xk_opt_soil*xk_temp*xk_water*(1-0.75*(silt+clay))   * (CoordS.e_fast_soil       |CoordS.e_fast_soil)
+    + xk_opt_soil*xk_temp*xk_water                        * (CoordS.e_slow_soil       |CoordS.e_slow_soil)
+    + xk_opt_soil*xk_temp*xk_water                        * (CoordS.e_passive_soil    |CoordS.e_passive_soil)
+) 
 
+k=(   kleaf       * (CoordS.e_leaf            |CoordS.e_leaf)
+    + kwood       * (CoordS.e_fine_root       |CoordS.e_fine_root)
+    + kfroot      * (CoordS.e_wood            |CoordS.e_wood)
+    + kmet        * (CoordS.e_metabolic_lit   |CoordS.e_metabolic_lit)
+    + kstr        * (CoordS.e_structural_lit  |CoordS.e_structural_lit)
+    + kcwd        * (CoordS.e_cwd             |CoordS.e_cwd)
+    + kfast       * (CoordS.e_fast_soil       |CoordS.e_fast_soil)
+    + kslow       * (CoordS.e_slow_soil       |CoordS.e_slow_soil)
+    + kpass       * (CoordS.e_passive_soil    |CoordS.e_passive_soil) 
+)
 
 Mepsilon=express(epsilon,CoordS).to_matrix(CoordS)
 
-B=A.dot(epsilon)
+B=A.dot(k.dot(epsilon))
 #B=A
 
 
-s=\
- leaf*CoordS.e_leaf\
-+fine_root*CoordS.e_fine_root\
-+wood*CoordS.e_wood\
-+metabolic_lit *CoordS.e_metabolic_lit \
-+structural_lit *CoordS.e_structural_lit \
-+cwd *CoordS.e_cwd               \
-+fast_soil*CoordS.e_fast_soil\
-+slow_soil*CoordS.e_slow_soil\
-+passive_soil*CoordS.e_passive_soil
-    
+s=(
+     leaf					*CoordS.e_leaf
+    +fine_root				*CoordS.e_fine_root
+    +wood					*CoordS.e_wood
+    +metabolic_lit 			*CoordS.e_metabolic_lit 
+    +structural_lit 		*CoordS.e_structural_lit 
+    +cwd 					*CoordS.e_cwd               
+    +fast_soil				*CoordS.e_fast_soil
+    +slow_soil				*CoordS.e_slow_soil
+    +passive_soil			*CoordS.e_passive_soil
+)  
+
 MB=express(B,CoordS).to_matrix(CoordS)
 srm=srm_from_B_u_tens(CoordS,s,t,B,I)
 
@@ -223,58 +255,79 @@ Icomp=express(I,CoordS).to_matrix(CoordS)
 cvi=sum(Icomp[0:2])
 # read part of the parameterdict from a file
 
-with Path('Tumbarumba/T_independent/soilscalar.txt').open() as f:
-    r=csv.DictReader(f,delimiter=",")
-    lindicts=[row for row in r]
-cable_soil={key.strip():val for key,val in lindicts[0].items()}
-
-with Path('Tumbarumba/T_independent/vegpara.txt').open(newline='') as f:
-    r=csv.DictReader(f,delimiter=",")
-    vlindicts=[row for row in r]
-cable_veg={key.strip():val for key,val in vlindicts[0].items()}
+cable_soil=cable_dict(Path('Tumbarumba/T_independent/soilscalar.txt'))
+cable_veg=cable_dict(Path('Tumbarumba/T_independent/vegpara.txt'))
+cable_kbase=cable_dict(Path('Tumbarumba/T_independent/k_base.txt'))
 
 # we translate the cable param names to ours
 par_dict={
-     clay:cable_soil['soil%clay']
-    ,f_lign_leaf:cable_veg['fracLigninleaf']
-    ,f_lign_wood:cable_veg['fracLigninfroot']
-    ,r_lign_leaf:cable_veg['ratioLigninleaf']
-    ,r_lign_fine_root:cable_veg['ratioLigninfroot']
-    ,silt:cable_soil['soil%silt']
-    ,sla:cable_veg['sla']
-    ,glaimax:cable_veg['glaimax']
-    ,b_wood:cable_veg['b_wood']
-    ,b_leaf:cable_veg['b_leaf']
-    ,b_fine_root:cable_veg['b_fine_root']
-    ,planttype:cable_veg['planttype']
-	,xk_leaf_dry_max:cable_soil['xkleafdrymax']
-	,T_shed:cable_soil['phen%TKshed']
-	,xk_leaf_cold_exp:cable_soil['xkleafcoldexp']
-    ,xk_opt_soil:cable_soil['xkoptsoil']
-	,xk_leaf_cold_max:cable_soil['xkleafcoldmax']
-	,q_10:cable_soil['q10soil']
-	,xk_leaf_dry_exp:cable_soil['xkleafdryexp']
-	,w_a:cable_soil['wfpscoefa']
-	,w_b:cable_soil['wfpscoefb']
-	,w_c:cable_soil['wfpscoefc']
-	,w_d:cable_soil['wfpscoefd']
-	,w_e:cable_soil['wfpscoefe']
-	,m_sat:cable_soil['soil%ssat']
-    ,xk_opt_litter:cable_soil['xkoptlitter']
+     f_lign_leaf			:cable_veg['fracLigninleaf']
+    ,f_lign_wood			:cable_veg['fracLigninfroot']
+    ,r_lign_leaf			:cable_veg['ratioLigninleaf']
+    ,r_lign_fine_root		:cable_veg['ratioLigninfroot']
+    ,sla					:cable_veg['sla']
+    ,glaimax				:cable_veg['glaimax']
+    ,b_wood					:cable_veg['b_wood']
+    ,b_leaf					:cable_veg['b_leaf']
+    ,b_fine_root			:cable_veg['b_fine_root']
+    ,planttype				:cable_veg['planttype']
+    ,clay					:cable_soil['soil%clay']
+	,xk_leaf_dry_max		:cable_soil['xkleafdrymax']
+	,T_shed					:cable_soil['phen%TKshed']
+	,xk_leaf_cold_exp		:cable_soil['xkleafcoldexp']
+    ,xk_opt_soil			:cable_soil['xkoptsoil']
+	,xk_leaf_cold_max		:cable_soil['xkleafcoldmax']
+	,q_10					:cable_soil['q10soil']
+	,xk_leaf_dry_exp		:cable_soil['xkleafdryexp']
+	,w_a					:cable_soil['wfpscoefa']
+	,w_b					:cable_soil['wfpscoefb']
+	,w_c					:cable_soil['wfpscoefc']
+	,w_d					:cable_soil['wfpscoefd']
+	,w_e					:cable_soil['wfpscoefe']
+	,m_sat					:cable_soil['soil%ssat']
+    ,xk_opt_litter			:cable_soil['xkoptlitter']
+    ,silt					:cable_soil['soil%silt']
+    ,kleaf  				:cable_kbase['kleaf']
+    ,kwood  				:cable_kbase['kwood']
+    ,kfroot 				:cable_kbase['kfroot']
+    ,kmet   				:cable_kbase['kmet']
+    ,kstr   				:cable_kbase['kstr']
+    ,kcwd   				:cable_kbase['kcwd']
+    ,kfast  				:cable_kbase['kfast']
+    ,kslow  				:cable_kbase['kslow']
+    ,kpass  				:cable_kbase['kpass']
 }
-
+#create interpolation functions for the cable output
+cable_leaf          =timeLine2(Path("Tumbarumba/CABLE_results/CLeaf.txt"))
+cable_fine_root     =timeLine2(Path("Tumbarumba/CABLE_results/CFroot.txt"))
+cable_wood          =timeLine2(Path("Tumbarumba/CABLE_results/CWood.txt"))
+cable_metabolic_lit =timeLine2(Path("Tumbarumba/CABLE_results/CMetb.txt"))
+cable_structural_lit=timeLine2(Path("Tumbarumba/CABLE_results/CStru.txt"))
+cable_cwd           =timeLine2(Path("Tumbarumba/CABLE_results/CCWD.txt"))
+cable_fast_soil     =timeLine2(Path("Tumbarumba/CABLE_results/CFast.txt"))
+cable_slow_soil     =timeLine2(Path("Tumbarumba/CABLE_results/CSlow.txt"))
+cable_passive_soil  =timeLine2(Path("Tumbarumba/CABLE_results/CPass.txt"))
+# fixme mm
+# this ordered list is inconsistent with the coordinate free
+# representation used everywhere else
+# the smooth_model_run class should at least allow the 
+# definition of real startvector.
 start_values=array([
-     100#          leaf
-    ,100#     fine_root
-    ,100#          wood
-    ,100# metabolic_lit
-    ,100#structural_lit
-    ,100#           cwd
-    ,100#     fast_soil
-    ,100#     slow_soil
-    ,100#  passive_soil
+     cable_leaf.y[0]          #          leaf
+    ,cable_fine_root.y[0]     #     fine_root
+    ,cable_wood.y[0]          #          wood
+    ,cable_metabolic_lit.y[0] # metabolic_lit
+    ,cable_structural_lit.y[0]#structural_lit
+    ,cable_cwd.y[0]           #           cwd
+    ,cable_fast_soil.y[0]     #     fast_soil
+    ,cable_slow_soil.y[0]     #     slow_soil
+    ,cable_passive_soil.y[0]  #  passive_soil
 ])
-times=linspace(0,10,1400)
+
+org_times=cable_leaf.x
+#times=linspace(org_times[0],org_times[-1],100)
+times=linspace(org_times[0],org_times[10],11)
+print(times)
 
 func_dict={
     bvec_leaf       : bvec_leaf_num 
@@ -314,7 +367,9 @@ special_vars={
 ################################################################
 import matplotlib.pyplot  as plt
 fig=plt.figure(figsize=(7,50))
-smr.plot_solutions(fig, fontsize=10)
-#ax1=fig.add_subplot(1,1,1)
-#ax1.plot(times,solutions[:,0],'*')
+#smr.plot_solutions(fig, fontsize=10)
+ax1=fig.add_subplot(9,1,1)
+ax1.plot(times,solutions[:,0],'*',color='blue')
+ax1.plot(times,cable_leaf(times),'*',color='red')
+ax1.set_title("leaf")
 fig.savefig("pool_contents.pdf")
