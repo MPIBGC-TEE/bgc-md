@@ -23,10 +23,6 @@ from allocationFractions import bvec_leaf_num,bvec_wood_num,bvec_fine_root_num
 from interpolationFunctions import timeLine2
 from cable_dict import cable_dict
 
-class DerivedVariable:
-    def __init__(self,expr:str):
-        self.expr=expr
-        
 
 syms=leaf,fine_root,wood,metabolic_lit,structural_lit,cwd,fast_soil,slow_soil,passive_soil= symbols(" leaf \
         fine_root \
@@ -129,19 +125,6 @@ r_leaf=Function('r_leaf')
 r_fine_root=Function('r_fine_root')
 r_wood=Function('r_wood')
 
-
-
-mu_leaf=DescribedQuantity("mu_leaf")
-mu_leaf.set_dimension(1/time,"SI")
-mu_leaf.set_description("Turnover rate of plant pool Leaf" )
-
-mu_fine_root=DescribedQuantity("mu_fine_root")
-mu_fine_root.set_dimension(1/time,"SI")
-mu_fine_root.set_description("Turnover rate of plant pool Root" )
-
-mu_wood=DescribedQuantity("mu_wood")
-mu_wood.set_dimension(1/time,"SI")
-mu_wood.set_description("Turnover rate of plant pool Wood" )
 
 I_leaf=Npp(t)*bvec_leaf(leaf ,wood ,fine_root ,r_leaf(t) ,r_wood(t) ,r_fine_root(t) ,Npp(t) ,phase(t) ,glaimax ,b_leaf ,b_fine_root ,b_wood ,sla,planttype)
 I_wood=Npp(t)*bvec_wood(leaf ,wood ,fine_root ,r_leaf(t) ,r_wood(t) ,r_fine_root(t) ,Npp(t) ,phase(t) ,glaimax ,b_leaf ,b_fine_root ,b_wood ,sla,planttype)
@@ -358,19 +341,6 @@ smr=SmoothModelRun(
         ,start_values=start_values
         ,times=times
         ,func_set=func_dict)
-# this dictionary will be analysed
-solutions=smr.solve()
-sol_funcs=smr.sol_funcs()
-# alternative solution method:
-#sol2=numsol_symbolic_system(
-#            srm.state_vector,
-#            srm.time_symbol,
-#            rhs,
-#            self.parameter_set,
-#            self.func_set,
-#            new_start_values, 
-#            times
-#        )
 
 special_vars={
     'coord_sys':CoordS #Coordinate syste
@@ -379,85 +349,11 @@ special_vars={
     ,'time_symbol':t
     ,'state_vector':s
     ,'smooth_reservoir_model':srm
+    ,'smooth_model_run':smr
     ,'u_func_phot':cvi
     ,'cyc_dyad':A
+    ,'par_dicts':[par_dict]
 }
 
-################################################################
-################################################################
-import matplotlib.pyplot  as plt
-fig=plt.figure(figsize=(7,50))
-#smr.plot_solutions(fig, fontsize=10)
-ax1=fig.add_subplot(9,1,1)
-ax1.plot(times,cable_leaf(times),'*',color='red')
-ax1.plot(times,solutions[:,0],'-',color='blue')
-ax1.set_title("leaf")
-
-ax2=fig.add_subplot(9,1,2)
-ax2.plot(times,cable_fine_root(times),'*',color='red')
-ax2.plot(times,solutions[:,1],'-',color='blue')
-ax2.set_title("fine_root")
-
-ax3=fig.add_subplot(9,1,3)
-ax3.plot(times,cable_wood(times),'*',color='red')
-ax3.plot(times,solutions[:,2],'-',color='blue')
-#ax3.plot(times,solutions[:,2],'-',color='blue')
-ax3.set_title("wood")
-
-ax4=fig.add_subplot(9,1,4)
-ax4.plot(times,cable_metabolic_lit(times),'*',color='red')
-ax4.plot(times,solutions[:,3],'-',color='blue')
-ax4.set_title("metabolic_lit")
-
-ax5=fig.add_subplot(9,1,5)
-ax5.plot(times,cable_structural_lit(times),'*',color='red')
-ax5.plot(times,solutions[:,4],'-',color='blue')
-ax5.set_title("structural_lit")
-
-ax6=fig.add_subplot(9,1,6)
-ax6.plot(times,cable_cwd(times),'*',color='red')
-ax6.plot(times,solutions[:,5],'-',color='blue')
-ax6.set_title("cwd")
-
-ax7=fig.add_subplot(9,1,7)
-ax7.plot(times,cable_fast_soil(times),'*',color='red')
-ax7.plot(times,solutions[:,6],'-',color='blue')
-ax7.set_title("fast_soil")
-
-ax8=fig.add_subplot(9,1,8)
-ax8.plot(times,cable_slow_soil(times),'*',color='red')
-ax8.plot(times,solutions[:,7],'-',color='blue')
-ax8.set_title("slow_soil")
-
-ax9=fig.add_subplot(9,1,9)
-ax9.plot(times,cable_passive_soil(times),'*',color='red')
-ax9.plot(times,solutions[:,8],'-',color='blue')
-ax9.set_title("passive_soil")
-fig.savefig("pool_contents.pdf")
-
-
-fig=plt.figure(figsize=(7,7))
-test_expr_num=numerical_function_from_expression(test_expr,tup=(t,),parameter_set=par_dict,func_set=func_dict)
-
-leaf_num=sol_funcs[0]
-fine_root_num=sol_funcs[1]
-wood_num=sol_funcs[2]
-func_dict.update(
-    {
-          leaf:leaf_num
-         ,wood:wood_num
-         ,fine_root:fine_root_num
-    }
-)
-print(func_dict)
+#print(func_dict)
 #expr=k.dot(epsilon).to_matrix(CoordS)
-expr=srm.F
-sv_syms=[leaf,wood,fine_root,metabolic_lit,fast_soil,structural_lit]
-symToFunc={var:Function(var.name)(t) for var in sv_syms} 
-expr_symFunc=expr.subs(symToFunc)
-num_func=numerical_function_from_expression(expr_symFunc,tup=(t,),parameter_set=par_dict,func_set=func_dict)
-#        ,tup=(t,),parameter_set=par_dict,func_set=func_dict)
-
-ax1=fig.add_subplot(2,1,1)
-ax1.plot(times,test_expr_num(times),color='blue')
-fig.savefig('diagnostics.pdf')
