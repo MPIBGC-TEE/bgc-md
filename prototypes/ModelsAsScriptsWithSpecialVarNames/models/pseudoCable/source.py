@@ -3,6 +3,7 @@ from sympy.vector import CoordSysND,express
 # add this boilerplatecode automatically
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
+from CompartmentalSystems.helpers_reservoir import numerical_function_from_expression
 from bgc_md.resolver import srm_from_B_u_tens
 from bgc_md.DescribedSymbol import DesribedSymbol
 from bgc_md.DescribedQuantity import DescribedQuantity
@@ -19,7 +20,7 @@ from pathlib import Path
 import csv
 # local imports
 from allocationFractions import bvec_leaf_num,bvec_wood_num,bvec_fine_root_num
-from interpolationFunctions import timeLine,timeLine2
+from interpolationFunctions import timeLine2
 from cable_dict import cable_dict
 
 class DerivedVariable:
@@ -114,6 +115,10 @@ T_soil=Function("T_soil")
 bvec_leaf=Function("bvec_leaf")
 bvec_fine_root=Function("bvec_fine_root")
 bvec_wood=Function("bvec_wood")
+#leaf_of_t=Function("leaf_of_t")
+#wood_of_t=Function("wood_of_t")
+#fine_root_of_t=Function("fine_root_of_t")
+
 
 ms= Function("ms")
 xk_n_limit= Function("xk_n_limit")
@@ -163,9 +168,9 @@ xk_leaf_cold=Piecewise(
 
 xk_leaf_dry_max=Symbol('xk_leaf_dry_max')
 xk_leaf_dry_exp=Symbol('xk_leaf_dry_exp')
-xk_leaf_dry=(xk_leaf_dry_max*(1-btran(ms(t)))**(xk_leaf_dry_exp))
+xk_leaf_dry=(xk_leaf_dry_max*(1-btran(t))**(xk_leaf_dry_exp))
 
-xk_temp=q_10**((T_soil(t)-35)/10)
+xk_temp=q_10**((T_soil(t)-35-273.15)/10)
 
 xk_water=((ms(t)/m_sat-w_b)/(w_a-w_b))**w_e * ((ms(t)/m_sat-w_c)/(w_a-w_c))**w_d
 
@@ -187,12 +192,12 @@ A=(  fac_l                                          *(CoordS.e_metabolic_lit   |
     +(1-fac_r)                                      *(CoordS.e_structural_lit  |CoordS.e_fine_root)
     +1                                              *(CoordS.e_cwd             |CoordS.e_wood)
     +0.45                                           *(CoordS.e_fast_soil       |CoordS.e_metabolic_lit)
-    +0.45*(1-f_lign_leaf)                           *(CoordS.e_fast_soil       |CoordS.e_structural_lit)
-    +0.7 *(1-f_lign_leaf)                           *(CoordS.e_slow_soil       |CoordS.e_structural_lit)
-    +0.4 *(1-f_lign_wood)                           *(CoordS.e_fast_soil       |CoordS.e_cwd)
-    +0.7 *(1-f_lign_wood)                           *(CoordS.e_slow_soil       |CoordS.e_cwd)
+    +0.45* (1-f_lign_leaf)                          *(CoordS.e_fast_soil       |CoordS.e_structural_lit)
+    +0.7 * f_lign_leaf                              *(CoordS.e_slow_soil       |CoordS.e_structural_lit)
+    +0.4 * (1-f_lign_wood)                          *(CoordS.e_fast_soil       |CoordS.e_cwd)
+    +0.7 * f_lign_wood                              *(CoordS.e_slow_soil       |CoordS.e_cwd)
     +(0.85-0.68*(clay+silt))*(0.997-0.032*clay)     *(CoordS.e_slow_soil       |CoordS.e_fast_soil)
-    +(0.85-0.68*(clay+silt))*((1-0.997)-0.032*clay) *(CoordS.e_passive_soil    |CoordS.e_fast_soil)
+    +(0.85-0.68*(clay+silt))*((1-0.997)+0.032*clay) *(CoordS.e_passive_soil    |CoordS.e_fast_soil)
     +0.45*((1-0.997)+0.009*clay)                    *(CoordS.e_passive_soil    |CoordS.e_slow_soil)
     -                                                (CoordS.e_leaf            |CoordS.e_leaf)
     -                                                (CoordS.e_fine_root       |CoordS.e_fine_root)
@@ -205,9 +210,9 @@ A=(  fac_l                                          *(CoordS.e_metabolic_lit   |
     -                                                (CoordS.e_passive_soil    |CoordS.e_passive_soil)
 ) 
 
-
+epsilon_leaf=(1 +xk_leaf_cold/kleaf+xk_leaf_dry/kleaf)
 epsilon= (
-     (1 +xk_leaf_cold+xk_leaf_dry)                        * (CoordS.e_leaf            |CoordS.e_leaf)
+     epsilon_leaf                                         * (CoordS.e_leaf            |CoordS.e_leaf)
     + 1                                                   * (CoordS.e_fine_root       |CoordS.e_fine_root)
     + 1                                                   * (CoordS.e_wood            |CoordS.e_wood)
     + xk_opt_litter*xk_temp*xk_water*xk_n_limit(t)        * (CoordS.e_metabolic_lit   |CoordS.e_metabolic_lit)
@@ -218,10 +223,13 @@ epsilon= (
     + xk_opt_soil*xk_temp*xk_water                        * (CoordS.e_slow_soil       |CoordS.e_slow_soil)
     + xk_opt_soil*xk_temp*xk_water                        * (CoordS.e_passive_soil    |CoordS.e_passive_soil)
 ) 
+test_expr=epsilon_leaf*kleaf
+
+delta_xleaf=Npp(t)*bvec_leaf(leaf ,wood ,fine_root ,r_leaf(t) ,r_wood(t) ,r_fine_root(t) ,Npp(t) ,phase(t) ,glaimax ,b_leaf ,b_fine_root ,b_wood ,sla,planttype)-kleaf*epsilon_leaf*leaf
 
 k=(   kleaf       * (CoordS.e_leaf            |CoordS.e_leaf)
-    + kwood       * (CoordS.e_fine_root       |CoordS.e_fine_root)
-    + kfroot      * (CoordS.e_wood            |CoordS.e_wood)
+    + kfroot      * (CoordS.e_fine_root       |CoordS.e_fine_root)
+    + kwood       * (CoordS.e_wood            |CoordS.e_wood)
     + kmet        * (CoordS.e_metabolic_lit   |CoordS.e_metabolic_lit)
     + kstr        * (CoordS.e_structural_lit  |CoordS.e_structural_lit)
     + kcwd        * (CoordS.e_cwd             |CoordS.e_cwd)
@@ -326,23 +334,23 @@ start_values=array([
 
 org_times=cable_leaf.x
 #times=linspace(org_times[0],org_times[-1],100)
-times=linspace(org_times[0],org_times[10],11)
-print(times)
+times=linspace(org_times[0],org_times[1000],100)
+#print(times)
 
 func_dict={
     bvec_leaf       : bvec_leaf_num 
    ,bvec_fine_root  : bvec_fine_root_num 
    ,bvec_wood       : bvec_wood_num 
-   ,btran           : timeLine(Path('Tumbarumba/T_dependent/b_tran.txt'))
-   ,T_air           : timeLine(Path('Tumbarumba/T_dependent/T_air.txt'))
-   ,T_soil          : timeLine(Path('Tumbarumba/T_dependent/T_soil.txt'))
-   ,ms              : timeLine(Path('Tumbarumba/T_dependent/ms.txt'))
-   ,xk_n_limit      : timeLine(Path('Tumbarumba/T_dependent/xk_n_limit.txt'))
-   ,Npp             : timeLine(Path('Tumbarumba/T_dependent/NPP.txt'))
-   ,phase           : timeLine(Path('Tumbarumba/T_dependent/phase.txt'))
-   ,r_leaf          : timeLine(Path('Tumbarumba/T_dependent/r_leaf.txt'))
-   ,r_wood          : timeLine(Path('Tumbarumba/T_dependent/r_wood.txt'))
-   ,r_fine_root     : timeLine(Path('Tumbarumba/T_dependent/r_froot.txt'))
+   ,btran           : timeLine2(Path('Tumbarumba/T_dependent/b_tran.txt'))
+   ,T_air           : timeLine2(Path('Tumbarumba/T_dependent/T_air.txt'))
+   ,T_soil          : timeLine2(Path('Tumbarumba/T_dependent/T_soil.txt'))
+   ,ms              : timeLine2(Path('Tumbarumba/T_dependent/ms.txt'))
+   ,xk_n_limit      : timeLine2(Path('Tumbarumba/T_dependent/xk_n_limit.txt'))
+   ,Npp             : timeLine2(Path('Tumbarumba/T_dependent/NPP.txt'))
+   ,phase           : timeLine2(Path('Tumbarumba/T_dependent/phase.txt'))
+   ,r_leaf          : timeLine2(Path('Tumbarumba/T_dependent/r_leaf.txt'))
+   ,r_wood          : timeLine2(Path('Tumbarumba/T_dependent/r_wood.txt'))
+   ,r_fine_root     : timeLine2(Path('Tumbarumba/T_dependent/r_froot.txt'))
 }
 smr=SmoothModelRun(
          model=srm
@@ -352,6 +360,18 @@ smr=SmoothModelRun(
         ,func_set=func_dict)
 # this dictionary will be analysed
 solutions=smr.solve()
+sol_funcs=smr.sol_funcs()
+# alternative solution method:
+#sol2=numsol_symbolic_system(
+#            srm.state_vector,
+#            srm.time_symbol,
+#            rhs,
+#            self.parameter_set,
+#            self.func_set,
+#            new_start_values, 
+#            times
+#        )
+
 special_vars={
     'coord_sys':CoordS #Coordinate syste
     ,'input_vector':I
@@ -369,7 +389,75 @@ import matplotlib.pyplot  as plt
 fig=plt.figure(figsize=(7,50))
 #smr.plot_solutions(fig, fontsize=10)
 ax1=fig.add_subplot(9,1,1)
-ax1.plot(times,solutions[:,0],'*',color='blue')
 ax1.plot(times,cable_leaf(times),'*',color='red')
+ax1.plot(times,solutions[:,0],'-',color='blue')
 ax1.set_title("leaf")
+
+ax2=fig.add_subplot(9,1,2)
+ax2.plot(times,cable_fine_root(times),'*',color='red')
+ax2.plot(times,solutions[:,1],'-',color='blue')
+ax2.set_title("fine_root")
+
+ax3=fig.add_subplot(9,1,3)
+ax3.plot(times,cable_wood(times),'*',color='red')
+ax3.plot(times,solutions[:,2],'-',color='blue')
+#ax3.plot(times,solutions[:,2],'-',color='blue')
+ax3.set_title("wood")
+
+ax4=fig.add_subplot(9,1,4)
+ax4.plot(times,cable_metabolic_lit(times),'*',color='red')
+ax4.plot(times,solutions[:,3],'-',color='blue')
+ax4.set_title("metabolic_lit")
+
+ax5=fig.add_subplot(9,1,5)
+ax5.plot(times,cable_structural_lit(times),'*',color='red')
+ax5.plot(times,solutions[:,4],'-',color='blue')
+ax5.set_title("structural_lit")
+
+ax6=fig.add_subplot(9,1,6)
+ax6.plot(times,cable_cwd(times),'*',color='red')
+ax6.plot(times,solutions[:,5],'-',color='blue')
+ax6.set_title("cwd")
+
+ax7=fig.add_subplot(9,1,7)
+ax7.plot(times,cable_fast_soil(times),'*',color='red')
+ax7.plot(times,solutions[:,6],'-',color='blue')
+ax7.set_title("fast_soil")
+
+ax8=fig.add_subplot(9,1,8)
+ax8.plot(times,cable_slow_soil(times),'*',color='red')
+ax8.plot(times,solutions[:,7],'-',color='blue')
+ax8.set_title("slow_soil")
+
+ax9=fig.add_subplot(9,1,9)
+ax9.plot(times,cable_passive_soil(times),'*',color='red')
+ax9.plot(times,solutions[:,8],'-',color='blue')
+ax9.set_title("passive_soil")
 fig.savefig("pool_contents.pdf")
+
+
+fig=plt.figure(figsize=(7,7))
+test_expr_num=numerical_function_from_expression(test_expr,tup=(t,),parameter_set=par_dict,func_set=func_dict)
+
+leaf_num=sol_funcs[0]
+fine_root_num=sol_funcs[1]
+wood_num=sol_funcs[2]
+func_dict.update(
+    {
+          leaf:leaf_num
+         ,wood:wood_num
+         ,fine_root:fine_root_num
+    }
+)
+print(func_dict)
+#expr=k.dot(epsilon).to_matrix(CoordS)
+expr=srm.F
+sv_syms=[leaf,wood,fine_root,metabolic_lit,fast_soil,structural_lit]
+symToFunc={var:Function(var.name)(t) for var in sv_syms} 
+expr_symFunc=expr.subs(symToFunc)
+num_func=numerical_function_from_expression(expr_symFunc,tup=(t,),parameter_set=par_dict,func_set=func_dict)
+#        ,tup=(t,),parameter_set=par_dict,func_set=func_dict)
+
+ax1=fig.add_subplot(2,1,1)
+ax1.plot(times,test_expr_num(times),color='blue')
+fig.savefig('diagnostics.pdf')
