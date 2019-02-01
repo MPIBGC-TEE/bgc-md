@@ -1,0 +1,28 @@
+---
+layout: base
+---
+<div class="wrapper">
+    <header>
+        {% if site.logo %}
+        <div class="logo-container">
+          <a class="logo" href="{{ page.baseurl }}" style="background-image: url('{{ site.baseurl }}{{ site.logo }}')"></a>
+        </div>
+        {% endif %}
+
+        {% if site.author %}
+        <div class="author-container"><h1>{{ site.author }}</h1></div>
+        {% endif %}
+
+        {% if site.tagline %}
+        <div class="tagline-container"><p>{{ site.tagline }}</p></div>
+        {% endif %}
+    </header>
+    <main>
+      <h1> Models </h1>
+      {% for report in site.reports %}
+       <li>
+        <h2>{{ report.title }}</h2>
+       </li>
+      {% endfor %}
+    </main>
+</div>
