@@ -22,10 +22,11 @@ import csv
 from allocationFractions import bvec_leaf_num,bvec_wood_num,bvec_fine_root_num
 from interpolationFunctions import timeLine2
 from cable_dict import cable_dict
+from interpolationFunctions import cable_sols_by_name
 
 #All line number, function, and parameters are from cable trunk version - (Revision 5551)
 
-syms=leaf,fine_root,wood,metabolic_lit,structural_lit,cwd,fast_soil,slow_soil,passive_soil= symbols(" leaf \
+state_vector_syms=leaf,fine_root,wood,metabolic_lit,structural_lit,cwd,fast_soil,slow_soil,passive_soil= symbols(" leaf \
         fine_root \
         wood \
         metabolic_lit \
@@ -36,43 +37,10 @@ syms=leaf,fine_root,wood,metabolic_lit,structural_lit,cwd,fast_soil,slow_soil,pa
         passive_soil")
 
 t=Symbol('t')
-vector_names=["e_"+str(sym) for sym in syms]
+vector_names=["e_"+str(sym) for sym in state_vector_syms]
 CoordS=CoordSysND(name="CoordS",vector_names=vector_names,transformation='cartesian')
 
-(   
-     r_lign_leaf 
-    ,r_lign_fine_root
-    ,f_lign_fine_root
-    ,f_lign_leaf 
-    ,f_lign_wood
-    ,clay
-    ,silt
-    ,q_10
-    ,w_a
-    ,w_b
-    ,w_c
-    ,w_d
-    ,w_e
-    ,m_sat
-    ,xk_opt_litter
-    ,xk_opt_soil
-    ,sla
-    ,b_leaf
-    ,b_wood
-    ,b_fine_root
-    ,glaimax
-    ,phase_2
-    ,planttype
-    ,kleaf
-    ,kwood
-    ,kfroot
-    ,kmet
-    ,kstr
-    ,kcwd
-    ,kfast
-    ,kslow
-    ,kpass
-) =symbols((
+symNames=[
     "r_lign_leaf"
     ,"r_lign_fine_root"
     ,"f_lign_fine_root"
@@ -105,7 +73,9 @@ CoordS=CoordSysND(name="CoordS",vector_names=vector_names,transformation='cartes
     ,"kfast"
     ,"kslow"
     ,"kpass"
-))
+]
+for name in symNames:
+    exec("{0}=Symbol('{0}')".format(name))
 #xk_leaf_cold = Function("xk_leaf_cold")
 xk_leaf_dry  = Function("xk_leaf_dry")  
 btran= Function("btran")
@@ -114,9 +84,6 @@ T_soil=Function("T_soil")
 bvec_leaf=Function("bvec_leaf")
 bvec_fine_root=Function("bvec_fine_root")
 bvec_wood=Function("bvec_wood")
-#leaf_of_t=Function("leaf_of_t")
-#wood_of_t=Function("wood_of_t")
-#fine_root_of_t=Function("fine_root_of_t")
 
 
 ms= Function("ms")
@@ -299,34 +266,14 @@ par_dict={
     ,kslow  				:cable_kbase['kslow']
     ,kpass  				:cable_kbase['kpass']
 }
-#create interpolation functions for the cable output
-cable_leaf          =timeLine2(Path("Tumbarumba/CABLE_results/CLeaf.txt"))
-cable_fine_root     =timeLine2(Path("Tumbarumba/CABLE_results/CFroot.txt"))
-cable_wood          =timeLine2(Path("Tumbarumba/CABLE_results/CWood.txt"))
-cable_metabolic_lit =timeLine2(Path("Tumbarumba/CABLE_results/CMetb.txt"))
-cable_structural_lit=timeLine2(Path("Tumbarumba/CABLE_results/CStru.txt"))
-cable_cwd           =timeLine2(Path("Tumbarumba/CABLE_results/CCWD.txt"))
-cable_fast_soil     =timeLine2(Path("Tumbarumba/CABLE_results/CFast.txt"))
-cable_slow_soil     =timeLine2(Path("Tumbarumba/CABLE_results/CSlow.txt"))
-cable_passive_soil  =timeLine2(Path("Tumbarumba/CABLE_results/CPass.txt"))
 # fixme mm
 # this ordered list is inconsistent with the coordinate free
 # representation used everywhere else
 # the smooth_model_run class should at least allow the 
-# definition of real startvector.
-start_values=array([
-     cable_leaf.y[0]          #          leaf
-    ,cable_fine_root.y[0]     #     fine_root
-    ,cable_wood.y[0]          #          wood
-    ,cable_metabolic_lit.y[0] # metabolic_lit
-    ,cable_structural_lit.y[0]#structural_lit
-    ,cable_cwd.y[0]           #           cwd
-    ,cable_fast_soil.y[0]     #     fast_soil
-    ,cable_slow_soil.y[0]     #     slow_soil
-    ,cable_passive_soil.y[0]  #  passive_soil
-])
+# definition of real startvector or a dictionary.
 
-org_times=cable_leaf.x
+start_values=array([cable_sols_by_name[s.name].y[0] for s in state_vector_syms])
+org_times=cable_sols_by_name["leaf"].x
 #times=linspace(org_times[0],org_times[-1],100)
 times=linspace(org_times[0],org_times[600],200)
 #print(times)
@@ -366,57 +313,3 @@ special_vars={
     ,'par_dicts':[par_dict]
 }
 
-#print(func_dict)
-#expr=k.dot(epsilon).to_matrix(CoordS)
-solutions=smr.solve()
-#sol_funcs=smr.sol_funcs()
-################################################################
-import matplotlib.pyplot  as plt
-fig=plt.figure(figsize=(7,50))
-#smr.plot_solutions(fig, fontsize=10)
-ax1=fig.add_subplot(9,1,1)
-ax1.plot(times,cable_leaf(times),'*',color='red')
-ax1.plot(times,solutions[:,0],'-',color='blue')
-ax1.set_title("leaf")
-
-ax2=fig.add_subplot(9,1,2)
-ax2.plot(times,cable_fine_root(times),'*',color='red')
-ax2.plot(times,solutions[:,1],'-',color='blue')
-ax2.set_title("fine_root")
-
-ax3=fig.add_subplot(9,1,3)
-ax3.plot(times,cable_wood(times),'*',color='red')
-ax3.plot(times,solutions[:,2],'-',color='blue')
-#ax3.plot(times,solutions[:,2],'-',color='blue')
-ax3.set_title("wood")
-
-ax4=fig.add_subplot(9,1,4)
-ax4.plot(times,cable_metabolic_lit(times),'*',color='red')
-ax4.plot(times,solutions[:,3],'-',color='blue')
-ax4.set_title("metabolic_lit")
-
-ax5=fig.add_subplot(9,1,5)
-ax5.plot(times,cable_structural_lit(times),'*',color='red')
-ax5.plot(times,solutions[:,4],'-',color='blue')
-ax5.set_title("structural_lit")
-
-ax6=fig.add_subplot(9,1,6)
-ax6.plot(times,cable_cwd(times),'*',color='red')
-ax6.plot(times,solutions[:,5],'-',color='blue')
-ax6.set_title("cwd")
-
-ax7=fig.add_subplot(9,1,7)
-ax7.plot(times,cable_fast_soil(times),'*',color='red')
-ax7.plot(times,solutions[:,6],'-',color='blue')
-ax7.set_title("fast_soil")
-
-ax8=fig.add_subplot(9,1,8)
-ax8.plot(times,cable_slow_soil(times),'*',color='red')
-ax8.plot(times,solutions[:,7],'-',color='blue')
-ax8.set_title("slow_soil")
-
-ax9=fig.add_subplot(9,1,9)
-ax9.plot(times,cable_passive_soil(times),'*',color='red')
-ax9.plot(times,solutions[:,8],'-',color='blue')
-ax9.set_title("passive_soil")
-fig.savefig("pool_contents.pdf")
