@@ -23,6 +23,7 @@ from allocationFractions import bvec_leaf_num,bvec_wood_num,bvec_fine_root_num
 from interpolationFunctions import timeLine2
 from cable_dict import cable_dict
 
+#All line number, function, and parameters are from cable trunk version - (Revision 5551)
 
 syms=leaf,fine_root,wood,metabolic_lit,structural_lit,cwd,fast_soil,slow_soil,passive_soil= symbols(" leaf \
         fine_root \
@@ -128,14 +129,19 @@ r_fine_root=Function('r_fine_root')
 r_wood=Function('r_wood')
 
 
+# allocation fraction bvec_leaf, bvec_wood and bvec_fine_root are from casa_cnp.F90: Line 250, Line 307-358; casa_inout.F90: Line 112-118
 I_leaf=Npp(t)*bvec_leaf(leaf ,wood ,fine_root ,r_leaf(t) ,r_wood(t) ,r_fine_root(t) ,Npp(t) ,phase(t) ,glaimax ,b_leaf ,b_fine_root ,b_wood ,sla,planttype)
 I_wood=Npp(t)*bvec_wood(leaf ,wood ,fine_root ,r_leaf(t) ,r_wood(t) ,r_fine_root(t) ,Npp(t) ,phase(t) ,glaimax ,b_leaf ,b_fine_root ,b_wood ,sla,planttype)
 I_fine_root=Npp(t)*bvec_fine_root(leaf ,wood ,fine_root ,r_leaf(t) ,r_wood(t) ,r_fine_root(t) ,Npp(t) ,phase(t) ,glaimax ,b_leaf ,b_fine_root ,b_wood ,sla,planttype)
+
+#NPP(t) = GPP(t) - Cplant * resipiration rate(T_air) , casa_cnp.F90 Line 1191-1192, Autotrophic respiration: casa_cnp.F90 Line 524-736, casa_inout.F90 Line 1368
+#GPP is based on photosynthesis rate A (cable_canopy.F90 Line 1772-1780, Line 2005-2219). anxz = MIN(anrubiscoz,anrubpz,ansinkz) 
 
 I=(I_leaf*CoordS.e_leaf 
     +I_wood*CoordS.e_wood
     +I_fine_root*CoordS.e_fine_root)
 
+#fraction from plant to different litter pools: casa_cnp.F90 Line 969, 970
 fac_l=Max(0.001,0.85-0.018*r_lign_leaf)
 fac_r=Max(0.001,0.85-0.018*r_lign_fine_root)
 
@@ -144,6 +150,7 @@ fac_r=Max(0.001,0.85-0.018*r_lign_fine_root)
 xk_leaf_cold_max=Symbol('xk_leaf_cold_max')
 T_shed=Symbol('T_shed')
 xk_leaf_cold_exp=Symbol('xk_leaf_cold_exp')
+#xk_leaf_cold is temperature scalar for leaf: casa_cnp.F90 Line 785-787
 xk_leaf_cold=Piecewise(
          (xk_leaf_cold_max,T_air(t)< T_shed-5)
         ,(xk_leaf_cold_max*(1-(T_air(t)-T_shed+5)/5)**(xk_leaf_cold_exp)
@@ -153,13 +160,14 @@ xk_leaf_cold=Piecewise(
 
 xk_leaf_dry_max=Symbol('xk_leaf_dry_max')
 xk_leaf_dry_exp=Symbol('xk_leaf_dry_exp')
+#xk_leaf_dry is water scalar for leaf: casa_cnp.F90 Line 788-790
 xk_leaf_dry=(xk_leaf_dry_max*(1-btran(t))**(xk_leaf_dry_exp))
 
-xk_temp=q_10**((T_soil(t)-35-273.15)/10)
+xk_temp=q_10**((T_soil(t)-35-273.15)/10) # Temperature scalar for litter and soil: casa_cnp.F90 Line 875
 
-xk_water=((ms(t)/m_sat-w_b)/(w_a-w_b))**w_e * ((ms(t)/m_sat-w_c)/(w_a-w_c))**w_d
+xk_water=((ms(t)/m_sat-w_b)/(w_a-w_b))**w_e * ((ms(t)/m_sat-w_c)/(w_a-w_c))**w_d # Water scalar for litter and soil: casa_cnp.F90 Line 876-877
 
-eps_leaf=1+xk_leaf_cold + xk_leaf_dry
+eps_leaf=1 + xk_leaf_cold/kleaf + xk_leaf_dry/kleaf # Leaf environmental scalar: casa_cnp.F90 Line 975-976
 
 #def xk_leaf_cold_num(T_air):
 #    if T_air>T_shed:
@@ -171,19 +179,19 @@ eps_leaf=1+xk_leaf_cold + xk_leaf_dry
 #    return ret
     
 
-A=(  fac_l                                          *(CoordS.e_metabolic_lit   |CoordS.e_leaf)
-    +fac_r                                          *(CoordS.e_metabolic_lit   |CoordS.e_fine_root)
-    +(1-fac_l)                                      *(CoordS.e_structural_lit  |CoordS.e_leaf)
-    +(1-fac_r)                                      *(CoordS.e_structural_lit  |CoordS.e_fine_root)
-    +1                                              *(CoordS.e_cwd             |CoordS.e_wood)
-    +0.45                                           *(CoordS.e_fast_soil       |CoordS.e_metabolic_lit)
-    +0.45* (1-f_lign_leaf)                          *(CoordS.e_fast_soil       |CoordS.e_structural_lit)
-    +0.7 * f_lign_leaf                              *(CoordS.e_slow_soil       |CoordS.e_structural_lit)
-    +0.4 * (1-f_lign_wood)                          *(CoordS.e_fast_soil       |CoordS.e_cwd)
-    +0.7 * f_lign_wood                              *(CoordS.e_slow_soil       |CoordS.e_cwd)
-    +(0.85-0.68*(clay+silt))*(0.997-0.032*clay)     *(CoordS.e_slow_soil       |CoordS.e_fast_soil)
-    +(0.85-0.68*(clay+silt))*((1-0.997)+0.032*clay) *(CoordS.e_passive_soil    |CoordS.e_fast_soil)
-    +0.45*((1-0.997)+0.009*clay)                    *(CoordS.e_passive_soil    |CoordS.e_slow_soil)
+A=(  fac_l                                          *(CoordS.e_metabolic_lit   |CoordS.e_leaf)           # casacnp.F90: Line 969
+    +fac_r                                          *(CoordS.e_metabolic_lit   |CoordS.e_fine_root)      # casacnp.F90: Line 970
+    +(1-fac_l)                                      *(CoordS.e_structural_lit  |CoordS.e_leaf)           # casacnp.F90: Line 971
+    +(1-fac_r)                                      *(CoordS.e_structural_lit  |CoordS.e_fine_root)      # casacnp.F90: Line 972
+    +1                                              *(CoordS.e_cwd             |CoordS.e_wood)           # casacnp.F90: Line 973
+    +0.45                                           *(CoordS.e_fast_soil       |CoordS.e_metabolic_lit)  # casacnp.F90: Line 1051
+    +0.45* (1-f_lign_leaf)                          *(CoordS.e_fast_soil       |CoordS.e_structural_lit) # casacnp.F90: Line 1053
+    +0.7 * f_lign_leaf                              *(CoordS.e_slow_soil       |CoordS.e_structural_lit) # casacnp.F90: Line 1055
+    +0.4 * (1-f_lign_wood)                          *(CoordS.e_fast_soil       |CoordS.e_cwd)            # casacnp.F90: Line 1057
+    +0.7 * f_lign_wood                              *(CoordS.e_slow_soil       |CoordS.e_cwd)            # casacnp.F90: Line 1059
+    +(0.85-0.68*(clay+silt))*(0.997-0.032*clay)     *(CoordS.e_slow_soil       |CoordS.e_fast_soil)      # casacnp.F90: Line 1066
+    +(0.85-0.68*(clay+silt))*((1-0.997)+0.032*clay) *(CoordS.e_passive_soil    |CoordS.e_fast_soil)      # casacnp.F90: Line 1068
+    +0.45*((1-0.997)+0.009*clay)                    *(CoordS.e_passive_soil    |CoordS.e_slow_soil)      # casacnp.F90: Line 1070
     -                                                (CoordS.e_leaf            |CoordS.e_leaf)
     -                                                (CoordS.e_fine_root       |CoordS.e_fine_root)
     -                                                (CoordS.e_wood            |CoordS.e_wood)
@@ -195,18 +203,18 @@ A=(  fac_l                                          *(CoordS.e_metabolic_lit   |
     -                                                (CoordS.e_passive_soil    |CoordS.e_passive_soil)
 ) 
 
-epsilon_leaf=(1 +xk_leaf_cold/kleaf+xk_leaf_dry/kleaf)
+epsilon_leaf=(1 +xk_leaf_cold/kleaf+xk_leaf_dry/kleaf) # Leaf environmental scalar: casa_cnp.F90 Line 975-976
 epsilon= (
-     epsilon_leaf                                         * (CoordS.e_leaf            |CoordS.e_leaf)
-    + 1                                                   * (CoordS.e_fine_root       |CoordS.e_fine_root)
-    + 1                                                   * (CoordS.e_wood            |CoordS.e_wood)
-    + xk_opt_litter*xk_temp*xk_water*xk_n_limit(t)        * (CoordS.e_metabolic_lit   |CoordS.e_metabolic_lit)
-    + xk_opt_litter*xk_temp*xk_water*xk_n_limit(t)*exp(-3*f_lign_leaf) 
+     epsilon_leaf                                         * (CoordS.e_leaf            |CoordS.e_leaf)          # casa_cnp.F90: Line 975-976
+    + 1                                                   * (CoordS.e_fine_root       |CoordS.e_fine_root)     # casa_cnp.F90: Line 978
+    + 1                                                   * (CoordS.e_wood            |CoordS.e_wood)          # casa_cnp.F90: Line 979
+    + xk_opt_litter*xk_temp*xk_water*xk_n_limit(t)        * (CoordS.e_metabolic_lit   |CoordS.e_metabolic_lit) # casa_cnp.F90: Line 880, 1030
+    + xk_opt_litter*xk_temp*xk_water*xk_n_limit(t)*exp(-3*f_lign_leaf)                                         # casa_cnp.F90: Line 880, 1031-1032
                                                           * (CoordS.e_structural_lit  |CoordS.e_structural_lit)
-    + xk_opt_litter*xk_temp*xk_water*xk_n_limit(t)        * (CoordS.e_cwd             |CoordS.e_cwd)
-    + xk_opt_soil*xk_temp*xk_water*(1-0.75*(silt+clay))   * (CoordS.e_fast_soil       |CoordS.e_fast_soil)
-    + xk_opt_soil*xk_temp*xk_water                        * (CoordS.e_slow_soil       |CoordS.e_slow_soil)
-    + xk_opt_soil*xk_temp*xk_water                        * (CoordS.e_passive_soil    |CoordS.e_passive_soil)
+    + xk_opt_litter*xk_temp*xk_water*xk_n_limit(t)        * (CoordS.e_cwd             |CoordS.e_cwd)           # casa_cnp.F90: Line 880, 1033
+    + xk_opt_soil*xk_temp*xk_water*(1-0.75*(silt+clay))   * (CoordS.e_fast_soil       |CoordS.e_fast_soil)     # casa_cnp.F90: Line 884, 1035-1036
+    + xk_opt_soil*xk_temp*xk_water                        * (CoordS.e_slow_soil       |CoordS.e_slow_soil)     # casa_cnp.F90: Line 884, 1037
+    + xk_opt_soil*xk_temp*xk_water                        * (CoordS.e_passive_soil    |CoordS.e_passive_soil)  # casa_cnp.F90: Line 884, 1038
 ) 
 test_expr=epsilon_leaf*kleaf
 
@@ -327,16 +335,16 @@ func_dict={
     bvec_leaf       : bvec_leaf_num 
    ,bvec_fine_root  : bvec_fine_root_num 
    ,bvec_wood       : bvec_wood_num 
-   ,btran           : timeLine2(Path('Tumbarumba/T_dependent/b_tran.txt'))
-   ,T_air           : timeLine2(Path('Tumbarumba/T_dependent/T_air.txt'))
-   ,T_soil          : timeLine2(Path('Tumbarumba/T_dependent/T_soil.txt'))
-   ,ms              : timeLine2(Path('Tumbarumba/T_dependent/ms.txt'))
-   ,xk_n_limit      : timeLine2(Path('Tumbarumba/T_dependent/xk_n_limit.txt'))
-   ,Npp             : timeLine2(Path('Tumbarumba/T_dependent/NPP.txt'))
-   ,phase           : timeLine2(Path('Tumbarumba/T_dependent/phase.txt'))
-   ,r_leaf          : timeLine2(Path('Tumbarumba/T_dependent/r_leaf.txt'))
-   ,r_wood          : timeLine2(Path('Tumbarumba/T_dependent/r_wood.txt'))
-   ,r_fine_root     : timeLine2(Path('Tumbarumba/T_dependent/r_froot.txt'))
+   ,btran           : timeLine2(Path('Tumbarumba/T_dependent/b_tran.txt'))     # casa_cnp.F90 Line: Soil wetness as funcion of time can be dumped after Line 1679.  Alternatively, dummy argument can be also achieved: Line: 1671-1673, 1677-1679
+   ,T_air           : timeLine2(Path('Tumbarumba/T_dependent/T_air.txt'))      # casa_cnp.F90 Line: Air temperature as funcion of time can be dumped after Line 783.
+   ,T_soil          : timeLine2(Path('Tumbarumba/T_dependent/T_soil.txt'))     # casa_cnp.F90 Line: Soil temperature(tsavg) as function of time can be dumped after Line 869
+   ,ms              : timeLine2(Path('Tumbarumba/T_dependent/ms.txt'))         # casa_cnp.F90 Line: Soil moisture(casamet%moistavg(npt)) as function of time can be dumped after Line 869
+   ,xk_n_limit      : timeLine2(Path('Tumbarumba/T_dependent/xk_n_limit.txt')) # casa_cnp.F90 Line: N limitation scalar is related to soil mineral N (state variable), seen as function of time can be dumped after Line 1791
+   ,Npp             : timeLine2(Path('Tumbarumba/T_dependent/NPP.txt'))        # casa_cnp.F90 Line: NPP as function of time can be dumped after Line 1197. Alternatively, NPP(t) = GPP(t) - Cplant * resipiration rate(T_air) , casa_cnp.F90 Line 1191-1192, Autotrophic respiration: casa_cnp.F90 Line 524-736, casa_inout.F90 Line 1368. GPP is based on photosynthesis rate A (cable_canopy.F90 Line 1772-1780, Line 2005-2219). anxz = MIN(anrubiscoz,anrubpz,ansinkz)
+   ,phase           : timeLine2(Path('Tumbarumba/T_dependent/phase.txt'))      # casa_cnp.F90 Line: phase as function of time can be dumped after Line 2418. Alternatively, phase can be expressed as piecewise function, casa_cnp.F90 Line 2395-2418
+   ,r_leaf          : timeLine2(Path('Tumbarumba/T_dependent/r_leaf.txt'))     # casa_cnp.F90 Line: respiration of leaf as function of time can be dumped after Line 450
+   ,r_wood          : timeLine2(Path('Tumbarumba/T_dependent/r_wood.txt'))     # casa_cnp.F90 Line: respiration of wood as function of time can be dumped after Line 450
+   ,r_fine_root     : timeLine2(Path('Tumbarumba/T_dependent/r_froot.txt'))    # casa_cnp.F90 Line: respiration of fine root as function of time can be dumped after Line 450, Alternatively, plant respiration can be calculated from casa_cnp.F90 Line 524-736
 }
 smr=SmoothModelRun(
          model=srm
