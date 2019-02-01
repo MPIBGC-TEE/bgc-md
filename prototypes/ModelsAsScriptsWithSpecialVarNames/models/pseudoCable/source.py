@@ -41,6 +41,7 @@ CoordS=CoordSysND(name="CoordS",vector_names=vector_names,transformation='cartes
 (   
      r_lign_leaf 
     ,r_lign_fine_root
+    ,f_lign_fine_root
     ,f_lign_leaf 
     ,f_lign_wood
     ,clay
@@ -73,6 +74,7 @@ CoordS=CoordSysND(name="CoordS",vector_names=vector_names,transformation='cartes
 ) =symbols((
     "r_lign_leaf"
     ,"r_lign_fine_root"
+    ,"f_lign_fine_root"
     ,"f_lign_leaf"
     ,"f_lign_wood"
     ,"clay"
@@ -253,7 +255,8 @@ cable_kbase=cable_dict(Path('Tumbarumba/T_independent/k_base.txt'))
 # we translate the cable param names to ours
 par_dict={
      f_lign_leaf			:cable_veg['fracLigninleaf']
-    ,f_lign_wood			:cable_veg['fracLigninfroot']
+    ,f_lign_wood			:cable_veg['fracLigninwood']
+    ,f_lign_fine_root       :cable_veg['fracLigninfroot']
     ,r_lign_leaf			:cable_veg['ratioLigninleaf']
     ,r_lign_fine_root		:cable_veg['ratioLigninfroot']
     ,sla					:cable_veg['sla']
@@ -317,7 +320,7 @@ start_values=array([
 
 org_times=cable_leaf.x
 #times=linspace(org_times[0],org_times[-1],100)
-times=linspace(org_times[0],org_times[1000],100)
+times=linspace(org_times[0],org_times[600],200)
 #print(times)
 
 func_dict={
@@ -357,3 +360,55 @@ special_vars={
 
 #print(func_dict)
 #expr=k.dot(epsilon).to_matrix(CoordS)
+solutions=smr.solve()
+#sol_funcs=smr.sol_funcs()
+################################################################
+import matplotlib.pyplot  as plt
+fig=plt.figure(figsize=(7,50))
+#smr.plot_solutions(fig, fontsize=10)
+ax1=fig.add_subplot(9,1,1)
+ax1.plot(times,cable_leaf(times),'*',color='red')
+ax1.plot(times,solutions[:,0],'-',color='blue')
+ax1.set_title("leaf")
+
+ax2=fig.add_subplot(9,1,2)
+ax2.plot(times,cable_fine_root(times),'*',color='red')
+ax2.plot(times,solutions[:,1],'-',color='blue')
+ax2.set_title("fine_root")
+
+ax3=fig.add_subplot(9,1,3)
+ax3.plot(times,cable_wood(times),'*',color='red')
+ax3.plot(times,solutions[:,2],'-',color='blue')
+#ax3.plot(times,solutions[:,2],'-',color='blue')
+ax3.set_title("wood")
+
+ax4=fig.add_subplot(9,1,4)
+ax4.plot(times,cable_metabolic_lit(times),'*',color='red')
+ax4.plot(times,solutions[:,3],'-',color='blue')
+ax4.set_title("metabolic_lit")
+
+ax5=fig.add_subplot(9,1,5)
+ax5.plot(times,cable_structural_lit(times),'*',color='red')
+ax5.plot(times,solutions[:,4],'-',color='blue')
+ax5.set_title("structural_lit")
+
+ax6=fig.add_subplot(9,1,6)
+ax6.plot(times,cable_cwd(times),'*',color='red')
+ax6.plot(times,solutions[:,5],'-',color='blue')
+ax6.set_title("cwd")
+
+ax7=fig.add_subplot(9,1,7)
+ax7.plot(times,cable_fast_soil(times),'*',color='red')
+ax7.plot(times,solutions[:,6],'-',color='blue')
+ax7.set_title("fast_soil")
+
+ax8=fig.add_subplot(9,1,8)
+ax8.plot(times,cable_slow_soil(times),'*',color='red')
+ax8.plot(times,solutions[:,7],'-',color='blue')
+ax8.set_title("slow_soil")
+
+ax9=fig.add_subplot(9,1,9)
+ax9.plot(times,cable_passive_soil(times),'*',color='red')
+ax9.plot(times,solutions[:,8],'-',color='blue')
+ax9.set_title("passive_soil")
+fig.savefig("pool_contents.pdf")

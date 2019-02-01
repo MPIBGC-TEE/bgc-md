@@ -1,8 +1,9 @@
 from source import special_vars
 smr=special_vars['smooth_model_run']
 srm=special_vars['smooth_reservoir_model']
+times=smr.times
 solutions=smr.solve()
-sol_funcs=smr.sol_funcs()
+#sol_funcs=smr.sol_funcs()
 ################################################################
 import matplotlib.pyplot  as plt
 fig=plt.figure(figsize=(7,50))
@@ -55,26 +56,26 @@ ax9.set_title("passive_soil")
 fig.savefig("pool_contents.pdf")
 
 
-fig=plt.figure(figsize=(7,7))
-test_expr_num=numerical_function_from_expression(test_expr,tup=(t,),parameter_set=par_dict,func_set=func_dict)
-
-leaf_num=sol_funcs[0]
-fine_root_num=sol_funcs[1]
-wood_num=sol_funcs[2]
-func_dict.update(
-    {
-          leaf:leaf_num
-         ,wood:wood_num
-         ,fine_root:fine_root_num
-    }
-)
-expr=srm.F
-sv_syms=[leaf,wood,fine_root,metabolic_lit,fast_soil,structural_lit]
-symToFunc={var:Function(var.name)(t) for var in sv_syms} 
-expr_symFunc=expr.subs(symToFunc)
-num_func=numerical_function_from_expression(expr_symFunc,tup=(t,),parameter_set=par_dict,func_set=func_dict)
-#        ,tup=(t,),parameter_set=par_dict,func_set=func_dict)
-
-ax1=fig.add_subplot(2,1,1)
-ax1.plot(times,test_expr_num(times),color='blue')
-fig.savefig('diagnostics.pdf')
+#fig=plt.figure(figsize=(7,7))
+#test_expr_num=numerical_function_from_expression(test_expr,tup=(t,),parameter_set=par_dict,func_set=func_dict)
+#
+#leaf_num=sol_funcs[0]
+#fine_root_num=sol_funcs[1]
+#wood_num=sol_funcs[2]
+#func_dict.update(
+#    {
+#          leaf:leaf_num
+#         ,wood:wood_num
+#         ,fine_root:fine_root_num
+#    }
+#)
+#expr=srm.F
+#sv_syms=[leaf,wood,fine_root,metabolic_lit,fast_soil,structural_lit]
+#symToFunc={var:Function(var.name)(t) for var in sv_syms} 
+#expr_symFunc=expr.subs(symToFunc)
+#num_func=numerical_function_from_expression(expr_symFunc,tup=(t,),parameter_set=par_dict,func_set=func_dict)
+##        ,tup=(t,),parameter_set=par_dict,func_set=func_dict)
+#
+#ax1=fig.add_subplot(2,1,1)
+#ax1.plot(times,test_expr_num(times),color='blue')
+#fig.savefig('diagnostics.pdf')
