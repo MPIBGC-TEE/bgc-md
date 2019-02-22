@@ -5,6 +5,7 @@ from pathlib import Path
 from sympy import sympify
 from pytexit import py2tex
 from .helpers import py2tex_silent
+from testinfrastructure.helpers import pe,pp
 
 import shutil
 import subprocess
@@ -171,11 +172,10 @@ class ReportElementList(list):
         return(entries)
 
     def write_pandoc_html(self, html_file_path,csl_file_path=None , css_file_path= None, slide_show = False):
-        csl_file_name=str(csl_file_path)
-        css_file_name=str(css_file_path)
+        #csl_file_name=str(csl_file_path)
+        #css_file_name=str(css_file_path)
         html_file_name=str(html_file_path)
-        html_file_path=Path(html_file_name)
-        
+        html_file_path=Path(html_file_name) #fixme this should be a path object but is not always
         dir_path=html_file_path.parent
         if not dir_path.exists():
             dir_path.mkdir(parents=True)
@@ -184,7 +184,9 @@ class ReportElementList(list):
             csl_file_path= gv.resources_path.joinpath('apa.csl')
         if css_file_path is None:
             css_file_path= gv.resources_path.joinpath('buttondown.css')
+            pe('css_file_path',locals())
         trunk = html_file_path.stem
+        pe('trunk',locals())
 
         md_file_path = html_file_path.parent.joinpath(html_file_path.stem+".md")
         bibtex_file_path= html_file_path.parent.joinpath(html_file_path.stem+".bibtex")
@@ -224,40 +226,46 @@ class ReportElementList(list):
             sub_dir_path=dir_path.joinpath(sub_page.label)
             sub_dir_path.mkdir(exist_ok=True,parents=True)
             if sub_page.target_format=="html":
-                outputFilePath=str(sub_dir_path.joinpath(LinkedSubPage.output_file_name()+".html"))
+                #outputFilePath=str(sub_dir_path.joinpath(LinkedSubPage.output_file_name()+".html"))
+                outputFilePath=str(sub_dir_path.joinpath("index.html"))
                 sub_page.contentRel.write_pandoc_html(outputFilePath,csl_file_path,css_file_path)
 
         self.write_pandoc_markdown(md_file_path)   
+        # create the pandoc command assuming that all the necessary files
+        # (md,css,csl are in the target directory and that the command will be
+        # executed there)
         cmd = ["pandoc"]
-        cmd += [str(md_file_path),"-s","--mathjax", "-o", html_file_name]        
+        cmd += [str(md_file_path.relative_to(dir_path)),"-s","--mathjax", "-o",
+                str(html_file_path.relative_to(dir_path))]
         #cmd += ["--metadata=title:Test"]
         if len(references)!=0:
-            cmd += ["--filter=pandoc-citeproc", "--bibliography="+str(bibtex_file_path)]
+            cmd += ["--filter=pandoc-citeproc",
+                    "--bibliography="+str(bibtex_file_path.relative_to(dir_path))]
         if css_file_path is not None : 
-            cmd += ["-c", str(css_file_path.absolute())]
+            cmd += ["-c", str(css_file_path.name)]
 
         if csl_file_path is not None:
-            cmd += ["--csl", str(csl_file_path)]
+            cmd += ["--csl", str(csl_file_path.name)]
         if slide_show: cmd += ["-t", "slidy"]
             # "slidy" can be changed to: "s5", "slideous", "dzslides", or "revealjs". 
             # For generating a beamer, we'll need: (["pandoc","-t","beamer","--mathjax",md_file,"-o","pdf"]), 
             # where md_file should have TeX math embedded.
 
         try:
-            subprocess.check_call(["rm","-rf", str(html_file_path)])
+            if html_file_path.exists():
+                html_file_path.unlink()
             #print(" ".join(cmd))
             
-            subprocess.check_output(cmd)
     
-            # copy css file
-
-            copy_cmd = ["cp"]
-            copy_cmd += [str(css_file_path)]
-            dn = str(html_file_path.parent)
-            copy_cmd += [dn]
-
+            # copy css and csl files
             # comment in if copying buttondown.css is needed
-            subprocess.check_call(copy_cmd)
+            for p in [css_file_path,csl_file_path]:
+                shutil.copyfile(p,dir_path.joinpath(p.name))
+            
+            # fixme mm 22.02.2018:
+            # Instead of a shell command 
+            # we should use the pypandoc package to become platformindependent
+            subprocess.run(cmd,cwd=str(dir_path.absolute()))
 
         except subprocess.CalledProcessError as e:
            out=e.output

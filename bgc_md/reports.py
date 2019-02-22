@@ -939,6 +939,7 @@ def render_parse():
     template_path=Path(com.template)
     #reference the template in the output html filename
     fn=template_path.stem+".html"
+    fn="index.html"
 
     if com.target_dir is not None:
         target_dir_path=Path(com.target_dir)

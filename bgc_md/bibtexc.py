@@ -23,8 +23,8 @@ Exceptions:
 
 import re
 import yaml
-from mendeley import Mendeley
-from mendeley.exception import MendeleyException
+#from mendeley import Mendeley
+#from mendeley.exception import MendeleyException
 from string import Template
 import string
 import unicodedata
@@ -38,21 +38,21 @@ from pathlib import Path
 from . import gv
 
 def online_entry(doi,abstract=True):
-    try: 
-        # 1st: check on Mendeley, because they provide abstracts
-        entry= _entry_from_str(_mendeley_str(doi, abstract=abstract))
-        return entry
+    #try: 
+    #    # 1st: check on Mendeley, because they provide abstracts
+    #    entry= _entry_from_str(_mendeley_str(doi, abstract=abstract))
+    #    return entry
             
-    except Exception as e: #fixme mm , maybe find out what exceptions mendeley has und only catch those
+    #except Exception as e: #fixme mm , maybe find out what exceptions mendeley has und only catch those
         # 2nd: check doi.org directly, no abstracts provided here                  
-        try: 
-            entry = _direct(doi)
-            return entry
+    try: 
+        entry = _direct(doi)
+        return entry
 
-        except Exception: #fixme mm , maybe find out what exceptions occure and only catch those
-            print("Warning:Could not reach doi.org")
-            #reraise an exception
-            raise DoiNotFoundException(doi) 
+    except Exception: #fixme mm , maybe find out what exceptions occure and only catch those
+        print("Warning:Could not reach doi.org")
+        #reraise an exception
+        raise DoiNotFoundException(doi) 
 
 class DoiNotFoundException(Exception):
     """Raised if BibTex entry cannot be found online by doi"""
@@ -378,88 +378,88 @@ def _direct(doi):
     return entry
 
 
-def _mendeley_data(doi):
-    """Returns Mendeley data or 'None', retrieved by doi via Mendeley."""
+#def _mendeley_data(doi):
+#    """Returns Mendeley data or 'None', retrieved by doi via Mendeley."""
+#
+#    config_file_name = gv.resources_path.joinpath('mendeley_user_config.yml').as_posix()
+#
+#    with open(config_file_name) as f:
+#        config = yaml.load(f)
+#
+#    mendeley = Mendeley(config['clientId'], config['clientSecret'])
+#    session = mendeley.start_client_credentials_flow().authenticate()
+#
+#    doc = session.catalog.by_identifier(doi=doi, view='bib')
+#
+#    mendeley_doi = doc.identifiers['doi']
+#    if doi == mendeley_doi:
+#        return doc
+#    else:
+#        raise DoiNotFoundException()
 
-    config_file_name = gv.resources_path.joinpath('mendeley_user_config.yml').as_posix()
-
-    with open(config_file_name) as f:
-        config = yaml.load(f)
-
-    mendeley = Mendeley(config['clientId'], config['clientSecret'])
-    session = mendeley.start_client_credentials_flow().authenticate()
-
-    doc = session.catalog.by_identifier(doi=doi, view='bib')
-
-    mendeley_doi = doc.identifiers['doi']
-    if doi == mendeley_doi:
-        return doc
-    else:
-        raise DoiNotFoundException()
 
 
-
-def _mendeley_str(doi, abstract=False):
-    """Return a BibTeX entry as a string or 'None', reetrieved by doi via Mendeley."""
-    doc = _mendeley_data(doi)
-    # doi could be resolved by Mendeley
-    # now create a BibTex entry as a string
-
-    full_names=[a.last_name +", " +a.first_name for a in doc.authors]
-    author_string=" and ".join(full_names)
-    if abstract:
-        t=Template("""\
-                      @article{$key,
-                               author = {$authors},
-                               doi = {$doi},
-                               journal = {$source},
-                               link = {http://dx.doi.org/$doi},
-                               number = {$issue},
-                               pages = {$pages},
-                               title = {$title},
-                               volume = {$volume},
-                               year = {$year},
-                               abstract = {$abstract}
-                      }""")
-        entry_str=t.substitute(
-               key = "default",
-               authors = author_string,
-               doi = doi,
-               source = doc.source,
-               issue = doc.issue,
-               pages = doc.pages,
-               title = doc.title,
-               volume = doc.volume,
-               year = doc.year,
-               abstract = doc.abstract
-           )
-    else:
-        t=Template("""\
-                      @article{$key,
-                               author = {$authors},
-                               doi = {$doi},
-                               journal = {$source},
-                               link = {http://dx.doi.org/$doi},
-                               number = {$issue},
-                               pages = {$pages},
-                               title = {$title},
-                               volume = {$volume},
-                               year = {$year}
-                      }""")
-    
-        entry_str=t.substitute(
-               key = "default",
-               authors = author_string,
-               doi = doi,
-               source = doc.source,
-               issue = doc.issue,
-               pages = doc.pages,
-               title = doc.title,
-               volume = doc.volume,
-               year = doc.year
-           )
-
-    return entry_str
+#def _mendeley_str(doi, abstract=False):
+#    """Return a BibTeX entry as a string or 'None', reetrieved by doi via Mendeley."""
+#    doc = _mendeley_data(doi)
+#    # doi could be resolved by Mendeley
+#    # now create a BibTex entry as a string
+#
+#    full_names=[a.last_name +", " +a.first_name for a in doc.authors]
+#    author_string=" and ".join(full_names)
+#    if abstract:
+#        t=Template("""\
+#                      @article{$key,
+#                               author = {$authors},
+#                               doi = {$doi},
+#                               journal = {$source},
+#                               link = {http://dx.doi.org/$doi},
+#                               number = {$issue},
+#                               pages = {$pages},
+#                               title = {$title},
+#                               volume = {$volume},
+#                               year = {$year},
+#                               abstract = {$abstract}
+#                      }""")
+#        entry_str=t.substitute(
+#               key = "default",
+#               authors = author_string,
+#               doi = doi,
+#               source = doc.source,
+#               issue = doc.issue,
+#               pages = doc.pages,
+#               title = doc.title,
+#               volume = doc.volume,
+#               year = doc.year,
+#               abstract = doc.abstract
+#           )
+#    else:
+#        t=Template("""\
+#                      @article{$key,
+#                               author = {$authors},
+#                               doi = {$doi},
+#                               journal = {$source},
+#                               link = {http://dx.doi.org/$doi},
+#                               number = {$issue},
+#                               pages = {$pages},
+#                               title = {$title},
+#                               volume = {$volume},
+#                               year = {$year}
+#                      }""")
+#    
+#        entry_str=t.substitute(
+#               key = "default",
+#               authors = author_string,
+#               doi = doi,
+#               source = doc.source,
+#               issue = doc.issue,
+#               pages = doc.pages,
+#               title = doc.title,
+#               volume = doc.volume,
+#               year = doc.year
+#           )
+#
+#    return entry_str
 
 #def _mendeley(doi, abstract=False):
 #    """Returns a BibTeX entry as dictionary or 'None', retrieved by doi via Mendeley."""

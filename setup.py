@@ -44,7 +44,7 @@ setup(name='bgc_md',
             ,"CompartmentalSystems"
             ,"testinfrastructure"
             ,"concurrencytest"
-            ,"mendeley "
+        #    ,"mendeley "
             ,"PyYAML"
             ,"pandas"
             ,'netCDF4'

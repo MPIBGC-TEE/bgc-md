@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Created with matplotlib (http://matplotlib.org/) -->
+<!-- Created with matplotlib (https://matplotlib.org/) -->
 <svg height="216pt" version="1.1" viewBox="0 0 216 216" width="216pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
  <defs>
   <style type="text/css">
@@ -19,7 +19,7 @@ z
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path clip-path="url(#pec6a5e8da6)" d="M 80.568 127.04256 
+    <path clip-path="url(#p763dcf36a4)" d="M 80.568 127.04256 
 C 85.36266 127.04256 89.961588 125.149911 93.351925 121.781448 
 C 96.742261 118.412985 98.6472 113.843727 98.6472 109.08 
 C 98.6472 104.316273 96.742261 99.747015 93.351925 96.378552 
@@ -32,7 +32,7 @@ z
 " style="fill:#0000ff;opacity:0.3;stroke:#0000ff;stroke-linejoin:miter;"/>
    </g>
    <g id="patch_3">
-    <path clip-path="url(#pec6a5e8da6)" d="M 51.726331 91.231791 
+    <path clip-path="url(#p763dcf36a4)" d="M 51.726331 91.231791 
 Q 54.259666 93.263249 57.026518 94.884987 
 L 58.164277 92.943853 
 Q 60.169202 96.307219 63.030462 99.424101 
@@ -44,7 +44,7 @@ z
 " style="fill:#0000ff;opacity:0.5;stroke:#0000ff;stroke-linecap:round;"/>
    </g>
    <g id="patch_4">
-    <path clip-path="url(#pec6a5e8da6)" d="M 63.564069 120.137781 
+    <path clip-path="url(#p763dcf36a4)" d="M 63.564069 120.137781 
 Q 60.531561 121.299032 57.73484 122.868701 
 L 58.836069 124.83079 
 Q 54.920602 124.863511 50.785592 125.759868 
@@ -56,7 +56,7 @@ z
 " style="fill:#008000;opacity:0.5;stroke:#008000;stroke-linecap:round;"/>
    </g>
    <g id="patch_5">
-    <path clip-path="url(#pec6a5e8da6)" d="M 140.832 127.04256 
+    <path clip-path="url(#p763dcf36a4)" d="M 140.832 127.04256 
 C 145.62666 127.04256 150.225588 125.149911 153.615925 121.781448 
 C 157.006261 118.412985 158.9112 113.843727 158.9112 109.08 
 C 158.9112 104.316273 157.006261 99.747015 153.615925 96.378552 
@@ -69,7 +69,7 @@ z
 " style="fill:#0000ff;opacity:0.3;stroke:#0000ff;stroke-linejoin:miter;"/>
    </g>
    <g id="patch_6">
-    <path clip-path="url(#pec6a5e8da6)" d="M 100.68924 110.878755 
+    <path clip-path="url(#p763dcf36a4)" d="M 100.68924 110.878755 
 Q 107.178597 112.289793 113.732967 112.285625 
 L 113.731536 110.035625 
 Q 117.242478 111.915085 121.222534 113.332836 
@@ -81,7 +81,7 @@ z
 " style="fill:#008000;opacity:0.5;stroke:#008000;stroke-linecap:round;"/>
    </g>
    <g id="patch_7">
-    <path clip-path="url(#pec6a5e8da6)" d="M 120.71076 107.281245 
+    <path clip-path="url(#p763dcf36a4)" d="M 120.71076 107.281245 
 Q 114.221403 105.870207 107.667033 105.874375 
 L 107.668464 108.124375 
 Q 104.157522 106.244915 100.177466 104.827164 
@@ -119,7 +119,7 @@ Q 37.0625 74.21875 47.21875 74.21875
 Q 53.46875 74.21875 59.0625 72.484375 
 Q 64.65625 70.75 69.484375 67.28125 
 z
-" id="DejaVuSans-Oblique-43"/>
+" id="DejaVuSans-Oblique-67"/>
      <path d="M 50 53.078125 
 L 48.296875 44.578125 
 Q 44.734375 46.53125 40.765625 47.5 
@@ -150,11 +150,11 @@ Q 21.734375 56 33.015625 56
 Q 37.453125 56 41.671875 55.265625 
 Q 45.90625 54.546875 50 53.078125 
 z
-" id="DejaVuSans-Oblique-73"/>
+" id="DejaVuSans-Oblique-115"/>
     </defs>
     <g transform="translate(71.768 113.495)scale(0.16 -0.16)">
-     <use transform="translate(0 0.78125)" xlink:href="#DejaVuSans-Oblique-43"/>
-     <use transform="translate(69.824219 -15.625)scale(0.7)" xlink:href="#DejaVuSans-Oblique-73"/>
+     <use transform="translate(0 0.78125)" xlink:href="#DejaVuSans-Oblique-67"/>
+     <use transform="translate(69.824219 -15.625)scale(0.7)" xlink:href="#DejaVuSans-Oblique-115"/>
     </g>
    </g>
    <g id="text_2">
@@ -190,17 +190,17 @@ L 3.609375 0
 L 18.40625 75.984375 
 L 27.390625 75.984375 
 z
-" id="DejaVuSans-Oblique-62"/>
+" id="DejaVuSans-Oblique-98"/>
     </defs>
     <g transform="translate(131.472 113.495)scale(0.16 -0.16)">
-     <use transform="translate(0 0.78125)" xlink:href="#DejaVuSans-Oblique-43"/>
-     <use transform="translate(69.824219 -15.625)scale(0.7)" xlink:href="#DejaVuSans-Oblique-62"/>
+     <use transform="translate(0 0.78125)" xlink:href="#DejaVuSans-Oblique-67"/>
+     <use transform="translate(69.824219 -15.625)scale(0.7)" xlink:href="#DejaVuSans-Oblique-98"/>
     </g>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="pec6a5e8da6">
+  <clipPath id="p763dcf36a4">
    <rect height="166.32" width="167.4" x="27" y="25.92"/>
   </clipPath>
  </defs>

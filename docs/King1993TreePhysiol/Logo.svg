@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Created with matplotlib (http://matplotlib.org/) -->
+<!-- Created with matplotlib (https://matplotlib.org/) -->
 <svg height="216pt" version="1.1" viewBox="0 0 216 216" width="216pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
  <defs>
   <style type="text/css">
@@ -19,7 +19,7 @@ z
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path clip-path="url(#pee85137a24)" d="M 73.872 128.09293 
+    <path clip-path="url(#p7abf679b3f)" d="M 73.872 128.09293 
 C 78.94703 128.09293 83.814883 126.089607 87.403471 122.524171 
 C 90.992059 118.958735 93.00839 114.122288 93.00839 109.08 
 C 93.00839 104.037712 90.992059 99.201265 87.403471 95.635829 
@@ -32,7 +32,7 @@ z
 " style="fill:#0000ff;opacity:0.3;stroke:#0000ff;stroke-linejoin:miter;"/>
    </g>
    <g id="patch_3">
-    <path clip-path="url(#pee85137a24)" d="M 43.20327 90.187689 
+    <path clip-path="url(#p7abf679b3f)" d="M 43.20327 90.187689 
 Q 46.140896 92.554403 49.375649 94.400155 
 L 50.490742 92.445912 
 Q 52.547573 95.791453 55.41468 98.89981 
@@ -44,7 +44,7 @@ z
 " style="fill:#0000ff;opacity:0.5;stroke:#0000ff;stroke-linecap:round;"/>
    </g>
    <g id="patch_4">
-    <path clip-path="url(#pee85137a24)" d="M 55.945063 120.663294 
+    <path clip-path="url(#p7abf679b3f)" d="M 55.945063 120.663294 
 Q 52.419056 122.004285 49.192748 123.864761 
 L 50.316736 125.813902 
 Q 46.390451 125.900428 42.259848 126.806136 
@@ -56,7 +56,7 @@ z
 " style="fill:#0000ff;opacity:0.5;stroke:#0000ff;stroke-linecap:round;"/>
    </g>
    <g id="patch_5">
-    <path clip-path="url(#pee85137a24)" d="M 129.114 96.404714 
+    <path clip-path="url(#p7abf679b3f)" d="M 129.114 96.404714 
 C 134.18903 96.404714 139.056883 94.401391 142.645471 90.835955 
 C 146.234059 87.27052 148.25039 82.434072 148.25039 77.391784 
 C 148.25039 72.349496 146.234059 67.513049 142.645471 63.947613 
@@ -69,7 +69,7 @@ z
 " style="fill:#0000ff;opacity:0.3;stroke:#0000ff;stroke-linejoin:miter;"/>
    </g>
    <g id="patch_6">
-    <path clip-path="url(#pee85137a24)" d="M 160.904863 60.455684 
+    <path clip-path="url(#p7abf679b3f)" d="M 160.904863 60.455684 
 Q 157.378856 61.796675 154.152548 63.657151 
 L 155.276536 65.606292 
 Q 151.350251 65.692818 147.219648 66.598525 
@@ -81,7 +81,7 @@ z
 " style="fill:#0000ff;opacity:0.5;stroke:#0000ff;stroke-linecap:round;"/>
    </g>
    <g id="patch_7">
-    <path clip-path="url(#pee85137a24)" d="M 127.98611 56.171264 
+    <path clip-path="url(#p7abf679b3f)" d="M 127.98611 56.171264 
 Q 128.569641 52.48959 128.564603 48.809384 
 L 126.314605 48.812463 
 Q 128.196424 45.366936 129.466823 41.333696 
@@ -93,7 +93,7 @@ z
 " style="fill:#0000ff;opacity:0.5;stroke:#0000ff;stroke-linecap:round;"/>
    </g>
    <g id="patch_8">
-    <path clip-path="url(#pee85137a24)" d="M 129.114 159.781145 
+    <path clip-path="url(#p7abf679b3f)" d="M 129.114 159.781145 
 C 134.18903 159.781145 139.056883 157.777823 142.645471 154.212387 
 C 146.234059 150.646951 148.25039 145.810504 148.25039 140.768216 
 C 148.25039 135.725928 146.234059 130.88948 142.645471 127.324045 
@@ -106,7 +106,7 @@ z
 " style="fill:#0000ff;opacity:0.3;stroke:#0000ff;stroke-linejoin:miter;"/>
    </g>
    <g id="patch_9">
-    <path clip-path="url(#pee85137a24)" d="M 127.98611 176.586485 
+    <path clip-path="url(#p7abf679b3f)" d="M 127.98611 176.586485 
 Q 128.569641 172.90481 128.564603 169.224604 
 L 126.314605 169.227684 
 Q 128.196424 165.782157 129.466823 161.748917 
@@ -131,10 +131,10 @@ L 19.28125 34.8125
 L 12.5 0 
 L 2.6875 0 
 z
-" id="DejaVuSans-Oblique-46"/>
+" id="DejaVuSans-Oblique-70"/>
     </defs>
     <g transform="translate(69.232 113.495)scale(0.16 -0.16)">
-     <use transform="translate(0 0.09375)" xlink:href="#DejaVuSans-Oblique-46"/>
+     <use transform="translate(0 0.09375)" xlink:href="#DejaVuSans-Oblique-70"/>
     </g>
    </g>
    <g id="text_2">
@@ -166,10 +166,10 @@ Q 60.015625 63.765625 60.015625 55.171875
 Q 60.015625 47.5625 55.421875 41.984375 
 Q 50.828125 36.421875 43.3125 35.015625 
 z
-" id="DejaVuSans-Oblique-52"/>
+" id="DejaVuSans-Oblique-82"/>
     </defs>
     <g transform="translate(123.514 81.806784)scale(0.16 -0.16)">
-     <use transform="translate(0 0.09375)" xlink:href="#DejaVuSans-Oblique-52"/>
+     <use transform="translate(0 0.09375)" xlink:href="#DejaVuSans-Oblique-82"/>
     </g>
    </g>
    <g id="text_3">
@@ -189,16 +189,16 @@ L 53.8125 60.796875
 L 26.515625 0 
 L 14.109375 0 
 z
-" id="DejaVuSans-Oblique-57"/>
+" id="DejaVuSans-Oblique-87"/>
     </defs>
     <g transform="translate(121.194 145.183216)scale(0.16 -0.16)">
-     <use transform="translate(0 0.09375)" xlink:href="#DejaVuSans-Oblique-57"/>
+     <use transform="translate(0 0.09375)" xlink:href="#DejaVuSans-Oblique-87"/>
     </g>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="pee85137a24">
+  <clipPath id="p7abf679b3f">
    <rect height="166.32" width="167.4" x="27" y="25.92"/>
   </clipPath>
  </defs>

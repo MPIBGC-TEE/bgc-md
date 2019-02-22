@@ -6,8 +6,8 @@ import re
 import yaml
 # import copy
 # import builtins
-from mendeley import Mendeley
-from mendeley.exception import MendeleyException
+#from mendeley import Mendeley
+#from mendeley.exception import MendeleyException
 # from Latex import Latex
 # from helpers import pp
 from string import Template
@@ -56,75 +56,75 @@ def bibtex_entry_str(entry):
     return bibtex_string
 
 
-def mendeley_data_by_doi(doi):
-    # returns Mendeley data or 'None'
-
-    with open('mendeley_user_config.yml') as f:
-        config = yaml.load(f)
-    mendeley = Mendeley(config['clientId'], config['clientSecret'])
-    session = mendeley.start_client_credentials_flow().authenticate()
-
-    try:
-        doc = session.catalog.by_identifier(doi=doi, view='bib')
-    except MendeleyException:
-        return None
-
-    mendeley_doi = doc.identifiers['doi']
-    if doi == mendeley_doi:
-        return doc
-
-    # either an error or doi could not be resolved
-    return None
-
-
-def mendeley_bibtex_entry_str_by_doi(doi):
-    # returns a BibTeX entry as a string or 'None'
-
-    doc = mendeley_data_by_doi(doi)
-    if doc:
-        # doi could be resolved by Mendeley
-        # now create a BibTex entry as a string
-
-        full_names=[a.last_name +", " +a.first_name for a in doc.authors]
-        author_string=" and ".join(full_names)
-        key_str=clean_key(doc.authors[0].last_name+str(doc.year)+(doc.source))
-
-        t=Template("""\
-@article{$key,
- author = {$authors},
- doi = {$doi},
- journal = {$source},
- link = {http://dx.doi.org/$doi},
- number = {$issue},
- pages = {$pages},
- title = {$title},
- volume = {$volume},
- year = {$year}
-}""")
-        entry_str=t.substitute(
-                   key=key_str,
-                   authors=author_string,
-                   doi=doi,
-                   source=doc.source,
-                   issue=doc.issue,
-                   pages=doc.pages,
-                   title=doc.title,
-                   volume=doc.volume,
-                   year=doc.year                   
-               )
-
-        return entry_str
-
-
-def mendeley_bibtex_entry_by_doi(doi):
-    # returns a BibTeX entry as dictionary or 'None'
-
-    entry_str = mendeley_bibtex_entry_str_by_doi(doi)
-
-    if entry_str:
-        return bibtex_entry_from_str(entry_str)
-    else:
-        return None
+#def mendeley_data_by_doi(doi):
+#    # returns Mendeley data or 'None'
+#
+#    with open('mendeley_user_config.yml') as f:
+#        config = yaml.load(f)
+#    mendeley = Mendeley(config['clientId'], config['clientSecret'])
+#    session = mendeley.start_client_credentials_flow().authenticate()
+#
+#    try:
+#        doc = session.catalog.by_identifier(doi=doi, view='bib')
+#    except MendeleyException:
+#        return None
+#
+#    mendeley_doi = doc.identifiers['doi']
+#    if doi == mendeley_doi:
+#        return doc
+#
+#    # either an error or doi could not be resolved
+#    return None
+#
+#
+#def mendeley_bibtex_entry_str_by_doi(doi):
+#    # returns a BibTeX entry as a string or 'None'
+#
+#    doc = mendeley_data_by_doi(doi)
+#    if doc:
+#        # doi could be resolved by Mendeley
+#        # now create a BibTex entry as a string
+#
+#        full_names=[a.last_name +", " +a.first_name for a in doc.authors]
+#        author_string=" and ".join(full_names)
+#        key_str=clean_key(doc.authors[0].last_name+str(doc.year)+(doc.source))
+#
+#        t=Template("""\
+#@article{$key,
+# author = {$authors},
+# doi = {$doi},
+# journal = {$source},
+# link = {http://dx.doi.org/$doi},
+# number = {$issue},
+# pages = {$pages},
+# title = {$title},
+# volume = {$volume},
+# year = {$year}
+#}""")
+#        entry_str=t.substitute(
+#                   key=key_str,
+#                   authors=author_string,
+#                   doi=doi,
+#                   source=doc.source,
+#                   issue=doc.issue,
+#                   pages=doc.pages,
+#                   title=doc.title,
+#                   volume=doc.volume,
+#                   year=doc.year                   
+#               )
+#
+#        return entry_str
+#
+#
+#def mendeley_bibtex_entry_by_doi(doi):
+#    # returns a BibTeX entry as dictionary or 'None'
+#
+#    entry_str = mendeley_bibtex_entry_str_by_doi(doi)
+#
+#    if entry_str:
+#        return bibtex_entry_from_str(entry_str)
+#    else:
+#        return None
 
 
 def direct_data_by_doi(doi):
@@ -205,10 +205,10 @@ def direct_bibtex_entry_str_by_doi(doi):
 def storable_bibtex_entry_by_doi(doi):
     # returns a dictionary with the BibTex entry or 'None'
 
-    # 1st: check on Mendeley, because they provide abstracts
-    entry = mendeley_bibtex_entry_by_doi(doi)
-    if entry: 
-        return entry
+    ## 1st: check on Mendeley, because they provide abstracts
+    #entry = mendeley_bibtex_entry_by_doi(doi)
+    #if entry: 
+    #    return entry
 
     # 2nd: check doi.org directly
     entry = direct_bibtex_entry_by_doi(doi)
