@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Report of the model: CTEM, version: 1</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="/Users/carlos/Repos/bgc-md/bgc_md/Resources/buttondown.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">Report of the model: CTEM, version: 1</h1>
+</header>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 21/1/2016.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation" data-cites="Arora2005GlobalChangeBiology">Arora &amp; Boer (2005)</span>.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global</p>
+<h3 id="available-parameter-values">Available parameter values</h3>
+<table>
+<caption>Information on given parameter sets</caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Abbreviation</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Original dataset of the publication</td>
+<td style="text-align: left;">Eastern US and Germany, cold broadleaf deciduous</td>
+<td style="text-align: left;"><span class="citation" data-cites="Arora2005GlobalChangeBiology">Arora &amp; Boer (2005)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>state_variables<br />
+The model section in the yaml file has no subsection: additional_variables.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(t\)</span></td>
+<td style="text-align: left;">time step</td>
+<td style="text-align: left;"><span class="math inline">\(year\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(C_{L}\)</span></td>
+<td style="text-align: left;">Amount of carbon for the leaf</td>
+<td style="text-align: left;"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(C_{S}\)</span></td>
+<td style="text-align: left;">Amount of carbon for the stem</td>
+<td style="text-align: left;"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(C_{R}\)</span></td>
+<td style="text-align: left;">Amount of carbon for the root</td>
+<td style="text-align: left;"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>components</caption>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td style="text-align: left;">vector of states for vegetation</td>
+<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}C_{L}\\C_{S}\\C_{R}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(u\)</span></td>
+<td style="text-align: left;">Vector of functions of photosynthetic inputs</td>
+<td style="text-align: center;"><span class="math inline">\(u=\left[\begin{matrix}G - R_{mL}\\a_{S}\\a_{R}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(A\)</span></td>
+<td style="text-align: left;">matrix of cycling rates</td>
+<td style="text-align: center;"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{N} -\gamma_{T} -\gamma_{W} &amp; 0 &amp; 0\\0 &amp; - R_{gS} - R_{mS} -\gamma_{S} &amp; 0\\0 &amp; 0 &amp; - R_{gR} - R_{mR} -\gamma_{R}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(f_{v}\)</span></td>
+<td style="text-align: left;">the righthandside of the ode</td>
+<td style="text-align: center;"><span class="math inline">\(f_{v}=A x + u\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{L}: G - R_{mL}\)</span><br />
+<span class="math inline">\(C_{S}: \frac{\epsilon_{S} +\omega\cdot\left(1 - e^{- LAI\cdot k_{n}}\right)}{\omega\cdot\left(- W + 2 - e^{- LAI\cdot k_{n}}\right) + 1}\)</span><br />
+<span class="math inline">\(C_{R}: \frac{-\epsilon_{L} -\epsilon_{S} +\omega\cdot\left(- W + 1\right) + 1}{\omega\cdot\left(- W + 2 - e^{- LAI\cdot k_{n}}\right) + 1}\)</span></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(C_{L}: C_{L}\cdot\left(\gamma_{N} +\gamma_{Tmax}\cdot\left(-\beta_{T} + 1\right)^{b_{T}} +\gamma_{W}\right)\)</span><br />
+<span class="math inline">\(C_{S}: C_{S}\cdot\left(R_{gS} + R_{mS} +\gamma_{S}\right)\)</span><br />
+<span class="math inline">\(C_{R}: C_{R}\cdot\left(R_{gR} + R_{mR} +\gamma_{R}\right)\)</span></p>
+<h2 id="model-simulations">Model simulations</h2>
+<h2 id="phaseplane-plots">Phaseplane plots</h2>
+<h2 id="fluxes">Fluxes</h2>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(C_L = \frac{G - R_{mL}}{\gamma_{N} +\gamma_{Tmax}\cdot\left(-\beta_{T} + 1\right)^{b_{T}} +\gamma_{W}}\)</span></p>
+<p><span class="math inline">\(C_S = \frac{-\epsilon_{S}\cdot e^{LAI\cdot k_{n}} -\omega\cdot e^{LAI\cdot k_{n}} +\omega}{R_{gS}\cdot W\cdot\omega\cdot e^{LAI\cdot k_{n}} - 2\cdot R_{gS}\cdot\omega\cdot e^{LAI\cdot k_{n}} + R_{gS}\cdot\omega - R_{gS}\cdot e^{LAI\cdot k_{n}} + R_{mS}\cdot W\cdot\omega\cdot e^{LAI\cdot k_{n}} - 2\cdot R_{mS}\cdot\omega\cdot e^{LAI\cdot k_{n}} + R_{mS}\cdot\omega - R_{mS}\cdot e^{LAI\cdot k_{n}} + W\cdot\gamma_{S}\cdot\omega\cdot e^{LAI\cdot k_{n}} - 2\cdot\gamma_{S}\cdot\omega\cdot e^{LAI\cdot k_{n}} +\gamma_{S}\cdot\omega -\gamma_{S}\cdot e^{LAI\cdot k_{n}}}\)</span></p>
+<p><span class="math inline">\(C_R = \frac{\left(W\cdot\omega +\epsilon_{L} +\epsilon_{S} -\omega - 1\right)\cdot e^{LAI\cdot k_{n}}}{R_{gR}\cdot W\cdot\omega\cdot e^{LAI\cdot k_{n}} - 2\cdot R_{gR}\cdot\omega\cdot e^{LAI\cdot k_{n}} + R_{gR}\cdot\omega - R_{gR}\cdot e^{LAI\cdot k_{n}} + R_{mR}\cdot W\cdot\omega\cdot e^{LAI\cdot k_{n}} - 2\cdot R_{mR}\cdot\omega\cdot e^{LAI\cdot k_{n}} + R_{mR}\cdot\omega - R_{mR}\cdot e^{LAI\cdot k_{n}} + W\cdot\gamma_{R}\cdot\omega\cdot e^{LAI\cdot k_{n}} - 2\cdot\gamma_{R}\cdot\omega\cdot e^{LAI\cdot k_{n}} +\gamma_{R}\cdot\omega -\gamma_{R}\cdot e^{LAI\cdot k_{n}}}\)</span></p>
+<h2 id="mean-ages">Mean ages</h2>
+<p>To compute the moments we need a start_age distribution. This distribution can be chosen arbitrarily by the user or contributor of the yaml file and should in this case be defined in the model run data. If the model run data do not contain age distributions, we can compute some distributions for special situations</p>
+<h3 id="zero-age-for-the-whole-initial-mass">Zero age for the whole initial mass</h3>
+<p>We assume that the contents of all pools (as described by the start values of a model run combination are zero</p>
+<h3 id="steady-state-start-age-distribution">Steady state start age distribution</h3>
+<p>In the general non autonomous case The model can be frozen at a time t_0. The resulting model is in general autonomous but nonlinear and might have fixed points. If fixedpoints can be found we can compute the age distribution that would have developed if the system had stayed in this equilibrium for infinite time. Note that any startvalues given in the model run data section will not influence this start distribution since it will use the equilibrium values if such can be found.</p>
+<h2 id="age-density-evolution">Age Density Evolution</h2>
+<pre><code>To compute the moments we need a start_age distribution.  
+This distribution can be chosen arbitrarily by the user.
+At the moment the yaml files do not contain startdistributions.
+The package CompartmentalSystems has a module &quot;start_age_densities&quot;  which contains functions to compute some distributions for special situations.
+In this template we use only the simplest ones.  </code></pre>
+<h3 id="zero-age-for-the-whole-initial-mass-1">Zero age for the whole initial mass</h3>
+<p>We assume that the contents of all pools (as described by the start values of a model run combination are zero</p>
+<h2 id="references" class="unnumbered">References</h2>
+<div id="refs" class="references">
+<div id="ref-Arora2005GlobalChangeBiology">
+<p>Arora, V. K., &amp; Boer, G. J. (2005). A parameterization of leaf phenology for the terrestrial ecosystem component of climate models. <em>Global Change Biology</em>, <em>11</em>(1), 39–59. <a href="http://doi.org/10.1111/j.1365-2486.2004.00890.x" class="uri">http://doi.org/10.1111/j.1365-2486.2004.00890.x</a></p>
+</div>
+</div>
+</body>
+</html>

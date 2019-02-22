@@ -12,7 +12,7 @@ def template(model_list):
     header_row = TableRow([ Text("Model"),  Text("Source")])
     table_format = list("ll")
     T = Table("Summary of the models in the database of Carbon Allocation in Vegetation models", header_row, table_format)
-    single_tp=defaults()['paths']['report_templates'].joinpath('MinimalSingleReport.py')
+    single_tp=defaults()['paths']['report_templates'].joinpath('single_model','MinimalSingleReport.py')
     for i,model in enumerate(model_list):
 
         modelRel=render(single_tp,model=model)
