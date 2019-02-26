@@ -48,7 +48,7 @@ common_parser.add_argument(
     ,default='.'
     ,help="where to generate the html files" 
 )
-
+default_html_filename='index.html'
 #import mpld3 # interesting functionality for interactive web figures
 
 def generate_model_run_report():
@@ -83,6 +83,7 @@ def defaults():
          "dirs":dir_dict
         ,"paths":path_dict
         ,"msgs":msg_dict
+        ,"html_filename":'index.html'
         }
 
 
@@ -938,8 +939,9 @@ def render_parse():
     com=parser.parse_args()
     template_path=Path(com.template)
     #reference the template in the output html filename
-    fn=template_path.stem+".html"
-    fn="index.html"
+    #fn=template_path.stem+".html"
+    #fn="index.html"
+    fn=defaults()['html_filename']
 
     if com.target_dir is not None:
         target_dir_path=Path(com.target_dir)

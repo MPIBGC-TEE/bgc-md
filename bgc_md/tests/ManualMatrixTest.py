@@ -18,16 +18,13 @@ import bgc_md.gv as gv
 
 def f(l):
     tp,rec=l
-    targetPath=Path('.')
-    print("1 ###################")
-    print(tp.stem)
-    print(rec.stem)
-    command_list=['render','-y']
+    command_list=['render']
     file_name=str(rec)
-    command_list+=[file_name]
-    command_list+=[str(tp.absolute())]
-    print("2 ################### command_list")
-    print(command_list)
+    command_list+=['-y',file_name]
+    targetPath=Path(tp.stem+"_"+rec.stem) #relative to the dir where the test will be executed
+    targetPath.mkdir(parents=True,exist_ok=True)
+    command_list+=["--target_dir",str(targetPath)]
+    command_list+=[str(tp)]
     res=run(command_list)
     result=dict()
     result['file']=rec.stem
@@ -35,10 +32,7 @@ def f(l):
     result['returnValue']=res.returncode
     html_dir_path=targetPath.joinpath(rec.stem)
     #html_file_path=html_dir_path.joinpath(tp.stem+'.html')
-    html_file_path=html_dir_path.joinpath('index.html')
-    print("3 ################### html_file_path")
-    print(html_file_path)
-    print(Path('.').absolute())
+    html_file_path=html_dir_path.joinpath(defaults()["html_filename"])
     result['fileExists']=html_file_path.exists()
     return(result)
 
@@ -56,8 +50,8 @@ class SlowTestSingleYaml(InDirTest):
         sp=d['paths']['tested_records']
 
         # put the file you want to test in the rec_list
-        #rec_list=[ rec  for rec in sp.glob('*.yaml')]
-        rec_list=[sp.joinpath("Allison2010NatureGeoscience.yaml")] 
+        rec_list=[ rec  for rec in sp.glob('*.yaml')]
+        #rec_list=[sp.joinpath("Allison2010NatureGeoscience.yaml")] 
         #rec_list=[sp.joinpath("Wang2014BG3p.yaml")] 
 
         #test_list= rec_list
