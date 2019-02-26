@@ -26,6 +26,8 @@ def f(l):
     file_name=str(rec)
     command_list+=[file_name]
     command_list+=[str(tp.absolute())]
+    print("2 ################### command_list")
+    print(command_list)
     res=run(command_list)
     result=dict()
     result['file']=rec.stem
@@ -34,6 +36,9 @@ def f(l):
     html_dir_path=targetPath.joinpath(rec.stem)
     #html_file_path=html_dir_path.joinpath(tp.stem+'.html')
     html_file_path=html_dir_path.joinpath('index.html')
+    print("3 ################### html_file_path")
+    print(html_file_path)
+    print(Path('.').absolute())
     result['fileExists']=html_file_path.exists()
     return(result)
 
@@ -46,13 +51,13 @@ class SlowTestSingleYaml(InDirTest):
         d=defaults() 
         template_path=d['paths']['report_templates'].joinpath('single_model')
         tps=[tp for tp in template_path.glob('*.py')]
-        # you can even 
-        #tps=[template_path.joinpath('GeneralOverview.py')]
+        # you can even single out one file 
+        #tps=[template_path.joinpath('TransientSystemAgeDensity3d.py')]
         sp=d['paths']['tested_records']
 
         # put the file you want to test in the rec_list
-        rec_list=[ rec  for rec in sp.glob('*.yaml')]
-        #rec_list=[sp.joinpath("Ceballos2016.yaml")] 
+        #rec_list=[ rec  for rec in sp.glob('*.yaml')]
+        rec_list=[sp.joinpath("Allison2010NatureGeoscience.yaml")] 
         #rec_list=[sp.joinpath("Wang2014BG3p.yaml")] 
 
         #test_list= rec_list
