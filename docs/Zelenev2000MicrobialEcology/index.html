@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>BACWAVE, version: 1</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="buttondown.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">BACWAVE, version: 1</h1>
+</header>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report presents a general overview of the model BACWAVE , which is part of the Biogeochemistry Model Database BGC-MD. The underlying yaml file entry that contains all the information of the model was created by Holger Metzler (Orcid ID: 0000-0002-8239-1601) on 15/03/2016. The entry was processed by the python package bgc-md to produce symbolic output.</p>
+<p>The model was originally described by <span class="citation" data-cites="Zelenev2000MicrobialEcology">Zelenev, van Bruggen, &amp; Semenov (2000)</span>.</p>
+<h1 id="model-description">Model description</h1>
+<h2 id="state-variables">State variables</h2>
+<table>
+<caption>state_variables</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(X\)</span></td>
+<td style="text-align: left;">microbial biomass pool</td>
+<td style="text-align: left;"><span class="math inline">\(\mu gC cm^{-3}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(S\)</span></td>
+<td style="text-align: left;">substrate pool</td>
+<td style="text-align: left;"><span class="math inline">\(\mu gC cm^{-3}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="components-of-the-compartmental-system">Components of the compartmental system</h2>
+<table>
+<caption>components</caption>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(C\)</span></td>
+<td style="text-align: left;">carbon content</td>
+<td style="text-align: center;"><span class="math inline">\(C=\left[\begin{matrix}X\\S\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(I\)</span></td>
+<td style="text-align: left;">input vector</td>
+<td style="text-align: center;"><span class="math inline">\(I=\left[\begin{matrix}0\\BGF + Exu\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(T\)</span></td>
+<td style="text-align: left;">transition operator</td>
+<td style="text-align: center;"><span class="math inline">\(T=\left[\begin{matrix}-1 &amp; Y\\K_{r} &amp; -1\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(N\)</span></td>
+<td style="text-align: left;">decomposition operator</td>
+<td style="text-align: center;"><span class="math inline">\(N=\left[\begin{matrix}\frac{D_{max}\cdot K_{d}}{K_{d} +\frac{S}{\theta}} &amp; 0\\0 &amp;\frac{X\cdot\mu_{max}}{Y\cdot\left(K_{s}\cdot\theta + S\right)}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(f_{s}\)</span></td>
+<td style="text-align: left;">the right hand side of the ode</td>
+<td style="text-align: center;"><span class="math inline">\(f_{s}=T N C + I\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(S: BGF + ExuM\cdot e^{- ExuT\cdot t}\)</span></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(X: -\frac{D_{max}\cdot K_{d}\cdot X\cdot\theta}{K_{d}\cdot\theta + S}\cdot\left(K_{r} - 1\right)\)</span><br />
+<span class="math inline">\(S: -\frac{S\cdot X\cdot\mu_{max}\cdot\left(Y - 1\right)}{Y\cdot\left(K_{s}\cdot\theta + S\right)}\)</span></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<p><span class="math inline">\(X \rightarrow S: \frac{D_{max}\cdot K_{d}\cdot K_{r}\cdot X\cdot\theta}{K_{d}\cdot\theta + S}\)</span><br />
+<span class="math inline">\(S \rightarrow X: \frac{S\cdot X\cdot\mu_{max}}{K_{s}\cdot\theta + S}\)</span></p>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
+<div id="ref-Zelenev2000MicrobialEcology">
+<p>Zelenev, V. V., van Bruggen, A. H. C., &amp; Semenov, A. M. (2000). “BACWAVE,” a spatial-temporal model for traveling waves of bacterial populations in response to a moving carbon source in soil. <em>Microbial Ecology</em>, <em>40</em>(3), 260–272. <a href="http://doi.org/10.2307/4251775" class="uri">http://doi.org/10.2307/4251775</a></p>
+</div>
+</div>
+</body>
+</html>

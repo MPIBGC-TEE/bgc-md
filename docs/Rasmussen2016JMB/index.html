@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>CASA (9 pools), version: 2016</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="buttondown.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">CASA (9 pools), version: 2016</h1>
+</header>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report presents a general overview of the model CASA (9 pools) , which is part of the Biogeochemistry Model Database BGC-MD. The underlying yaml file entry that contains all the information of the model was created by Holger Metzler (Orcid ID: 0000-0002-8239-1601) on 18/01/2018. The entry was processed by the python package bgc-md to produce symbolic output.</p>
+<p>The model was originally described by <span class="citation" data-cites="Rasmussen2016JMB">Rasmussen et al. (2016)</span>.</p>
+<h1 id="model-description">Model description</h1>
+<h2 id="state-variables">State variables</h2>
+<table>
+<caption>state_variables</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{1}\)</span></td>
+<td style="text-align: left;">Leaves</td>
+<td style="text-align: left;"><span class="math inline">\(Pg C\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x_{2}\)</span></td>
+<td style="text-align: left;">Roots</td>
+<td style="text-align: left;"><span class="math inline">\(Pg C\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{3}\)</span></td>
+<td style="text-align: left;">Wood</td>
+<td style="text-align: left;"><span class="math inline">\(Pg C\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x_{4}\)</span></td>
+<td style="text-align: left;">Litter 1</td>
+<td style="text-align: left;"><span class="math inline">\(Pg C\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{5}\)</span></td>
+<td style="text-align: left;">Litter 2</td>
+<td style="text-align: left;"><span class="math inline">\(Pg C\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x_{6}\)</span></td>
+<td style="text-align: left;">Litter 3</td>
+<td style="text-align: left;"><span class="math inline">\(Pg C\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{7}\)</span></td>
+<td style="text-align: left;">Soil 1</td>
+<td style="text-align: left;"><span class="math inline">\(Pg C\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x_{8}\)</span></td>
+<td style="text-align: left;">Soil 2</td>
+<td style="text-align: left;"><span class="math inline">\(Pg C\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{9}\)</span></td>
+<td style="text-align: left;">Soil 3</td>
+<td style="text-align: left;"><span class="math inline">\(Pg C\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="components-of-the-compartmental-system">Components of the compartmental system</h2>
+<table>
+<caption>components</caption>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(C\)</span></td>
+<td style="text-align: left;">carbon content</td>
+<td style="text-align: center;"><span class="math inline">\(C=\left[\begin{matrix}x_{1}\\x_{2}\\x_{3}\\x_{4}\\x_{5}\\x_{6}\\x_{7}\\x_{8}\\x_{9}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(s\)</span></td>
+<td style="text-align: left;">input vector</td>
+<td style="text-align: center;"><span class="math inline">\(s=\left[\begin{matrix}s_{1}\\s_{2}\\s_{3}\\0\\0\\0\\0\\0\\0\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\xi\)</span></td>
+<td style="text-align: left;">environmental effects multiplier, not for all pools</td>
+<td style="text-align: center;"><span class="math inline">\(\xi=\xi_{b}^{0.1\cdot T_{s} - 1.5}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(B\)</span></td>
+<td style="text-align: left;">Matrix of cycling and transfer rates</td>
+<td style="text-align: center;"><span class="math inline">\(B=\left[\begin{matrix}- b_{11} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; - b_{22} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; - b_{33} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\b_{41} &amp; b_{42} &amp; 0 &amp; - b_{44}\cdot\xi &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\b_{51} &amp; b_{52} &amp; 0 &amp; 0 &amp; - b_{55}\cdot\xi &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; b_{63} &amp; 0 &amp; 0 &amp; - b_{66}\cdot\xi &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; b_{74}\cdot\xi &amp; b_{75}\cdot\xi &amp; b_{76}\cdot\xi &amp; - b_{77}\cdot\xi &amp; b_{78}\cdot\xi &amp; b_{79}\cdot\xi\\0 &amp; 0 &amp; 0 &amp; 0 &amp; b_{85}\cdot\xi &amp; b_{86}\cdot\xi &amp; b_{87}\cdot\xi &amp; - b_{88}\cdot\xi &amp; b_{89}\cdot\xi\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; b_{97}\cdot\xi &amp; b_{98}\cdot\xi &amp; - b_{99}\cdot\xi\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(f_{s}\)</span></td>
+<td style="text-align: left;">the right hand side of the ode</td>
+<td style="text-align: center;"><span class="math inline">\(f_{s}=B C + s\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(x_{1}: \alpha\cdot f_{i}\cdot s_{0}\cdot\left(\frac{7.5\cdot\rho\cdot\left(284 +\frac{1715\cdot e^{0.0305\cdot t}}{e^{0.0305\cdot t} + 1714}\right)\cdot\left(1.68\cdot T_{s0} +\frac{1.68\cdot\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} + 0.012\cdot\left(T_{s0} +\frac{\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} - 25\right)^{2} + 0.700000000000003\right)\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )}}{\left(- 1.68\cdot T_{s0} +\rho\cdot\left(284 +\frac{1715\cdot e^{0.0305\cdot t}}{e^{0.0305\cdot t} + 1714}\right) -\frac{1.68\cdot\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} - 0.012\cdot\left(T_{s0} +\frac{\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} - 25\right)^{2} - 0.700000000000003\right)\cdot\left(3.36\cdot T_{s0} +\rho\cdot\left(284 +\frac{1715\cdot e^{0.0305\cdot t}}{e^{0.0305\cdot t} + 1714}\right) +\frac{3.36\cdot\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} + 0.024\cdot\left(T_{s0} +\frac{\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} - 25\right)^{2} + 1.40000000000001\right)} + 1\right)\)</span><br />
+<span class="math inline">\(x_{2}: \alpha\cdot f_{i}\cdot s_{0}\cdot\left(\frac{7.5\cdot\rho\cdot\left(284 +\frac{1715\cdot e^{0.0305\cdot t}}{e^{0.0305\cdot t} + 1714}\right)\cdot\left(1.68\cdot T_{s0} +\frac{1.68\cdot\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} + 0.012\cdot\left(T_{s0} +\frac{\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} - 25\right)^{2} + 0.700000000000003\right)\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )}}{\left(- 1.68\cdot T_{s0} +\rho\cdot\left(284 +\frac{1715\cdot e^{0.0305\cdot t}}{e^{0.0305\cdot t} + 1714}\right) -\frac{1.68\cdot\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} - 0.012\cdot\left(T_{s0} +\frac{\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} - 25\right)^{2} - 0.700000000000003\right)\cdot\left(3.36\cdot T_{s0} +\rho\cdot\left(284 +\frac{1715\cdot e^{0.0305\cdot t}}{e^{0.0305\cdot t} + 1714}\right) +\frac{3.36\cdot\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} + 0.024\cdot\left(T_{s0} +\frac{\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} - 25\right)^{2} + 1.40000000000001\right)} + 1\right)\)</span><br />
+<span class="math inline">\(x_{3}: \alpha\cdot f_{i}\cdot s_{0}\cdot\left(\frac{7.5\cdot\rho\cdot\left(284 +\frac{1715\cdot e^{0.0305\cdot t}}{e^{0.0305\cdot t} + 1714}\right)\cdot\left(1.68\cdot T_{s0} +\frac{1.68\cdot\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} + 0.012\cdot\left(T_{s0} +\frac{\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} - 25\right)^{2} + 0.700000000000003\right)\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )}}{\left(- 1.68\cdot T_{s0} +\rho\cdot\left(284 +\frac{1715\cdot e^{0.0305\cdot t}}{e^{0.0305\cdot t} + 1714}\right) -\frac{1.68\cdot\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} - 0.012\cdot\left(T_{s0} +\frac{\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} - 25\right)^{2} - 0.700000000000003\right)\cdot\left(3.36\cdot T_{s0} +\rho\cdot\left(284 +\frac{1715\cdot e^{0.0305\cdot t}}{e^{0.0305\cdot t} + 1714}\right) +\frac{3.36\cdot\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} + 0.024\cdot\left(T_{s0} +\frac{\sigma}{\log{\left (2\right )}}\cdot\log{\left (\frac{284}{285} +\frac{343\cdot e^{0.0305\cdot t}}{57\cdot e^{0.0305\cdot t} + 97698}\right )} - 25\right)^{2} + 1.40000000000001\right)} + 1\right)\)</span></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(x_{1}: x_{1}\cdot\left(b_{11} - b_{41} - b_{51}\right)\)</span><br />
+<span class="math inline">\(x_{2}: x_{2}\cdot\left(b_{22} - b_{42} - b_{52}\right)\)</span><br />
+<span class="math inline">\(x_{3}: x_{3}\cdot\left(b_{33} - b_{63}\right)\)</span><br />
+<span class="math inline">\(x_{4}: x_{4}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\cdot\left(b_{44} - b_{74}\right)\)</span><br />
+<span class="math inline">\(x_{5}: - x_{5}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\cdot\left(- b_{55} + b_{75} + b_{85}\right)\)</span><br />
+<span class="math inline">\(x_{6}: - x_{6}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\cdot\left(- b_{66} + b_{76} + b_{86}\right)\)</span><br />
+<span class="math inline">\(x_{7}: - x_{7}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\cdot\left(- b_{77} + b_{87} + b_{97}\right)\)</span><br />
+<span class="math inline">\(x_{8}: - x_{8}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\cdot\left(b_{78} - b_{88} + b_{98}\right)\)</span><br />
+<span class="math inline">\(x_{9}: - x_{9}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\cdot\left(b_{79} + b_{89} - b_{99}\right)\)</span></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<p><span class="math inline">\(x_{1} \rightarrow x_{4}: b_{41}\cdot x_{1}\)</span><br />
+<span class="math inline">\(x_{1} \rightarrow x_{5}: b_{51}\cdot x_{1}\)</span><br />
+<span class="math inline">\(x_{2} \rightarrow x_{4}: b_{42}\cdot x_{2}\)</span><br />
+<span class="math inline">\(x_{2} \rightarrow x_{5}: b_{52}\cdot x_{2}\)</span><br />
+<span class="math inline">\(x_{3} \rightarrow x_{6}: b_{63}\cdot x_{3}\)</span><br />
+<span class="math inline">\(x_{4} \rightarrow x_{7}: b_{74}\cdot x_{4}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\)</span><br />
+<span class="math inline">\(x_{5} \rightarrow x_{7}: b_{75}\cdot x_{5}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\)</span><br />
+<span class="math inline">\(x_{5} \rightarrow x_{8}: b_{85}\cdot x_{5}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\)</span><br />
+<span class="math inline">\(x_{6} \rightarrow x_{7}: b_{76}\cdot x_{6}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\)</span><br />
+<span class="math inline">\(x_{6} \rightarrow x_{8}: b_{86}\cdot x_{6}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\)</span><br />
+<span class="math inline">\(x_{7} \rightarrow x_{8}: b_{87}\cdot x_{7}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\)</span><br />
+<span class="math inline">\(x_{7} \rightarrow x_{9}: b_{97}\cdot x_{7}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\)</span><br />
+<span class="math inline">\(x_{8} \rightarrow x_{7}: b_{78}\cdot x_{8}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\)</span><br />
+<span class="math inline">\(x_{8} \rightarrow x_{9}: b_{98}\cdot x_{8}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\)</span><br />
+<span class="math inline">\(x_{9} \rightarrow x_{7}: b_{79}\cdot x_{9}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\)</span><br />
+<span class="math inline">\(x_{9} \rightarrow x_{8}: b_{89}\cdot x_{9}\cdot\xi_{b}^{\frac{1}{\log{\left (2\right )}}\cdot\left(0.1\cdot\sigma\cdot\log{\left (\frac{1999\cdot e^{0.0305\cdot t} + 486776}{285\cdot e^{0.0305\cdot t} + 488490}\right )} +\left(0.1\cdot T_{s0} - 1.5\right)\cdot\log{\left (2\right )}\right)}\)</span></p>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
+<div id="ref-Rasmussen2016JMB">
+<p>Rasmussen, M., Hastings, A., Smith, M. J., Agusto, F. B., Chen-Charpentier, B. M., Hoffman, F. M., … Luo, Y. (2016). Transit times and mean ages for nonautonomous and autonomous compartmental systems. <em>J. Math. Biol.</em>, <em>73</em>(6-7), 1379–1398. <a href="http://doi.org/10.1007/s00285-016-0990-8" class="uri">http://doi.org/10.1007/s00285-016-0990-8</a></p>
+</div>
+</div>
+</body>
+</html>
