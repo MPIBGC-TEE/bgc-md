@@ -17,19 +17,20 @@ def template(model):
     ###rel+= Link("yaml_file",str(model.yaml_file_path))
     rel+=Newline()
     rel+=Newline()
-    rel+=render(sdp.joinpath("GeneralOverview.py"),model)
+    rel+=render(sdp.joinpath("PublicOverview.py"),model)
+    rel+=Header("Model description",1)
+    rel+=Header("State variables", 2)
     rel+=render(sdp.joinpath("StateVariables.py"),model)
-    if model.model_type=="soil_model":
-        rel+=render(sdp.joinpath("SoilModelParameters.py"),model)
-
-    rel+=render(sdp.joinpath("AdditionalVariables.py"),model)
+    #rel+=Header("Additional variables", 2)
+    #rel+=render(sdp.joinpath("AdditionalVariables.py"),model)
+    rel+=Header("Components of the compartmental system",2)
     rel+=render(sdp.joinpath("Components.py"),model)
     rel+=render(sdp.joinpath("ReservoirModel.py"),model)
     #rel+=render(sdp.joinpath("Simulations.py"),model)
-    #rel+=render(sdp.joinpath("SteadyStateFormulas.py"),model)
+    rel+=render(sdp.joinpath("SteadyStateFormulas.py"),model)
     #rel+=render(sdp.joinpath("SteadyStateValues.py"), model)
     
-    rel+=Header("References", 2)
+    rel+=Header("References", 1)
 
     return(rel)
 
