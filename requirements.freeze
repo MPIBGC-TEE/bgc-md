@@ -1,7 +1,7 @@
 # This file is used for version pinning only 
 # The required libraries are  listed in setup.py which will be consulted by
 # pip to resolve dependencies
-sympy==1.0.0
+#sympy==1.0.0
 bibtexparser>=1.0.1
 #future==0.14.3
 
