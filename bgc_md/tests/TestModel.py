@@ -15,8 +15,8 @@ from bgc_md.Model import Model, load_bibtex_entry, load_abstract, load_further_r
 from bgc_md.Exceptions import ModelInitializationException
 from bgc_md.ModelList import ModelList
 from bgc_md.bibtexc import BibtexEntry, DoiNotFoundException, online_entry
-from bgc_md.SmoothModelRun import SmoothModelRun 
-from bgc_md.SmoothReservoirModel import SmoothReservoirModel 
+from CompartmentalSystems.smooth_model_run import SmoothModelRun 
+from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel 
 from testinfrastructure.InDirTest import InDirTest
 from bgc_md.IncompleteModel import IncompleteModel
 
@@ -600,9 +600,9 @@ class TestModel(InDirTest):
         start_values_1 = np.array([3,4])
 
         ref_runs = [
-                SmoothModelRun(m, parameter_set= params_0, start_values= start_values_0, times= times_0),
-                SmoothModelRun(m, parameter_set= params_0, start_values= start_values_1, times= times_0),
-                SmoothModelRun(m, parameter_set= params_1, start_values= start_values_0, times= times_1)
+                SmoothModelRun(m,  params_0, start_values= start_values_0, times= times_0),
+                SmoothModelRun(m,  params_0, start_values= start_values_1, times= times_0),
+                SmoothModelRun(m,  params_1, start_values= start_values_0, times= times_1)
         ]
         
         res_mod = model.reservoir_model
@@ -615,7 +615,7 @@ class TestModel(InDirTest):
             # check created model run
             ref_mr = ref_runs[i]
             mr = model.model_runs[i]
-            self.assertEqual(mr.parameter_set, ref_mr.parameter_set)        
+            self.assertEqual(mr.parameter_dict, ref_mr.parameter_dict)        
             self.assertTrue(np.allclose(mr.start_values, ref_mr.start_values))
             self.assertTrue(all(mr.times==ref_mr.times))
 

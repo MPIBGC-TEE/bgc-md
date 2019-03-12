@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Emanuel1981, version: 1</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="buttondown.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">Emanuel1981, version: 1</h1>
+</header>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report presents a general overview of the model Emanuel1981 , which is part of the Biogeochemistry Model Database BGC-MD. The underlying yaml file entry that contains all the information of the model was created by Carlos A. Sierra (Orcid ID: 0000-0003-0009-4169) on 12/9/2016. The entry was processed by the python package bgc-md to produce symbolic output.</p>
+<p>The model was originally described by <span class="citation" data-cites="Emanuel1981">Emanuel, Killough, &amp; Olson (1981)</span>.</p>
+<h1 id="model-description">Model description</h1>
+<h2 id="state-variables">State variables</h2>
+<table>
+<caption>state_variables</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{1}\)</span></td>
+<td style="text-align: left;">Non-woody tree parts</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x_{2}\)</span></td>
+<td style="text-align: left;">Woody tree parts</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{3}\)</span></td>
+<td style="text-align: left;">Ground vegetation</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x_{4}\)</span></td>
+<td style="text-align: left;">Detritus/Decomposers</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{5}\)</span></td>
+<td style="text-align: left;">Active soil carbon</td>
+</tr>
+</tbody>
+</table>
+<h2 id="components-of-the-compartmental-system">Components of the compartmental system</h2>
+<table>
+<caption>components</caption>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td style="text-align: left;">vector of state variables</td>
+<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}x_{1}\\x_{2}\\x_{3}\\x_{4}\\x_{5}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(u\)</span></td>
+<td style="text-align: left;">vector of photosynthetically fixed carbon</td>
+<td style="text-align: center;"><span class="math inline">\(u=\left[\begin{matrix}I_{1}\\0\\I_{3}\\0\\0\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(B\)</span></td>
+<td style="text-align: left;">matrix of cycling rates</td>
+<td style="text-align: center;"><span class="math inline">\(B=\left[\begin{matrix}- F_{1} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\F_{21} &amp; - F_{2} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; - F_{3} &amp; 0 &amp; 0\\F_{41} &amp; F_{42} &amp; F_{43} &amp; - F_{4} &amp; 0\\0 &amp; F_{52} &amp; F_{53} &amp; F_{54} &amp; - F_{5}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(f_{v}\)</span></td>
+<td style="text-align: left;">the righthandside of the ode</td>
+<td style="text-align: center;"><span class="math inline">\(f_{v}=B x + u\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(x_{1}: I_{1}\)</span><br />
+<span class="math inline">\(x_{3}: I_{3}\)</span></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(x_{1}: x_{1}\cdot\left(F_{1} - F_{21} - F_{41}\right)\)</span><br />
+<span class="math inline">\(x_{2}: x_{2}\cdot\left(F_{2} - F_{42} - F_{52}\right)\)</span><br />
+<span class="math inline">\(x_{3}: x_{3}\cdot\left(F_{3} - F_{43} - F_{53}\right)\)</span><br />
+<span class="math inline">\(x_{4}: x_{4}\cdot\left(F_{4} - F_{54}\right)\)</span><br />
+<span class="math inline">\(x_{5}: F_{5}\cdot x_{5}\)</span></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<p><span class="math inline">\(x_{1} \rightarrow x_{2}: F_{21}\cdot x_{1}\)</span><br />
+<span class="math inline">\(x_{1} \rightarrow x_{4}: F_{41}\cdot x_{1}\)</span><br />
+<span class="math inline">\(x_{2} \rightarrow x_{4}: F_{42}\cdot x_{2}\)</span><br />
+<span class="math inline">\(x_{2} \rightarrow x_{5}: F_{52}\cdot x_{2}\)</span><br />
+<span class="math inline">\(x_{3} \rightarrow x_{4}: F_{43}\cdot x_{3}\)</span><br />
+<span class="math inline">\(x_{3} \rightarrow x_{5}: F_{53}\cdot x_{3}\)</span><br />
+<span class="math inline">\(x_{4} \rightarrow x_{5}: F_{54}\cdot x_{4}\)</span></p>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(x_1 = \frac{I_{1}}{F_{1}}\)</span></p>
+<p><span class="math inline">\(x_2 = \frac{F_{21}\cdot I_{1}}{F_{1}\cdot F_{2}}\)</span></p>
+<p><span class="math inline">\(x_3 = \frac{I_{3}}{F_{3}}\)</span></p>
+<p><span class="math inline">\(x_4 = \frac{1}{F_{1}\cdot F_{2}\cdot F_{3}\cdot F_{4}}\cdot\left(F_{1}\cdot F_{2}\cdot F_{43}\cdot I_{3} + F_{3}\cdot I_{1}\cdot\left(F_{2}\cdot F_{41} + F_{21}\cdot F_{42}\right)\right)\)</span></p>
+<p><span class="math inline">\(x_5 = \frac{1}{F_{1}\cdot F_{2}\cdot F_{3}\cdot F_{4}\cdot F_{5}}\cdot\left(F_{1}\cdot F_{2}\cdot I_{3}\cdot\left(F_{4}\cdot F_{53} + F_{43}\cdot F_{54}\right) + F_{3}\cdot I_{1}\cdot\left(F_{2}\cdot F_{41}\cdot F_{54} + F_{21}\cdot F_{4}\cdot F_{52} + F_{21}\cdot F_{42}\cdot F_{54}\right)\right)\)</span></p>
+<h1 id="references" class="unnumbered">References</h1>
+<div id="refs" class="references">
+<div id="ref-Emanuel1981">
+<p>Emanuel, W. R., Killough, G. G., &amp; Olson, J. S. (1981). Modelling the circulation of carbon in the world’s terrestrial ecosystems. In B. Bolin (Ed.), <em>Carbon cycle modelling</em> (pp. 335–353). John Wiley and Sons.</p>
+</div>
+</div>
+</body>
+</html>

@@ -186,7 +186,7 @@ class ReportElementList(list):
             css_file_path= gv.resources_path.joinpath('buttondown.css')
             pe('css_file_path',locals())
         trunk = html_file_path.stem
-        pe('trunk',locals())
+        #pe('trunk',locals())
 
         md_file_path = html_file_path.parent.joinpath(html_file_path.stem+".md")
         bibtex_file_path= html_file_path.parent.joinpath(html_file_path.stem+".bibtex")

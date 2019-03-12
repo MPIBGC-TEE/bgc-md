@@ -665,8 +665,6 @@ class Model:
             self.further_references = load_further_references(self.complete_dict)
             self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)
             self.model_subsections, self.section_titles, self.complete_dict = load_sections_and_titles(self.complete_dict)
-            pe('self.model_subsections',locals())
-            pe('self.section_titles',locals())
           
 
             # load the variables dataframe  
@@ -696,7 +694,6 @@ class Model:
             key= "componentscheme"
             if self.has_model_subsection(key):
                 csd=self.section_subdict_without_target_key("componentscheme")
-                pe('csd',locals())
                 css=[ cls for cls in ComponentScheme.__subclasses__() if cls.init_arg_sets()==comp_keys ]
 
 
@@ -777,7 +774,6 @@ class Model:
         syms = self.symbols_by_type
         comp_keys = flatten([keys for i, keys in enumerate(df.get_column('key')) if df[i, 'category'] == 'components'])
         comp_keys = [key for key in comp_keys if key is not None]
-        pe('comp_keys',locals())
         return(comp_keys)
 
     

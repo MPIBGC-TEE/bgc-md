@@ -46,27 +46,46 @@ def runProtected(rec,command_list,targetPath=Path('.')):
     result['fileExists']=html_file_path.exists()
     return(result)
 
+#def f(l):
+#    tp,rec=l
+#    targetPath=Path('.')
+#    print("1 ###################")
+#    print(tp.stem)
+#    print(rec.stem)
+#    command_list=['render','-y']
+#    file_name=str(rec)
+#    command_list+=[file_name]
+#    command_list+=[str(tp.absolute())]
+#    res=run(command_list)
+#    result=dict()
+#    result['file']=rec.stem
+#    result['template']=tp.stem
+#    result['returnValue']=res.returncode
+#    html_dir_path=targetPath.joinpath(rec.stem)
+#    html_file_path=html_dir_path.joinpath(tp.stem+'.html')
+#    result['fileExists']=html_file_path.exists()
+#    return(result)
+
+
 def f(l):
     tp,rec=l
-    targetPath=Path('.')
-    print("1 ###################")
-    print(tp.stem)
-    print(rec.stem)
-    command_list=['render','-y']
+    command_list=['render']
     file_name=str(rec)
-    command_list+=[file_name]
-    command_list+=[str(tp.absolute())]
+    command_list+=['-y',file_name]
+    targetPath=Path(tp.stem+"_"+rec.stem) #relative to the dir where the test will be executed
+    targetPath.mkdir(parents=True,exist_ok=True)
+    command_list+=["--target_dir",str(targetPath)]
+    command_list+=[str(tp)]
     res=run(command_list)
     result=dict()
     result['file']=rec.stem
     result['template']=tp.stem
     result['returnValue']=res.returncode
     html_dir_path=targetPath.joinpath(rec.stem)
-    html_file_path=html_dir_path.joinpath(tp.stem+'.html')
+    #html_file_path=html_dir_path.joinpath(tp.stem+'.html')
+    html_file_path=html_dir_path.joinpath(defaults()["html_filename"])
     result['fileExists']=html_file_path.exists()
     return(result)
-
-
 
 class SlowTestReportGeneration(InDirTest):
     def test_commandline_render_single_model_templates(self):
