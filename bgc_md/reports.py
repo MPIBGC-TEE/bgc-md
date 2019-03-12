@@ -909,7 +909,8 @@ def create_single_report(yaml_file_path, target_dir_path):
     #fixme mm: I think we should avoid the modelID property
     #and ensure uniqe filenames by requesting them
 
-    html_file_path= target_dir_path.joinpath(dir_name,"Report.html")
+    #html_file_path= target_dir_path.joinpath(dir_name,"Report.html")
+    html_file_path= target_dir_path.joinpath(dir_name,"index.html")
     rel = report_from_model(model) 
     rel.write_pandoc_html(html_file_path)
 

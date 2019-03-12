@@ -490,7 +490,8 @@ class PlotlyFigureElement(TextElement):
 class LinkedSubPage(AtomicReportElementList):
     @classmethod
     def output_file_name(cls):
-        return "Report"
+        #return "Report"
+        return "index"
 
     def __init__(self, contentRel, label, link_text,target_format):
         atom=LinkedSubPageElement(contentRel,label,link_text,target_format)

@@ -226,7 +226,8 @@ class ModelList(list):
             dir_name = model.yaml_file_path.stem
             dir_path =target_dir_path.joinpath(dir_name)
             # the link is relative to target dir since this file is created there 
-            report_link = str(dir_path.relative_to(target_dir_path).joinpath("Report.html"))
+            #report_link = str(dir_path.relative_to(target_dir_path).joinpath("Report.html"))
+            report_link = str(dir_path.relative_to(target_dir_path).joinpath("index.html"))
     
             l = [Text(model.name)]         
             rel2 += Text('<tbody>\n')
