@@ -1,6 +1,8 @@
 from testinfrastructure.helpers import pe
 from sympy.core.compatibility import exec_
 from pathlib import Path
+import os
+import contextlib
 from inspect import currentframe,getmembers,isfunction
 from typing import get_type_hints
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
@@ -16,9 +18,21 @@ import sys
 
 srcFileName="source.py"
 modelFolderName="models"
-def srcPath(model_id):
-    return Path(modelFolderName).joinpath(model_id,srcFileName)
+def srcDirPath(model_id):
+    return Path(modelFolderName).joinpath(model_id)
 
+def srcPath(model_id):
+    return srcDirPath(model_id).joinpath(srcFileName)
+
+@contextlib.contextmanager
+def working_directory(path):
+    """Changes working directory and returns to previous on exit."""
+    prev_cwd = Path.cwd()
+    os.chdir(path)
+    try:
+        yield
+    finally:
+        os.chdir(prev_cwd)
 def populated_namespace(model_id):
     # this is the proxy function 
     # It will compile the user code and populate a sandbox by executing the code  
@@ -30,8 +44,12 @@ def populated_namespace(model_id):
         code= compile(f.read(),p,mode='exec')
         #code= f.read()
     gns={}
-    #prepare the execution environment
-    exec(code,gns)
+    
+    # prepare the execution environment
+    # and execute in the directory since the model might need input files and 
+    # also other python code
+    with working_directory(srcDirPath(model_id)):
+        exec(code,gns)
     return gns
 
 def get(var_name,model_id):

@@ -1,0 +1,2 @@
+npt,  fracLigninleaf, fracLigninfroot,  fracLigninwood, ratioLigninleaf,ratioLigninfroot,             sla,         glaimax,          b_leaf,          b_wood,     b_fine_root,       planttype
+           1,     0.200000000,     0.200000000,     0.400000000,    11.030303030,    15.122807018,     0.015319264,     7.000000000,     0.200000000,     0.350000000,     0.450000000,               0

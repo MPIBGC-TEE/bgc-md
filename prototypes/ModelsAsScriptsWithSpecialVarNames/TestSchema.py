@@ -26,6 +26,9 @@ class TestSchema(unittest.TestCase):
         md=get(var_name="smooth_reservoir_model",model_id='testTwoPool')
         #pe('md',locals())
 
+    def test_miniCable(self):
+        md=get(var_name="smooth_reservoir_model",model_id='miniCable')
+
     @unittest.skip
     def test_Symbols_and_Quanteties(self):
         md=get(var_name="smooth_reservoir_model",model_id='pseudoCable')
