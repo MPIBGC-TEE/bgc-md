@@ -1,23 +1,12 @@
-from testinfrastructure.helpers import pe
-from sympy.core.compatibility import exec_
-from pathlib import Path
+
 import os
 import contextlib
-from inspect import currentframe,getmembers,isfunction
-from typing import get_type_hints
-from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
-from CompartmentalSystems import smooth_reservoir_model 
-from sympy.vector import Vector,Dyadic,CoordSysND,express
-from sympy import Symbol
-from bgc_md import resolver
-from bgc_md.resolver import special_var_string
-from bgc_md.DescribedSymbol import DesribedSymbol
-from bgc_md.DescribedQuantity import DescribedQuantity
-
 import sys
-
+from pathlib import Path
+from .Mvars import mvars_1 as mvars
 srcFileName="source.py"
 modelFolderName="models"
+special_var_string="special_vars"
 def srcDirPath(model_id):
     return Path(modelFolderName).joinpath(model_id)
 
@@ -57,7 +46,8 @@ def get(var_name,model_id):
     gns=populated_namespace(model_id)
     
     #construct the name of the function to call from the var_name
-    mvar=getattr(resolver,var_name)
+    #mvar=getattr(resolver,var_name)
+    mvar=getattr(mvars,var_name)
     special_vars=gns[special_var_string] 
     return mvar(special_vars)
 
@@ -91,4 +81,3 @@ def get_documented_variables(model_id):
 
 # alternative constructor based on the formulation f=u+Bx but with 
 # statevector and u bein sympy.vector.nd-vector Vectors
-

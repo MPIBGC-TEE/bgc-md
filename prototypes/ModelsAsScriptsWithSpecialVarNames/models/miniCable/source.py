@@ -5,9 +5,11 @@ from sympy.vector import CoordSysND,express,Vector,Dyadic
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
 from CompartmentalSystems.helpers_reservoir import numerical_function_from_expression
-from bgc_md.resolver import srm_from_B_u_tens
 from bgc_md.DescribedSymbol import DesribedSymbol
 from bgc_md.DescribedQuantity import DescribedQuantity
+# the next line will change to an import from CompartmentalSystem
+# once the new constructor is established
+from bgc_md.resolve.Computers.srm_1 import srm_from_B_u_tens
 # all variables starting with def_  are 
 from sympy import Symbol,symbols,solve, pi, Eq, Min, Max ,Matrix, Function, Piecewise, exp
 from sympy import pprint
@@ -210,21 +212,85 @@ s=(
     +slow_soil				*CoordS.e_slow_soil
     +passive_soil			*CoordS.e_passive_soil
 )  
-#vector_names=["e_vl","e_vw"]
-#C=CoordSysND(name="C",vector_names=vector_names,transformation='cartesian')
+# read part of the parameterdict from a file
 
-#I_vl,I_vw= symbols("I_vl I_vw")
-#I= I_vl*C.e_vl +I_vw*C.e_vw
+cable_soil=cable_dict(Path('Tumbarumba/T_independent/soilscalar.txt'))
+cable_veg=cable_dict(Path('Tumbarumba/T_independent/vegpara.txt'))
+cable_kbase=cable_dict(Path('Tumbarumba/T_independent/k_base.txt'))
 
-#B=-1*( #Fake (diagonal) Tensor  
-#    (C.e_vl|C.e_vl)
-#   +(C.e_vw|C.e_vw)
-#)
+# we translate the cable param names to ours
+par_dict={
+     f_lign_leaf			:cable_veg['fracLigninleaf']
+    ,f_lign_wood			:cable_veg['fracLigninwood']
+    ,f_lign_fine_root       :cable_veg['fracLigninfroot']
+    ,r_lign_leaf			:cable_veg['ratioLigninleaf']
+    ,r_lign_fine_root		:cable_veg['ratioLigninfroot']
+    ,sla					:cable_veg['sla']
+    ,glaimax				:cable_veg['glaimax']
+    ,b_wood					:cable_veg['b_wood']
+    ,b_leaf					:cable_veg['b_leaf']
+    ,b_fine_root			:cable_veg['b_fine_root']
+    ,planttype				:cable_veg['planttype']
+    ,clay					:cable_soil['soil%clay']
+	,xk_leaf_dry_max		:cable_soil['xkleafdrymax']
+	,T_shed					:cable_soil['phen%TKshed']
+	,xk_leaf_cold_exp		:cable_soil['xkleafcoldexp']
+    ,xk_opt_soil			:cable_soil['xkoptsoil']
+	,xk_leaf_cold_max		:cable_soil['xkleafcoldmax']
+	,q_10					:cable_soil['q10soil']
+	,xk_leaf_dry_exp		:cable_soil['xkleafdryexp']
+	,w_a					:cable_soil['wfpscoefa']
+	,w_b					:cable_soil['wfpscoefb']
+	,w_c					:cable_soil['wfpscoefc']
+	,w_d					:cable_soil['wfpscoefd']
+	,w_e					:cable_soil['wfpscoefe']
+	,m_sat					:cable_soil['soil%ssat']
+    ,xk_opt_litter			:cable_soil['xkoptlitter']
+    ,silt					:cable_soil['soil%silt']
+    ,kleaf  				:cable_kbase['kleaf']
+    ,kwood  				:cable_kbase['kwood']
+    ,kfroot 				:cable_kbase['kfroot']
+    ,kmet   				:cable_kbase['kmet']
+    ,kstr   				:cable_kbase['kstr']
+    ,kcwd   				:cable_kbase['kcwd']
+    ,kfast  				:cable_kbase['kfast']
+    ,kslow  				:cable_kbase['kslow']
+    ,kpass  				:cable_kbase['kpass']
+}
+# fixme mm
+# this ordered list is inconsistent with the coordinate free
+# representation used everywhere else
+# the smooth_model_run class should at least allow the 
+# definition of real startvector or a dictionary.
 
-#vl,vw,sf,ss,sm= symbols("vl vw sf ss sm")
-#s=\
-# vl*C.e_vl\
-#+vw*C.e_vw\
+start_values=array([cable_sols_by_name[s.name].y[0] for s in state_vector_syms])
+org_times=cable_sols_by_name["leaf"].x
+#times=linspace(org_times[0],org_times[-1],100)
+times=linspace(org_times[0],org_times[600],200)
+#print(times)
+
+func_dict={
+    bvec_leaf       : bvec_leaf_num 
+   ,bvec_fine_root  : bvec_fine_root_num 
+   ,bvec_wood       : bvec_wood_num 
+   ,btran           : timeLine2(Path('Tumbarumba/T_dependent/b_tran.txt'))     # casa_cnp.F90 Line: Soil wetness as funcion of time can be dumped after Line 1679.  Alternatively, dummy argument can be also achieved: Line: 1671-1673, 1677-1679
+   ,T_air           : timeLine2(Path('Tumbarumba/T_dependent/T_air.txt'))      # casa_cnp.F90 Line: Air temperature as funcion of time can be dumped after Line 783.
+   ,T_soil          : timeLine2(Path('Tumbarumba/T_dependent/T_soil.txt'))     # casa_cnp.F90 Line: Soil temperature(tsavg) as function of time can be dumped after Line 869
+   ,ms              : timeLine2(Path('Tumbarumba/T_dependent/ms.txt'))         # casa_cnp.F90 Line: Soil moisture(casamet%moistavg(npt)) as function of time can be dumped after Line 869
+   ,xk_n_limit      : timeLine2(Path('Tumbarumba/T_dependent/xk_n_limit.txt')) # casa_cnp.F90 Line: N limitation scalar is related to soil mineral N (state variable), seen as function of time can be dumped after Line 1791
+   ,Npp             : timeLine2(Path('Tumbarumba/T_dependent/NPP.txt'))        # casa_cnp.F90 Line: NPP as function of time can be dumped after Line 1197. Alternatively, NPP(t) = GPP(t) - Cplant * resipiration rate(T_air) , casa_cnp.F90 Line 1191-1192, Autotrophic respiration: casa_cnp.F90 Line 524-736, casa_inout.F90 Line 1368. GPP is based on photosynthesis rate A (cable_canopy.F90 Line 1772-1780, Line 2005-2219). anxz = MIN(anrubiscoz,anrubpz,ansinkz)
+   ,phase           : timeLine2(Path('Tumbarumba/T_dependent/phase.txt'))      # casa_cnp.F90 Line: phase as function of time can be dumped after Line 2418. Alternatively, phase can be expressed as piecewise function, casa_cnp.F90 Line 2395-2418
+   ,r_leaf          : timeLine2(Path('Tumbarumba/T_dependent/r_leaf.txt'))     # casa_cnp.F90 Line: respiration of leaf as function of time can be dumped after Line 450
+   ,r_wood          : timeLine2(Path('Tumbarumba/T_dependent/r_wood.txt'))     # casa_cnp.F90 Line: respiration of wood as function of time can be dumped after Line 450
+   ,r_fine_root     : timeLine2(Path('Tumbarumba/T_dependent/r_froot.txt'))    # casa_cnp.F90 Line: respiration of fine root as function of time can be dumped after Line 450, Alternatively, plant respiration can be calculated from casa_cnp.F90 Line 524-736
+}
+srm=srm_from_B_u_tens(CoordS,s,t,B,I)
+smr=SmoothModelRun(
+         model=srm
+        ,parameter_dict=par_dict
+        ,start_values=start_values
+        ,times=times
+        ,func_set=func_dict)
 
 time_symbol=Symbol('t')
 #Icomp=express(I,C).to_matrix(C)  
@@ -238,4 +304,6 @@ special_vars={
     ,'time_symbol':time_symbol
     ,'state_vector':s
     ,'cumulative_vegetation_input':cvi
+    ,'smooth_model_run_dictionary':{'default':smr}
+    #,'smooth_model_run':smr 
 }

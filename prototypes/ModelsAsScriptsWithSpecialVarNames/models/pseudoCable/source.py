@@ -4,7 +4,7 @@ from sympy.vector import CoordSysND,express
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
 from CompartmentalSystems.helpers_reservoir import numerical_function_from_expression
-from bgc_md.resolver import srm_from_B_u_tens
+from bgc_md.resolve.Computers.srm_1 import srm_from_B_u_tens
 from bgc_md.DescribedSymbol import DesribedSymbol
 from bgc_md.DescribedQuantity import DescribedQuantity
 # all variables starting with def_  are 

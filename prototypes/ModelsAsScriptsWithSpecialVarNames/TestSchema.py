@@ -9,7 +9,8 @@ from testinfrastructure.helpers import pe
 #from sympy import Basic,Symbol,Matrix,symbols
 
 #from sympy.vector import CoordSysND, Vector,express
-from bgc_md.prototype_helpers_script import get
+#from bgc_md.prototype_helpers_script import get
+from bgc_md.resolve.helpers import get
 
 
 class TestSchema(unittest.TestCase):
@@ -27,7 +28,10 @@ class TestSchema(unittest.TestCase):
         #pe('md',locals())
 
     def test_miniCable(self):
-        md=get(var_name="smooth_reservoir_model",model_id='miniCable')
+        # NO explicit variable smooth_reservoir_model
+        srm=get(var_name="smooth_reservoir_model",model_id='miniCable')
+        smrs=get(var_name="smooth_model_run_dictionary",model_id='miniCable')
+        self.assertTrue('default' in smrs.keys())
 
     @unittest.skip
     def test_Symbols_and_Quanteties(self):
