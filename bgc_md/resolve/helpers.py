@@ -3,7 +3,7 @@ import os
 import contextlib
 import sys
 from pathlib import Path
-from .Mvars import mvars_1 as mvars
+from . import MvarsAndComputers as mvars
 srcFileName="source.py"
 modelFolderName="models"
 special_var_string="special_vars"
@@ -22,6 +22,23 @@ def working_directory(path):
         yield
     finally:
         os.chdir(prev_cwd)
+def populated_namespace_from_path(p:Path):
+    # this is the proxy function 
+    # It will compile the user code and populate a sandbox by executing the code  
+    
+
+    with p.open() as f:
+        code= compile(f.read(),p,mode='exec')
+        #code= f.read()
+    gns={}
+    
+    # prepare the execution environment
+    # and execute in the directory since the model might need input files and 
+    # also other python code in the same directory
+    with working_directory(p.parent):
+        exec(code,gns)
+    return gns
+
 def populated_namespace(model_id):
     # this is the proxy function 
     # It will compile the user code and populate a sandbox by executing the code  
@@ -42,22 +59,43 @@ def populated_namespace(model_id):
     return gns
 
 def get(var_name,model_id):
-    # execute the user code
+    # execute the model code
     gns=populated_namespace(model_id)
     
-    #construct the name of the function to call from the var_name
-    #mvar=getattr(resolver,var_name)
+    #take the name of the MVar in the module as equivalent to the var_name
     mvar=getattr(mvars,var_name)
     special_vars=gns[special_var_string] 
     return mvar(special_vars)
 
+def get2(var_name:str,allMvars,model_id:str):
+    # execute the model code
+    gns=populated_namespace(model_id)
+    
+    #get the mvar by its name from the dictionary 
+    mvar=allMvars[var_name]
+    special_vars=gns[special_var_string] 
+    return mvar(special_vars)
+    
+def get3(var_name:str,allMvars,allComputers,model_id:str):
+    # execute the model code
+    gns=populated_namespace(model_id)
+    
+    #get the mvar by its name from the dictionary 
+    mvar=[var for var in allMvars if var.name==var_name][0]
+    special_vars=gns[special_var_string] 
+    return mvar(allMvars,allComputers,special_vars)
+    
+
+#def computable_mvars(available_mvars):
+#    res =available_vars
+#    return res 
    
     # check if the user has defined it directly 
     
     
-def get_documented_variables(model_id):
-    #gns=populated_namespace(model_id)
-    return [v for v in gns.values() if isinstance(v,DescribedQuantity)]
+#def get_documented_variables(model_id):
+#    #gns=populated_namespace(model_id)
+#    return [v for v in gns.values() if isinstance(v,DescribedQuantity)]
     
 
     
@@ -81,3 +119,5 @@ def get_documented_variables(model_id):
 
 # alternative constructor based on the formulation f=u+Bx but with 
 # statevector and u bein sympy.vector.nd-vector Vectors
+# functions like the following could be sourced out into a helper module
+

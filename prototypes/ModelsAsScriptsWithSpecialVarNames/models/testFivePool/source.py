@@ -3,8 +3,9 @@ from sympy.vector import CoordSysND,express
 # fixme mm:
 # add this boilerplatecode automatically
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
-from bgc_md.resolver import srm_from_B_u_tens
-# all variables starting with def_  are 
+
+# since we explicitly build our model we can even import one of the computer
+from bgc_md.resolve.functions import srm_from_B_u_tens
 
 vector_names=["e_vl","e_vw","e_sf","e_ss","e_sm"]
 C=CoordSysND(name="C",vector_names=vector_names,transformation='cartesian')

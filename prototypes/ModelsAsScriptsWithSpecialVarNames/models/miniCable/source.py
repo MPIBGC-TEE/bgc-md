@@ -9,7 +9,7 @@ from bgc_md.DescribedSymbol import DesribedSymbol
 from bgc_md.DescribedQuantity import DescribedQuantity
 # the next line will change to an import from CompartmentalSystem
 # once the new constructor is established
-from bgc_md.resolve.Computers.srm_1 import srm_from_B_u_tens
+from bgc_md.resolve.functions import srm_from_B_u_tens
 # all variables starting with def_  are 
 from sympy import Symbol,symbols,solve, pi, Eq, Min, Max ,Matrix, Function, Piecewise, exp
 from sympy import pprint
