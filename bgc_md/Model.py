@@ -330,8 +330,9 @@ def load_from_model_run_data(model_run_data, attr_name):
                     del lel['doi']
                 except DoiNotFoundException as e:
                     #ex_string = "Invalid doi in parameter set '" + lel['table_head'] + "'."
-                    ex_string = "could not fetch doi " + lel['table_head'] + "'."
-                    raise(ModelInitializationException(ex_string + "\n" + e.__str__()))
+                    #ex_string = "could not fetch doi " + lel['table_head'] + "'."
+                    #raise(ModelInitializationException(ex_string + "\n" + e.__str__()))
+                    lel['bibtex_entry'] = None
             else:
                 lel['bibtex_entry'] = None
 
@@ -656,11 +657,13 @@ class Model:
             try:
                 self.bibtex_entry = load_bibtex_entry(self.complete_dict)
             except DoiNotFoundException:
+            #except Exception:
                 print("could not find BibtexEntry by doi")
                 if hasattr(self,'bibtex_entry'): 
                     abstract =load_abstract(self.complete_dict, self.bibtex_entry)
-                if abstract is not None:
-                    self.abstract = abstract
+                    if abstract is not None:
+                        self.abstract = abstract
+
 
             self.further_references = load_further_references(self.complete_dict)
             self.reviews, self.deeply_reviewed = load_reviews(self.complete_dict)

@@ -968,7 +968,10 @@ def render_parse():
 def render(template_path,*args,**kw):
     
     with template_path.open() as f:
-        code=f.read()
+        #print('####################')
+        #print(str(template_path))
+        code= compile(f.read(),template_path,mode='exec')
+        #code=f.read()
     
     exec(code,globals(),locals()) # this makes the template function defined in the file available 
     

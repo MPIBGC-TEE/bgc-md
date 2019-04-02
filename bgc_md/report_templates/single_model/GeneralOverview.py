@@ -43,7 +43,8 @@ def template(model):
     rel += Header("About the model", 2)
     rel += Text(r"The model depicted in this document considers $modType$modApproach It was originally described by ", 
         modType=modType, modApproach=modApproach)
-    rel += Citation(model.bibtex_entry, parentheses=False) + Text(".")+EmptyLine()
+    if hasattr(model,'bibtex_entry'):
+        rel += Citation(model.bibtex_entry, parentheses=False) + Text(".")+EmptyLine()
     # include the abstract
     if hasattr(model,"abstract"):
         rel += Header("Abstract", 3)
