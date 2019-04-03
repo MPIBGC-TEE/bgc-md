@@ -49,7 +49,7 @@ setup(name='bgc_md',
             ,"pandas"
             ,'netCDF4'
             ,'sqlalchemy'
-        #    ,'oslash'
+            ,'oslash'
         ],
         include_package_data=True,
         #zip_safe=False

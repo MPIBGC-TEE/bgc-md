@@ -24,6 +24,7 @@ from CompartmentalSystems.smooth_model_run import SmoothModelRun
 from .monad import Monad
 from .option import nil, Some
 from .either import Either, Left, Right
+from testinfrastructure.helpers import warning, deprecation_warning
 
 
 ######### helper functions #############
@@ -118,8 +119,12 @@ def load_further_references(complete_dict):
                 try:
                     ref['bibtex_entry'] = BibtexEntry.from_doi(ref_dict['doi'])
                 except DoiNotFoundException as e:
-                    ex_string = "Invalid doi in further_references."
-                    raise(ModelInitializationException(ex_string + "\n" + e.__str__()))
+                    ex_string = "No internet connection or invalid doi in further_references."
+                    #raise(ModelInitializationException(ex_string + "\n" + e.__str__()))
+                    warning(ex_string + "\n" + e.__str__()))
+                    # fixme mm 04/03 2019
+                    # Just disabled the above Exception since we want to be able to work offline
+                    # we could use an Either monad to deal with this situation.
             else:
                 ex_string = "Missing 'doi' and 'bibtex' in further_references."
                 raise(ModelInitializationException(ex_string))

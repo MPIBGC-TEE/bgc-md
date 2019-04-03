@@ -39,7 +39,8 @@ def template(model_list):
         l.append(fv_fs_entry)
 
         #l.append(Math("${eq}",eq=model.rhs, parentheses=False))
-        l.append(Citation(model.bibtex_entry, parentheses=False))
+        if hasattr(model,'bibtex_entry'):
+            l.append(Citation(model.bibtex_entry, parentheses=False))
         row = TableRow(l)
         return row
 
