@@ -1,4 +1,4 @@
-from .monad import Monad
+from monad import Monad
 class Option(Monad):
     # pure :: a -> Option a
     @staticmethod

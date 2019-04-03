@@ -1,4 +1,4 @@
-from .monad import Monad
+from monad import Monad
 
 class Either(Monad):
     # pure :: a -> Either a
