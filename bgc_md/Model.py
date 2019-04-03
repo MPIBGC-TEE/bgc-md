@@ -21,6 +21,9 @@ from .ComponentScheme import ComponentScheme
 from .Exceptions import ModelInitializationException
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
+from .monad import Monad
+from .option import nil, Some
+from .either import Either, Left, Right
 
 
 ######### helper functions #############
