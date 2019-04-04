@@ -39,6 +39,9 @@ class TestModule(unittest.TestCase):
         self.assertTrue('default' in smrs.keys())
 
 
+    @unittest.skip
+    def test_Symbols_and_Quanteties(self):
+        md=get(var_name="smooth_reservoir_model",model_id='pseudoCable')
 
 
 class TestSets(unittest.TestCase):
@@ -122,12 +125,21 @@ class TestSets(unittest.TestCase):
                     ,description="""Creates a single instance of a SmoothModelRun"""
                 )
         })
+        # assert that we can build the reservoir model
         md=get3(var_name="smooth_reservoir_model",allMvars=myMvars,allComputers=myComputers,model_id='testFivePool')
         pe('md.compartmental_matrix',locals())
+        
+        #compute the set of computable Mvars 
+        #mvars=computable_mvars(
+        #        availableMvars=
+        #        ,allMvars=myMvars
+        #        ,allComputers=myComputers
+        #        ,model_id='testFivePool')
 
 
 
-
+        
+@unittest.skip
 class TestDicts(unittest.TestCase):
 
     def test_computability(self):
@@ -233,7 +245,8 @@ class TestDicts(unittest.TestCase):
 
 
 
-class TestMvars(InDirTest):
+@unittest.skip
+class TestModules(InDirTest):
 
     def test_defined_mvars(self):
         # we want to see what variables are at least defined
@@ -275,9 +288,6 @@ class TestMvars(InDirTest):
         
 
 
-    @unittest.skip
-    def test_Symbols_and_Quanteties(self):
-        md=get(var_name="smooth_reservoir_model",model_id='pseudoCable')
         
 
 

@@ -58,39 +58,34 @@ def populated_namespace(model_id):
         exec(code,gns)
     return gns
 
-def get(var_name,model_id):
-    # execute the model code
-    gns=populated_namespace(model_id)
-    
-    #take the name of the MVar in the module as equivalent to the var_name
-    mvar=getattr(mvars,var_name)
-    special_vars=gns[special_var_string] 
-    return mvar(special_vars)
-
-def get2(var_name:str,allMvars,model_id:str):
-    # execute the model code
-    gns=populated_namespace(model_id)
-    
-    #get the mvar by its name from the dictionary 
-    mvar=allMvars[var_name]
-    special_vars=gns[special_var_string] 
-    return mvar(special_vars)
     
 def get3(var_name:str,allMvars,allComputers,model_id:str):
     # execute the model code
     gns=populated_namespace(model_id)
     
-    #get the mvar by its name from the dictionary 
+    # get the mvar by its name from the set by its index
+    # this should be cached (hashed) as dict of cause
     mvar=[var for var in allMvars if var.name==var_name][0]
     special_vars=gns[special_var_string] 
     return mvar(allMvars,allComputers,special_vars)
     
 
-#def computable_mvars(available_mvars):
-#    res =available_vars
-#    return res 
-   
-    # check if the user has defined it directly 
+def computable_mvars(
+        availableMvars:frozenset
+        ,allMvars:frozenset
+        ,allComputers:frozenset
+        ,model_id:str
+    )->frozenset:
+    #top down approach: for every mvar in all Mvars check if we can compute it:
+    l= [mvar for mvar in allMvars 
+            if mvar.is_computable(
+                availableMvars
+                ,allMvars
+                ,allComputers
+            )]
+    return frozenset(l)
+  
+   # check if the user has defined it directly 
     
     
 #def get_documented_variables(model_id):
@@ -121,3 +116,20 @@ def get3(var_name:str,allMvars,allComputers,model_id:str):
 # statevector and u bein sympy.vector.nd-vector Vectors
 # functions like the following could be sourced out into a helper module
 
+def get(var_name,model_id):
+    # execute the model code
+    gns=populated_namespace(model_id)
+    
+    #take the name of the MVar in the module as equivalent to the var_name
+    mvar=getattr(mvars,var_name)
+    special_vars=gns[special_var_string] 
+    return mvar(special_vars)
+
+def get2(var_name:str,allMvars,model_id:str):
+    # execute the model code
+    gns=populated_namespace(model_id)
+    
+    #get the mvar by its name from the dictionary 
+    mvar=allMvars[var_name]
+    special_vars=gns[special_var_string] 
+    return mvar(special_vars)

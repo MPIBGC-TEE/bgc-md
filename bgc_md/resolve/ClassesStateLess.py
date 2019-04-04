@@ -13,18 +13,33 @@ class MVar3:
         self.description= description 
 
     def computers(self,allComputers):
-        return [ allComputers[key] for key in self.computerNames ]
+        return [ c for c in allComputers if c.name in self.computerNames ]
 
-    def is_computable(self,allMvars,allComputers,name_space:dict):
+    def is_computable(
+            self
+            ,allMvars:frozenset
+            ,allComputers:frozenset
+            ,name_space:dict
+        )->bool:
         if self.name in name_space.keys():
+            # edge case because mvar is directly defined
             return True
         else:
-            return any( c.is_computable(allMvars,allComputers,name_space) for c in  self.computers(allComputers)) 
+            return any( 
+                c.is_computable(
+                    allMvars
+                    ,allComputers
+                    ,name_space
+                ) for c in  self.computers(allComputers)) 
 
     def computable_computers(self,allMvars,allComputers,name_space):
         coms=[
             c for c in self.computers(allComputers) 
-            if c.is_computable(allMvars,allComputers,name_space)
+            if c.is_computable(
+                allMvars
+                ,allComputers
+                ,name_space
+            )
         ]
         return coms
 
@@ -58,11 +73,20 @@ class Computer3:
         self.description = description 
     
     def args(self,allMvars):
-        return [ allMvars[key] for key in self.arg_names]
+        return [mv for mv in allMvars if mv.name in self.arg_names]
 
     
-    def is_computable(self,allMvars,allComputers,name_space):
-        return all( mvar.is_computable(allComputers) for mvar in  self.args(allMvars)) 
+    def is_computable(
+            self
+            ,allMvars:frozenset
+            ,allComputers:frozenset
+            ,name_space:dict
+        )->bool:
+        return all( mvar.is_computable(
+            allMvars
+            ,allComputers
+            ,name_space
+            ) for mvar in  self.args(allMvars)) 
     
     def __call__(self,allMvars,allComputers,name_space):
         vals=[arg(allMvars,allComputers,name_space) for arg in self.args(allMvars)]
