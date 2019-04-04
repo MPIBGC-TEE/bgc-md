@@ -1,5 +1,15 @@
 
 from typing import List,Callable 
+def getElement(s:frozenset,name:str)->'MVar3':
+    # fixme: mm This function is a workaround
+    # actually mvars and Computers should internally be
+    # represented by some kind of 'immutable indexed sets'
+    # that basically work like dictionaries but until then
+    # this function replaces the index operator []
+    for v in s:
+        if v.name==name:
+            return v
+
 class MVar3:
     # A (M)ultiply defined (Var)iable that can possibly be computed 
     # in several ways defined by its computers
@@ -12,6 +22,13 @@ class MVar3:
         self.computerNames  = computerNames
         self.description= description 
 
+    def __repr__(self):
+        return """object of class {s.__class__}
+        name: {s.name}
+        computerNames: {s.computerNames}
+        """.format( s=self)
+
+
     def computers(self,allComputers):
         return [ c for c in allComputers if c.name in self.computerNames ]
 
@@ -19,9 +36,11 @@ class MVar3:
             self
             ,allMvars:frozenset
             ,allComputers:frozenset
-            ,name_space:dict
+            #,name_space:dict
+            ,names_of_available_mvars:frozenset
         )->bool:
-        if self.name in name_space.keys():
+        #if self.name in name_space.keys():
+        if self.name in names_of_available_mvars:
             # edge case because mvar is directly defined
             return True
         else:
@@ -29,16 +48,21 @@ class MVar3:
                 c.is_computable(
                     allMvars
                     ,allComputers
-                    ,name_space
+                    ,names_of_available_mvars
                 ) for c in  self.computers(allComputers)) 
 
-    def computable_computers(self,allMvars,allComputers,name_space):
+    def computable_computers(
+            self
+            ,allMvars:frozenset
+            ,allComputers:frozenset
+            ,names_of_available_mvars
+        )->frozenset: 
         coms=[
             c for c in self.computers(allComputers) 
             if c.is_computable(
                 allMvars
                 ,allComputers
-                ,name_space
+                ,names_of_available_mvars
             )
         ]
         return coms
@@ -49,9 +73,14 @@ class MVar3:
         # check which computers actually are computable and
         # take the first one
         else:
-            working_computers=self.computable_computers(allMvars,allComputers,name_space)
+            names_of_available_mvars=frozenset([k for k in name_space.keys()])
+            working_computers=self.computable_computers(
+                allMvars
+                ,allComputers
+                ,names_of_available_mvars
+            )
             if len(working_computers)>0:
-                return working_computers[0](name_space)
+                return working_computers[0](allMvars,allComputers,name_space)
             else:
                 raise Exception("The Mvar can not be computed from the given namespace")
     
@@ -73,19 +102,21 @@ class Computer3:
         self.description = description 
     
     def args(self,allMvars):
-        return [mv for mv in allMvars if mv.name in self.arg_names]
+        # the order of the arg_names must be preserved
+        #return [mv for mv in allMvars if mv.name in self.arg_names]
+        return [getElement(allMvars,mv_name) for mv_name in self.arg_names]
 
     
     def is_computable(
             self
             ,allMvars:frozenset
             ,allComputers:frozenset
-            ,name_space:dict
+            ,names_of_available_mvars:frozenset
         )->bool:
         return all( mvar.is_computable(
             allMvars
             ,allComputers
-            ,name_space
+            ,names_of_available_mvars
             ) for mvar in  self.args(allMvars)) 
     
     def __call__(self,allMvars,allComputers,name_space):

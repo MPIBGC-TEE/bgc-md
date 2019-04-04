@@ -1,115 +1,116 @@
+
+import unittest
+from pathlib import Path
+from testinfrastructure.helpers import pe
+from testinfrastructure.InDirTest import InDirTest
+#from sympy import Basic,Symbol,Matrix,symbols
+
+#from sympy.vector import CoordSysND, Vector,express
+#from bgc_md.prototype_helpers_script import get
 from sympy import Symbol,Number
 from typing import List
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
 #from CompartmentalSystems import smooth_reservoir_model 
-from testinfrastructure.helpers import pe
-from .Classes import MVar,Computer
+from .ClassesStateLess import MVar3,Computer3
 from .functions import srm_from_B_u_tens
+import collections
 
-########## README ###################
-# This module defines MVar and Computer instances simultaniously since they 
-# refer to each other recursively.
-# In this way it (implicitly) defines a kind of convex hull or a closure 
-# which has the consequence that 
-# the smallest possible consistent change might NOT be a single 'Computer' or a 
-# single 'MVar'.
-# In particular you can NOT add a new Computer to a Mvar's computers set
-# before defining the Computer instance. 
-# This in turn might require you to define new
-# Mvars (since they appear as the computers arguments). 
-# For these you can first rely on the empty Computers list so that there is no
-# infinite regress.  
+class FrozenDict(collections.Mapping):
+    """Don't forget the docstrings!!"""
 
-# fixme?:
-# Since this module is regular python code even the order in which variables
-# are defined is not arbitrary. This might become troublesome. Maybe we need
-# a more 'lazy' approach than a module containing variables that have to be
-# defined in order.
-#   a)  One possibility is to define the Mvars first and then 
-#       'register' the computers later. One consequence is that the Mvars 
-#       can not be immutable in this approach 
-#       which does not allow caching by functools
-# 
-#   b)  Another possibility is to define both the 'args; of the 
-#       Computer instance and the 'computers' in a MVar instance
-#       not as objects but as strings interpreted with respect to a
-#       dictionary of Mvars or Computers respectively and resolve
-#       the relationship at runtime. This allows any kind of cross 
-#       referencing even if the variables or computers do not 
-#       exist yet or not at all. The latter possibility must be excluded
-#       by a consistence check
+    def __init__(self, *args, **kwargs):
+        self._d = dict(*args, **kwargs)
+        self._hash = None
 
+    def __iter__(self):
+        return iter(self._d)
 
+    def __len__(self):
+        return len(self._d)
 
-# fixme?:
-# possible convention:
-# for Mvars that have a very specific class (like SmoothModelRun ) we could 
-# call the MVar like the class? The computers act then like constructors of 
-# this class.
-# This raises the question if we make subclasses for all
-# MVars (and find the appropriate Computers by their signature) 
+    def __getitem__(self, key):
+        return self._d[key]
 
-coord_sys           = MVar(name='coord_sys') 
-state_vector        = MVar(name='state_vector') 
-time_symbol         = MVar(name='time_symbol') 
-compartmental_dyad  = MVar(name='compartmental_dyad') 
-input_vector        = MVar(name='input_vector') 
-parameter_dictionary= MVar(name='parameter_dictionary') 
-start_vector        = MVar(name='start_vector') 
-time_vector         = MVar(name='time_vector') 
-function_dictionary = MVar(name='function_dictionary')
+    def __hash__(self):
+        # It would have been simpler and maybe more obvious to 
+        # use hash(tuple(sorted(self._d.iteritems()))) from this discussion
+        # so far, but this solution is O(n). I don't know what kind of 
+        # n we are going to run into, but sometimes it's hard to resist the 
+        # urge to optimize when it will gain improved algorithmic performance.
+        if self._hash is None:
+            self._hash = 0
+            for pair in self.iteritems():
+                self._hash ^= hash(pair)
+        return self._hash
+#    >>> x = FrozenDict(a=1, b=2)
+#>>> y = FrozenDict(a=1, b=2)
+#>>> x is y
+#False
+#>>> x == y
+#True
+#>>> x == {'a': 1, 'b': 2}
+#True
+#>>> d = {x: 'foo'}
+#>>> d[y]
+#'foo'
 
+myMvars=frozenset({
+      MVar3('coord_sys') 
+    , MVar3('state_vector')
+    , MVar3('time_symbol') 
+    , MVar3('compartmental_dyad') 
+    , MVar3('input_vector') 
+    , MVar3('parameter_dictionary') 
+    , MVar3('start_vector') 
+    , MVar3('time_vector') 
+    , MVar3('function_dictionary')
+    , MVar3(
+            'smooth_reservoir_model'
+            ,computerNames=['srm_bu_tens']
+            ,description='A smooth reservroir Model'
+        )
+    , MVar3(
+            'smooth_model_run_dictionary'
+            ,computerNames=[] # at the moment empty list, consequently 
+            # only available when explicitly defined. 
+            # Although automatic computation would be simple 
+            # the keys make most sense if defined by the user
+            ,description= """
+            The dictionary values are SmoothModelRun objects. 
+            The keys can be used in user code to refer to special 
+            simulations. """
+    )
+    , MVar3(
+            'smooth_model_run'
+            ,computerNames=['smr']
+            ,description= """A single simulation"""
+    )
+})
 
-
-srm_bu_tens=Computer(
-    func=srm_from_B_u_tens
-    ,args=[
-         coord_sys 
-        ,state_vector 
-        ,time_symbol 
-        ,compartmental_dyad 
-        ,input_vector 
-     ]
-    ,description="""Produces a smoth reservoir model"""
-
-)
-smooth_reservoir_model=MVar(
-         name='smooth_reservoir_model'
-        ,computers=[srm_bu_tens]
-        ,description='A smooth reservroir Model'
-)
-smr=Computer(
-     func=SmoothModelRun
-    ,args=[
-         smooth_reservoir_model
-        ,parameter_dictionary
-        ,start_vector
-        ,time_vector
-        ,function_dictionary
-     ]
-    ,description="""Creates a single instance of a SmoothModelRun"""
-)
-
-
-smooth_model_run_dictionary=MVar(
-        'smooth_model_run_dictionary'
-        ,computers=[] # at the moment empty list, consequently 
-        # only available when explicitly defined. 
-        # Although automatic computation would be simple 
-        # the keys make most sense if defined by the user
-
-        ,description= """
-        The dictionary values are SmoothModelRun objects. 
-        The keys can be used in user code to refer to special 
-        simulations. """
-)
-        
-smooth_model_run=MVar(
-        'smooth_model_run'
-        ,computers=[smr]
-        ,description= """A single simulation"""
-)
-
-
-
+myComputers=frozenset({
+        Computer3(
+            'srm_bu_tens'
+            ,func=srm_from_B_u_tens
+            ,arg_names=[
+                 'coord_sys'
+                ,'state_vector' 
+                ,'time_symbol' 
+                ,'compartmental_dyad' 
+                ,'input_vector' 
+             ]
+            ,description="""Produces a smoth reservoir model"""
+        )
+        ,Computer3(
+             'smr'
+            ,SmoothModelRun
+            ,arg_names=[
+                 'smooth_reservoir_model'
+                ,'parameter_dictionary'
+                ,'start_vector'
+                ,'time_vector'
+                ,'function_dictionary'
+            ]
+            ,description="""Creates a single instance of a SmoothModelRun"""
+        )
+})

@@ -71,17 +71,16 @@ def get3(var_name:str,allMvars,allComputers,model_id:str):
     
 
 def computable_mvars(
-        availableMvars:frozenset
-        ,allMvars:frozenset
+        allMvars:frozenset
         ,allComputers:frozenset
-        ,model_id:str
+        ,names_of_available_mvars:frozenset
     )->frozenset:
     #top down approach: for every mvar in all Mvars check if we can compute it:
     l= [mvar for mvar in allMvars 
             if mvar.is_computable(
-                availableMvars
-                ,allMvars
+                allMvars
                 ,allComputers
+                ,names_of_available_mvars
             )]
     return frozenset(l)
   
@@ -116,20 +115,3 @@ def computable_mvars(
 # statevector and u bein sympy.vector.nd-vector Vectors
 # functions like the following could be sourced out into a helper module
 
-def get(var_name,model_id):
-    # execute the model code
-    gns=populated_namespace(model_id)
-    
-    #take the name of the MVar in the module as equivalent to the var_name
-    mvar=getattr(mvars,var_name)
-    special_vars=gns[special_var_string] 
-    return mvar(special_vars)
-
-def get2(var_name:str,allMvars,model_id:str):
-    # execute the model code
-    gns=populated_namespace(model_id)
-    
-    #get the mvar by its name from the dictionary 
-    mvar=allMvars[var_name]
-    special_vars=gns[special_var_string] 
-    return mvar(special_vars)

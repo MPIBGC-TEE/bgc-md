@@ -2,6 +2,7 @@
 from sympy import Symbol,Number
 from sympy.vector import CoordSysND,express,Vector,Dyadic
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
+from testinfrastructure.helpers import pe
 def srm_from_B_u_tens(
     # fixme mm 21.03 2019
     # This could become an alternative constructor (@classmethod) 
@@ -18,6 +19,11 @@ def srm_from_B_u_tens(
         ,B:Dyadic
         ,u:Vector
     )->'SmoothReservoirModel':
+    pe('C',locals())
+    pe('state_vector',locals())
+    pe('time_symbol',locals())
+    pe('B',locals())
+    pe('u',locals())
     state_vector_mat=express(state_vector,C).to_matrix(C)
     B_mat=express(B,C).to_matrix(C)
     u_mat=express(u,C).to_matrix(C)
