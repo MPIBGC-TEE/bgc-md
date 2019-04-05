@@ -4,6 +4,8 @@ import contextlib
 import sys
 from pathlib import Path
 from . import MvarsAndComputers as mvars
+from .IndexedSet import IndexedSet
+
 srcFileName="source.py"
 modelFolderName="models"
 special_var_string="special_vars"
@@ -71,8 +73,8 @@ def get3(var_name:str,allMvars,allComputers,model_id:str):
     
 
 def computable_mvars(
-        allMvars:frozenset
-        ,allComputers:frozenset
+        allMvars:IndexedSet
+        ,allComputers:IndexedSet
         ,names_of_available_mvars:frozenset
     )->frozenset:
     #top down approach: for every mvar in all Mvars check if we can compute it:

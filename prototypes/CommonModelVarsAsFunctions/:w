@@ -1,0 +1,50 @@
+from testinfrastructure.helpers import pe
+from sympy.core.compatibility import exec_
+from pathlib import Path
+from inspect import currentframe
+
+srcFileName="source.py"
+modelFolderName="models"
+def srcPath(model_id):
+    return Path(modelFolderName).joinpath(model_id,srcFileName)
+
+def get_SmoothReservoirModel(model_id,nr):
+
+    # this is the proxy function 
+    # It will examine the user code for a direct 
+    # first remember the function name 
+    myName=currentframe().f_code.co_name 
+
+    p=srcPath(model_id)
+    pe('p',locals())
+
+    with p.open() as f:
+        code= compile(f.read(),p,mode='exec')
+        #code= f.read()
+    gns={}
+    #prepare the execution environment
+    exec(code,gns)
+    
+    #check if the user has defined the function
+
+    pe('myName',locals())
+    if myName in gns.keys(): 
+        md=eval(myName+"()",gns)
+    pe('md',locals())
+    return md
+    
+    
+def get(model_id,callString):
+    p=srcPath(model_id)
+    with p.open() as f:
+        code= compile(f.read(),p,mode='exec')
+        #code= f.read()
+    gns={}
+    #prepare the execution environment
+    #exec_('from bgc_md.ModelDescriptor import ModelDescriptor',gns,lns) #
+    #exec(code,gns,lns)
+    exec(code,gns)
+    #call the function
+    res=eval(callString,gns)
+    return res
+

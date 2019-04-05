@@ -19,11 +19,11 @@ def srm_from_B_u_tens(
         ,B:Dyadic
         ,u:Vector
     )->'SmoothReservoirModel':
-    pe('C',locals())
-    pe('state_vector',locals())
-    pe('time_symbol',locals())
-    pe('B',locals())
-    pe('u',locals())
+    #pe('C',locals())
+    #pe('state_vector',locals())
+    #pe('time_symbol',locals())
+    #pe('B',locals())
+    #pe('u',locals())
     state_vector_mat=express(state_vector,C).to_matrix(C)
     B_mat=express(B,C).to_matrix(C)
     u_mat=express(u,C).to_matrix(C)
