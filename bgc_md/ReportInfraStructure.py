@@ -194,8 +194,8 @@ class ReportElementList(list):
         #collect bibtexentries and remove None entries
         references=set([ el for el in self.bibtex_entries() if el is not None])
         if len(references)!=0:
-            #bibtexc.entry_list_to_file(bibtex_file_path, references, format_str="BibTeX")
-            bibtexc.entry_list_to_file(str(bibtex_file_path), references, format_str="plain")
+            #bibtexc.entry_list_to_path(bibtex_file_path, references, format_str="BibTeX")
+            bibtexc.entry_list_to_path(bibtex_file_path, references, format_str="plain")
     
         #collect matplotlib figures and plot them 
         figure_elements=self.matplotlib_figure_elements()
@@ -289,8 +289,8 @@ class ReportElementList(list):
 
    #     #collect bibtexentries
    #     references=self.bibtex_entries()
-#  #      bibtexc.entry_list_to_file(bibtex_file_name, references, format_str="BibTeX")
-   #     bibtexc.entry_list_to_file(bibtex_file_name, references, format_str="plain")
+#  #      bibtexc.entry_list_to_path(bibtex_file_name, references, format_str="BibTeX")
+   #     bibtexc.entry_list_to_path(bibtex_file_name, references, format_str="plain")
 
    #     #collect matplotlib figures and plot them 
    #     figure_elements=self.matplotlib_figure_elements()

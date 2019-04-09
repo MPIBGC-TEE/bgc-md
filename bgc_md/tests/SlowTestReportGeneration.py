@@ -9,7 +9,7 @@ from string import Template
 import shutil 
 from bgc_md.Model import Model
 from testinfrastructure.InDirTest import InDirTest
-from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory, create_html_from_pandoc_md, create_html_from_pandoc_md_directory,generate_website
+from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory 
 from bgc_md.yaml_creator_mod import example_yaml_string_list2
 from bgc_md.helpers import remove_indentation
 from bgc_md.reports import defaults
@@ -25,15 +25,6 @@ def runProtected_old(rec,command_list,targetPath=Path('.')):
     html_file_path=html_dir_path.joinpath('Report.html')
     result['fileExists']=html_file_path.exists()
     return(result)
-
-def f_old(rec):
-    command_list=['generate_model_run_report']
-    d=defaults() 
-    result=runProtected(rec,command_list)
-    return result
-
-
-
 
 def runProtected(rec,command_list,targetPath=Path('.')):
     file_name=str(rec)
@@ -119,69 +110,6 @@ class SlowTestReportGeneration(InDirTest):
         )
 
 
-    def test_commandline_generate_model_run_report_single_file(self):
-        # This function is more of a tool to test a 
-        # specific selectable yaml file 
-        # than an active automatic test. 
-        # Usually the specific file will be tested by one of the 
-        # more comprehensive tests that iterate over all our model files.
-        d=defaults() 
-        sp=d['paths']['tested_records']
-        here=Path('.')
-        rec_list=[ rec  for rec in sp.glob('*.yaml')]
-        test_list= rec_list
-        #test_list=['Allison2010NatureGeoscience.yaml']
-        targetDirName='output'
-        targetPath=here.joinpath(targetDirName)
-        targetPath.mkdir(parents=True,exist_ok=True)
-        
-        result_list=[ runProtected( rec ,['generate_model_run_report',"-t", targetDirName] ,targetPath) for rec in test_list
-        ]
-        failure_list=[r  for r in result_list if r['returnValue']!=0 or r['fileExists']==False]
-        self.assertEqual(
-            len(failure_list)
-            ,0
-            ,msg="The following files caused problems %s" % str(failure_list)
-        )
-
-    def test_commandline_generate_model_run_report_with_targetdir(self):
-        # test the -t option for a smaller selection of yaml file
-        d=defaults() 
-        sp=d['paths']['tested_records']
-        here=Path('.')
-        rec_list=[ rec  for rec in sp.glob('*.yaml')]
-        #test_list= rec_list
-        test_list= sorted(rec_list)[2:3]
-        targetDirName='output'
-        targetPath=here.joinpath(targetDirName)
-        targetPath.mkdir(parents=True,exist_ok=True)
-        test_list= sorted(rec_list)[0:1]
-        result_list=[ runProtected( rec ,['generate_model_run_report',"-t", targetDirName] ,targetPath) for rec in test_list
-        ]
-        failure_list=[r  for r in result_list if r['returnValue']!=0 or r['fileExists']==False]
-        self.assertEqual(
-            len(failure_list)
-            ,0
-            ,msg="The following files caused problems %s" % str(failure_list)
-        )
-
-    def test_commandline_gnerate_website(self):
-        # we create a target directory populated with only a few files and create a website from it
-        d=defaults() 
-        sp=d['paths']['tested_records']
-        src_dir_name='localDataBase'
-        src_dir_path=Path(src_dir_name)
-        src_dir_path.mkdir()
-        rec_list=sorted([ rec  for rec in sp.glob('*.yaml')])[2:3]
-        
-        for rec in rec_list:
-            print(rec)
-            src=(sp.joinpath(rec)).as_posix()
-            target=(src_dir_name)
-            shutil.copy(src,src_dir_name)
-        
-        res=run(['generate_website','-s',src_dir_name],check=True )
-    
 #    @unittest.skip("function under test calls report_from_yaml_str which is commented out")
 #    def test_report_html_presence(self):
 #    # fixme

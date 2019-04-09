@@ -9,7 +9,7 @@ from string import Template
 import shutil 
 from bgc_md.Model import Model
 from testinfrastructure.InDirTest import InDirTest
-from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory, create_html_from_pandoc_md, create_html_from_pandoc_md_directory,generate_website
+from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory 
 from bgc_md.yaml_creator_mod import example_yaml_string_list2
 from bgc_md.helpers import remove_indentation
 from bgc_md.reports import defaults

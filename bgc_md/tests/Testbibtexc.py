@@ -268,14 +268,14 @@ class TestbibtexcFiles(InDirTest):
     @unittest.skip("This test is flapping due to changes in the mendeley database")
     #fixme:
     # find a more stable way to test the mendeley implementation or remove it entirely 
-    def test_entry_list_to_file(self):
+    def test_entry_list_to_path(self):
         bibtex_entry_list = []
         bibtex_entry_list.append(bibtexc.BibtexEntry.from_doi(doi="10.1556/Select.2.2001.1-2.14"))
         bibtex_entry_list.append(bibtexc.BibtexEntry.from_doi(doi="10.1139/x91-151"))
 
         # check plain style
         test_file = "plain.bib"
-        bibtexc.entry_list_to_file(test_file, bibtex_entry_list, "plain")
+        bibtexc.entry_list_to_path(test_file, bibtex_entry_list, "plain")
 
         with open(test_file, "r") as f:
             result = f.read()
@@ -310,7 +310,7 @@ class TestbibtexcFiles(InDirTest):
 
         # check BibTeX style
         test_file = "BibTeX.bib"
-        bibtexc.entry_list_to_file(test_file, bibtex_entry_list, "BibTeX")
+        bibtexc.entry_list_to_path(test_file, bibtex_entry_list, "BibTeX")
 
         with open(test_file, "r") as f:
             result = f.read()
@@ -344,7 +344,7 @@ class TestbibtexcFiles(InDirTest):
 
         # check BibLaTeX style
         test_file = "BibLaTeX.bib"
-        bibtexc.entry_list_to_file(test_file, bibtex_entry_list, "BibLaTeX")
+        bibtexc.entry_list_to_path(test_file, bibtex_entry_list, "BibLaTeX")
 
         with open(test_file, "r") as f:
             result = f.read()

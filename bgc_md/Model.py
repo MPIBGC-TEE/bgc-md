@@ -21,9 +21,9 @@ from .ComponentScheme import ComponentScheme
 from .Exceptions import ModelInitializationException
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
-from .monad import Monad
-from .option import nil, Some
-from .either import Either, Left, Right
+#from .monad import Monad
+#from .option import nil, Some
+#from .either import Either, Left, Right
 from testinfrastructure.helpers import warning, deprecation_warning
 
 
@@ -121,7 +121,7 @@ def load_further_references(complete_dict):
                 except DoiNotFoundException as e:
                     ex_string = "No internet connection or invalid doi in further_references."
                     #raise(ModelInitializationException(ex_string + "\n" + e.__str__()))
-                    warning(ex_string + "\n" + e.__str__()))
+                    warning(ex_string + "\n" + e.__str__())
                     # fixme mm 04/03 2019
                     # Just disabled the above Exception since we want to be able to work offline
                     # we could use an Either monad to deal with this situation.

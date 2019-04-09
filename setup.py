@@ -31,12 +31,7 @@ setup(name='bgc_md',
         ],
         entry_points={
         'console_scripts': [
-                'generate_website= bgc_md.reports:generate_website' # creates an executable with name generate_website
-                ,'generate_model_run_reports = bgc_md.reports:generate_model_run_reports' # ...
-                ,'generate_model_run_report = bgc_md.reports:generate_model_run_report' # ...
-                # the next entry is only for test reasons
-                ,'generate_test_report = bgc_md.reports:generate_test_report' # ...
-                ,'render= bgc_md.reports:render_parse'
+                'render= bgc_md.reports:render_parse'
                 ]
         },
         install_requires=[

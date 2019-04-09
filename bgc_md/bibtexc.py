@@ -14,7 +14,7 @@ Classes:
 
 Methods:
     - entry_list_from_file: reads in a file to a list of BibtexEntry objects
-    - entry_list_to_file: writes a list of BibtexEntry objects to a file
+    - entry_list_to_path: writes a list of BibtexEntry objects to a file
 
 Exceptions: 
     - DoiNotFoundException: raised if online retrieval of BibTeX entry by doi fails
@@ -491,11 +491,11 @@ def entry_list_from_file(input_file, nochanges = False):
     return entry_list
 
 
-def entry_list_to_file(output_file, bibtex_entry_list, format_str = "plain"):
-    """Write list of BibtexEntry to output_file in desired format.
+def entry_list_to_path(output_path, bibtex_entry_list, format_str = "plain"):
+    """Write list of BibtexEntry to output_path in desired format.
 
     Attributes:
-        - output_file: output file
+        - output_path: path to output file
         - bibtex_entry_list: list of elements of type BibtexEntry
         - format_str: 
             - plain (default): plain entry
@@ -537,5 +537,5 @@ def entry_list_to_file(output_file, bibtex_entry_list, format_str = "plain"):
 
         output_str = output_str + bibtex_entry.as_str(format_str)
 
-    with open(output_file, 'wb') as bibtex_file:
+    with output_path.open('wb') as bibtex_file:
         bibtex_file.write(output_str.encode("utf8"))

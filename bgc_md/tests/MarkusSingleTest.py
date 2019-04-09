@@ -19,9 +19,6 @@ from bgc_md.tests.Testbibtexc import Testbibtexc
 
 def suite():
     s=unittest.TestSuite()
-    #s.addTest(TestReportGeneration("test_commandline_gnerate_website"))
-    s.addTest(SlowTestReportGeneration("test_commandline_generate_model_run_report_single_file"))
-    s.addTest(SlowTestReportGeneration("test_commandline_generate_model_run_report_with_targetdir"))
     s.addTest(SlowTestReportGeneration("test_commandline_render_single_model_templates"))
     s.addTest(SlowTestSingleYaml("test_commandline_render_all_templates"))
     s.addTest(SlowTestSingleTemplate("test_commandline_render_tested_records"))

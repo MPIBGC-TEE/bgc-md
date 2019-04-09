@@ -22,6 +22,7 @@ import getopt, sys # instead of getopt also argparse possible
 import bibtexc
 from bibtexc import DoiNotFoundException
 from string import *
+from pathlib import Path
 
 
 # get the command line parameters and options
@@ -123,7 +124,7 @@ for index, bibtex_entry in enumerate(bibtex_entry_list):
         bibtex_entry_list[index] = bibtex_entry
 
 # write output file
-bibtexc.entry_list_to_file(output_file, bibtex_entry_list, mode)
+bibtexc.entry_list_to_path(Path(output_file), bibtex_entry_list, mode)
 
 print("\n%d entries processed to %s style." % (processed, mode))
 print("Additional %d manually edited entries left untouched." % (untouched))
