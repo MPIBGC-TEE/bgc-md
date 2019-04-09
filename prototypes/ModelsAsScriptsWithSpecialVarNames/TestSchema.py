@@ -18,7 +18,6 @@ from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
 #from CompartmentalSystems import smooth_reservoir_model 
 from bgc_md.resolve.helpers import  get3, computable_mvars
-#from bgc_md.resolve.ClassesStateLess import MVar3,Computer3
 from bgc_md.resolve.MVar import MVar
 from bgc_md.resolve.Computer import Computer
 from bgc_md.resolve.functions import srm_from_B_u_tens
@@ -75,55 +74,37 @@ class TestKnowledge(unittest.TestCase):
         # by a consistence check
 
         myMvars=IndexedSet({
-            MVar(
-                    'a'
-                    ,computerNames=[] # empty list, consequently only available when explicitly defined. 
-                    ,description= """ a varible we assume to be given """
-            )
-            ,MVar(
-                    'b'
-                    ,computerNames=['b_from_a']
-            )
-            ,MVar(
-                    'c'
-                    ,computerNames=['c_from_b']
-            )
-            ,MVar(
-                    'd'
-                    ,computerNames=['d_from_a_c']
-            )
-            ,MVar( 'f' ,computerNames=['f_from_e'])
-            ,MVar( 'e' )
+            MVar('a',description= """ a varible we assume to be given """)
+            ,MVar('b')
+            ,MVar('c')
+            ,MVar('d')
+            ,MVar('f') 
+            ,MVar('e')
         })
         myComputers=IndexedSet({
             Computer(
-                'd_from_a_c'
+                'd(a,c)'
                 ,func=lambda a,c:(a+3)+c # we make it consistent to the other computeer d_from_b_c
-                ,arg_names=[ 'a' ,'c' ]
                 ,description="""computes d from a  and c """
             )
             ,Computer(
-                'd_from_b_c'
+                'd(b,c)'
                 ,func=lambda b,c:b+c
-                ,arg_names=[ 'b' ,'c' ]
                 ,description="""computes d from a  and c """
             )
             ,Computer(
-                'c_from_b'
+                'c(b)'
                 ,func=lambda b:2*b
-                ,arg_names=['b']
                 ,description="""computes c from b"""
             )
             ,Computer(
-                'b_from_a'
+                'b(a)'
                 ,func=lambda a: a+3
-                ,arg_names=['a']
                 ,description="""computes b from a"""
             )
             ,Computer(
-                'f_from_e'
+                'f(e)'
                 ,func=lambda e: e**2
-                ,arg_names=['e']
                 ,description="""computes f from e"""
             )
         })
@@ -131,19 +112,19 @@ class TestKnowledge(unittest.TestCase):
         
         # check computers 
         
-        self.assertTrue(    myComputers['b_from_a'].is_computable(myMvars,myComputers,names_of_available_mvars))
+        self.assertTrue(    myComputers['b(a)'].is_computable(myMvars,myComputers,names_of_available_mvars))
 
         #c is recursively computable through b
-        self.assertTrue(    myComputers['c_from_b'].is_computable(myMvars,myComputers,names_of_available_mvars))
+        self.assertTrue(    myComputers['c(b)'].is_computable(myMvars,myComputers,names_of_available_mvars))
         
         #d is recursively computable through c
-        self.assertTrue(    myComputers['d_from_a_c'].is_computable(myMvars,myComputers,names_of_available_mvars))
+        self.assertTrue(    myComputers['d(a,c)'].is_computable(myMvars,myComputers,names_of_available_mvars))
         
         #d is recursively computable through b and c
-        self.assertTrue(    myComputers['d_from_b_c'].is_computable(myMvars,myComputers,names_of_available_mvars))
+        self.assertTrue(    myComputers['d(b,c)'].is_computable(myMvars,myComputers,names_of_available_mvars))
         
         #f is not computable since e is neither defined nor computable
-        self.assertTrue(not myComputers['f_from_e'].is_computable(myMvars,myComputers,names_of_available_mvars))
+        self.assertTrue(not myComputers['f(e)'].is_computable(myMvars,myComputers,names_of_available_mvars))
       
         # check mvars separately
         self.assertTrue(    myMvars['a'].is_computable(myMvars,myComputers,names_of_available_mvars))
@@ -158,7 +139,14 @@ class TestKnowledge(unittest.TestCase):
                 ,allComputers=myComputers
                 ,names_of_available_mvars=frozenset(['a']) 
         )
-        pe('mvars',locals())
+        #pe('mvars',locals())
+        # e and f are not computable
+        self.assertEqual(mvars,frozenset({
+            MVar( 'a' ,description= """ a varible we assume to be given """)
+            ,MVar( 'b')
+            ,MVar( 'c')
+            ,MVar( 'd')
+         }))
 
 
     def test_computability_bgc(self):
@@ -174,27 +162,25 @@ class TestKnowledge(unittest.TestCase):
                         ,'time_symbol' 
                         ,'compartmental_dyad' 
                         ,'input_vector']) 
-        C=myComputers['srm_bu_tens']
-        ref=( 'coord_sys' ,'state_vector' ,'time_symbol' ,'compartmental_dyad' ,'input_vector' )
-        #pe('C.arg_names',locals())
-        #pe('ref',locals())
+        C=myComputers['smooth_reservoir_model(coord_sys,state_vector,time_symbol,compartmental_dyad,input_vector)']
+        ref=[ 'coord_sys' ,'state_vector' ,'time_symbol' ,'compartmental_dyad' ,'input_vector' ]
+        pe('C.arg_names',locals())
+        pe('ref',locals())
         self.assertEqual( C.arg_names , ref)
         
         mvars=computable_mvars(
                 allMvars=myMvars
                 ,allComputers=myComputers
                 ,names_of_available_mvars=names_of_available_mvars
-                        #,model_id='testFivePool'i
                 )
-        pe('mvars',locals())
+        res=set([v.name for v in mvars])
+        pe('res',locals())
+        ref=set(['coord_sys', 'state_vector', 'time_symbol', 'compartmental_dyad', 'input_vector'])
+        self.assertEqual(res,ref)
 
         
 
 
-    #def test_computable_mvars(self):
-    #    # this is the forward simulation
-    #    # 
-    #    availableVars=frozenset('SmoothModelRun
         
 
 

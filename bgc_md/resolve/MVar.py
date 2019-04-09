@@ -11,14 +11,12 @@ class MVar(NamedObject):
     def __init__(
             self
             ,name:str
-            ,computerNames:List[str]=[]
             # We use an ordered List instead of an unordered set in order to express preferences in the order of attempts to obtain a specific result (to save time)
             # The default () for the computers means that the 
             # only known way to get the variable is that the user 
             # directly defined it.
             ,description:str=""):
         self._name        =name
-        self.computerNames  = tuple(computerNames) # internally we rather have immutable tuples than an list
         self.description= description 
     
     @property
@@ -29,15 +27,17 @@ class MVar(NamedObject):
     def __repr__(self):
         return """object of class {s.__class__}
         name: {s.name}
-        computerNames: {s.computerNames}
         """.format( s=self)
-
+    def match(self,c):
+        return self._name == c.trunk
 
     def computers(
             self
             ,allComputers:IndexedSet
         )->List[Computer]:
-        return [ allComputers[cname]  for cname in self.computerNames ]
+        res=[ c  for c in allComputers if self.match(c) ]
+        #pe('res',locals())
+        return res
 
 
     def is_computable(
@@ -62,8 +62,10 @@ class MVar(NamedObject):
     
     def __hash__(self):
         h1=self.name.__hash__()
-        h2=frozenset(self.computerNames).__hash__()
-        return h1^h2
+        return h1
+
+    def __eq__(self,other):
+        return self.__hash__() == other.__hash__()
 
 
     def computable_computers(

@@ -1,6 +1,6 @@
 from typing import List,Tuple,Callable 
 from functools import reduce
-
+from testinfrastructure.helpers import pe
 from .NamedObject import NamedObject
 from .IndexedSet import IndexedSet
 
@@ -10,21 +10,34 @@ class Computer(NamedObject):
             self
             ,name
             ,func:Callable
-            # a list is less errorprone than a (intended) tuple with a forgotten comma like ('a') 
-            ,arg_names:List[str] 
             ,description:str=''):
         #to do:
         # make sure that the function func accomodates
         # the args 
         # (maybe also check the type if func has been annotated)
-        self._name        =name
+        self._name       =name
         self.func        =func
-        self.arg_names  =tuple(arg_names) #internally we want immutable tuples rather than lists
+        #self.arg_names  =tuple(arg_names) #internally we want immutable tuples rather than lists
         self.description = description 
+    
+    def split_name(self):
+        return IndexedSet.normalizeKey(self._name).split('(')
+
+    @property
+    def trunk(self):
+        return self.split_name()[0]
+    
+    @property
+    def _arg_name_string(self):
+        return self.split_name()[1][:-1]
+
+    @property
+    def arg_names(self):
+        return self._arg_name_string.split(',')
     
     @property
     def name(self):
-        return self._name
+        return self._name #+"("+",".join(self.arg_names)+")"
 
     
     def args(self,allMvars):

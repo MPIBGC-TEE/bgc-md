@@ -1,5 +1,6 @@
 from typing import Set
 import collections
+import re
 from .NamedObject import NamedObject
 class IndexedSet(collections.Mapping):
     """
@@ -10,6 +11,11 @@ class IndexedSet(collections.Mapping):
     We need it to access Computers and Mvars quickly (for which we need dict features) and cache the results
     of computations involving arguments of this type (for which purpose it has to be hashable and immutable)
     """
+    @classmethod
+    def normalizeKey(cls,string):
+        # remove whitespace 
+        rexp=re.compile('\s*')
+        return re.sub(rexp,'',string)
 
     def __init__(self, s:Set[NamedObject]):
         #create a private dictionary indexed by the name attribute of the variable
@@ -19,7 +25,6 @@ class IndexedSet(collections.Mapping):
     def __eq__(self,other):
         return self._hash == other.__hash__()
 
-
     def __iter__(self):
         return iter(self._d.values())
 
@@ -27,7 +32,9 @@ class IndexedSet(collections.Mapping):
         return len(self._d)
 
     def __getitem__(self, key):
-        return self._d[key]
+        cls=self.__class__
+        nkey=cls.normalizeKey(key)
+        return self._d[nkey]
 
     def __hash__(self):
         return self._hash
