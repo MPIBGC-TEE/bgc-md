@@ -1,0 +1,11 @@
+dist: xenial 
+language: python
+python:
+        - "3.7"
+
+install:
+        - pip install -r requirements.freeze
+        - pip install .
+
+script:
+        - python bgc_md/tests/run_tests.py
