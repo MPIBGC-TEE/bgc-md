@@ -1,11 +1,12 @@
 dist: xenial 
-language: python
-python:
-        - "3.7"
 before_install:
         -sudo apt-get update
         -sudo apt-get install -y pandoc 
         -sudo apt-get install -y pandoc-citeproc
+
+language: python
+python:
+        - "3.7"
 install:
         - pip install -r requirements.freeze
         - pip install .
