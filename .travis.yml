@@ -13,3 +13,12 @@ install:
 
 script:
         - python bgc_md/tests/run_tests.py
+
+notifications:
+  email:
+    recipients:
+      - hmetzler.bgc-jema.mpg.de
+      - csierra.bgc-jema.mpg.de
+      - vceball.bgc-jema.mpg.de
+    on_success: change # default: change
+    on_failure: always # default: always
