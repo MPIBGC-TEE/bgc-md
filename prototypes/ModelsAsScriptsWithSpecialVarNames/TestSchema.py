@@ -155,64 +155,33 @@ class TestKnowledge(unittest.TestCase):
         from bgc_md.resolve.MvarsAndComputers import Computers as myComputers
         
         
-        ##compute the set of computable Mvars from the names of defined variables 
+        # compute the set of computable Mvars from the names of defined variables 
+        # this is the set of mvars supposedly given in the model file 
         names_of_available_mvars=frozenset([
-                         'coord_sys'
-                        ,'state_vector' 
-                        ,'time_symbol' 
-                        ,'compartmental_dyad' 
-                        ,'input_vector']) 
+             'coord_sys'
+            ,'state_vector' 
+            ,'time_symbol' 
+            ,'compartmental_dyad' 
+            ,'input_vector'
+        ]) 
         C=myComputers['smooth_reservoir_model(coord_sys,state_vector,time_symbol,compartmental_dyad,input_vector)']
         ref=[ 'coord_sys' ,'state_vector' ,'time_symbol' ,'compartmental_dyad' ,'input_vector' ]
-        pe('C.arg_names',locals())
-        pe('ref',locals())
         self.assertEqual( C.arg_names , ref)
         
         mvars=computable_mvars(
                 allMvars=myMvars
                 ,allComputers=myComputers
                 ,names_of_available_mvars=names_of_available_mvars
-                )
+        )
         res=set([v.name for v in mvars])
-        pe('res',locals())
-        ref=set(['coord_sys', 'state_vector', 'time_symbol', 'compartmental_dyad', 'input_vector'])
+        ref=set([
+            'coord_sys'
+            ,'state_vector'
+            ,'time_symbol'
+            ,'compartmental_dyad'
+            ,'input_vector'
+            ,'smooth_reservoir_model' # new (provided by computers)
+            ,'compartmental_matrix'   # new (provided by computers)
+        ])
         self.assertEqual(res,ref)
-
-        
-
-
-        
-
-
-        
-
-
-#    #@unittest.skip
-#    def test_compare_GPP_distribution_for_different_models(self):
-#        # many (if not all) vegetation models have similar structure       
-#        # and are build from the same components.
-#        # E.g. many have a state variable describing the amount of         
-#        # carbon in the leafs. 
-#        # However the Variable Name (Symbol) will be different in different publications
-#        # Let us assume that we have 2 different models that both have 
-#        # spread the NetInFlux evenly between leaf and wood pools.
-#        # we want to be able to prove that
-#        # now we define a category distribution vector
-#        #b_five=VegDistVector(leaf=Ivl/u_org,
-#        print(
-#            get(model_id='testFivePool',callString='get_cumulative_Vegetation_Input()')
-#            ,get(model_id='testFivePool',callString='get_cumulative_Vegetation_Input()')
-#        )
-#        
-#    def test_polymorph(self):
-#        # many model properties can be computed from different sources
-#        # We will implement the following strategy
-#        # 1.) Check if the user provided a function to compute the desired property
-#        # 2.) Check if the property  can be computed from other properties provided by the user.
-#        # 3.) If there are more then one ways to get the result check for consistency
-#         
-#        # we demonstrate this by a model that does not any function for get_InputVector but 
-#        # only for the separate fluxes
-#        get(model_id='testVectorFree',callString='get_InputVector()')
-#        
 

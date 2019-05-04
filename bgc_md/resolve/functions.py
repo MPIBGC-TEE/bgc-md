@@ -1,5 +1,5 @@
-
-from sympy import Symbol,Number
+from functools import reduce
+from sympy import Symbol,Number,Matrix
 from sympy.vector import CoordSysND,express,Vector,Dyadic
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from testinfrastructure.helpers import pe
@@ -28,3 +28,13 @@ def srm_from_B_u_tens(
     B_mat=express(B,C).to_matrix(C)
     u_mat=express(u,C).to_matrix(C)
     return SmoothReservoirModel.from_B_u(state_vector_mat,time_symbol,B_mat,u_mat)
+
+def dyad_from_matrix_and_coord_sys(
+        m: Matrix
+        ,C:CoordSysND
+    ):
+    bv=C.base_vectors()
+    r=range(len(bv))
+    dyads=[m[i,j]*bv[i]|bv[j] for i in r for j in r]
+    return reduce(lambda acc,x:acc+x,dyads)  
+    

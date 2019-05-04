@@ -8,7 +8,7 @@ from testinfrastructure.InDirTest import InDirTest
 #from sympy.vector import CoordSysND, Vector,express
 #from bgc_md.prototype_helpers_script import get
 from sympy import Symbol,Number
-from sympy.vector import CoordSysND,express,Vector,Dyadic
+from sympy.vector import CoordSysND,express,Vector,Dyadic,matrix_to_vector
 from typing import List
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
@@ -25,6 +25,7 @@ Mvars=IndexedSet({
     , MVar('compartmental_dyad') 
     , MVar('compartmental_matrix')
     , MVar('input_vector') 
+    , MVar('input_tuple') 
     , MVar('parameter_dictionary') 
     , MVar('start_vector') 
     , MVar('time_vector') 
@@ -53,8 +54,23 @@ Computers=IndexedSet({
             ,description="""computes the matrix of the CompartmentalSystems with respect to the given coordinate frame"""
         )
         ,Computer(
+             'compartmental_dyad(compartmental_matrix,coord_sys)'
+             ,func=functions.dyad_from_matrix_and_coord_sys
+            ,description="""computes the compartmental dyad from the matrix of components with respect to the given coordinate frame"""
+        )
+        ,Computer(
              'smooth_model_run(smooth_reservoir_model,parameter_dictionary,start_vector,time_vector,function_dictionary)'
             ,SmoothModelRun
             ,description="""Creates a single instance of a SmoothModelRun"""
+        )
+        ,Computer(
+             'input_tuple(input_vector,coord_sys)'
+             ,func=lambda vector,cs: express(vector,cs).to_matrix(cs)
+            ,description="""Computes the components of the input vector with respect to the given coordinate system."""
+        )
+        ,Computer(
+             'input_vector(input_tuple,coord_sys)'
+             ,func=lambda mat,cs: matrix_to_vector(mat,cs)
+            ,description="""Given a coordinate system and the tuple of components (1D Matrix) with respect to  this coord system,  computes the vector (sympy.vectorND) instance."""
         )
 })
