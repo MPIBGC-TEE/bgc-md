@@ -21,6 +21,7 @@ from .Computer import Computer
 Mvars=IndexedSet({
       MVar('coord_sys') 
     , MVar('state_vector')
+    , MVar('state_tuple')
     , MVar('time_symbol') 
     , MVar('compartmental_dyad') 
     , MVar('compartmental_matrix')
@@ -72,5 +73,15 @@ Computers=IndexedSet({
              'input_vector(input_tuple,coord_sys)'
              ,func=lambda mat,cs: matrix_to_vector(mat,cs)
             ,description="""Given a coordinate system and the tuple of components (1D Matrix) with respect to  this coord system,  computes the vector (sympy.vectorND) instance."""
+        )
+        ,Computer(
+             'state_vector(state_tuple,coord_sys)'
+             ,func=lambda mat,cs: matrix_to_vector(mat,cs)
+            ,description="""Given a coordinate system and the tuple of the pool_names (1D Matrix) with respect to  this coord system,  computes the state vector (sympy.vectorND) instance."""
+        )
+        ,Computer(
+             'state_tuple(state_vector,coord_sys)'
+             ,func=lambda vector,cs: express(vector,cs).to_matrix(cs)
+            ,description="""Computes the components of the state vector with respect to the given coordinate system."""
         )
 })
