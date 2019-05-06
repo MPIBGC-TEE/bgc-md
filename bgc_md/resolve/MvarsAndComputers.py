@@ -7,6 +7,7 @@ from testinfrastructure.InDirTest import InDirTest
 
 #from sympy.vector import CoordSysND, Vector,express
 #from bgc_md.prototype_helpers_script import get
+import numpy as np
 from sympy import Symbol,Number
 from sympy.vector import CoordSysND,express,Vector,Dyadic,matrix_to_vector
 from typing import List
@@ -25,8 +26,12 @@ Mvars=IndexedSet({
     , MVar('time_symbol') 
     , MVar('compartmental_dyad') 
     , MVar('compartmental_matrix')
+    , MVar('vegetation_base_vector_list') 
     , MVar('input_vector') 
     , MVar('input_tuple') 
+    , MVar('carbon_allocation_tuple') 
+    , MVar('relative_carbon_allocation_tuple') 
+    , MVar('total_carbon_allocation') 
     , MVar('parameter_dictionary') 
     , MVar('start_vector') 
     , MVar('time_vector') 
@@ -83,5 +88,20 @@ Computers=IndexedSet({
              'state_tuple(state_vector,coord_sys)'
              ,func=lambda vector,cs: express(vector,cs).to_matrix(cs)
             ,description="""Computes the components of the state vector with respect to the given coordinate system."""
+        )
+        ,Computer(
+             'total_carbon_allocation(carbon_allocation_tuple)'
+             ,func=lambda arr: np.sum(arr)
+            ,description="""Computes the combined carbon input to vegetation pools."""
+        )
+        ,Computer(
+             'relative_carbon_allocation_tuple(carbon_allocation_tuple,total_carbon_allocation)'
+             ,func=lambda arr,tot: arr/tot
+            ,description="""Computes the projections of the input vector to a list of vectors that represent vegetation pools."""
+        )
+        ,Computer(
+             'carbon_allocation_tuple(input_vector,vegetation_base_vector_list)'
+             ,func=lambda iv,l: np.array([iv.dot(bv) for bv in l])
+            ,description="""Computes the projections of the input vector to a list of vectors that represent vegetation pools."""
         )
 })

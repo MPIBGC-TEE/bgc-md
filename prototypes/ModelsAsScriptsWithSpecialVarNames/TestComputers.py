@@ -12,7 +12,7 @@ from testinfrastructure.InDirTest import InDirTest
 
 #from sympy.vector import CoordSysND, Vector,express
 #from bgc_md.prototype_helpers_script import get
-from sympy import Symbol,Number,symbols,Matrix
+from sympy import Symbol,Number,symbols,Matrix,Rational
 from sympy.vector import CoordSysND,express,Vector,Dyadic,matrix_to_vector
 from bgc_md.resolve.MvarsAndComputers import Mvars as allMvars 
 from bgc_md.resolve.MvarsAndComputers import Computers as allComputers
@@ -109,41 +109,91 @@ class TestComputers(unittest.TestCase):
         # that both define carbon allocation with respect to their own pool names
         # We want to be able to compare the structure of the vector b describing the distribution
         # to different pools
-        # There are different levels of similarity possible.
-        # a)  Both models have the same metastructure with respect to the 
+        # Different levels of similarity are possible:
+        # a)  Both models have the same meta-structure with respect to the 
         #     vegetation pools e.g.(a wood and a leaf pool). In this case the b vectors
         #     have not only the same size but their components also have the same meaning.
-        #     A discription in terms of the meta variables wood and leafs that is identical
+        #     A description in terms of the meta variables wood and leafs that is identical
         #     would point to an identical carbon allocation scheme
-        # b)  The metastructure is different but with possible overlap. 
+        # b)  The metastructure is different but with a possible intersection of the sets of vegetation pools. 
         #     Model 1 may have two vegetation pools (wood,leafs)
         #     while model 2 has three (wood,roots,leafs)
         #     It would still be interesting to compare the overlapping part.  
-        C_1=CoordSysND(name="C_1",vector_names=["e_vl","e_vw","e_s"],transformation='cartesian')
+        C=CoordSysND(name="C",vector_names=["e_vl","e_vw","e_s"],transformation='cartesian')
         I_vl,I_vw,I_s= symbols("I_vl I_vw I_s")
-        I_veg=Matrix([I_vl,I_vw]) #only pick out the vegetatio part
         name_space_1={
-                'coord_sys':C_1
-                ,'input_tuple':I_veg
+                'coord_sys':C
+                ,'input_vector':I_vl*C.e_vl + I_vw*C.e_vw + I_s*C.e_s 
+                ,'vegetation_base_vector_list':[C.e_vl ,C.e_vw] 
+                # the elements of the list could even be expressions depending on several of the basevectors
+                # The order is important for the comparison and represents the knowledghe of the model author
+                # about the allocation. 
+                # To simplify the interpretation of the resulting allocation tuples 
+                # and make them comparable it would be SENSIBLE to always use the same order 
+                # of (leaf, wood, root, ..., other vegetation pools) 
+                # On the other hand it is not REQUIRED to be able to compute the distribution of the 
+                # carbon influx to different pools.
+                # E.g. we do not insist on pointing out which pool is a 'wood' pool 
+                # or even that a "wood' pool exists. 
+                # If this information is contained in the model description we can point out the connction.
         }
         
-        C_2a=CoordSysND(name="C_2a",vector_names=["e_leaf,","e_wood","e_soil"],transformation='cartesian')
+        C_2a=CoordSysND(name="C_2a",vector_names=["e_leaf","e_wood","e_soil"],transformation='cartesian')
         u_leaf,u_wood,u_soil = symbols("u_leaf u_wood u_soil")
-        I_veg=Matrix([u_leaf,u_wood])#only pick out the vegetatio part
         name_space_2a={
                 'coord_sys':C_2a
-                ,'input_tuple':I_veg
+                ,'input_vector':u_leaf*C_2a.e_leaf + u_wood*C_2a.e_wood + u_soil*C_2a.e_soil
+                ,'vegetation_base_vector_list':[C_2a.e_leaf ,C_2a.e_wood] 
         }
 
-        
-        C_2b=CoordSysND(name="C_2b",vector_names=["e_leaf,","e_wood","e_root","e_soil"],transformation='cartesian')
+        C_2b=CoordSysND(name="C_2b",vector_names=["e_leaf","e_wood","e_root","e_soil"],transformation='cartesian')
         u_leaf,u_wood,u_root,u_soil = symbols("u_leaf u_wood u_root u_soil")
-        I_veg=Matrix([u_leaf,u_wood,u_root])#only pick out the vegetatio part
-        name_space_2={
-                'coord_sys':C_2
-                ,'input_tuple':I_veg
+        name_space_2b={
+                'coord_sys':C_2b
+                ,'input_vector':u_leaf*C_2b.e_leaf + u_wood*C_2b.e_wood + u_root*C_2b.e_root + u_soil*C_2b.e_soil 
+                ,'vegetation_base_vector_list':[C_2b.e_leaf, C_2b.e_wood ,C_2b.e_root ]
         }
-        raise(Exception("not implemented yet"))
+        C_2c=CoordSysND(name="C_2c",vector_names=["e_leaf","e_wood","e_root","e_soil"],transformation='cartesian')
+        u, u_leaf,u_wood,u_root,u_soil = symbols("u u_leaf u_wood u_root u_soil")
+
+        name_space_2c={
+                'coord_sys':C_2c
+                ,'input_vector':Rational(1,2)*u*C_2c.e_leaf + Rational(1,4)*u*C_2c.e_wood + Rational(1,4)*u*C_2c.e_root + u_soil*C_2c.e_soil 
+                ,'vegetation_base_vector_list':[C_2c.e_leaf, C_2c.e_wood ,C_2c.e_root ]
+                ,'total_carbon_allocation': u
+        }
+        # we can now look at the projections onto the vegetation pools 
+        at_1    =allMvars['carbon_allocation_tuple'](allMvars,allComputers,name_space_1)
+        t_1     =allMvars['total_carbon_allocation'](allMvars,allComputers,name_space_1)
+        rt_1    =allMvars['relative_carbon_allocation_tuple'](allMvars,allComputers,name_space_1)
+        
+        at_2a   =allMvars['carbon_allocation_tuple'](allMvars,allComputers,name_space_2a)
+        t_2a     =allMvars['total_carbon_allocation'](allMvars,allComputers,name_space_2a)
+        rt_2a    =allMvars['relative_carbon_allocation_tuple'](allMvars,allComputers,name_space_2a)
+
+        at_2b   =allMvars['carbon_allocation_tuple'](allMvars,allComputers,name_space_2b)
+        t_2b     =allMvars['total_carbon_allocation'](allMvars,allComputers,name_space_2b)
+        rt_2b    =allMvars['relative_carbon_allocation_tuple'](allMvars,allComputers,name_space_2b)
+
+        at_2c   =allMvars['carbon_allocation_tuple'](allMvars,allComputers,name_space_2c)
+        t_2c     =allMvars['total_carbon_allocation'](allMvars,allComputers,name_space_2c)
+        rt_2c    =allMvars['relative_carbon_allocation_tuple'](allMvars,allComputers,name_space_2c)
+        pe('at_1',locals())
+        pe('t_1',locals())
+        pe('rt_1',locals())
+        
+        pe('at_2a',locals())
+        pe('t_2a',locals())
+        pe('rt_2a',locals())
+        
+        pe('at_2b',locals())
+        pe('t_2b',locals())
+        pe('rt_2b',locals())
+        
+        pe('at_2c',locals())
+        pe('t_2c',locals())
+        pe('rt_2c',locals())
+
     def test_compartmental_matrix(self):
         vector_names=["e_vl","e_vw"]
         C=CoordSysND(name="C",vector_names=vector_names,transformation='cartesian')
