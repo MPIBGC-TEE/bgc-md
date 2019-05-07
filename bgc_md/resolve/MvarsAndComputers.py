@@ -27,6 +27,11 @@ Mvars=IndexedSet({
     , MVar('compartmental_dyad') 
     , MVar('compartmental_matrix')
     , MVar('vegetation_base_vector_list') 
+    , MVar('vegetation_cycling_matrix') 
+    , MVar('soil_matrix') 
+    , MVar('vegetation_to_soil_matrix') 
+    , MVar('soil_to_vegetation_matrix') 
+    , MVar('soil_base_vector_list') 
     , MVar('input_vector') 
     , MVar('input_tuple') 
     , MVar('carbon_allocation_tuple') 
@@ -59,6 +64,46 @@ Computers=IndexedSet({
              ,func=lambda dyad,cs: express(dyad,cs).to_matrix(cs)
             ,description="""computes the matrix of the CompartmentalSystems with respect to the given coordinate frame"""
         )
+
+        ,Computer(
+             'vegetation_cycling_matrix(compartmental_dyad,vegetation_base_vector_list)'
+             ,func=functions.matrix_from_dyad_and_vector_list
+            ,description="""computes the block matrix V2V of the CompartmentalSystems desribing the transport from vegegetation to vegetation pools.
+            . 
+            v  = V2V   S2V
+            s    V2S   S2S
+            """
+        )
+        ,Computer(
+             'vegetation_to_soil_matrix(compartmental_dyad,soil_base_vector_list,vegetation_base_vector_list)'
+             ,func=functions.matrix_from_dyad_and_vector_lists
+            ,description="""computes the block matrix V2S describing transport of material from vegetation to soil pools
+            . 
+            v  = V2V   S2V
+            s    V2S   S2S
+            """
+        )
+        ,Computer(
+             'soil_to_vegetation_matrix(compartmental_dyad,vegetation_base_vector_list,soil_base_vector_list)'
+             ,func=functions.matrix_from_dyad_and_vector_lists
+            ,description="""
+            computes the block matrix S2V of transports from soil to vegetation pools 
+            . 
+            v  = V2V   S2V
+            s    V2S   S2S
+            """
+        )
+        ,Computer(
+             'soil_matrix(compartmental_dyad,soil_base_vector_list)'
+             ,func=functions.matrix_from_dyad_and_vector_list
+            ,description="""
+            computes the block matrix S2S describing transports from soil to soil pools 
+            . 
+            v  = V2V   S2V
+            s    V2S   S2S
+            """
+        )
+
         ,Computer(
              'compartmental_dyad(compartmental_matrix,coord_sys)'
              ,func=functions.dyad_from_matrix_and_coord_sys

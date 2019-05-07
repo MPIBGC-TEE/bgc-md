@@ -32,7 +32,6 @@ def remove_leading_whitespace(string,start):
         
 class TestComputers(unittest.TestCase):
 
-
     def test_arg_names(self):
         # here we test the (growing) sets of Mvars and Computers included in the packe
         # compute the set of computable Mvars from the names of defined variables 
@@ -104,6 +103,50 @@ class TestComputers(unittest.TestCase):
                  allMvars['state_vector'](allMvars,allComputers,name_space)
                 ,CoordSysND(name="C",vector_names=["e_vl","e_vw"],transformation='cartesian')
         )
+    def test_vegetation_and_soil_parts(self):
+        # The vegetation part of a model is defined by the set of state variables that represent vegetation pools
+        # This information automatically determines all the components of the normal form of a vegetation part of a model 
+        # d/dt C = A *C + b* u
+        # The same is true for the soil part
+        # d/dt C = B*C+ I = T* N *C + I 
+
+        C=CoordSysND(name="C",vector_names=["e_vl","e_vw","e_vr","e_ss","e_sf"],transformation='cartesian')
+        vl,vw,ss,fs= symbols("vl vw ss _sf")
+        I_vl,I_vw,I_ss,I_sf= symbols("I_vl I_vw I_ss I_sf")
+        R_vl,R_vw,R_ss,R_sf= symbols("R_vl R_vw R_ss R_sf")
+        k_phot= symbols("k_phot")
+        gamma_vl,gamma_vw,gamma_vr= symbols("gamma_vl,gamma_vw,gamma_vr")
+        name_space_1={
+                'coord_sys':C
+                ,'input_vector':(k_phot*vl-R_vl*vl)*C.e_vl + (k_phot*vl-R_vw*vw)*C.e_vw + I_ss*C.e_ss + I_ss*C.e_ss
+                ,'compartmental_dyad': -1*( 
+                    (C.e_vl|C.e_vl) 
+                    + (C.e_vw|C.e_vw) 
+                    + (C.e_vr|C.e_vr) 
+                    + R_ss*(C.e_ss|C.e_ss)
+                    + R_sf*(C.e_sf|C.e_sf)
+                )
+                ,'vegetation_base_vector_list':[C.e_vl ,C.e_vw,C.e_vr] 
+                ,'soil_base_vector_list':[C.e_ss ,C.e_sf] 
+                # the elements of the list could even be expressions depending on several of the basevectors
+        }
+        
+        # we can now look at the projections onto the vegetation pools 
+        at    =allMvars['carbon_allocation_tuple'](allMvars,allComputers,name_space_1)
+        pe('at',locals())
+        ta     =allMvars['total_carbon_allocation'](allMvars,allComputers,name_space_1)
+        pe('ta',locals())
+        rt    =allMvars['relative_carbon_allocation_tuple'](allMvars,allComputers,name_space_1)
+        pe('rt',locals())
+        cyc=allMvars['vegetation_cycling_matrix'](allMvars,allComputers,name_space_1)
+        pe('cyc',locals())
+        A=allMvars['soil_matrix'](allMvars,allComputers,name_space_1)
+        pe('A',locals())
+        SV=allMvars['soil_to_vegetation_matrix'](allMvars,allComputers,name_space_1)
+        pe('SV',locals())
+        VS=allMvars['vegetation_to_soil_matrix'](allMvars,allComputers,name_space_1)
+        pe('VS',locals())
+        
     def test_b_comparison(self):
         # Assume we have two different models (here represented by two namespaces)
         # that both define carbon allocation with respect to their own pool names
@@ -160,7 +203,7 @@ class TestComputers(unittest.TestCase):
                 'coord_sys':C_2c
                 ,'input_vector':Rational(1,2)*u*C_2c.e_leaf + Rational(1,4)*u*C_2c.e_wood + Rational(1,4)*u*C_2c.e_root + u_soil*C_2c.e_soil 
                 ,'vegetation_base_vector_list':[C_2c.e_leaf, C_2c.e_wood ,C_2c.e_root ]
-                ,'total_carbon_allocation': u
+                ,'total_carbon_allocation': u #this overrides the actual computation of u . The 
         }
         # we can now look at the projections onto the vegetation pools 
         at_1    =allMvars['carbon_allocation_tuple'](allMvars,allComputers,name_space_1)
@@ -178,18 +221,18 @@ class TestComputers(unittest.TestCase):
         at_2c   =allMvars['carbon_allocation_tuple'](allMvars,allComputers,name_space_2c)
         t_2c     =allMvars['total_carbon_allocation'](allMvars,allComputers,name_space_2c)
         rt_2c    =allMvars['relative_carbon_allocation_tuple'](allMvars,allComputers,name_space_2c)
-        pe('at_1',locals())
-        pe('t_1',locals())
-        pe('rt_1',locals())
-        
-        pe('at_2a',locals())
-        pe('t_2a',locals())
-        pe('rt_2a',locals())
-        
-        pe('at_2b',locals())
-        pe('t_2b',locals())
-        pe('rt_2b',locals())
-        
+        #pe('at_1',locals())
+        #pe('t_1',locals())
+        #pe('rt_1',locals())
+        #
+        #pe('at_2a',locals())
+        #pe('t_2a',locals())
+        #pe('rt_2a',locals())
+        #
+        #pe('at_2b',locals())
+        #pe('t_2b',locals())
+        #pe('rt_2b',locals())
+        #
         pe('at_2c',locals())
         pe('t_2c',locals())
         pe('rt_2c',locals())
