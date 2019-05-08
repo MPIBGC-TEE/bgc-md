@@ -29,6 +29,9 @@ Mvars=IndexedSet({
     , MVar('vegetation_base_vector_list') 
     , MVar('vegetation_cycling_matrix') 
     , MVar('soil_matrix') 
+    , MVar('soil_scaling_matrix_xi') 
+    , MVar('soil_decomposition_matrix_N') 
+    , MVar('soil_transport_matrix_T') 
     , MVar('vegetation_to_soil_matrix') 
     , MVar('soil_to_vegetation_matrix') 
     , MVar('soil_base_vector_list') 
@@ -55,10 +58,26 @@ Mvars=IndexedSet({
 })
 
 Computers=IndexedSet({
-        Computer('smooth_reservoir_model(coord_sys,state_vector,time_symbol,compartmental_dyad,input_vector)' 
+        Computer('soil_scaling_matrix_xi(smooth_reservoir_model)' 
+            ,func=lambda srm : srm.xi_T_N_u_representation()[0]
+            ,description="""Computes T of the SoilModel normal form B=xi*T*N"""
+        )
+        ,Computer('soil_transport_matrix_T(smooth_reservoir_model)' 
+            ,func=lambda srm : srm.xi_T_N_u_representation()[1]
+            ,description="""Computes T of the SoilModel normal form B=xi*T*N"""
+        )
+        ,Computer('soil_decomposition_matrix_N(smooth_reservoir_model)' 
+            ,func=lambda srm : srm.xi_T_N_u_representation()[2]
+            ,description="""Computes N of the SoilModel normal form B=xi*T*N"""
+        )
+        ,Computer('smooth_reservoir_model(coord_sys,state_vector,time_symbol,compartmental_dyad,input_vector)' 
             ,func=functions.srm_from_B_u_tens
             ,description="""Produces a smoth reservoir model"""
         )
+        #,Computer('coord_sys(state_tuple)' 
+        #    ,func=functions.srm_from_B_u_tens
+        #    ,description="""Produces a smoth reservoir model"""
+        #)
         ,Computer(
              'compartmental_matrix(compartmental_dyad,coord_sys)'
              ,func=lambda dyad,cs: express(dyad,cs).to_matrix(cs)

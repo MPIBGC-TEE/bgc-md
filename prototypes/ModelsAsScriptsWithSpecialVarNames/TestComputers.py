@@ -111,7 +111,8 @@ class TestComputers(unittest.TestCase):
         # d/dt C = B*C+ I = T* N *C + I 
 
         C=CoordSysND(name="C",vector_names=["e_vl","e_vw","e_vr","e_ss","e_sf"],transformation='cartesian')
-        vl,vw,ss,fs= symbols("vl vw ss _sf")
+        t = Symbol("t")
+        vl,vw,vr,ss,sf= symbols("vl vw vr ss sf")
         I_vl,I_vw,I_ss,I_sf= symbols("I_vl I_vw I_ss I_sf")
         R_vl,R_vw,R_ss,R_sf= symbols("R_vl R_vw R_ss R_sf")
         k_phot= symbols("k_phot")
@@ -119,6 +120,8 @@ class TestComputers(unittest.TestCase):
         name_space_1={
                 'coord_sys':C
                 ,'input_vector':(k_phot*vl-R_vl*vl)*C.e_vl + (k_phot*vl-R_vw*vw)*C.e_vw + I_ss*C.e_ss + I_ss*C.e_ss
+                ,'state_vector':vl*C.e_vl + vw*C.e_vw + vr*C.e_vr+ ss*C.e_ss + sf*C.e_sf
+                ,'time_symbol':t
                 ,'compartmental_dyad': -1*( 
                     (C.e_vl|C.e_vl) 
                     + (C.e_vw|C.e_vw) 
@@ -142,6 +145,14 @@ class TestComputers(unittest.TestCase):
         pe('cyc',locals())
         A=allMvars['soil_matrix'](allMvars,allComputers,name_space_1)
         pe('A',locals())
+
+        xi=allMvars['soil_scaling_matrix_xi'](allMvars,allComputers,name_space_1)
+        pe('xi',locals())
+        T=allMvars['soil_transport_matrix_T'](allMvars,allComputers,name_space_1)
+        pe('T',locals())
+        N=allMvars['soil_decomposition_matrix_N'](allMvars,allComputers,name_space_1)
+        pe('N',locals())
+        
         SV=allMvars['soil_to_vegetation_matrix'](allMvars,allComputers,name_space_1)
         pe('SV',locals())
         VS=allMvars['vegetation_to_soil_matrix'](allMvars,allComputers,name_space_1)
