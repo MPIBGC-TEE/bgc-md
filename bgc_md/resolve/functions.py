@@ -57,5 +57,5 @@ def matrix_from_dyad_and_vector_lists(
 def default_coordinate_system(
         state_tuple : Tuple[Symbol]
     ):
-    return CoordSysND(name="C",vector_names=["e_"++str(sym) for sym in state_tuple]=,transformation='cartesian')
+    return CoordSysND(name="C",vector_names=["e_"++str(sym) for sym in state_tuple],transformation='cartesian')
     

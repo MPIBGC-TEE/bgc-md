@@ -93,13 +93,14 @@ class TestComputers(unittest.TestCase):
 
     def test_coord_sys(self):
         # construct the coordinate system from the ordered tuple of statevariables
+        # fixme: mm 9 5 
         vl,vw= symbols("vl vw")
         st=Matrix([vl,vw])
         name_space={
                 'state_tuple':st
         }
         self.assertEqual(
-                 allMvars['state_vector'](allMvars,allComputers,name_space)
+                 allMvars['coord_sys'](allMvars,allComputers,name_space)
                 ,CoordSysND(name="C",vector_names=["e_vl","e_vw"],transformation='cartesian')
         )
     def test_vegetation_and_soil_parts(self):

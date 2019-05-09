@@ -74,10 +74,10 @@ Computers=IndexedSet({
             ,func=functions.srm_from_B_u_tens
             ,description="""Produces a smoth reservoir model"""
         )
-        #,Computer('coord_sys(state_tuple)' 
-        #    ,func=functions.srm_from_B_u_tens
-        #    ,description="""Produces a smoth reservoir model"""
-        #)
+        ,Computer('coord_sys(state_tuple)' 
+            ,func=functions.default_coordinate_system
+            ,description="""Produces a smoth reservoir model"""
+        )
         ,Computer(
              'compartmental_matrix(compartmental_dyad,coord_sys)'
              ,func=lambda dyad,cs: express(dyad,cs).to_matrix(cs)
