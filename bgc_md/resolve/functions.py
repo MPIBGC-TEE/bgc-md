@@ -1,6 +1,8 @@
 from functools import reduce
 from sympy import Symbol,Number,Matrix
+from sympy.matrices import SparseMatrix
 from sympy.vector import CoordSysND,express,Vector,Dyadic
+from sympy.combinatorics import Permutation
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from testinfrastructure.helpers import pe
 from typing import List,Tuple
@@ -57,5 +59,18 @@ def matrix_from_dyad_and_vector_lists(
 def default_coordinate_system(
         state_tuple : Tuple[Symbol]
     ):
-    return CoordSysND(name="C",vector_names=["e_"++str(sym) for sym in state_tuple],transformation='cartesian')
+    return CoordSysND(name="C",vector_names=["e_" + str(sym) for sym in state_tuple],transformation='cartesian')
     
+def permutationMatrix(
+         l1:List[str]
+        ,l2:List[str]
+    ):
+    n=len(l1)
+    s=set(l1)
+    ns=len(s)
+    assert(n==ns) # no double entries in the first list
+    assert(set(l1)==set(l2)) # make sure that we really deal with a permutation 
+    p=Permutation([l2.index(el) for el in l1])
+    return SparseMatrix(n,n,{(i,p(i)):1 for i in range(n)})
+     
+

@@ -23,7 +23,7 @@ from CompartmentalSystems.smooth_model_run import SmoothModelRun
 from bgc_md.resolve.helpers import  get3, computable_mvars
 from bgc_md.resolve.MVar import MVar
 from bgc_md.resolve.Computer import Computer
-from bgc_md.resolve.functions import srm_from_B_u_tens
+from bgc_md.resolve.functions import permutationMatrix
 from bgc_md.resolve.IndexedSet import IndexedSet
 
 def remove_leading_whitespace(string,start):
@@ -103,6 +103,7 @@ class TestComputers(unittest.TestCase):
                  allMvars['coord_sys'](allMvars,allComputers,name_space)
                 ,CoordSysND(name="C",vector_names=["e_vl","e_vw"],transformation='cartesian')
         )
+    
     def test_vegetation_and_soil_parts(self):
         # The vegetation part of a model is defined by the set of state variables that represent vegetation pools
         # This information automatically determines all the components of the normal form of a vegetation part of a model 
