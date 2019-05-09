@@ -3,7 +3,7 @@ from sympy import Symbol,Number,Matrix
 from sympy.vector import CoordSysND,express,Vector,Dyadic
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from testinfrastructure.helpers import pe
-from typing import List
+from typing import List,Tuple
 def srm_from_B_u_tens(
     # fixme mm 21.03 2019
     # This could become an alternative constructor (@classmethod) 
@@ -53,3 +53,9 @@ def matrix_from_dyad_and_vector_lists(
     def f(i,j):
         return (l1[i].dot(B)).dot(l2[j])
     return Matrix(len(l1),len(l2),f)
+
+def default_coordinate_system(
+        state_tuple : Tuple[Symbol]
+    ):
+    return CoordSysND(name="C",vector_names=["e_"++str(sym) for sym in state_tuple]=,transformation='cartesian')
+    

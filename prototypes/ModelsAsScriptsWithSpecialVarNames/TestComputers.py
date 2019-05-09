@@ -98,7 +98,6 @@ class TestComputers(unittest.TestCase):
         name_space={
                 'state_tuple':st
         }
-        raise(Exception("not implemented yet"))
         self.assertEqual(
                  allMvars['state_vector'](allMvars,allComputers,name_space)
                 ,CoordSysND(name="C",vector_names=["e_vl","e_vw"],transformation='cartesian')
@@ -136,28 +135,29 @@ class TestComputers(unittest.TestCase):
         
         # we can now look at the projections onto the vegetation pools 
         at    =allMvars['carbon_allocation_tuple'](allMvars,allComputers,name_space_1)
-        pe('at',locals())
         ta     =allMvars['total_carbon_allocation'](allMvars,allComputers,name_space_1)
-        pe('ta',locals())
         rt    =allMvars['relative_carbon_allocation_tuple'](allMvars,allComputers,name_space_1)
-        pe('rt',locals())
         cyc=allMvars['vegetation_cycling_matrix'](allMvars,allComputers,name_space_1)
-        pe('cyc',locals())
         A=allMvars['soil_matrix'](allMvars,allComputers,name_space_1)
-        pe('A',locals())
 
         xi=allMvars['soil_scaling_matrix_xi'](allMvars,allComputers,name_space_1)
-        pe('xi',locals())
         T=allMvars['soil_transport_matrix_T'](allMvars,allComputers,name_space_1)
-        pe('T',locals())
         N=allMvars['soil_decomposition_matrix_N'](allMvars,allComputers,name_space_1)
-        pe('N',locals())
         
         SV=allMvars['soil_to_vegetation_matrix'](allMvars,allComputers,name_space_1)
-        pe('SV',locals())
         VS=allMvars['vegetation_to_soil_matrix'](allMvars,allComputers,name_space_1)
-        pe('VS',locals())
         
+        #pe('at',locals())
+        #pe('ta',locals())
+        #pe('rt',locals())
+        #pe('cyc',locals())
+        #pe('A',locals())
+        #pe('xi',locals())
+        #pe('T',locals())
+        #pe('N',locals())
+        #pe('SV',locals())
+        #pe('VS',locals())
+
     def test_b_comparison(self):
         # Assume we have two different models (here represented by two namespaces)
         # that both define carbon allocation with respect to their own pool names
