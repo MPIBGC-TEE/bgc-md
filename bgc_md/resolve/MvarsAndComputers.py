@@ -21,6 +21,7 @@ from .MVar import MVar
 from .Computer import Computer
 Mvars=IndexedSet({
       MVar('coord_sys') 
+    , MVar('example_MVar',description='A variable used in the tests to show how to extend the framework')
     , MVar('state_vector')
     , MVar('state_tuple')
     , MVar('time_symbol') 

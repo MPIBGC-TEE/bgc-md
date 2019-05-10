@@ -2,7 +2,7 @@
 from sympy import symbols,solve, pi, Eq ,Matrix
 from sympy.physics.units import mass,time
 from sympy.physics.units import Quantity 
-from sympy.physics.units import year,month,day,second,minute
+from sympy.physics.units import year,day,second,minute
 from sympy.physics.units import meter, kilogram
 from sympy.physics.units.dimensions import dimsys_SI
 from sympy.physics.units import convert_to
