@@ -23,6 +23,7 @@ Mvars=IndexedSet({
       MVar('coord_sys') 
     , MVar('example_MVar',description='A variable used in the tests to show how to extend the framework')
     , MVar('state_vector')
+    , MVar('documented_quantities')
     , MVar('state_tuple')
     , MVar('time_symbol') 
     , MVar('compartmental_dyad') 
