@@ -5,7 +5,8 @@ from sympy.vector import CoordSysND,express,Vector,Dyadic,matrix_to_vector
 from bgc_md.resolve.functions import permutationMatrix
 from bgc_md.resolve.MvarsAndComputers import Mvars as allMvars 
 from bgc_md.resolve.MvarsAndComputers import Computers as allComputers
-
+from bgc_md.DescribedSymbol import DesribedSymbol
+from bgc_md.DescribedQuantity import DescribedQuantity
 from sympy import symbols,solve, pi, Eq ,Matrix
 from sympy.physics.units import mass,time
 from sympy.physics.units import Quantity 
@@ -16,12 +17,35 @@ from sympy.physics.units import convert_to
 
 class TestNameSpaces(unittest.TestCase):
     def test_documented_Quanteties(self):
-        s=Quantity("s")
+        s=DescribedQuantity("s")
         s.set_dimension(mass,"SI")
+        s=DescribedQuantity("s")
+        s.set_dimension(mass,"SI")
+        s.set_description("Soil carbon ")
+        
+        l=DescribedQuantity("l")
+        l.set_dimension(mass,"SI")
+        l.set_description("Leaf carbon ")
+        
+        k_s=DescribedQuantity("k_s")
+        k_s.set_dimension(mass/time,"SI")
+        k_s.set_description("Soil respiration rate")
+        
+        k_l=DescribedQuantity("k_l")
+        k_l.set_dimension(mass/time,"SI")
+        k_l.set_description("Leaf respiration rate")
+
+        B=Matrix([[k_l,0],[0,k_s]])
+        
+
         #s.set_description("Soil carbon ")
         # the model defining script or the UI can add symbols and quanteties to the model
         # It should an ordered dict to give control to the user
-        model_name_space_a={'documented_quantities':[]}
+        model_name_space_a={
+                'documented_identifiers':[k_s,k_l,l,s]
+                ,'compartmental_matrix':B
+                ,'state_tuple':Matrix([l,s])
+        }
 
     def test_alternative_coordinate_systems_for_model_comparison(self):
         # Assume that we have a bunch of  different pool systems that are actually quite

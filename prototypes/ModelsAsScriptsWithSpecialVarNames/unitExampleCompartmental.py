@@ -2,7 +2,7 @@
 from sympy import symbols,solve, pi, Eq ,Matrix
 from sympy.physics.units import mass,time
 from sympy.physics.units import Quantity 
-from sympy.physics.units import year,month,day,second,minute
+from sympy.physics.units import year,day,second,minute
 from sympy.physics.units import meter, kilogram
 from sympy.physics.units.dimensions import dimsys_SI
 from sympy.physics.units import convert_to
@@ -19,9 +19,9 @@ s=MyQuantity("s")
 s.set_dimension(mass,"SI")
 s.set_description("Soil carbon ")
 
-s=MyQuantity("l")
-s.set_dimension(mass,"SI")
-s.set_description("Leaf carbon ")
+l=MyQuantity("l")
+l.set_dimension(mass,"SI")
+l.set_description("Leaf carbon ")
 
 k_s=MyQuantity("k_s")
 k_s.set_dimension(mass/time,"SI")
