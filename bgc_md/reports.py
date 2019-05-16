@@ -62,8 +62,14 @@ def defaults():
     soilModelPath=dataPath.joinpath("SoilModels")
     vegModelPath =dataPath.joinpath("VegetationModels") 
     
-    templatePath=this.joinpath("report_templates")
-    path_dict={"veg":vegModelPath,"soil":soilModelPath,"tested_records":tested_record_path,'data':dataPath,"report_templates":templatePath}
+    path_dict={
+            "veg":vegModelPath
+            ,"soil":soilModelPath
+            ,"tested_records":tested_record_path
+            ,'data':dataPath
+            ,"report_templates":this.joinpath("report_templates")
+            ,"static_report_templates":this.joinpath("static_report_templates")
+    }
     
     dir_dict={key:value.as_posix() for key,value in path_dict.items()}
     msg_dict={key:"generating %s model website to" % key for key in path_dict.keys()}
