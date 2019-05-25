@@ -15,6 +15,7 @@ from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
 #from CompartmentalSystems import smooth_reservoir_model 
 #from .ClassesStateLess import MVar3,Computer3
+from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory,  defaults,render
 from . import functions 
 from .IndexedSet import IndexedSet
 from .MVar import MVar
@@ -23,7 +24,8 @@ Mvars=IndexedSet({
       MVar('coord_sys') 
     , MVar('example_MVar',description='A variable used in the tests to show how to extend the framework')
     , MVar('state_vector')
-    , MVar('documented_quantities')
+    , MVar('documented_identifiers_table_rel')
+    , MVar('documented_identifiers')
     , MVar('state_tuple')
     , MVar('time_symbol') 
     , MVar('compartmental_dyad') 
@@ -169,5 +171,17 @@ Computers=IndexedSet({
              'carbon_allocation_tuple(input_vector,vegetation_base_vector_list)'
              ,func=lambda iv,l: np.array([iv.dot(bv) for bv in l])
             ,description="""Computes the projections of the input vector to a list of vectors that represent vegetation pools."""
+        )
+        # reports are also 'computed' and their availability depends on the 
+        # the ohter MVars given. It makes sense to check if they can be
+        # created 
+        ,Computer(
+             'documented_identifiers_table_rel(documented_identifiers)'
+             ,func=lambda l:render(
+                 defaults()['paths']['static_report_templates'].joinpath('SectionVariablesTable.py')
+                 ,l
+                 )
+            ,description="""creates a ReportElementList instance for
+            the variables reported in the namespace"""
         )
 })

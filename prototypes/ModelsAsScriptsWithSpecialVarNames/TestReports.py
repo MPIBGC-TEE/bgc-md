@@ -47,7 +47,8 @@ class TestReportTemplates(unittest.TestCase):
                 ,'compartmental_matrix':B
                 ,'state_tuple':Matrix([l,s])
         }
-        d=defaults() 
-        tp=d['paths']['static_report_templates'].joinpath('single_model','SectionVariablesTable.py')
-        rel=render(tp,name_space)
+        #d=defaults() 
+        #tp=d['paths']['static_report_templates'].joinpath('SectionVariablesTable.py')
+        #rel=render(tp,name_space)
+        rel=allMvars['documented_identifiers_table_rel'](allMvars,allComputers,name_space)
 
