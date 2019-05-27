@@ -5,7 +5,7 @@ from sympy.vector import CoordSysND,express,Vector,Dyadic
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
 from CompartmentalSystems.helpers_reservoir import numerical_function_from_expression
-from bgc_md.DescribedSymbol import DesribedSymbol
+from bgc_md.DescribedSymbol import DescribedSymbol
 from bgc_md.DescribedQuantity import DescribedQuantity
 # the next line will change to an import from CompartmentalSystem
 # once the new constructor is established

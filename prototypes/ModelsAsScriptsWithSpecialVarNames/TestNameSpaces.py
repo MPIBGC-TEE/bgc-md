@@ -5,7 +5,7 @@ from sympy.vector import CoordSysND,express,Vector,Dyadic,matrix_to_vector
 from bgc_md.resolve.functions import permutationMatrix
 from bgc_md.resolve.MvarsAndComputers import Mvars as allMvars 
 from bgc_md.resolve.MvarsAndComputers import Computers as allComputers
-from bgc_md.DescribedSymbol import DesribedSymbol
+from bgc_md.DescribedSymbol import DescribedSymbol
 from bgc_md.DescribedQuantity import DescribedQuantity
 from sympy import symbols,solve, pi, Eq ,Matrix
 from sympy.physics.units import mass,time

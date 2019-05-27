@@ -5,9 +5,10 @@ from sympy.vector import CoordSysND,express,Vector,Dyadic,matrix_to_vector
 from bgc_md.resolve.functions import permutationMatrix
 from bgc_md.resolve.MvarsAndComputers import Mvars as allMvars 
 from bgc_md.resolve.MvarsAndComputers import Computers as allComputers
-from bgc_md.DescribedSymbol import DesribedSymbol
+from bgc_md.resolve.helpers import  populated_namespace_from_path
+from bgc_md.DescribedSymbol import DescribedSymbol
 from bgc_md.DescribedQuantity import DescribedQuantity
-from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory,  defaults,render
+from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory,  defaults,render2
 from sympy import symbols,solve, pi, Eq ,Matrix
 from sympy.physics.units import mass,time
 from sympy.physics.units import Quantity 
@@ -17,6 +18,7 @@ from sympy.physics.units.dimensions import dimsys_SI
 from sympy.physics.units import convert_to
 
 class TestReportTemplates(unittest.TestCase):
+    @unittest.skip
     def test_documented_Quanteties(self):
         s=DescribedQuantity("s")
         s.set_dimension(mass,"SI")
@@ -54,8 +56,8 @@ class TestReportTemplates(unittest.TestCase):
 
     def test_render_cable(self):
         d=defaults() 
-        sp=d['paths']['new_models_path'].joinpath('miniCable')
-        tp=d['paths']['static_report_templates'].joinpath('SectionVariablesTable.py')
+        sp=d['paths']['new_models_path'].joinpath('miniCable','source.py')
+        tp=d['paths']['static_report_templates'].joinpath('single_model','CompleteSingleModelReport.py')
         mns=populated_namespace_from_path(sp)
         render2(tp,mns)
             #m=Model.from_path(rec)
