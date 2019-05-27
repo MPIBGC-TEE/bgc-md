@@ -69,6 +69,7 @@ def defaults():
             ,'data':dataPath
             ,"report_templates":this.joinpath("report_templates")
             ,"static_report_templates":this.joinpath("static_report_templates")
+            ,"new_models_path":this.parent.joinpath("prototypes","ModelsAsScriptsWithSpecialVarNames","models") 
     }
     
     dir_dict={key:value.as_posix() for key,value in path_dict.items()}

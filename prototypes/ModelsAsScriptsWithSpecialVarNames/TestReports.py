@@ -52,3 +52,12 @@ class TestReportTemplates(unittest.TestCase):
         #rel=render(tp,name_space)
         rel=allMvars['documented_identifiers_table_rel'](allMvars,allComputers,name_space)
 
+    def test_render_cable(self):
+        d=defaults() 
+        sp=d['paths']['new_models_path'].joinpath('miniCable')
+        tp=d['paths']['static_report_templates'].joinpath('SectionVariablesTable.py')
+        mns=populated_namespace_from_path(sp)
+        render2(tp,mns)
+            #m=Model.from_path(rec)
+            #rel=render(tp,model=m)
+#
