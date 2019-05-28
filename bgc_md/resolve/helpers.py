@@ -1,19 +1,25 @@
-
 import os
 import contextlib
 import sys
 from pathlib import Path
-from . import MvarsAndComputers as mvars
+from testinfrastructure.helpers import pe
+#from . import MvarsAndComputers as mvars
+from .MvarsAndComputers import Mvars as myMvars
+from .MvarsAndComputers import Computers as myComputers
 from .IndexedSet import IndexedSet
+from bgc_md.reports import defaults
 
 srcFileName="source.py"
-modelFolderName="models"
+d=defaults() 
+modelFolderName=d['paths']['new_models_path']
 special_var_string="special_vars"
 def srcDirPath(model_id):
     return Path(modelFolderName).joinpath(model_id)
 
 def srcPath(model_id):
-    return srcDirPath(model_id).joinpath(srcFileName)
+    p=srcDirPath(model_id).joinpath(srcFileName)
+    pe('p',locals())
+    return p
 
 @contextlib.contextmanager
 def working_directory(path):
@@ -60,6 +66,11 @@ def populated_namespace(model_id):
         exec(code,gns)
     return gns
 
+def get_bgc(var_name:str,model_id:str):
+    return get3(var_name,myMvars,myComputers,model_id)
+
+def is_computable_bgc(var_name:str,model_id:str):
+    return myMvars[var_name].is_computable(myMvars,myComputers,names_of_available_mvars(model_id))
     
 def get3(var_name:str,allMvars,allComputers,model_id:str):
     # execute the model code
@@ -71,6 +82,13 @@ def get3(var_name:str,allMvars,allComputers,model_id:str):
     special_vars=gns[special_var_string] 
     return mvar(allMvars,allComputers,special_vars)
     
+def special_vars(model_id):
+    gns=populated_namespace(model_id)
+    return gns[special_var_string] 
+
+def names_of_available_mvars(model_id):
+    return [str(k) for k in special_vars(model_id).keys()]
+
 
 def computable_mvars(
         allMvars:IndexedSet
@@ -86,34 +104,3 @@ def computable_mvars(
             )]
     return frozenset(l)
   
-   # check if the user has defined it directly 
-    
-    
-#def get_documented_variables(model_id):
-#    #gns=populated_namespace(model_id)
-#    return [v for v in gns.values() if isinstance(v,DescribedQuantity)]
-    
-
-    
-     
-    
-    
-#def get(model_id,callString):
-#    p=srcPath(model_id)
-#    with p.open() as f:
-#        code= compile(f.read(),p,mode='exec')
-#        #code= f.read()
-#    gns={}
-#    #prepare the execution environment
-#    #exec_('from bgc_md.ModelDescriptor import ModelDescriptor',gns,lns) #
-#    #exec(code,gns,lns)
-#    exec(code,gns)
-#    #call the function
-#    res=eval(callString,gns)
-#    return res
-
-
-# alternative constructor based on the formulation f=u+Bx but with 
-# statevector and u bein sympy.vector.nd-vector Vectors
-# functions like the following could be sourced out into a helper module
-

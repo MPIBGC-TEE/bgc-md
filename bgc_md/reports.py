@@ -994,7 +994,7 @@ def render(template_path,*args,**kw):
     return rel
 
 ########################################################################
-def render_if_possible(template_path,*args,**kw):
+def render2(template_path,*args,**kw):
     from bgc_md.resolve.MvarsAndComputers import Mvars as allMvars 
     from bgc_md.resolve.MvarsAndComputers import Computers as allComputers
     

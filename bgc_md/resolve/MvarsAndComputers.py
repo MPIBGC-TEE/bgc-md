@@ -24,7 +24,7 @@ Mvars=IndexedSet({
       MVar('coord_sys') 
     , MVar('example_MVar',description='A variable used in the tests to show how to extend the framework')
     , MVar('state_vector')
-    , MVar('documented_identifiers_table_rel')
+    , MVar('documented_identifiers_table')
     , MVar('documented_identifiers')
     , MVar('state_tuple')
     , MVar('time_symbol') 
@@ -176,9 +176,9 @@ Computers=IndexedSet({
         # the ohter MVars given. It makes sense to check if they can be
         # created 
         ,Computer(
-             'documented_identifiers_table_rel(documented_identifiers)'
+             'documented_identifiers_table(documented_identifiers)'
              ,func=lambda l:render(
-                 defaults()['paths']['static_report_templates'].joinpath('SectionVariablesTable.py')
+                 defaults()['paths']['static_report_templates'].joinpath('documented_identifiers.py')
                  ,l
                  )
             ,description="""creates a ReportElementList instance for

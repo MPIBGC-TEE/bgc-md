@@ -5,10 +5,10 @@ from sympy.vector import CoordSysND,express,Vector,Dyadic,matrix_to_vector
 from bgc_md.resolve.functions import permutationMatrix
 from bgc_md.resolve.MvarsAndComputers import Mvars as allMvars 
 from bgc_md.resolve.MvarsAndComputers import Computers as allComputers
-from bgc_md.resolve.helpers import  populated_namespace_from_path
+from bgc_md.resolve.helpers import special_vars 
 from bgc_md.DescribedSymbol import DescribedSymbol
 from bgc_md.DescribedQuantity import DescribedQuantity
-from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory,  defaults,render_if_possible
+from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory,  defaults,render2
 from sympy import symbols,solve, pi, Eq ,Matrix
 from sympy.physics.units import mass,time
 from sympy.physics.units import Quantity 
@@ -54,12 +54,24 @@ class TestReportTemplates(unittest.TestCase):
         #rel=render(tp,name_space)
         rel=allMvars['documented_identifiers_table_rel'](allMvars,allComputers,name_space)
 
-    def test_render_cable(self):
+    def test_render_cable_overview(self):
+        #    There are two kinds of templates:
+        #    1. Overview templates with possibly missing parts:
+        #       We will have overview templates that do not know beforehand which of their
+        #       parts can be filled with values. These templates should receive 
+        #       a collection of MVars (maybe the whole namespace as extracted from a model file) 
+        #       as argument. Even if some of the MVars they would present are unavailable 
+        #       The overview should still be presented (in a shortened way).
+        #       It does not make sense to treat these templates as MVars since we would
+        #       have to provide a computer for every still presentable subset of the 
+        #       MVars they need.
+        #    2. Specific subtemplates that make only sense if all the presented MVars are available: 
+        #       They are in fact MVars themselves with one specific Computer and we can check if 
+        #       they are computable given a namespace as for other MVars.
+        #       This is interesting for the GUI which can on the fly decide which things to show
+        #   
+        #    In this test we render a template of the first kind, which in turn renders subtemplates
+        #    of the second kind if the required information is available. 
         d=defaults() 
-        sp=d['paths']['new_models_path'].joinpath('miniCable','source.py')
         tp=d['paths']['static_report_templates'].joinpath('single_model','CompleteSingleModelReport.py')
-        mns=populated_namespace_from_path(sp)
-        render_if_possible(tp,mns)
-            #m=Model.from_path(rec)
-            #rel=render(tp,model=m)
-#
+        render2(tp,'miniCable')

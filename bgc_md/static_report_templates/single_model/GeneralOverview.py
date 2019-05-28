@@ -1,6 +1,6 @@
 from bgc_md.ReportInfraStructure import ReportElementList, Header, Math, Meta, Text, Citation, Table, TableRow, Newline,EmptyLine,MatplotlibFigure, Link, LinkedSubPage, exprs_to_element, PlotlyFigure
 from string import Template
-def template(name_space):
+def template(model_id):
 #    if model.long_name:
 #        t=Template("\'Report of the model: $long_name ($name), version: $version\'").substitute(
 #            long_name=model.long_name
@@ -16,15 +16,15 @@ def template(name_space):
 #    #fixme mm 31.05 2018
 #    # link is not relative
 #    rel+= Link(str(model.yaml_file_path),str(model.yaml_file_path.absolute()))
-    rel+=EmptyLine()
-    rel+= Header("General Overview", 1)
-    reservoir_model = model.reservoir_model
-    if reservoir_model:
-        #fixme mm 31.06 
-        
-    #    plt.rc('text', usetex=True)
-    #    plt.rc('font', family='serif')
-        rel += MatplotlibFigure(reservoir_model.figure(logo=True), "Logo", show_label=False, transparent=True)
+#    rel+=EmptyLine()
+#    rel+= Header("General Overview", 1)
+#    reservoir_model = model.reservoir_model
+#    if reservoir_model:
+#        #fixme mm 31.06 
+#        
+#    #    plt.rc('text', usetex=True)
+#    #    plt.rc('font', family='serif')
+#        rel += MatplotlibFigure(reservoir_model.figure(logo=True), "Logo", show_label=False, transparent=True)
 #    
 #    rel+= Text(r"This report is the result of the use of the python package bgc_md, as means to translate published models to a common language.  The underlying yaml file was created by $curator (Orcid ID: $Oid) on $entryDate.",
 #        curator=model.entryAuthor,
