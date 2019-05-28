@@ -8,7 +8,7 @@ from bgc_md.resolve.MvarsAndComputers import Computers as allComputers
 from bgc_md.resolve.helpers import  populated_namespace_from_path
 from bgc_md.DescribedSymbol import DescribedSymbol
 from bgc_md.DescribedQuantity import DescribedQuantity
-from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory,  defaults,render2
+from bgc_md.reports import produce_model_report_markdown, produce_model_report_markdown_directory,  defaults,render_if_possible
 from sympy import symbols,solve, pi, Eq ,Matrix
 from sympy.physics.units import mass,time
 from sympy.physics.units import Quantity 
@@ -59,7 +59,7 @@ class TestReportTemplates(unittest.TestCase):
         sp=d['paths']['new_models_path'].joinpath('miniCable','source.py')
         tp=d['paths']['static_report_templates'].joinpath('single_model','CompleteSingleModelReport.py')
         mns=populated_namespace_from_path(sp)
-        render2(tp,mns)
+        render_if_possible(tp,mns)
             #m=Model.from_path(rec)
             #rel=render(tp,model=m)
 #

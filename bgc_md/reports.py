@@ -994,7 +994,9 @@ def render(template_path,*args,**kw):
     return rel
 
 ########################################################################
-def render2(template_path,*args,**kw):
+def render_if_possible(template_path,*args,**kw):
+    from bgc_md.resolve.MvarsAndComputers import Mvars as allMvars 
+    from bgc_md.resolve.MvarsAndComputers import Computers as allComputers
     
     with template_path.open() as f:
         print('####################')
@@ -1002,13 +1004,10 @@ def render2(template_path,*args,**kw):
         code= compile(f.read(),template_path,mode='exec')
         #code=f.read()
     
-    exec(code,globals(),locals()) # this makes the template function defined in the file available 
+    gns={}
+    exec(code,gns) # this makes the template function defined in the file available 
     
-    # fixme mm 2019:
-    # the function should not become part of the global namespace
-    # but be executed in a separate environment
-
     # call the function defined in the template
-    func=locals()['template']
+    func=gns['template']
     rel= func.__call__(*args,**kw)
     return rel
