@@ -1,5 +1,7 @@
 import unittest
-from testinfrastructure.helpers import pe
+from testinfrastructure.helpers import pe 
+from testinfrastructure.InDirTest import InDirTest
+from pathlib import Path
 from sympy import Symbol,Number,symbols,Matrix,Rational
 from sympy.vector import CoordSysND,express,Vector,Dyadic,matrix_to_vector
 from bgc_md.resolve.functions import permutationMatrix
@@ -54,6 +56,7 @@ class TestReportTemplates(unittest.TestCase):
         #rel=render(tp,name_space)
         rel=allMvars['documented_identifiers_table_rel'](allMvars,allComputers,name_space)
 
+class TestReportGeneration(InDirTest):
     def test_render_cable_overview(self):
         #    There are two kinds of templates:
         #    1. Overview templates with possibly missing parts:
@@ -74,4 +77,8 @@ class TestReportTemplates(unittest.TestCase):
         #    of the second kind if the required information is available. 
         d=defaults() 
         tp=d['paths']['static_report_templates'].joinpath('single_model','CompleteSingleModelReport.py')
-        render2(tp,'miniCable')
+        rel=render2(tp,'miniCable')
+        target_dir_path=Path('.').joinpath('html')
+        target_dir_path.mkdir(parents=True,exist_ok=True)
+        targetFileName='Report.html'
+        rel.write_pypandoc_html(target_dir_path.joinpath(targetFileName))

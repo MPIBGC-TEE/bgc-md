@@ -2,7 +2,10 @@
 
 import copy
 import sys
+import os
 import numpy as np 
+from pathlib import Path
+import contextlib
 
 from sympy import sympify, Symbol, MatrixSymbol 
 from sympy.abc import _clash
@@ -10,15 +13,24 @@ from sympy.parsing import sympy_parser
 from pytexit import py2tex
 
 
-def pp(strng,env,comment=""):
-    pe(strng,env,comment)
+#def pp(strng,env,comment=""):
+#    pe(strng,env,comment)
+#
+#def pe(strng,env,comment=""):
+#    print("\n####################################\n")
+#    print(comment+"\n"+strng+"=:")
+#    print(eval(strng,env))
+#    print("\n####################################\n")
 
-def pe(strng,env,comment=""):
-    print("\n####################################\n")
-    print(comment+"\n"+strng+"=:")
-    print(eval(strng,env))
-    print("\n####################################\n")
-
+@contextlib.contextmanager
+def working_directory(path):
+    """Changes working directory and returns to previous on exit."""
+    prev_cwd = Path.cwd()
+    os.chdir(path)
+    try:
+        yield
+    finally:
+        os.chdir(prev_cwd)
 
 def remove_indentation(entry_str):
     lst = entry_str.splitlines()

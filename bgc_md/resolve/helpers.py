@@ -1,5 +1,6 @@
 import os
-import contextlib
+#import contextlib
+from ..helpers import working_directory
 import sys
 from pathlib import Path
 from testinfrastructure.helpers import pe
@@ -21,15 +22,15 @@ def srcPath(model_id):
     pe('p',locals())
     return p
 
-@contextlib.contextmanager
-def working_directory(path):
-    """Changes working directory and returns to previous on exit."""
-    prev_cwd = Path.cwd()
-    os.chdir(path)
-    try:
-        yield
-    finally:
-        os.chdir(prev_cwd)
+#@contextlib.contextmanager
+#def working_directory(path):
+#    """Changes working directory and returns to previous on exit."""
+#    prev_cwd = Path.cwd()
+#    os.chdir(path)
+#    try:
+#        yield
+#    finally:
+#        os.chdir(prev_cwd)
 def populated_namespace_from_path(p:Path):
     # this is the proxy function 
     # It will compile the user code and populate a sandbox by executing the code  

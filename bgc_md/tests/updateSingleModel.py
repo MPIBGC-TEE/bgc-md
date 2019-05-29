@@ -12,5 +12,5 @@ model=Model.from_file(yaml_file_name)
 html_file_path = html_dir_path.joinpath(model.yaml_file_path.stem,"Report.html")
 html_dir_path.mkdir(exist_ok=True,parents=True)
 rel = report_from_model(model) 
-rel.write_pandoc_html(html_file_path)
+rel.write_pypandoc_html(html_file_path)
 

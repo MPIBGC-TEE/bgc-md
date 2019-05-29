@@ -964,12 +964,14 @@ def render_parse():
         rel=render(template_path,model)
         dir_name = yaml_file_path.stem
         html_file_path= target_dir_path.joinpath(dir_name,fn)
-        rel.write_pandoc_html(html_file_path)
+        #rel.write_pandoc_html(html_file_path)
+        rel.write_pypandoc_html(html_file_path)
     else:
         model_list=ModelList.from_dir_path(Path(com.src_dir))
         rel=render(template_path,model_list)
         html_file_path= target_dir_path.joinpath(fn)
-        rel.write_pandoc_html(html_file_path)
+        #rel.write_pandoc_html(html_file_path)
+        rel.write_pypandoc_html(html_file_path)
     sys.exit(0)
     
 

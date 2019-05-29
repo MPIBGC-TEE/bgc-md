@@ -41,11 +41,13 @@ class TestReportGeneration(InDirTest):
         tp=d['paths']['report_templates'].joinpath('single_model','TransientSystemAgeDensity3d.py')
         model=Model.from_path(sp)
         rel=render(tp,model)
-
-        target_dir_path=Path('.').joinpath('html')
-        target_dir_path.mkdir(parents=True,exist_ok=True)
         targetFileName='Report.html'
-        rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
+        target_dir_names=['pandoc','pypandoc']
+        target_dir_paths={n:Path('.').joinpath(n) for n in target_dir_names}
+        for p in target_dir_paths.values():
+            p.mkdir(parents=True,exist_ok=True)
+        rel.write_pandoc_html(target_dir_paths['pandoc'].joinpath(targetFileName))
+        rel.write_pypandoc_html(target_dir_paths['pypandoc'].joinpath(targetFileName))
 
 
     def test_website_from_template(self):
@@ -60,6 +62,11 @@ class TestReportGeneration(InDirTest):
         target_dir_path=Path('.')
         target_dir_path.mkdir(parents=True,exist_ok=True)
         targetFileName='overview.html'
-        rel.write_pandoc_html(target_dir_path.joinpath(targetFileName))
+        target_dir_names=['pandoc','pypandoc']
+        target_dir_paths={n:Path('.').joinpath(n) for n in target_dir_names}
+        for p in target_dir_paths.values():
+            p.mkdir(parents=True,exist_ok=True)
+        rel.write_pandoc_html(target_dir_paths['pandoc'].joinpath(targetFileName))
+        rel.write_pypandoc_html(target_dir_paths['pypandoc'].joinpath(targetFileName))
 
 

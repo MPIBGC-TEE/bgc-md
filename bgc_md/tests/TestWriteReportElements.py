@@ -47,7 +47,7 @@ class TestWriteReportElements(InDirTest):
         html_file_path="text_with_citation.html"
         bibtex_file_name="text_with_citation.bibtex"
         print('#######################################')
-        rel.write_pandoc_html(html_file_path,csl_file_path,css_file_path)
+        rel.write_pypandoc_html(html_file_path,csl_file_path,css_file_path)
         
         self.assertTrue(Path(html_file_path).exists())
         # check that the bibtex file is there
@@ -82,7 +82,7 @@ class TestWriteReportElements(InDirTest):
         rel+=MatplotlibFigure(fig2,"differentLabel","caption text 2") 
         # now refer to the figures from the text
         html_file_path="text_with_figure.html"
-        rel.write_pandoc_html(html_file_path,csl_file_path,css_file_path)
+        rel.write_pypandoc_html(html_file_path,csl_file_path,css_file_path)
 
 
         

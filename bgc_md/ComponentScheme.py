@@ -1,7 +1,7 @@
 from sympy import Symbol
 import inspect
 from abc import ABCMeta, abstractmethod
-from bgc_md.helpers import pp,pe
+from testinfrastructure.helpers import pp,pe
 
 def remove(mylist,i):
     left =mylist[:i]

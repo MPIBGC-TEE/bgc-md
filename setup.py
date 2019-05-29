@@ -45,6 +45,7 @@ setup(name='bgc_md',
             ,'netCDF4'
             ,'sqlalchemy'
             ,'oslash'
+            ,'pypandas'
         ],
         include_package_data=True,
         #zip_safe=False

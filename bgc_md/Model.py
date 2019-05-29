@@ -14,7 +14,7 @@ import numpy as np
 
 from .ReportInfraStructure import Text, Math, ReportElementList, TableRow, Table, Header, Newline
 from .bibtexc import BibtexEntry, DoiNotFoundException, online_entry
-from .helpers import remove_indentation, create_symbols_func, eval_expressions, retrieve_or_default, retrieve_this_or_that, py2tex_silent, pp,pe
+from .helpers import remove_indentation, create_symbols_func, eval_expressions, retrieve_or_default, retrieve_this_or_that, py2tex_silent 
 from .helpers_reservoir import factor_out_from_matrix
 from .DataFrame import DataFrame
 from .ComponentScheme import ComponentScheme
@@ -24,8 +24,7 @@ from CompartmentalSystems.smooth_model_run import SmoothModelRun
 #from .monad import Monad
 #from .option import nil, Some
 #from .either import Either, Left, Right
-from testinfrastructure.helpers import warning, deprecation_warning
-
+from testinfrastructure.helpers import warning, deprecation_warning ,pp,pe 
 
 ######### helper functions #############
 # fixme: what does this function really count?

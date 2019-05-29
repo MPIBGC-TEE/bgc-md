@@ -1,11 +1,12 @@
 from typing import List
+from collections import OrderedDict
 
-def template(documented_identifiers:List,section=None):
+from bgc_md.ReportInfraStructure import Text, Math, ReportElementList, TableRow, Table, Header, Newline
+def template(documented_identifiers:List):
     rel=ReportElementList()
-    from collections import OrderedDict
 
-    dic={'name':'Name','desc':'Description', 'exprs':'Expression', 'unit':'Unit' }   
-    inv_dic={v:k for k,v in dic.items()}
+    #dic={'name':'Name','desc':'Description', 'exprs':'Expression', 'unit':'Unit' }   
+    #inv_dic={v:k for k,v in dic.items()}
     
     #ps=model.parameter_sets
     #if not(model.has_model_subsection(section)):
@@ -14,16 +15,18 @@ def template(documented_identifiers:List,section=None):
     #yaml_colnames=list(df.columns)
     ## replace missing entries  column with '-'
     ##df["unit"].fillna(value='-',inplace=True) 
-    #target_cols=OrderedDict()
-    #target_cols["Name"]="l"
-    #target_cols["Description"]="l"
-    #target_cols["Expression"]="c"
-    #target_cols["Unit"]="l"
-    #text_colnames= [k for k in target_cols.keys() if inv_dic[k] in yaml_colnames ]
+    target_cols=OrderedDict(
+         "Name"         : "l"
+        ,"Description"  : "l"
+        ,"Expression"   : "c"
+        ,"Unit"         : "l"
+    )
+    text_colnames= [k for k in target_cols.keys() if inv_dic[k] in yaml_colnames ]
     #used_yaml_colnames=[inv_dic[tc] for tc in text_colnames]
-    #table_format = [target_cols[k] for k in text_colnames]
-    #header_row=TableRow([Text(s) for s in text_colnames])
-    #T = Table(section, header_row, table_format)
+    table_format = [target_cols[k] for k in text_colnames]
+    header_row=TableRow([Text(s) for s in text_colnames])
+    section="Identifiers"
+    T = Table(section, header_row, table_format)
     #for i in range(len(df)):
     #    df_line=df.loc[i]
     #    d=dict()
