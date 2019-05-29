@@ -178,7 +178,7 @@ Computers=IndexedSet({
         ,Computer(
              'documented_identifiers_table(documented_identifiers)'
              ,func=lambda l:render(
-                 defaults()['paths']['static_report_templates'].joinpath('documented_identifiers.py')
+                 defaults()['paths']['static_report_templates'].joinpath('documented_identifiers_table.py')
                  ,l
                  )
             ,description="""creates a ReportElementList instance for

@@ -12,8 +12,13 @@ def template(model_id):
     #    rel+=render(sdp.joinpath("SoilModelParameters.py"),model_id)
 
     #rel+=render(sdp.joinpath("AdditionalVariables.py"),model_id)
+
+    # example for a subtemplate that is a MVar itself. This is 
+    # interesting for a GUI loop since the guy can use the existing
+    # framework to know what it can present
     if is_computable_bgc('documented_identifiers_table',model_id):
         rel+= get_bgc("documented_identifiers_table",model_id)
+    
     #rel+=render(sdp.joinpath("Components.py"),model_id)
     #rel+=render(sdp.joinpath("ReservoirModel.py"),model_id)
     #rel+=render(sdp.joinpath("Simulations.py"),model_id)

@@ -46,7 +46,10 @@ class TestReportGeneration(InDirTest):
         target_dir_paths={n:Path('.').joinpath(n) for n in target_dir_names}
         for p in target_dir_paths.values():
             p.mkdir(parents=True,exist_ok=True)
+
+        # we  test the old version which calls pandoc via subprocess
         rel.write_pandoc_html(target_dir_paths['pandoc'].joinpath(targetFileName))
+        # and the new version using the pypandoc wrapper package
         rel.write_pypandoc_html(target_dir_paths['pypandoc'].joinpath(targetFileName))
 
 

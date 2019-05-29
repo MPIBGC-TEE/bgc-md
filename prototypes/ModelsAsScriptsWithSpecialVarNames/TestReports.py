@@ -19,8 +19,8 @@ from sympy.physics.units import meter, kilogram
 from sympy.physics.units.dimensions import dimsys_SI
 from sympy.physics.units import convert_to
 
-class TestReportTemplates(unittest.TestCase):
-    @unittest.skip
+class TestReportTemplates(InDirTest):
+    #@unittest.skip
     def test_documented_Quanteties(self):
         s=DescribedQuantity("s")
         s.set_dimension(mass,"SI")
@@ -54,9 +54,15 @@ class TestReportTemplates(unittest.TestCase):
         #d=defaults() 
         #tp=d['paths']['static_report_templates'].joinpath('SectionVariablesTable.py')
         #rel=render(tp,name_space)
-        rel=allMvars['documented_identifiers_table_rel'](allMvars,allComputers,name_space)
+        rel=allMvars['documented_identifiers_table'](allMvars,allComputers,name_space)
+        print(rel)
+        #target_dir_path=Path('.').joinpath('html')
+        #target_dir_path.mkdir(parents=True,exist_ok=True)
+        #targetFileName='Report.html'
+        #rel.write_pypandoc_html(target_dir_path.joinpath(targetFileName))
 
 class TestReportGeneration(InDirTest):
+    @unittest.skip
     def test_render_cable_overview(self):
         #    There are two kinds of templates:
         #    1. Overview templates with possibly missing parts:

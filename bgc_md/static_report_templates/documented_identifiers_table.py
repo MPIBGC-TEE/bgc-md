@@ -1,8 +1,7 @@
 from typing import List
-from collections import OrderedDict
-
-from bgc_md.ReportInfraStructure import Text, Math, ReportElementList, TableRow, Table, Header, Newline
 def template(documented_identifiers:List):
+    from collections import OrderedDict
+    from bgc_md.ReportInfraStructure import Text, Math, ReportElementList, TableRow, Table, Header, Newline
     rel=ReportElementList()
 
     #dic={'name':'Name','desc':'Description', 'exprs':'Expression', 'unit':'Unit' }   
@@ -15,22 +14,18 @@ def template(documented_identifiers:List):
     #yaml_colnames=list(df.columns)
     ## replace missing entries  column with '-'
     ##df["unit"].fillna(value='-',inplace=True) 
-    target_cols=OrderedDict(
-         "Name"         : "l"
-        ,"Description"  : "l"
-        ,"Expression"   : "c"
-        ,"Unit"         : "l"
-    )
-    text_colnames= [k for k in target_cols.keys() if inv_dic[k] in yaml_colnames ]
+    target_cols=OrderedDict({
+         "abreviation"          : "l"
+        ,"dimension"            : "l"
+        ,"Description"          : "l"
+        })
+    text_colnames= [k for k in target_cols.keys() ]
     #used_yaml_colnames=[inv_dic[tc] for tc in text_colnames]
     table_format = [target_cols[k] for k in text_colnames]
     header_row=TableRow([Text(s) for s in text_colnames])
     section="Identifiers"
     T = Table(section, header_row, table_format)
-    #for i in range(len(df)):
-    #    df_line=df.loc[i]
-    #    d=dict()
-    #    for cn in used_yaml_colnames: 
+    for i in documented_identifiers:
     #        string=df_line[cn]
     #        if cn=="name":
     #            d[cn]=Math("$v",v=sympify(string, locals=model.symbols_by_type))
@@ -57,8 +52,8 @@ def template(documented_identifiers:List):
     #            d[cn]=Text("$d",d=string)
     #        else:
     #            d[cn]=Text('-')
-    #    row_list=[d[inv_dic[tn]] for tn in text_colnames]
-    #    T.add_row(TableRow(row_list))
+        row_list=[ Text(i.abbrev),Text(i.dimension),Text(i.description)]
+        T.add_row(TableRow(row_list))
     #    
-    #rel=T
+    rel+=T
     return rel
