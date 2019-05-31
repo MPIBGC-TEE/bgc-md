@@ -5,6 +5,7 @@ from sympy.vector import CoordSysND,express,Vector,Dyadic,matrix_to_vector
 from bgc_md.resolve.functions import permutationMatrix
 from bgc_md.resolve.MvarsAndComputers import Mvars as allMvars 
 from bgc_md.resolve.MvarsAndComputers import Computers as allComputers
+from bgc_md.resolve.helpers import computable_mvars
 from bgc_md.DescribedSymbol import DescribedSymbol
 from bgc_md.DescribedQuantity import DescribedQuantity
 from sympy import symbols,solve, pi, Eq ,Matrix
@@ -167,6 +168,7 @@ class TestNameSpaces(unittest.TestCase):
         #pe('N',locals())
         #pe('SV',locals())
         #pe('VS',locals())
+        computable_mvars(allMvars,allComputers,name_space_1.keys())
 
     def test_b_comparison(self):
         # Assume we have two different models (here represented by two namespaces)

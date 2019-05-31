@@ -7,7 +7,7 @@ class IndexedSet(collections.Mapping):
     An immutable and therefore hashable set of objects with a name attribute, which will
     be used to index the objects in the set. 
     It is very much like a dictionary with the difference that the names of its elements have 
-    itselv a meaning. (not only as keys in a dict) 
+    itself a meaning. (not only as keys in a dict) 
     We need it to access Computers and Mvars quickly (for which we need dict features) and cache the results
     of computations involving arguments of this type (for which purpose it has to be hashable and immutable)
     """

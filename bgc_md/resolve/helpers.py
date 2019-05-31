@@ -66,13 +66,12 @@ def is_computable_bgc(var_name:str,model_id:str):
     
 def get3(var_name:str,allMvars,allComputers,model_id:str):
     # execute the model code
-    gns=populated_namespace(model_id)
+    #gns=populated_namespace(model_id)
     
-    # get the mvar by its name from the set by its index
-    # this should be cached (hashed) as dict of cause
-    mvar=[var for var in allMvars if var.name==var_name][0]
-    special_vars=gns[special_var_string] 
-    return mvar(allMvars,allComputers,special_vars)
+    #mvar=[var for var in allMvars if var.name==var_name][0]
+    #special_vars=gns[special_var_string] 
+    mvar=allMvars[var_name]
+    return mvar(allMvars,allComputers,special_vars(model_id))
     
 def special_vars(model_id):
     gns=populated_namespace(model_id)
