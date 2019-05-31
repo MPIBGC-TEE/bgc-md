@@ -4,56 +4,15 @@ def template(documented_identifiers:List):
     from bgc_md.ReportInfraStructure import Text, Math, ReportElementList, TableRow, Table, Header, Newline
     rel=ReportElementList()
 
-    #dic={'name':'Name','desc':'Description', 'exprs':'Expression', 'unit':'Unit' }   
-    #inv_dic={v:k for k,v in dic.items()}
-    
-    #ps=model.parameter_sets
-    #if not(model.has_model_subsection(section)):
-    #    return Text("The model section in the yaml file has no subsection: ${s}.",s=section )
-    #df=model.section_pandas_df(section)
-    #yaml_colnames=list(df.columns)
-    ## replace missing entries  column with '-'
-    ##df["unit"].fillna(value='-',inplace=True) 
-    target_cols=OrderedDict({
-         "abreviation"          : "l"
-        ,"dimension"            : "l"
-        ,"Description"          : "l"
-        })
-    text_colnames= [k for k in target_cols.keys() ]
-    #used_yaml_colnames=[inv_dic[tc] for tc in text_colnames]
-    table_format = [target_cols[k] for k in text_colnames]
-    header_row=TableRow([Text(s) for s in text_colnames])
-    section="Identifiers"
-    T = Table(section, header_row, table_format)
-    for i in documented_identifiers:
-    #        string=df_line[cn]
-    #        if cn=="name":
-    #            d[cn]=Math("$v",v=sympify(string, locals=model.symbols_by_type))
-    #        elif cn=="exprs":
-    #            if string is not None:
-    #                parts = string.split("=",1)
-    #                parts[0] = parts[0].strip()
-    #                parts[1] = parts[1].strip()
-    #                p1 = sympify(parts[0], locals=model.symbols_by_type)
-    #                p2 = sympify(parts[1], locals=model.symbols_by_type)
-    #                d[cn]=Math("$p1=$p2",p1=p1,p2=p2)
-    #            else:
-    #                d[cn]=Text("-")
-    #        elif cn=="unit":
-    #            if string is not None:
-    #                string = string.replace("*", "\cdot ")
-    #                string = string.replace("^-1", "^{-1}")
-    #                string = string.replace("^-2", "^{-2}")
-    #                string = string.replace("^-3", "^{-3}")
-    #                d[cn]=Math("$u",u=string)
-    #            else:
-    #                d[cn]=Text("-")
-    #        elif cn=="desc":
-    #            d[cn]=Text("$d",d=string)
-    #        else:
-    #            d[cn]=Text('-')
-        row_list=[ Text(i.abbrev),Text(i.dimension),Text(i.description)]
-        T.add_row(TableRow(row_list))
-    #    
-    rel+=T
+        
+    headers_row=TableRow([Text("abbreviation"),Text("Dimension"),Text('Description')])
+    # and the formats as a list of strings
+    formats=["c","l","l"]
+    t=Table("first Table", headers_row,formats)
+    #var("x")
+    #expr=sqrt(2/x)
+    for di in documented_identifiers:
+        #t.add_row(TableRow([Math("a=$a",a=expr),Math("b=$b",b=2*expr)]))
+        t.add_row(TableRow([Math("a=$a",a=di.abbrev),Text("$b",b=di.dimension.args),Text("$b",b=di.description)]))
+    rel+=t
     return rel

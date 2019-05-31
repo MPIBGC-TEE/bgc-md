@@ -29,15 +29,15 @@ k_l.set_description("Leaf respiration rate")
 
 documented_identifiers=[k_s,k_l,l,s]
 
-headers_row=TableRow([Text("abbreviation"),Text("name of second column")])
+headers_row=TableRow([Text("abbreviation"),Text("Dimension"),Text('Description')])
 # and the formats as a list of strings
-formats=["c","l"]
+formats=["c","l","l"]
 t=Table("first Table", headers_row,formats)
 var("x")
 expr=sqrt(2/x)
 for di in documented_identifiers:
     #t.add_row(TableRow([Math("a=$a",a=expr),Math("b=$b",b=2*expr)]))
-    t.add_row(TableRow([Math("a=$a",a=di.abbrev),Math("b=$b",b=2*expr)]))
+    t.add_row(TableRow([Math("a=$a",a=di.abbrev),Text("$b",b=di.dimension.args),Text("$b",b=di.description)]))
 
 res=t.pandoc_markdown()
 target_dir_path=Path('.').joinpath('html')
