@@ -1,8 +1,9 @@
 <!--
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/REddyProc)](http://cran.r-project.org/package=REddyProc)
--->
 [![Travis-CI Build Status](https://travis-ci.org/bgctw/REddyProc.svg?branch=master)](https://travis-ci.org/MPIBGC-TEE/bgc-md)
+-->
 
+<img src="https://travis-ci.org/MPIBGC-TEE/bgc-md.svg?branch=master" alt="build:started">
 
 # bgc_md: biogeochemical model database
 This package consists of two components:
