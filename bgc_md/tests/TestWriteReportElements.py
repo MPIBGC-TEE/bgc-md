@@ -44,8 +44,8 @@ class TestWriteReportElements(InDirTest):
         rel+=Text("This is second citation of the first paper")
         #rel+=Citation(BibtexEntry.from_doi(doi="10.1139/x91-133"),parentheses=True)
 
-        html_file_path="text_with_citation.html"
-        bibtex_file_name="text_with_citation.bibtex"
+        html_file_path=Path("text_with_citation.html")
+        bibtex_file_name=Path("text_with_citation.bibtex")
         print('#######################################')
         rel.write_pypandoc_html(html_file_path,csl_file_path,css_file_path)
         
@@ -81,7 +81,7 @@ class TestWriteReportElements(InDirTest):
         rel+=Text("some text before the second picture")
         rel+=MatplotlibFigure(fig2,"differentLabel","caption text 2") 
         # now refer to the figures from the text
-        html_file_path="text_with_figure.html"
+        html_file_path=Path("text_with_figure.html")
         rel.write_pypandoc_html(html_file_path,csl_file_path,css_file_path)
 
 
