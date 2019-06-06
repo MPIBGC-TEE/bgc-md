@@ -17,7 +17,7 @@ from typing import List
 from CompartmentalSystems.smooth_reservoir_model import SmoothReservoirModel
 from CompartmentalSystems.smooth_model_run import SmoothModelRun
 #from CompartmentalSystems import smooth_reservoir_model 
-from bgc_md.resolve.helpers import  get3, computable_mvars
+from bgc_md.resolve.helpers import  get3, computable_mvar_names
 from bgc_md.resolve.MVar import MVar
 from bgc_md.resolve.Computer import Computer
 from bgc_md.resolve.functions import srm_from_B_u_tens
@@ -27,7 +27,7 @@ def remove_leading_whitespace(string,start):
     #remomve the first and last line and the whitespace from the remaining
     return '\n'.join([l[start:] for l in string.splitlines()[1:-1]])
         
-class TestModels(unittest.TestCase):
+class TestModelFiles(unittest.TestCase):
     # The aim is a proof of concept implementation for the retrieval of the information that is neccessary to build the 
     # compartmental Matrix 
     # Here we execute a python script in a special sandbox environment

@@ -24,7 +24,7 @@ class Computer(NamedObject):
         return IndexedSet.normalizeKey(self._name).split('(')
 
     @property
-    def trunk(self):
+    def target_name(self):
         return self.split_name()[0]
     
     @property
@@ -34,10 +34,15 @@ class Computer(NamedObject):
     @property
     def arg_names(self):
         return self._arg_name_string.split(',')
+
+    @property
+    def arg_name_set(self):
+        # the set of necessary arguments
+        return frozenset(self.arg_names)
     
     @property
     def name(self):
-        return self._name #+"("+",".join(self.arg_names)+")"
+        return self._name 
 
     
     def args(self,allMvars):

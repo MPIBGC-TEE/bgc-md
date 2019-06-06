@@ -29,7 +29,7 @@ class MVar(NamedObject):
         name: {s.name}
         """.format( s=self)
     def match(self,c):
-        return self._name == c.trunk
+        return self._name == c.target_name
 
     def computers(
             self
@@ -39,7 +39,8 @@ class MVar(NamedObject):
         #pe('res',locals())
         return res
 
-
+   
+    # immiidiate computability
     def is_computable(
             self
             ,allMvars:frozenset

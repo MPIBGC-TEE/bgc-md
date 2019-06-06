@@ -3,6 +3,7 @@ import os
 from ..helpers import working_directory
 import sys
 from pathlib import Path
+from functools import lru_cache
 from testinfrastructure.helpers import pe
 #from . import MvarsAndComputers as mvars
 from .MvarsAndComputers import Mvars as myMvars
@@ -81,17 +82,41 @@ def names_of_available_mvars(model_id):
     return [str(k) for k in special_vars(model_id).keys()]
 
 
-def computable_mvars(
+#def computable_mvars_old(
+#        allMvars:IndexedSet
+#        ,allComputers:IndexedSet
+#        ,names_of_available_mvars:frozenset
+#    )->frozenset:
+#    #top down approach: for every mvar in all Mvars check if we can compute it:
+#    l= [mvar for mvar in allMvars 
+#            if mvar.is_computable(
+#                allMvars
+#                ,allComputers
+#                ,names_of_available_mvars
+#            )]
+#    return frozenset(l)
+
+@lru_cache(maxsize=None) 
+def directly_computable_mvar_names(
         allMvars:IndexedSet
         ,allComputers:IndexedSet
         ,names_of_available_mvars:frozenset
     )->frozenset:
-    #top down approach: for every mvar in all Mvars check if we can compute it:
-    l= [mvar for mvar in allMvars 
-            if mvar.is_computable(
-                allMvars
-                ,allComputers
-                ,names_of_available_mvars
-            )]
-    return frozenset(l)
+    # find the computers that have a source_set contained in the available_set
+    return frozenset([c.target_name for c in allComputers if c.arg_name_set.issubset(names_of_available_mvars)])
+
+@lru_cache(maxsize=None) 
+def computable_mvar_names(
+        allMvars:IndexedSet
+        ,allComputers:IndexedSet
+        ,names_of_available_mvars:frozenset
+    )->frozenset:
+    # bottom up approach: repeatedly compute all directly (in the next step) reachable Mvars 
+    # and use the enriched set for the next iteration until the set stays constant 
+    dcNames=directly_computable_mvar_names(allMvars,allComputers,names_of_available_mvars)
+    
+    if dcNames.issubset(names_of_available_mvars):
+        return frozenset([allMvars[name] for name in names_of_available_mvars])
+    else:
+        return computable_mvar_names(allMvars,allComputers,names_of_available_mvars.union(dcNames))
   

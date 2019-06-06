@@ -1,6 +1,6 @@
 
 import unittest
-from bgc_md.resolve.helpers import  get3, computable_mvars
+from bgc_md.resolve.helpers import  get3, computable_mvar_names
 from bgc_md.resolve.MVar import MVar
 from bgc_md.resolve.Computer import Computer
 from bgc_md.resolve.functions import srm_from_B_u_tens
@@ -79,7 +79,7 @@ class TestResolveFramework(unittest.TestCase):
         self.assertTrue(not myMvars['e'].is_computable(myMvars,myComputers,names_of_available_mvars))
         self.assertTrue(not myMvars['f'].is_computable(myMvars,myComputers,names_of_available_mvars))
 
-        mvars=computable_mvars(
+        mvars=computable_mvar_names(
                 allMvars=myMvars
                 ,allComputers=myComputers
                 ,names_of_available_mvars=frozenset(['a']) 
@@ -87,48 +87,11 @@ class TestResolveFramework(unittest.TestCase):
         #pe('mvars',locals())
         # e and f are not computable
         self.assertEqual(mvars,frozenset({
-            MVar( 'a' ,description= """ a varible we assume to be given """)
-            ,MVar( 'b')
-            ,MVar( 'c')
-            ,MVar( 'd')
+             myMvars['a']
+            ,myMvars['b']
+            ,myMvars['c']
+            ,myMvars['d']
          }))
 
 
-    def test_computability_bgc(self):
-        # here we test the (growing) sets of Mvars and Computers included in the packe
-        from bgc_md.resolve.MvarsAndComputers import Mvars as myMvars
-        from bgc_md.resolve.MvarsAndComputers import Computers as myComputers
-        
-        
-        # compute the set of computable Mvars from the names of defined variables 
-        # this is the set of mvars supposedly given in the model file 
-        names_of_available_mvars=frozenset([
-             'coord_sys'
-            ,'state_vector' 
-            ,'time_symbol' 
-            ,'compartmental_dyad' 
-            ,'input_vector'
-        ]) 
-        C=myComputers['smooth_reservoir_model(coord_sys,state_vector,time_symbol,compartmental_dyad,input_vector)']
-        ref=[ 'coord_sys' ,'state_vector' ,'time_symbol' ,'compartmental_dyad' ,'input_vector' ]
-        self.assertEqual( C.arg_names , ref)
-        
-        mvars=computable_mvars(
-                allMvars=myMvars
-                ,allComputers=myComputers
-                ,names_of_available_mvars=names_of_available_mvars
-        )
-        res=set([v.name for v in mvars])
-        ref=set([
-            'coord_sys'
-            ,'state_vector'
-            ,'state_tuple'
-            ,'time_symbol'
-            ,'compartmental_dyad'
-            ,'input_vector'
-            ,'input_tuple'
-            ,'smooth_reservoir_model' # new (provided by computers)
-            ,'compartmental_matrix'   # new (provided by computers)
-        ])
-        self.assertEqual(res,ref)
 
