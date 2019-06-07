@@ -53,6 +53,8 @@ class TestResolveFramework(unittest.TestCase):
                 ,description="""computes f from e"""
             )
         })
+        #check the argument sets of the computers with target d
+        self.assertSetEqual(myMvars['d'].arg_name_set_set(myComputers),frozenset({frozenset({'b', 'c'}), frozenset({'a', 'c'})}))
         names_of_available_mvars=frozenset(['a']) 
         
         # check computers 

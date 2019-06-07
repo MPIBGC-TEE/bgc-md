@@ -50,6 +50,11 @@ class Computer(NamedObject):
         # the signature of self.func
         return [ allMvars[mv_name] for mv_name in self.arg_names]
 
+    def arg_set(self,allMvars):
+        # the order of the arg_names must be preserved since the are related to
+        # the signature of self.func
+        return frozenset(self.args(allMvars))
+
     
     def is_computable(
             self

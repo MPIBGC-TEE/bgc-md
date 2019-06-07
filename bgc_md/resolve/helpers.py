@@ -1,4 +1,5 @@
 import os
+from typing import List,Set,Tuple
 #import contextlib
 from ..helpers import working_directory
 import sys
@@ -9,7 +10,9 @@ from testinfrastructure.helpers import pe
 from .MvarsAndComputers import Mvars as myMvars
 from .MvarsAndComputers import Computers as myComputers
 from .IndexedSet import IndexedSet
+from .MVar import MVar
 from bgc_md.reports import defaults
+
 
 srcFileName="source.py"
 d=defaults() 
@@ -82,19 +85,6 @@ def names_of_available_mvars(model_id):
     return [str(k) for k in special_vars(model_id).keys()]
 
 
-#def computable_mvars_old(
-#        allMvars:IndexedSet
-#        ,allComputers:IndexedSet
-#        ,names_of_available_mvars:frozenset
-#    )->frozenset:
-#    #top down approach: for every mvar in all Mvars check if we can compute it:
-#    l= [mvar for mvar in allMvars 
-#            if mvar.is_computable(
-#                allMvars
-#                ,allComputers
-#                ,names_of_available_mvars
-#            )]
-#    return frozenset(l)
 
 @lru_cache(maxsize=None) 
 def directly_computable_mvar_names(
@@ -119,4 +109,35 @@ def computable_mvar_names(
         return frozenset([allMvars[name] for name in names_of_available_mvars])
     else:
         return computable_mvar_names(allMvars,allComputers,names_of_available_mvars.union(dcNames))
-  
+
+# infrastructure to compute the graph that is used to compute source sets for a given set of Mvars
+def cartesian_product(l:List[Set])->Set[Tuple]:
+    left_tupels=frozenset([tuple(el) for el in l[0]])
+    if len(l)==1:
+        return left_tupels
+    else:
+        right_tupels=cartesian_product(l[1:])
+        return frozenset([lt+rt for lt in left_tupels for  rt in right_tupels ])
+
+def cartesian_union(l:List[Set])->Set[Set]:
+    pe('l',locals())
+    return frozenset([frozenset(t) for t in cartesian_product(l)])
+
+    
+def predecessor_nodes(node:Set[MVar],allMvars,allComputers)->Set[Set[str]]:
+    # assume that we want to compute a set of MVars (a node in out graph) from other sets of Mvars
+    # let s_a be the set of nodes from which we can reach the set {a} (where a is a MVar} 
+    # and s_b the set of nodes from which we can reach the node {b} (where b is an Mvar
+    # to reach the node set {a,b} we can combine any startnode from s_a with any startnode from s_b
+    # in fact we can reach {a,b} from all nodes in the set {s: s=n_a v n_b for na in sa v {a}  for nb in sb v {b} }
+    # we call this set the 'cartesian_union(A,B) with  A=s_a v {a}  and B=s_b v {b} 
+    # This can be generalized to an arbitrary list of sets. We build the cartesian product of the sets A,B,... and then
+    # transform every tupel of the product to a set (thereby removing the duplicates and order)
+    res=cartesian_union(
+        [ {frozenset({v})}.union(v.arg_set_set(allMvars,allComputers)) for v in node]
+    )
+    pe('node',locals())
+
+    # note that the cartesian product contains the original node
+    # we remove it since we are only interested in the predecessors of our node
+    return res.difference(frozenset({node}))

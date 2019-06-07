@@ -1,4 +1,4 @@
-from typing import List,Tuple,Callable 
+from typing import List,Tuple,Callable,Set 
 from testinfrastructure.helpers import pe
 from .NamedObject import NamedObject
 from .Computer import Computer
@@ -39,6 +39,15 @@ class MVar(NamedObject):
         #pe('res',locals())
         return res
 
+    def arg_name_set_set( self ,allComputers:IndexedSet)->Set[Set['MVar']]:
+        # return the set of arg_name_sets for all computer that
+        # have this var as target
+        return frozenset([ c.arg_name_set for c in self.computers(allComputers)])
+
+    def arg_set_set( self ,allMvars:IndexedSet,allComputers:IndexedSet)->Set[Set['MVar']]:
+        # return the set of arg_name_sets for all computer that
+        # have this var as target
+        return frozenset([ c.arg_set(allMvars) for c in self.computers(allComputers)])
    
     # immiidiate computability
     def is_computable(
