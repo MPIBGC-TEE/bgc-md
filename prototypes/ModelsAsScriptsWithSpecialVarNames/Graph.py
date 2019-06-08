@@ -211,7 +211,8 @@ while not(GraphsEqual(Graphs[i],Graphs[i-1])):
 # After the graph has been computed we can use it
 # to infer computability by asking for all the sets connected to a certain mvar
 # if we want the sets of 
-#
+
+nx.dfs_predecessors(G,source=frozenset({myMvars['b']})
 ##n1=frozenset({'g'})
 ##n2=frozenset({'a,b'})
 ##n3=frozenset({'c,d'})
