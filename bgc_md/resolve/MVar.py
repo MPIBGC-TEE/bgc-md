@@ -5,6 +5,8 @@ from .Computer import Computer
 from .IndexedSet import IndexedSet
 
 class MVar(NamedObject):
+    def __str__(self):
+        return self.name
     # A (M)ultiply defined (Var)iable that can possibly be computed 
     # in several ways defined by its computers
     # and can check if one of them works given a namespace

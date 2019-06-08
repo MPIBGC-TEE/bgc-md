@@ -120,7 +120,7 @@ def cartesian_product(l:List[Set])->Set[Tuple]:
         return frozenset([lt+rt for lt in left_tupels for  rt in right_tupels ])
 
 def cartesian_union(l:List[Set])->Set[Set]:
-    pe('l',locals())
+    #pe('l',locals())
     return frozenset([frozenset(t) for t in cartesian_product(l)])
 
     
@@ -136,7 +136,7 @@ def predecessor_nodes(node:Set[MVar],allMvars,allComputers)->Set[Set[str]]:
     res=cartesian_union(
         [ {frozenset({v})}.union(v.arg_set_set(allMvars,allComputers)) for v in node]
     )
-    pe('node',locals())
+    #pe('node',locals())
 
     # note that the cartesian product contains the original node
     # we remove it since we are only interested in the predecessors of our node
