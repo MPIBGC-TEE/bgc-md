@@ -1,5 +1,5 @@
-
-from bgc_md.resolve.helpers import  get3, computable_mvar_names,predecessor_nodes
+import matplotlib.pyplot as plt
+from bgc_md.resolve.helpers import  get3, computable_mvar_names,direct_predecessor_nodes,remove_supersets,update,node_2_string,edge_2_string,cartesian_union
 from bgc_md.resolve.MVar import MVar
 from bgc_md.resolve.Computer import Computer
 from bgc_md.resolve.functions import srm_from_B_u_tens
@@ -10,7 +10,6 @@ from pygraphviz import *
 from matplotlib.colors import CSS4_COLORS,BASE_COLORS,TABLEAU_COLORS
 
 #import igraph as ig
-#import matplotlib.pyplot as plt
 def draw_multigraph(myMvars,myComputers):
     # build initial multigraph
     # for visualization draw the directed Multigraph with the MVars as nodes
@@ -46,13 +45,12 @@ def draw_multigraph(myMvars,myComputers):
     #print(A.string()) # print to screen
     A.draw('Multigraph.png',prog="circo") # draw to png using circo
 
+
 def draw_Graph_png(G,file_name_trunk):
     # the next line is the standard translation 
     # We could do this using the attributes of the edges to
     # make much niceer pictures representing the different computers in different
     # colors or annotate them....
-    def node_2_string(node):
-        return '{'+",".join([v.name for v in node])+'}'
     A=nx.nx_agraph.to_agraph(G)
     A=AGraph(directed=True)
     A.node_attr['style']='filled'
@@ -138,7 +136,7 @@ Graphs=dict()
 G=nx.DiGraph()
 # add all Vvars
 G.add_nodes_from([frozenset({v}) for v in myMvars])
-draw_Graph_png(G,"PowersetSubGraph_"+str(i))
+draw_Graph_png(G,"PowersetSubGraph_"+str(0))
 Graphs[0]=deepcopy(G)
 # add the connections implied by the computers
 new_nodes=[]
@@ -155,48 +153,24 @@ for v in myMvars:
         G.add_edge(ans,frozenset({v}),computers=v_comps) 
 
 extendable_nodes=new_nodes
-draw_Graph_png(G,"PowersetSubGraph_"+str(i))
+draw_Graph_png(G,"PowersetSubGraph_"+str(1))
 Graphs[1]=deepcopy(G)
 
-# update the Graph by looking at the new_nodes and adding all their possible predecessors as new nodes 
-#The nodes representing one-element sets have been already treated by the first step 
-# (Thein predecessors found by their computers)
-# now we have to find the predecessors of the sets with more than one element
-# we do this by looking at the tensor product of the predecessor-sets  of the elements
-def update(G,extendable_nodes):
-    G=deepcopy(G)
-    new_nodes=[]
-    present_nodes=G.nodes
-    for n in extendable_nodes:
-        # it should actually be possible to infer the nodes that can 
-        # be computed by some computers from the graph G alone
-        # Up to now we only use the computability of mvars
-        # Actually the graph could in later stages also provide information
-        # about the computablitiy of sets (which is its main purpose after all)
-        # but up to now we do not use this knowledge for constructing it.
-        pns=predecessor_nodes(n,myMvars,myComputers) # this function should also return the computers it used 
-        for pn in pns:
-            if not(pn in present_nodes):
-                new_nodes.append(pn)
-                G.add_node(pn) 
-            G.add_edge(pn,n) 
-    #extendable_nodes=new_nodes
-    return (G,new_nodes)
 
 def GraphsEqual(G1,G2):
+    retval=True
     new_nodes=frozenset(G1.nodes).symmetric_difference(G2.nodes) 
-    if len(new_nodes)>0:
-        print("new_nodes")
-        print(new_nodes)
-        return(False)
     new_edges=frozenset(G1.edges).symmetric_difference(G2.edges)
+    if len(new_nodes)>0:
+        #print("##############################")
+        #print("different nodes")
+        #print([node_2_string(n) for n in new_nodes])
+        retval=False
     if len(new_edges)>0:
-        print("new_edges")
-        print(new_edges)
-        return(False)
-    #print(G1.nodes,G2.nodes)
-    #print(G1.edges,G2.edges)
-    return True
+        #print("different edges")
+        #print([edge_2_string(e) for e in new_edges])
+        retval=False
+    return retval
 
 print(GraphsEqual(Graphs[0],Graphs[1]))
 #while len(extendable_nodes)>0: 
@@ -204,24 +178,39 @@ i=1
 while not(GraphsEqual(Graphs[i],Graphs[i-1])):
     i+=1 
     print(i)
-    G,extendable_nodes=update(G,extendable_nodes)
+    G,extendable_nodes=update(G,extendable_nodes,myMvars,myComputers)
     Graphs[i]=G
     draw_Graph_png(G,"PowersetSubGraph_"+str(i))
     
 # After the graph has been computed we can use it
-# to infer computability by asking for all the sets connected to a certain mvar
-# if we want the sets of 
+# to infer computability of all Mvars
+# We first create a graph with the direction of the edges reversed
+# 
+GR=G.reverse()
 
-nx.dfs_predecessors(G,source=frozenset({myMvars['b']})
-##n1=frozenset({'g'})
-##n2=frozenset({'a,b'})
-##n3=frozenset({'c,d'})
-##G.add_nodes_from([n1,n2,n3])
-##G.add_edges_from([
-##     (n2,n1,{'computers':frozenset({'g(a,b)'})})    
-##    ,(n3,n1,{'computers':frozenset({'g(c,d)'})})    
-#])
+target=frozenset({myMvars['b']})
+res=[p for p in nx.all_pairs_shortest_path(GR) if p[0]==target]
+all_possible_startnodes=frozenset([n for n in res[0][1].keys()])
+print("all_possible_startnodes for",node_2_string(target),[node_2_string(n) for n in all_possible_startnodes])
+minimal_startnodes=remove_supersets(all_possible_startnodes)
+print("minimal_startnodes for",node_2_string(target),[node_2_string(n) for n in minimal_startnodes if not(target.issubset(n))])
 
+target2=frozenset({myMvars['a']})
+res2=[p for p in nx.all_pairs_shortest_path(GR) if p[0]==target2]
+all_possible_startnodes2=frozenset([n for n in res2[0][1].keys()])
+print("all_possible_startnodes for",node_2_string(target2),[node_2_string(n) for n in all_possible_startnodes2])
+minimal_startnodes2=remove_supersets(all_possible_startnodes2)
+print("minimal_startnodes for",node_2_string(target2),[node_2_string(n) for n in minimal_startnodes2 if not(target2.issubset(n))])
+
+# With the given graph we can also quite quickly compute possible sources for a given traget set of 
+# more than one variable (additionally we could cache the results
+#print([node_2_string(n) for n in cartesian_union([minimal_startnodes,minimal_startnodes2])])
+print("minimal_startnodes for ",node_2_string(target.union(target2)),[node_2_string(n) for n in remove_supersets(cartesian_union([minimal_startnodes,minimal_startnodes2])) if not(target2.issubset(n) or target.issubset(n) )])
+ 
+#for p in gen:
+#    print(type(p[0]))
+#    print(p[0]==target) #source (the target for the original grapht
+#    print(node_2_string(p[0])) #source (the target for the original grapht
 
 
 #draw

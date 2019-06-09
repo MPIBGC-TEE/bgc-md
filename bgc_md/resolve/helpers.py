@@ -5,6 +5,7 @@ from ..helpers import working_directory
 import sys
 from pathlib import Path
 from functools import lru_cache
+from copy import deepcopy
 from testinfrastructure.helpers import pe
 #from . import MvarsAndComputers as mvars
 from .MvarsAndComputers import Mvars as myMvars
@@ -123,8 +124,29 @@ def cartesian_union(l:List[Set])->Set[Set]:
     #pe('l',locals())
     return frozenset([frozenset(t) for t in cartesian_product(l)])
 
+def remove_supersets_once(sets):
+    key_func=lambda s:len(s)
+    sets=sorted(sets,key=key_func)
+    #print('Startnodes:')
+    #print([node_2_string(val)  for val in sets])
+    #print('##############################:')
+
+    minimal_sets=[]
+    for n in sets:
+        if not(any([m.issubset(n) for m in minimal_sets])):
+            minimal_sets.append(n)
+
+    return frozenset(minimal_sets)
+
+def remove_supersets(sets):
+    new_nodes=remove_supersets_once(sets)
     
-def predecessor_nodes(node:Set[MVar],allMvars,allComputers)->Set[Set[str]]:
+    if new_nodes==sets:
+        return(new_nodes)
+    else:
+        return remove_supersets(new_nodes)
+    
+def direct_predecessor_nodes(node:Set[MVar],allMvars,allComputers)->Set[Set[str]]:
     # assume that we want to compute a set of MVars (a node in out graph) from other sets of Mvars
     # let s_a be the set of nodes from which we can reach the set {a} (where a is a MVar} 
     # and s_b the set of nodes from which we can reach the node {b} (where b is an Mvar
@@ -139,5 +161,50 @@ def predecessor_nodes(node:Set[MVar],allMvars,allComputers)->Set[Set[str]]:
     #pe('node',locals())
 
     # note that the cartesian product contains the original node
-    # we remove it since we are only interested in the predecessors of our node
-    return res.difference(frozenset({node}))
+    # we remove all nodes that are just supersets of it
+    # and afterwards the node itself
+    #return res.difference(frozenset({node}))
+    return remove_supersets(res).difference(frozenset({node}))
+
+
+def update(G,extendable_nodes,allMvars,allComputers):
+    print("##############################")
+    print("extendable_nodes")
+    print([node_2_string(n) for n in extendable_nodes])
+    
+    # update the Graph by looking at the new_nodes and adding all their possible predecessors as new nodes 
+    # The nodes representing one-element sets have been already treated by the first step 
+    # (Thein predecessors found by their computers)
+    # now we have to find the predecessors of the sets with more than one element
+    # we do this by looking at the tensor product of the predecessor-sets  of the elements
+    G=deepcopy(G)
+    present_nodes=frozenset(G.nodes)
+    present_edges=frozenset(G.edges)
+    new_minimal_nodes=frozenset({})
+    for n in extendable_nodes:
+        # it should actually be possible to infer the nodes that can 
+        # be computed by some computers from the graph G alone
+        # Up to now we only use the computability of mvars
+        # Actually the graph could in later stages also provide information
+        # about the computablitiy of sets (which is its main purpose after all)
+        # but up to now we do not use this knowledge for constructing it.
+        pns=direct_predecessor_nodes(n,allMvars,allComputers) # this function should also return the computers it used 
+        print("n="+node_2_string(n))
+        print("predecessors="+','.join([node_2_string(n) for n in pns]))
+        new_minimal_nodes=new_minimal_nodes.union(pns.difference(present_nodes))
+
+        for pn in new_minimal_nodes:
+            G.add_node(pn) 
+            e=(pn,n)
+            if not(e in present_edges):
+                G.add_edge(pn,n) 
+    #extendable_nodes=new_nodes
+    #new_minimal_nodes=new_minimal_nodes#.difference(present_nodes)
+    print("new_minimal_nodes="+','.join([node_2_string(n) for n in new_minimal_nodes]))
+    return (G,new_minimal_nodes)
+
+def node_2_string(node):
+    return '{'+",".join([v.name for v in node])+'}'
+
+def edge_2_string(e):
+    return "("+node_2_string(e[0])+','+node_2_string(e[1])+')'
