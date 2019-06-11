@@ -13,7 +13,9 @@ from .MvarsAndComputers import Computers as myComputers
 from .IndexedSet import IndexedSet
 from .MVar import MVar
 from bgc_md.reports import defaults
-
+from matplotlib.colors import CSS4_COLORS,BASE_COLORS,TABLEAU_COLORS
+from pygraphviz import *
+import networkx as nx
 
 srcFileName="source.py"
 d=defaults() 
@@ -112,6 +114,12 @@ def computable_mvar_names(
         return computable_mvar_names(allMvars,allComputers,names_of_available_mvars.union(dcNames))
 
 # infrastructure to compute the graph that is used to compute source sets for a given set of Mvars
+def node_2_string(node):
+    return '{'+",".join([v.name for v in node])+'}'
+
+def edge_2_string(e):
+    return "("+node_2_string(e[0])+','+node_2_string(e[1])+')'
+
 def cartesian_product(l:List[Set])->Set[Tuple]:
     left_tupels=frozenset([tuple(el) for el in l[0]])
     if len(l)==1:
@@ -166,8 +174,9 @@ def direct_predecessor_nodes(node:Set[MVar],allMvars,allComputers)->Set[Set[str]
     #return res.difference(frozenset({node}))
     return remove_supersets(res).difference(frozenset({node}))
 
-
 def update(G,extendable_nodes,allMvars,allComputers):
+    ## fixme
+    ## This function should become obsolete as soon as update step is well tested
     print("##############################")
     print("extendable_nodes")
     print([node_2_string(n) for n in extendable_nodes])
@@ -183,7 +192,7 @@ def update(G,extendable_nodes,allMvars,allComputers):
     new_minimal_nodes=frozenset({})
     for n in extendable_nodes:
         # it should actually be possible to infer the nodes that can 
-        # be computed by some computers from the graph G alone
+        # be computed from other nodes from the graph G alone
         # Up to now we only use the computability of mvars
         # Actually the graph could in later stages also provide information
         # about the computablitiy of sets (which is its main purpose after all)
@@ -203,8 +212,118 @@ def update(G,extendable_nodes,allMvars,allComputers):
     print("new_minimal_nodes="+','.join([node_2_string(n) for n in new_minimal_nodes]))
     return (G,new_minimal_nodes)
 
-def node_2_string(node):
-    return '{'+",".join([v.name for v in node])+'}'
+def update_step(G,extendable_nodes,allMvars,allComputers):
+    
+    # update the Graph by looking at the new_nodes and adding all their possible predecessors as new nodes 
+    # The nodes representing one-element sets have been already treated by the first step 
+    # (Thein predecessors found by their computers)
+    # now we have to find the predecessors of the sets with more than one element
+    # we do this by looking at the tensor product of the predecessor-sets  of the elements
+    G=deepcopy(G)
+    present_nodes=frozenset(G.nodes)
+    present_edges=frozenset(G.edges)
+    new_minimal_nodes=frozenset({})
+    for n in extendable_nodes:
+        # it should actually be possible to infer the nodes that can 
+        # be computed from other nodes from the graph G alone
+        # Up to now we only use the computability of mvars
+        # Actually the graph could in later stages also provide information
+        # about the computablitiy of sets (which is its main purpose after all)
+        # but up to now we do not use this knowledge for constructing it.
+        pns=direct_predecessor_nodes(n,allMvars,allComputers) # this function should also return the computers it used 
+        new_minimal_nodes=new_minimal_nodes.union(pns.difference(present_nodes))
 
-def edge_2_string(e):
-    return "("+node_2_string(e[0])+','+node_2_string(e[1])+')'
+        for pn in new_minimal_nodes:
+            G.add_node(pn) 
+            e=(pn,n)
+            if not(e in present_edges):
+                G.add_edge(pn,n) 
+    #extendable_nodes=new_nodes
+    #new_minimal_nodes=new_minimal_nodes#.difference(present_nodes)
+    return (G,new_minimal_nodes)
+
+def updated_Graph(G,extendable_nodes,allMvars,allComputers):
+    G_new,extendable_nodes_new=update_step(G,extendable_nodes,allMvars,allComputers)
+    if len(G_new)>0: 
+        return (G,extendable_nodes)
+    else:
+        return update_step(G_new,extendable_nodes_new,allMvars,allComputers)
+
+def GraphsEqual(G1,G2):
+    retval=True
+    new_nodes=frozenset(G1.nodes).symmetric_difference(G2.nodes) 
+    new_edges=frozenset(G1.edges).symmetric_difference(G2.edges)
+    if len(new_nodes)>0:
+        #print("##############################")
+        #print("different nodes")
+        #print([node_2_string(n) for n in new_nodes])
+        retval=False
+    if len(new_edges)>0:
+        #print("different edges")
+        #print([edge_2_string(e) for e in new_edges])
+        retval=False
+    return retval
+
+def powerset_Graph(allMvars,allComputers):
+    new_nodes=frozenset([frozenset({v}) for v in allMvars])
+    G=nx.DiGraph()
+    G.add_nodes_from(new_nodes)
+    G_final,new_nodes=updated_Graph(G,new_nodes,allMvars,allComputers)
+    # new_nodes is now empty 
+    return G_final
+
+def draw_multigraph(allMvars,allComputers):
+    # build initial multigraph
+    # for visualization draw the directed Multigraph with the MVars as nodes
+    # unfortunately it is not useful for connectivity computations
+    # since all 'edges' defined by a computer c are misleading in the sense that 
+    # we need the union of all the source variables of c to go to the target Mvar of c 
+    # while the arrows suggest ways from any of the arguments...
+    # for visualization it would helpful to draw all arcs belonging to the same computer
+    # in the same color.
+    # Since we do not compute anything from this graph we actually do not need a graphlibrary
+    # but can visualize it immediately with graphviz
+    # We use a unique color for every computer
+    #colordict=CSS4_COLORS
+    colordict=TABLEAU_COLORS
+    color_names=[n for n in colordict.keys()]
+    computer_colors={c.name:color_names[i] for i,c in enumerate(allComputers)}
+    A=AGraph(directed=True)
+    A.node_attr['style']='filled'
+    A.node_attr['shape']='circle'
+    A.node_attr['fixedsize']='false'
+    A.node_attr['fontcolor']='#FFFFFF'
+    A.node_attr['color']='black'
+    A.add_nodes_from([v.name for v in myMvars])
+    cols=['blue','red','green','orange'] 
+    for v in myMvars:
+        for c in v.computers(allComputers):
+            ans=c.arg_name_set
+            edges=[(an,v.name)  for an in ans]
+            for e in edges:
+                A.add_edge(e)
+                Ae=A.get_edge(e[0],e[1])
+                Ae.attr['color']=colordict[computer_colors[c.name]]
+    #print(A.string()) # print to screen
+    A.draw('Multigraph.png',prog="circo") # draw to png using circo
+
+
+def draw_Graph_png(G,file_name_trunk):
+    # the next line is the standard translation 
+    # We could do this using the attributes of the edges to
+    # make much niceer pictures representing the different computers in different
+    # colors or annotate them....
+    A=nx.nx_agraph.to_agraph(G)
+    A=AGraph(directed=True)
+    A.node_attr['style']='filled'
+    A.node_attr['shape']='rectangle'
+    A.node_attr['fixedsize']='false'
+    A.node_attr['fontcolor']='black'
+    
+    for node in G.nodes:
+        A.add_node(node_2_string(node))
+    for edge in G.edges:
+        A.add_edge(node_2_string(edge[0]),node_2_string(edge[1]))
+    #print(A.string()) # print to screen
+    A.draw(file_name_trunk+'.png',prog="circo") # draw to png using circo
+
