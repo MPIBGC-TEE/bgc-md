@@ -81,6 +81,8 @@ draw_Graph_png(G,'test')
 # After the graph has been computed we can use it
 # to infer computability of all Mvars
 # We first create a graph with the direction of the edges reversed
+
+#nx.independentSets? for directed graphs 
  
 GR=G.reverse()
 
