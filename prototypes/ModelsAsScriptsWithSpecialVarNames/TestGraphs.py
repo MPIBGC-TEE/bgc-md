@@ -10,7 +10,10 @@ from bgc_md.resolve.graph_helpers import (
     ,nodes_2_string
     ,edge_2_string
     ,cartesian_union
-    ,draw_multigraph
+    ,create_multigraph
+    ,draw_multigraph_graphviz
+    ,draw_multigraph_matplotlib
+    ,draw_multigraph_plotly
     ,sparse_powerset_Graph
     ,draw_Graph_png
     ,powerlist
@@ -211,11 +214,27 @@ class TestGraphs(TestCase):
         
     def test_minimal_startnodes_for_node(self):
         G=sparse_powerset_Graph(self.Mvars,self.Computers)
+        targetVars=frozenset({self.Mvars['a'],self.Mvars['b']})
+        res=minimal_startnodes_for_node(
+                 G
+                ,targetVars
+        )
+        print('###############################')
+        print('miminal startsets for: ', node_2_string(targetVars),nodes_2_string(res))
+        print('###############################')
         
+    def test_draw_multigraph_graphviz(self):
+        draw_multigraph_graphviz(self.Mvars,self.Computers)
+    
+    def test_draw_multigraph_matplotlib(self):
+        draw_multigraph_matplotlib(self.Mvars,self.Computers)
+    
+    def test_draw_multigraph_plotly(self):
+        draw_multigraph_plotly(self.Mvars,self.Computers)
+    
     def test_creation(self):
         # only for visualization draw the connections of the mvars via computers
         # note that this is not a graph we can query for connectivity
-        draw_multigraph(self.Mvars,self.Computers)
         
         # Now we build the directed Graph we can use to compute connectivity
         # the Nodes are sets of Mvars (elemenst of the powerset of all Mvars)
@@ -229,33 +248,3 @@ class TestGraphs(TestCase):
         G=sparse_powerset_Graph(self.Mvars,self.Computers)
         # After the graph has been computed we can use it
         # to infer computability of all Mvars
-        
-        #nx.independentSets? for directed graphs 
-         
-        GR=G.reverse()
-        
-        target=frozenset({self.Mvars['b']})
-        minimal_startnodes=remove_supersets(all_possible_startnodes)
-        print("minimal_startnodes for",node_2_string(target),[node_2_string(n) for n in minimal_startnodes if not(target.issubset(n))])
-        
-        target2=frozenset({self.Mvars['a']})
-        res2=[p for p in nx.all_pairs_shortest_path(GR) if p[0]==target2]
-        all_possible_startnodes2=frozenset([n for n in res2[0][1].keys()])
-        print("all_possible_startnodes for",node_2_string(target2),[node_2_string(n) for n in all_possible_startnodes2])
-        minimal_startnodes2=remove_supersets(all_possible_startnodes2)
-        print("minimal_startnodes for",node_2_string(target2),[node_2_string(n) for n in minimal_startnodes2 if not(target2.issubset(n))])
-        
-        # With the given graph we can also quite quickly compute possible sources for a given traget set of 
-        # more than one variable (additionally we could cache the results
-        #print([node_2_string(n) for n in cartesian_union([minimal_startnodes,minimal_startnodes2])])
-        print("minimal_startnodes for ",node_2_string(target.union(target2)),[node_2_string(n) for n in remove_supersets(cartesian_union([minimal_startnodes,minimal_startnodes2])) if not(target2.issubset(n) or target.issubset(n) )])
-         
-        #for p in gen:
-        #    print(type(p[0]))
-        #    print(p[0]==target) #source (the target for the original grapht
-        #    print(node_2_string(p[0])) #source (the target for the original grapht
-        
-        
-        #draw
-        #ax=plt.subplot(121)
-        #nx.draw(G, with_labels=True, font_weight='bold',ax=ax)
