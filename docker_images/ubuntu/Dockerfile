@@ -5,9 +5,12 @@ RUN apt-get install -y git
 RUN apt-get install -y python3
 RUN apt-get install -y python3-pip
 RUN apt-get install -y python3-venv
+RUN apt-get install -y python3-tk
 RUN apt-get install -y texlive-binaries
 RUN apt-get install -y pandoc
 RUN apt-get install -y vim
+RUN apt-get install -y graphviz libgraphviz-dev pkg-config
+RUN apt-get install -y python3-dev
 RUN mkdir workingfolder
 WORKDIR /workingfolder
 RUN python3 -m venv virtual_env
