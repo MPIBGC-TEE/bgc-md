@@ -1,0 +1,11 @@
+The idea is to create Type Synonyms/Aliases for all Variables with a special meaning.
+E.g. 'CompartmentalMatrix' is a TypeSynonym for a Matrix.
+The model files of the user are scanned for all the Type synonyms that are currently available (defined by some submodule of bgc_md)
+If the user defines a variable of type 'CompartmentalMatrix' in a Model defining file our code should be able to
+- find it as it now finds an MVar of a certain type 
+- check that the variable is of the specified time at runtime
+
+The possible desired benefits compared to a scheme wiht named Mvars are:
+-   A testable documentation of the expected type of a specific MVar       
+    (E.g. If a user declares A:CompartmentalMatrix=something we can by the type
+    definition of CompartmentalMatrix if something is an admissable imput.
