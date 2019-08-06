@@ -1,0 +1,88 @@
+\headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
+\headcommand {\beamer@framepages {1}{1}}
+\headcommand {\slideentry {0}{0}{2}{2/2}{}{0}}
+\headcommand {\beamer@framepages {2}{2}}
+\headcommand {\slideentry {0}{0}{3}{3/3}{}{0}}
+\headcommand {\beamer@framepages {3}{3}}
+\headcommand {\slideentry {0}{0}{4}{4/6}{}{0}}
+\headcommand {\beamer@framepages {4}{6}}
+\headcommand {\beamer@sectionpages {1}{6}}
+\headcommand {\beamer@subsectionpages {1}{6}}
+\headcommand {\sectionentry {1}{Problem statement}{7}{Problem statement}{0}}
+\headcommand {\slideentry {1}{0}{1}{7/21}{}{0}}
+\headcommand {\beamer@framepages {7}{21}}
+\headcommand {\slideentry {1}{0}{2}{23/33}{}{0}}
+\headcommand {\beamer@framepages {23}{33}}
+\headcommand {\beamer@sectionpages {7}{33}}
+\headcommand {\beamer@subsectionpages {7}{33}}
+\headcommand {\sectionentry {2}{Our proposed solution}{34}{Our proposed solution}{0}}
+\headcommand {\beamer@subsectionpages {34}{33}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{34}{Definitions}}
+\headcommand {\slideentry {2}{1}{1}{34/44}{Definitions}{0}}
+\headcommand {\beamer@framepages {34}{44}}
+\headcommand {\slideentry {2}{1}{2}{46/51}{Definitions}{0}}
+\headcommand {\beamer@framepages {46}{51}}
+\headcommand {\slideentry {2}{1}{3}{52/55}{Definitions}{0}}
+\headcommand {\beamer@framepages {52}{55}}
+\headcommand {\slideentry {2}{1}{4}{56/56}{Definitions}{0}}
+\headcommand {\beamer@framepages {56}{56}}
+\headcommand {\slideentry {2}{1}{5}{58/60}{Definitions}{0}}
+\headcommand {\beamer@framepages {58}{60}}
+\headcommand {\slideentry {2}{1}{6}{62/62}{Definitions}{0}}
+\headcommand {\beamer@framepages {62}{62}}
+\headcommand {\slideentry {2}{1}{7}{63/64}{Definitions}{0}}
+\headcommand {\beamer@framepages {63}{64}}
+\headcommand {\slideentry {2}{1}{8}{65/66}{Definitions}{0}}
+\headcommand {\beamer@framepages {65}{66}}
+\headcommand {\slideentry {2}{1}{9}{67/67}{Definitions}{0}}
+\headcommand {\beamer@framepages {67}{67}}
+\headcommand {\slideentry {2}{1}{10}{68/68}{Definitions}{0}}
+\headcommand {\beamer@framepages {68}{68}}
+\headcommand {\beamer@subsectionpages {34}{68}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{69}{Algorithms}}
+\headcommand {\slideentry {2}{2}{1}{69/74}{Algorithms}{0}}
+\headcommand {\beamer@framepages {69}{74}}
+\headcommand {\slideentry {2}{2}{2}{75/75}{Algorithms}{0}}
+\headcommand {\beamer@framepages {75}{75}}
+\headcommand {\slideentry {2}{2}{3}{76/76}{Algorithms}{0}}
+\headcommand {\beamer@framepages {76}{76}}
+\headcommand {\slideentry {2}{2}{4}{77/77}{Algorithms}{0}}
+\headcommand {\beamer@framepages {77}{77}}
+\headcommand {\slideentry {2}{2}{5}{78/83}{Algorithms}{0}}
+\headcommand {\beamer@framepages {78}{83}}
+\headcommand {\beamer@subsectionpages {69}{83}}
+\headcommand {\beamer@subsectionentry {0}{2}{3}{84}{Comparison to standard theory}}
+\headcommand {\slideentry {2}{3}{1}{84/86}{Comparison to standard theory}{0}}
+\headcommand {\beamer@framepages {84}{86}}
+\headcommand {\slideentry {2}{3}{2}{87/87}{Comparison to standard theory}{0}}
+\headcommand {\beamer@framepages {87}{87}}
+\headcommand {\slideentry {2}{3}{3}{88/98}{Comparison to standard theory}{0}}
+\headcommand {\beamer@framepages {88}{98}}
+\headcommand {\slideentry {2}{3}{4}{100/100}{Comparison to standard theory}{0}}
+\headcommand {\beamer@framepages {100}{100}}
+\headcommand {\slideentry {2}{3}{5}{101/102}{Comparison to standard theory}{0}}
+\headcommand {\beamer@framepages {101}{102}}
+\headcommand {\slideentry {2}{3}{6}{103/103}{Comparison to standard theory}{0}}
+\headcommand {\beamer@framepages {103}{103}}
+\headcommand {\beamer@sectionpages {34}{103}}
+\headcommand {\beamer@subsectionpages {84}{103}}
+\headcommand {\sectionentry {3}{Example}{104}{Example}{0}}
+\headcommand {\slideentry {3}{0}{1}{104/104}{}{0}}
+\headcommand {\beamer@framepages {104}{104}}
+\headcommand {\slideentry {3}{0}{2}{105/109}{}{0}}
+\headcommand {\beamer@framepages {105}{109}}
+\headcommand {\beamer@subsectionpages {104}{109}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{110}{Results}}
+\headcommand {\slideentry {3}{1}{1}{110/110}{Results}{0}}
+\headcommand {\beamer@framepages {110}{110}}
+\headcommand {\slideentry {3}{1}{2}{111/111}{Results}{0}}
+\headcommand {\beamer@framepages {111}{111}}
+\headcommand {\beamer@partpages {1}{118}}
+\headcommand {\beamer@subsectionpages {110}{118}}
+\headcommand {\beamer@sectionpages {104}{118}}
+\headcommand {\beamer@documentpages {118}}
+\headcommand {\gdef \inserttotalframenumber {33}}
+\headcommand {\slideentry {3}{1}{3}{112/117}{Results}{0}}
+\headcommand {\beamer@framepages {112}{117}}
+\headcommand {\slideentry {3}{1}{4}{118/118}{Results}{0}}
+\headcommand {\beamer@framepages {118}{118}}

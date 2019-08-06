@@ -1,0 +1,101 @@
+\documentclass[a4paper]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[article,nojss]{jss}
+%\VignetteIndexEntry{TimeMap GeneralModel}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Add-on packages and fonts
+%\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+%\newcommand{\R}{\proglang{R }}
+\newcommand{\R}{\textsf{R }}
+\newcommand{\SoilR}{\texttt{SoilR}}
+\newcommand{\GeneralModel}{\texttt{GeneralModel}}
+\newcommand{\Model}{\texttt{Model}}
+\newcommand{\TimeMap}{\texttt{TimeMap}}
+\newcommand{\codestyle}[1]{{\texttt{#1}}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+Example text outside R code here; we know the value of pi is 3.1415927.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{1213}\hlstd{)}  \hlcom{# for reproducibility}
+\hlstd{x} \hlkwb{=} \hlkwd{cumsum}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{100}\hlstd{))}
+\hlkwd{mean}\hlstd{(x)}  \hlcom{# mean of x}
+\end{alltt}
+\begin{verbatim}
+## [1] -1.939758
+\end{verbatim}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(x,} \hlkwc{type} \hlstd{=} \hlstr{'l'}\hlstd{)}  \hlcom{# Brownian motion}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/my-label-1} 
+
+\end{knitrout}
+
+Now we proudly present a python script that uses sympy to produce the latex part.
+\begin{kframe}
+\begin{alltt}
+from meanage import *
+lp(dic["sol_abstract"])
+lp(dic["sol_constant"])
+\end{alltt}
+
+\end{kframe}\[C_{0} e^{A{\left (t - t_{0} \right )}} + \int_{t_{0}}^{t} I{\left (\tau \right )} e^{A{\left (t - \tau \right )}}\, d\tau\]
+\[C_{0} e^{- k \left(t - t_{0}\right)} + \begin{cases} I_{0} t - I_{0} t_{0} & \text{for}\: k = 0 \\\frac{I_{0}}{k} - \frac{I_{0}}{k} e^{- k \left(t - t_{0}\right)} & \text{otherwise} \end{cases}\]
+
+\end{document}

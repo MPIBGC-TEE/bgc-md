@@ -1,0 +1,38 @@
+\documentclass[a4paper]{article}
+%\documentclass[article,nojss]{jss}
+%\VignetteIndexEntry{TimeMap GeneralModel}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Add-on packages and fonts
+%\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+%\newcommand{\R}{\proglang{R }}
+\newcommand{\R}{\textsf{R }}
+\newcommand{\SoilR}{\texttt{SoilR}}
+\newcommand{\GeneralModel}{\texttt{GeneralModel}}
+\newcommand{\Model}{\texttt{Model}}
+\newcommand{\TimeMap}{\texttt{TimeMap}}
+\newcommand{\codestyle}[1]{{\texttt{#1}}}
+
+
+
+\begin{document}
+
+Example text outside R code here; we know the value of pi is \Sexpr{pi}.
+
+<<my-label, eval=TRUE, dev='png'>>=
+set.seed(1213)  # for reproducibility
+x = cumsum(rnorm(100))
+mean(x)  # mean of x
+plot(x, type = 'l')  # Brownian motion
+@
+
+Now we proudly present a python script that uses sympy to produce the latex part.
+<<mm,eval=TRUE,engine='python',results="asis">>=
+from meanage import *
+lp(dic["sol_abstract"])
+lp(dic["sol_constant"])
+@
+\end{document}
