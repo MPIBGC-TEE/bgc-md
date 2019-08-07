@@ -6,120 +6,94 @@
 \headcommand {\beamer@framepages {3}{3}}
 \headcommand {\slideentry {0}{0}{4}{4/4}{}{0}}
 \headcommand {\beamer@framepages {4}{4}}
-\headcommand {\slideentry {0}{0}{5}{5/8}{}{0}}
-\headcommand {\beamer@framepages {5}{8}}
-\headcommand {\beamer@sectionpages {1}{8}}
-\headcommand {\beamer@subsectionpages {1}{8}}
-\headcommand {\sectionentry {1}{Example Applications of Pool Models}{9}{Example Applications of Pool Models}{0}}
-\headcommand {\slideentry {1}{0}{1}{9/9}{}{0}}
+\headcommand {\slideentry {0}{0}{5}{5/6}{}{0}}
+\headcommand {\beamer@framepages {5}{6}}
+\headcommand {\beamer@sectionpages {1}{6}}
+\headcommand {\beamer@subsectionpages {1}{6}}
+\headcommand {\sectionentry {1}{Example Applications of Pool Models}{7}{Example Applications of Pool Models}{0}}
+\headcommand {\slideentry {1}{0}{1}{7/7}{}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\slideentry {1}{0}{2}{8/8}{}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\slideentry {1}{0}{3}{9/9}{}{0}}
 \headcommand {\beamer@framepages {9}{9}}
-\headcommand {\slideentry {1}{0}{2}{10/10}{}{0}}
+\headcommand {\slideentry {1}{0}{4}{10/10}{}{0}}
 \headcommand {\beamer@framepages {10}{10}}
-\headcommand {\slideentry {1}{0}{3}{11/11}{}{0}}
+\headcommand {\slideentry {1}{0}{5}{11/11}{}{0}}
 \headcommand {\beamer@framepages {11}{11}}
-\headcommand {\slideentry {1}{0}{4}{12/12}{}{0}}
+\headcommand {\slideentry {1}{0}{6}{12/12}{}{0}}
 \headcommand {\beamer@framepages {12}{12}}
-\headcommand {\slideentry {1}{0}{5}{13/13}{}{0}}
+\headcommand {\slideentry {1}{0}{7}{13/13}{}{0}}
 \headcommand {\beamer@framepages {13}{13}}
-\headcommand {\slideentry {1}{0}{6}{14/14}{}{0}}
+\headcommand {\slideentry {1}{0}{8}{14/14}{}{0}}
 \headcommand {\beamer@framepages {14}{14}}
-\headcommand {\slideentry {1}{0}{7}{15/15}{}{0}}
+\headcommand {\beamer@sectionpages {7}{14}}
+\headcommand {\beamer@subsectionpages {7}{14}}
+\headcommand {\sectionentry {2}{Reducing Model Complexity }{15}{Reducing Model Complexity }{0}}
+\headcommand {\beamer@subsectionpages {15}{14}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{15}{The Carbon Cycle example}}
+\headcommand {\slideentry {2}{1}{1}{15/15}{The Carbon Cycle example}{0}}
 \headcommand {\beamer@framepages {15}{15}}
-\headcommand {\beamer@sectionpages {9}{15}}
-\headcommand {\beamer@subsectionpages {9}{15}}
-\headcommand {\sectionentry {2}{Reducing Model Complexity }{16}{Reducing Model Complexity }{0}}
-\headcommand {\beamer@subsectionpages {16}{15}}
-\headcommand {\beamer@subsectionentry {0}{2}{1}{16}{The carbon cycle as (de)motivating example}}
-\headcommand {\slideentry {2}{1}{1}{16/16}{The carbon cycle as (de)motivating example}{0}}
+\headcommand {\slideentry {2}{1}{2}{16/16}{The Carbon Cycle example}{0}}
 \headcommand {\beamer@framepages {16}{16}}
-\headcommand {\slideentry {2}{1}{2}{17/17}{The carbon cycle as (de)motivating example}{0}}
+\headcommand {\slideentry {2}{1}{3}{17/17}{The Carbon Cycle example}{0}}
 \headcommand {\beamer@framepages {17}{17}}
-\headcommand {\slideentry {2}{1}{3}{18/18}{The carbon cycle as (de)motivating example}{0}}
+\headcommand {\slideentry {2}{1}{4}{18/18}{The Carbon Cycle example}{0}}
 \headcommand {\beamer@framepages {18}{18}}
-\headcommand {\slideentry {2}{1}{4}{19/19}{The carbon cycle as (de)motivating example}{0}}
+\headcommand {\beamer@subsectionpages {15}{18}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{19}{Asking Simpler Questions}}
+\headcommand {\slideentry {2}{2}{1}{19/19}{Asking Simpler Questions}{0}}
 \headcommand {\beamer@framepages {19}{19}}
-\headcommand {\slideentry {2}{1}{5}{20/20}{The carbon cycle as (de)motivating example}{0}}
+\headcommand {\slideentry {2}{2}{2}{20/20}{Asking Simpler Questions}{0}}
 \headcommand {\beamer@framepages {20}{20}}
-\headcommand {\slideentry {2}{1}{6}{21/21}{The carbon cycle as (de)motivating example}{0}}
+\headcommand {\slideentry {2}{2}{3}{21/21}{Asking Simpler Questions}{0}}
 \headcommand {\beamer@framepages {21}{21}}
-\headcommand {\beamer@subsectionpages {16}{21}}
-\headcommand {\beamer@subsectionentry {0}{2}{2}{22}{Asking Simpler Questions}}
-\headcommand {\beamer@subsectionpages {22}{21}}
-\headcommand {\beamer@subsectionentry {0}{2}{3}{22}{Answer Questions more simply}}
-\headcommand {\slideentry {2}{3}{1}{22/29}{Answer Questions more simply}{0}}
-\headcommand {\beamer@framepages {22}{29}}
-\headcommand {\slideentry {2}{3}{2}{30/40}{Answer Questions more simply}{0}}
-\headcommand {\beamer@framepages {30}{40}}
-\headcommand {\beamer@sectionpages {16}{40}}
-\headcommand {\beamer@subsectionpages {22}{40}}
-\headcommand {\sectionentry {3}{Our proposed solution}{41}{Our proposed solution}{0}}
-\headcommand {\beamer@subsectionpages {41}{40}}
-\headcommand {\beamer@subsectionentry {0}{3}{1}{41}{Definitions}}
-\headcommand {\slideentry {3}{1}{1}{41/46}{Definitions}{0}}
-\headcommand {\beamer@framepages {41}{46}}
-\headcommand {\slideentry {3}{1}{2}{47/50}{Definitions}{0}}
-\headcommand {\beamer@framepages {47}{50}}
-\headcommand {\slideentry {3}{1}{3}{51/53}{Definitions}{0}}
-\headcommand {\beamer@framepages {51}{53}}
-\headcommand {\slideentry {3}{1}{4}{54/54}{Definitions}{0}}
-\headcommand {\beamer@framepages {54}{54}}
-\headcommand {\slideentry {3}{1}{5}{55/56}{Definitions}{0}}
-\headcommand {\beamer@framepages {55}{56}}
-\headcommand {\slideentry {3}{1}{6}{57/57}{Definitions}{0}}
-\headcommand {\beamer@framepages {57}{57}}
-\headcommand {\slideentry {3}{1}{7}{58/59}{Definitions}{0}}
-\headcommand {\beamer@framepages {58}{59}}
-\headcommand {\slideentry {3}{1}{8}{60/61}{Definitions}{0}}
-\headcommand {\beamer@framepages {60}{61}}
-\headcommand {\slideentry {3}{1}{9}{62/62}{Definitions}{0}}
-\headcommand {\beamer@framepages {62}{62}}
-\headcommand {\slideentry {3}{1}{10}{63/63}{Definitions}{0}}
-\headcommand {\beamer@framepages {63}{63}}
-\headcommand {\beamer@subsectionpages {41}{63}}
-\headcommand {\beamer@subsectionentry {0}{3}{2}{64}{Algorithms}}
-\headcommand {\slideentry {3}{2}{1}{64/69}{Algorithms}{0}}
-\headcommand {\beamer@framepages {64}{69}}
-\headcommand {\slideentry {3}{2}{2}{70/70}{Algorithms}{0}}
-\headcommand {\beamer@framepages {70}{70}}
-\headcommand {\slideentry {3}{2}{3}{71/71}{Algorithms}{0}}
-\headcommand {\beamer@framepages {71}{71}}
-\headcommand {\slideentry {3}{2}{4}{72/72}{Algorithms}{0}}
-\headcommand {\beamer@framepages {72}{72}}
-\headcommand {\slideentry {3}{2}{5}{73/78}{Algorithms}{0}}
-\headcommand {\beamer@framepages {73}{78}}
-\headcommand {\beamer@subsectionpages {64}{78}}
-\headcommand {\beamer@subsectionentry {0}{3}{3}{79}{Comparison to standard theory}}
-\headcommand {\slideentry {3}{3}{1}{79/81}{Comparison to standard theory}{0}}
-\headcommand {\beamer@framepages {79}{81}}
-\headcommand {\slideentry {3}{3}{2}{82/82}{Comparison to standard theory}{0}}
-\headcommand {\beamer@framepages {82}{82}}
-\headcommand {\slideentry {3}{3}{3}{83/88}{Comparison to standard theory}{0}}
-\headcommand {\beamer@framepages {83}{88}}
-\headcommand {\slideentry {3}{3}{4}{89/89}{Comparison to standard theory}{0}}
-\headcommand {\beamer@framepages {89}{89}}
-\headcommand {\slideentry {3}{3}{5}{90/91}{Comparison to standard theory}{0}}
-\headcommand {\beamer@framepages {90}{91}}
-\headcommand {\slideentry {3}{3}{6}{92/92}{Comparison to standard theory}{0}}
-\headcommand {\beamer@framepages {92}{92}}
-\headcommand {\beamer@sectionpages {41}{92}}
-\headcommand {\beamer@subsectionpages {79}{92}}
-\headcommand {\sectionentry {4}{Example}{93}{Example}{0}}
-\headcommand {\slideentry {4}{0}{1}{93/93}{}{0}}
-\headcommand {\beamer@framepages {93}{93}}
-\headcommand {\slideentry {4}{0}{2}{94/98}{}{0}}
-\headcommand {\beamer@framepages {94}{98}}
-\headcommand {\beamer@subsectionpages {93}{98}}
-\headcommand {\beamer@subsectionentry {0}{4}{1}{99}{Results}}
-\headcommand {\slideentry {4}{1}{1}{99/99}{Results}{0}}
-\headcommand {\beamer@framepages {99}{99}}
-\headcommand {\slideentry {4}{1}{2}{100/100}{Results}{0}}
-\headcommand {\beamer@framepages {100}{100}}
-\headcommand {\slideentry {4}{1}{3}{101/106}{Results}{0}}
-\headcommand {\beamer@framepages {101}{106}}
-\headcommand {\slideentry {4}{1}{4}{107/107}{Results}{0}}
-\headcommand {\beamer@framepages {107}{107}}
-\headcommand {\beamer@partpages {1}{107}}
-\headcommand {\beamer@subsectionpages {99}{107}}
-\headcommand {\beamer@sectionpages {93}{107}}
-\headcommand {\beamer@documentpages {107}}
-\headcommand {\gdef \inserttotalframenumber {47}}
+\headcommand {\slideentry {2}{2}{4}{22/22}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {22}{22}}
+\headcommand {\slideentry {2}{2}{5}{23/23}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {23}{23}}
+\headcommand {\slideentry {2}{2}{6}{24/24}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {24}{24}}
+\headcommand {\slideentry {2}{2}{7}{25/25}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {25}{25}}
+\headcommand {\slideentry {2}{2}{8}{26/26}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {26}{26}}
+\headcommand {\slideentry {2}{2}{9}{27/27}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {27}{27}}
+\headcommand {\slideentry {2}{2}{10}{28/28}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {28}{28}}
+\headcommand {\slideentry {2}{2}{11}{29/29}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {29}{29}}
+\headcommand {\slideentry {2}{2}{12}{30/30}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {30}{30}}
+\headcommand {\slideentry {2}{2}{13}{31/31}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {31}{31}}
+\headcommand {\slideentry {2}{2}{14}{32/34}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {32}{34}}
+\headcommand {\slideentry {2}{2}{15}{35/35}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {35}{35}}
+\headcommand {\slideentry {2}{2}{16}{36/37}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {36}{37}}
+\headcommand {\slideentry {2}{2}{17}{38/38}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {38}{38}}
+\headcommand {\slideentry {2}{2}{18}{39/40}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {39}{40}}
+\headcommand {\slideentry {2}{2}{19}{41/42}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {41}{42}}
+\headcommand {\slideentry {2}{2}{20}{43/43}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {43}{43}}
+\headcommand {\slideentry {2}{2}{21}{44/44}{Asking Simpler Questions}{0}}
+\headcommand {\beamer@framepages {44}{44}}
+\headcommand {\beamer@subsectionpages {19}{44}}
+\headcommand {\beamer@subsectionentry {0}{2}{3}{45}{Answer Questions more simply}}
+\headcommand {\slideentry {2}{3}{1}{45/45}{Answer Questions more simply}{0}}
+\headcommand {\beamer@framepages {45}{45}}
+\headcommand {\slideentry {2}{3}{2}{46/46}{Answer Questions more simply}{0}}
+\headcommand {\beamer@framepages {46}{46}}
+\headcommand {\slideentry {2}{3}{3}{47/47}{Answer Questions more simply}{0}}
+\headcommand {\beamer@framepages {47}{47}}
+\headcommand {\beamer@partpages {1}{47}}
+\headcommand {\beamer@subsectionpages {45}{47}}
+\headcommand {\beamer@sectionpages {15}{47}}
+\headcommand {\beamer@documentpages {47}}
+\headcommand {\gdef \inserttotalframenumber {41}}
