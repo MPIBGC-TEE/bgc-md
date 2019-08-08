@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="740"
+   height="733.33331"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="system.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="105.21109"
+     inkscape:cy="367.1879"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-219.02887)">
+    <g
+       id="g3103"
+       transform="matrix(0.5,0,0,0.5,0,106.18109)">
+      <image
+         width="740"
+         height="770"
+         xlink:href="file:///home/hmetzler/SOIL-R/Meetings/2017/IMPRS_Retreat/Holger/presentation/system.png"
+         id="image3081"
+         x="0"
+         y="182.36218" />
+      <flowRoot
+         transform="translate(171.27148,40)"
+         style="font-size:56px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Georgia;-inkscape-font-specification:Georgia"
+         id="flowRoot3101"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3103"><rect
+             style="font-size:56px"
+             y="252.36218"
+             x="108.57143"
+             height="82.85714"
+             width="417.14285"
+             id="rect3105" /></flowRegion><flowPara
+           id="flowPara3107">System</flowPara></flowRoot>    </g>
+    <g
+       id="layer1-3"
+       inkscape:label="Layer 1"
+       transform="matrix(0.5,0,0,0.5,370,106.18109)">
+      <image
+         width="740"
+         height="730.51282"
+         xlink:href="file:///home/hmetzler/SOIL-R/Meetings/2017/IMPRS_Retreat/Holger/presentation/atmosphere.png"
+         id="image3057-3"
+         x="0"
+         y="221.84937" />
+      <flowRoot
+         transform="translate(111.33398,40)"
+         style="font-size:56px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Georgia;-inkscape-font-specification:Georgia"
+         id="flowRoot3101-5"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3103-6"><rect
+             style="font-size:56px"
+             y="252.36218"
+             x="108.57143"
+             height="82.85714"
+             width="417.14285"
+             id="rect3105-2" /></flowRegion><flowPara
+           id="flowPara3107-9">Atmosphere</flowPara></flowRoot>    </g>
+    <g
+       id="layer1-9"
+       inkscape:label="Layer 1"
+       transform="matrix(0.5,0,0,0.5,0,476.18109)">
+      <image
+         width="740"
+         height="730.51282"
+         xlink:href="file:///home/hmetzler/SOIL-R/Meetings/2017/IMPRS_Retreat/Holger/presentation/terrestrial.png"
+         id="image3141"
+         x="0"
+         y="221.84937" />
+      <flowRoot
+         transform="translate(-0.61132812,40)"
+         style="font-size:56px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Georgia;-inkscape-font-specification:Georgia"
+         id="flowRoot3101-3"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3103-60"><rect
+             style="font-size:56px"
+             y="252.36218"
+             x="108.57143"
+             height="94.285721"
+             width="535.71429"
+             id="rect3105-6" /></flowRegion><flowPara
+           id="flowPara3107-2">Terrestrial biosphere</flowPara></flowRoot>    </g>
+    <g
+       id="layer1-92"
+       inkscape:label="Layer 1"
+       transform="matrix(0.5,0,0,0.5,370,476.18109)">
+      <image
+         width="740"
+         height="730.51282"
+         xlink:href="file:///home/hmetzler/SOIL-R/Meetings/2017/IMPRS_Retreat/Holger/presentation/surface.png"
+         id="image3225"
+         x="0"
+         y="221.84937" />
+      <flowRoot
+         transform="translate(89.130859,40)"
+         style="font-size:56px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Georgia;-inkscape-font-specification:Georgia"
+         id="flowRoot3101-0"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3103-2"><rect
+             style="font-size:56px"
+             y="252.36218"
+             x="108.57143"
+             height="94.285721"
+             width="535.71429"
+             id="rect3105-3" /></flowRegion><flowPara
+           id="flowPara3107-7">Surface ocean</flowPara></flowRoot>    </g>
+  </g>
+</svg>
