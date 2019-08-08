@@ -1,5 +1,6 @@
-\beamer@sectionintoc {1}{Example Applications of Pool Models}{7}{0}{1}
-\beamer@sectionintoc {2}{Reducing Model Complexity }{15}{0}{2}
-\beamer@subsectionintoc {2}{2}{The Carbon Cycle example}{15}{0}{2}
-\beamer@subsectionintoc {2}{3}{Asking Simpler Questions}{18}{0}{2}
-\beamer@subsectionintoc {2}{4}{Answer Questions more simply}{44}{0}{2}
+\beamer@sectionintoc {1}{Example Applications of Pool Models}{8}{0}{1}
+\beamer@sectionintoc {2}{Reducing Model Complexity }{16}{0}{2}
+\beamer@subsectionintoc {2}{2}{The Carbon Cycle example}{16}{0}{2}
+\beamer@subsectionintoc {2}{3}{Asking Simpler Questions}{19}{0}{2}
+\beamer@subsectionintoc {2}{4}{Answer Questions more simply}{45}{0}{2}
+\beamer@sectionintoc {3}{Compartmental Systems}{47}{0}{3}
