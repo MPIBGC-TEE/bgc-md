@@ -1,7 +1,8 @@
-\beamer@sectionintoc {1}{Problem statement}{7}{0}{1}
-\beamer@sectionintoc {2}{Our proposed solution}{34}{0}{2}
-\beamer@subsectionintoc {2}{1}{Definitions}{34}{0}{2}
-\beamer@subsectionintoc {2}{2}{Algorithms}{69}{0}{2}
-\beamer@subsectionintoc {2}{3}{Comparison to standard theory}{84}{0}{2}
-\beamer@sectionintoc {3}{Example}{104}{0}{3}
-\beamer@subsectionintoc {3}{1}{Results}{110}{0}{3}
+\beamer@sectionintoc {1}{Example Applications of Pool Models}{9}{0}{1}
+\beamer@sectionintoc {2}{Reducing Model Complexity }{17}{0}{2}
+\beamer@subsectionintoc {2}{2}{The Carbon Cycle example}{17}{0}{2}
+\beamer@subsectionintoc {2}{3}{Asking Simpler Questions}{20}{0}{2}
+\beamer@subsectionintoc {2}{4}{Answer Questions more simply}{50}{0}{2}
+\beamer@sectionintoc {3}{Compartmental Systems}{52}{0}{3}
+\beamer@sectionintoc {4}{Generalization to non Well Mixed Systems}{142}{0}{4}
+\beamer@subsectionintoc {4}{2}{Population Dynamics}{142}{0}{4}

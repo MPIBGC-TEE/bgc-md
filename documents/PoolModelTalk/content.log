@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.11.11)  5 AUG 2019 14:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.8)  12 AUG 2019 08:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **content.tex
 (./content.tex
 LaTeX2e <2017-04-15>
-Babel <3.18> and hyphenation patterns for 3 language(s) loaded.
+Babel <3.18> and hyphenation patterns for 7 language(s) loaded.
 
 ! LaTeX Error: \usepackage before \documentclass.
 
@@ -13,17 +13,23 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.6 \usepackage{
-                url}
+l.5 \usepackage{
+                beamerthemesplit} %// Activate for custom appearance
+? 
+! Interruption.
+\GenericError  ...                                
+                                                  \endgroup 
+l.5 \usepackage{
+                beamerthemesplit} %// Activate for custom appearance
 ? x
  
 Here is how much of TeX's memory you used:
- 6 strings out of 494923
- 276 string characters out of 6180741
- 45900 words of memory out of 5000000
- 3421 multiletter control sequences out of 15000+600000
+ 5 strings out of 494847
+ 134 string characters out of 6179081
+ 46224 words of memory out of 5000000
+ 3430 multiletter control sequences out of 15000+600000
  3640 words of font info for 14 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
+ 59 hyphenation exceptions out of 8191
  5i,0n,5p,87b,14s stack positions out of 5000i,500n,10000p,200000b,80000s
 No pages of output.
 PDF statistics:

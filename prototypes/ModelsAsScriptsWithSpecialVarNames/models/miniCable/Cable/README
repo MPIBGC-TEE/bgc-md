@@ -1,0 +1,5 @@
+1.) Type nix-shell cable.nix 
+This will install the environment described in 'cable.nix' which contains the compiler and the netcdf and mpi libraries.
+2.) Type source setup.sh
+This will setup the paths to the binaries (e.g. mpif90 ) and the include and libpaths needed at compile time and runtime.
+It will also define some functions that perform further build steps to produce the executable and run it with specific input files. These functions can be called in the nix-shell after you have sourced the setup file.

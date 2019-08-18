@@ -1,6 +1,13 @@
-\beamer@sectionintoc {1}{Example Applications of Pool Models}{8}{0}{1}
-\beamer@sectionintoc {2}{Reducing Model Complexity }{16}{0}{2}
-\beamer@subsectionintoc {2}{2}{The Carbon Cycle example}{16}{0}{2}
-\beamer@subsectionintoc {2}{3}{Asking Simpler Questions}{19}{0}{2}
-\beamer@subsectionintoc {2}{4}{Answer Questions more simply}{45}{0}{2}
-\beamer@sectionintoc {3}{Compartmental Systems}{47}{0}{3}
+\beamer@sectionintoc {1}{Example applications of pool models}{7}{0}{1}
+\beamer@sectionintoc {2}{Reducing model complexity }{16}{0}{2}
+\beamer@subsectionintoc {2}{1}{The carbon cycle example}{17}{0}{2}
+\beamer@subsectionintoc {2}{2}{Asking simpler questions}{20}{0}{2}
+\beamer@subsectionintoc {2}{3}{Answer questions more simply}{46}{0}{2}
+\beamer@sectionintoc {3}{Compartmental systems}{48}{0}{3}
+\beamer@subsectionintoc {3}{1}{Introduction}{49}{0}{3}
+\beamer@subsectionintoc {3}{2}{Linear autonomous}{54}{0}{3}
+\beamer@subsectionintoc {3}{3}{Generalization to nonlinear nonautonomous systems}{78}{0}{3}
+\beamer@subsectionintoc {3}{4}{Example application}{109}{0}{3}
+\beamer@sectionintoc {4}{Generalization to non Well Mixed Systems}{136}{0}{4}
+\beamer@subsectionintoc {4}{1}{Population Dynamics}{137}{0}{4}
+\beamer@subsectionintoc {4}{2}{Hydrology}{141}{0}{4}

@@ -1,4 +1,15 @@
-\frametitle{Thank you for your attention}
-   \includegraphics<1>[width=\textwidth]{Verwirrung2.jpg}
-%   \\
-%   If you cannot win through you should at least create confusion...
+\frametitle{Same procedure for {\color{red} age} density}
+\begin{eqnarray*}
+     \bar a(t) &=&\lim_{n\to \infty} \frac{a_1 n_{a_1} +a_2 n_{a_2} +\cdots+a_{n}n_{a_n}}{n_{p}}
+     \\
+     &=&\lim_{n\to \infty}\sum_{minage}^{maxage} a \frac{n(a)}{n_p} da
+     \\
+     &=&\int_{minage}^{maxage} a \phi(a) da
+\end{eqnarray*}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.35\linewidth]{figure/beamer-dens2-1}
+
+}
+\end{knitrout}

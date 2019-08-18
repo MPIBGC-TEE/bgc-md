@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.8)  8 AUG 2019 21:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.8)  13 AUG 2019 12:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -468,6 +468,12 @@ Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \symAMSb=\mathgroup5
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/share/texlive/texmf-dist/tex/latex/sansmathaccent/sansmathaccent.sty
+Package: sansmathaccent 2013/03/28
+
+(/usr/share/texlive/texmf-dist/tex/latex/filehook/filehook.sty
+Package: filehook 2011/10/12 v0.5d Hooks for input files
 )))
 (/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasetranslator.sty
 (/usr/share/texlive/texmf-dist/tex/latex/translator/translator.sty
@@ -702,11 +708,17 @@ Package: multicol 2017/04/11 v1.8q multicolumn formatting (FMi)
 \colbreak@box=\box78
 \mc@col@check@num=\count162
 )
+\sympureletters=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
+(Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on inp
+ut line 8.
+
 (/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty
 Package: bm 2017/01/16 v1.2c Bold Symbol Support (DPC/FMi)
-\symboldoperators=\mathgroup6
-\symboldletters=\mathgroup7
-\symboldsymbols=\mathgroup8
+\symboldoperators=\mathgroup7
+\symboldletters=\mathgroup8
+\symboldsymbols=\mathgroup9
+\symboldpureletters=\mathgroup10
 LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 141.
 LaTeX Info: Redefining \bm on input line 207.
 )
@@ -1527,8 +1539,14 @@ LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 87.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 87.
-\symnumbers=\mathgroup9
-\sympureletters=\mathgroup10
+\symnumbers=\mathgroup11
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 87.
+LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
+(Font)                  OT1/mathkerncmss/m/sl --> OT1/cmss/m/it on input line 8
+7.
+LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
+(Font)                  OT1/mathkerncmss/bx/sl --> OT1/cmss/m/it on input line 
+87.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
 (Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 87.
 LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 87.
@@ -1561,6 +1579,16 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 87.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> OT1/cmtt/bx/n on input line 87.
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 87.
+LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
+(Font)                  OT1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 8
+7.
+LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
+(Font)                  OT1/cmss/bx/it --> OT1/mathkerncmss/m/sl on input line 
+87.
+LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
+(Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on inp
+ut line 87.
 
 (/usr/share/texlive/texmf-dist/tex/latex/translator/translator-basic-dictionary
 -English.dict
@@ -1674,339 +1702,353 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 87.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-\c__siunitx_mathtt_int=\count345
- (./Talk-slides.toc)
-[1
+LaTeX Font Info:    Try loading font information for OT1+mathkerncmss on input 
+line 87.
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+(/usr/share/texlive/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.fd
+File: ot1mathkerncmss.fd 2013/03/27 Fontinst v1.933 font definitions for OT1/ma
+thkerncmss.
+)
+\c__siunitx_mathtt_int=\count345
+
 
 Package hyperref Warning: Option `pdfauthor' has already been used,
 (hyperref)                setting the option has no effect on input line 111.
 
-<MPI_BGC.pdf, id=104, 799.98875pt x 163.61125pt>
+<MPI_BGC.pdf, id=76, 799.98875pt x 163.61125pt>
 File: MPI_BGC.pdf Graphic file (type pdf)
 <use MPI_BGC.pdf>
 Package pdftex.def Info: MPI_BGC.pdf  used on input line 112.
 (pdftex.def)             Requested size: 127.23178pt x 26.02249pt.
-[2
+[1
 
- <./MPI_BGC.pdf>] [3
-
-]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./MPI_BGC.pdf>]
 File: MPI_BGC.pdf Graphic file (type pdf)
 <use MPI_BGC.pdf>
 Package pdftex.def Info: MPI_BGC.pdf  used on input line 129.
 (pdftex.def)             Requested size: 127.23178pt x 26.02249pt.
- [4
+ [2
+
+]
+(./Talk-slides.toc) [3
+
+] (./Talk-slides.toc) [4
 
 ] (./Talk-slides.toc) [5
 
-] (./Talk-slides.toc)
-[6
+]
+(./Talk-slides.toc) [6
 
 ] (./Talk-slides.toc) [7
 
 ]
-<model2.pdf, id=253, 326.30951pt x 369.68626pt>
+<model2.pdf, id=315, 326.30951pt x 369.68626pt>
 File: model2.pdf Graphic file (type pdf)
 <use model2.pdf>
-Package pdftex.def Info: model2.pdf  used on input line 140.
+Package pdftex.def Info: model2.pdf  used on input line 141.
 (pdftex.def)             Requested size: 206.7113pt x 234.18668pt.
- [8
+
+Overfull \vbox (5.3869pt too high) detected at line 141
+ []
+
+[8
 
  <./model2.pdf>]
-<Watersheds.jpeg, id=289, 794.97pt x 509.905pt>
+<Watersheds.jpeg, id=349, 794.97pt x 509.905pt>
 File: Watersheds.jpeg Graphic file (type jpg)
 <use Watersheds.jpeg>
-Package pdftex.def Info: Watersheds.jpeg  used on input line 146.
+Package pdftex.def Info: Watersheds.jpeg  used on input line 147.
 (pdftex.def)             Requested size: 308.06367pt x 197.6017pt.
  [9
 
  <./Watersheds.jpeg>]
-<EN_Bazinul_hidrografic_al_Raului_Latorita,_Romania.jpg, id=309, 1524.897pt x 1
+<EN_Bazinul_hidrografic_al_Raului_Latorita,_Romania.jpg, id=369, 1524.897pt x 1
 087.6635pt>
 File: EN_Bazinul_hidrografic_al_Raului_Latorita,_Romania.jpg Graphic file (type
  jpg)
 <use EN_Bazinul_hidrografic_al_Raului_Latorita,_Romania.jpg>
 Package pdftex.def Info: EN_Bazinul_hidrografic_al_Raului_Latorita,_Romania.jpg
-  used on input line 151.
+  used on input line 152.
 (pdftex.def)             Requested size: 308.06367pt x 219.71956pt.
  [10
 
  <./EN_Bazinul_hidrografic_al_Raului_Latorita,_Romania.jpg>]
-<CarbonAllocation.jpg, id=329, 361.35pt x 442.5738pt>
+<CarbonAllocation.jpg, id=390, 361.35pt x 442.5738pt>
 File: CarbonAllocation.jpg Graphic file (type jpg)
 <use CarbonAllocation.jpg>
-Package pdftex.def Info: CarbonAllocation.jpg  used on input line 158.
+Package pdftex.def Info: CarbonAllocation.jpg  used on input line 159.
 (pdftex.def)             Requested size: 191.21133pt x 234.18668pt.
 
-Overfull \vbox (8.12439pt too high) detected at line 158
+Overfull \vbox (8.12439pt too high) detected at line 159
  []
 
 [11
 
  <./CarbonAllocation.jpg>]
-<RothC.png, id=351, 592.2125pt x 888.31876pt>
+<RothC.png, id=412, 592.2125pt x 888.31876pt>
 File: RothC.png Graphic file (type png)
 <use RothC.png>
-Package pdftex.def Info: RothC.png  used on input line 164.
+Package pdftex.def Info: RothC.png  used on input line 165.
 (pdftex.def)             Requested size: 119.80544pt x 179.70735pt.
-<Century.png, id=352, 767.86874pt x 712.6625pt>
+<Century.png, id=413, 767.86874pt x 712.6625pt>
 File: Century.png Graphic file (type png)
 <use Century.png>
-Package pdftex.def Info: Century.png  used on input line 164.
+Package pdftex.def Info: Century.png  used on input line 165.
 (pdftex.def)             Requested size: 188.26346pt x 174.7289pt.
  [12
 
  <./RothC.png> <./Century.png>]
-<LasagaModel.pdf, id=374, 845.04686pt x 597.50786pt>
+<LasagaModel.pdf, id=435, 845.04686pt x 597.50786pt>
 File: LasagaModel.pdf Graphic file (type pdf)
 <use LasagaModel.pdf>
-Package pdftex.def Info: LasagaModel.pdf  used on input line 169.
+Package pdftex.def Info: LasagaModel.pdf  used on input line 170.
 (pdftex.def)             Requested size: 308.06367pt x 217.8196pt.
  [13
 
  <./LasagaModel.pdf>]
-<HaberBosch.jpg, id=683, 1829.83624pt x 1178.4025pt>
+<HaberBosch.jpg, id=744, 1829.83624pt x 1178.4025pt>
 File: HaberBosch.jpg Graphic file (type jpg)
 <use HaberBosch.jpg>
-Package pdftex.def Info: HaberBosch.jpg  used on input line 174.
+Package pdftex.def Info: HaberBosch.jpg  used on input line 175.
 (pdftex.def)             Requested size: 308.06367pt x 198.38383pt.
  [14
 
  <./HaberBosch.jpg>]
-<LibyaPopulation2011.jpg, id=703, 612.2875pt x 426.59375pt>
+<LibyaPopulation2011.jpg, id=763, 612.2875pt x 426.59375pt>
 File: LibyaPopulation2011.jpg Graphic file (type jpg)
 <use LibyaPopulation2011.jpg>
-Package pdftex.def Info: LibyaPopulation2011.jpg  used on input line 179.
+Package pdftex.def Info: LibyaPopulation2011.jpg  used on input line 180.
 (pdftex.def)             Requested size: 308.06367pt x 214.63075pt.
  [15
 
  <./LibyaPopulation2011.jpg>]
-<Earth.jpg, id=722, 2055.68pt x 2055.68pt>
+(./Talk-slides.toc) [16
+
+]
+<Earth.jpg, id=815, 2055.68pt x 2055.68pt>
 File: Earth.jpg Graphic file (type jpg)
 <use Earth.jpg>
-Package pdftex.def Info: Earth.jpg  used on input line 189.
+Package pdftex.def Info: Earth.jpg  used on input line 190.
 (pdftex.def)             Requested size: 234.18684pt x 234.18668pt.
- [16
+ [17
 
  <./Earth.jpg>]
-<cCycleIPCC.jpg, id=743, 574.0647pt x 501.7947pt>
+<cCycleIPCC.jpg, id=835, 574.0647pt x 501.7947pt>
 File: cCycleIPCC.jpg Graphic file (type jpg)
 <use cCycleIPCC.jpg>
-Package pdftex.def Info: cCycleIPCC.jpg  used on input line 193.
+Package pdftex.def Info: cCycleIPCC.jpg  used on input line 194.
 (pdftex.def)             Requested size: 308.06367pt x 269.28061pt.
 
-Overfull \vbox (10.07143pt too high) detected at line 193
+Overfull \vbox (10.07143pt too high) detected at line 194
  []
 
-[17
+[18
 
  <./cCycleIPCC.jpg>]
 File: Earth.jpg Graphic file (type jpg)
 <use Earth.jpg>
-Package pdftex.def Info: Earth.jpg  used on input line 200.
+Package pdftex.def Info: Earth.jpg  used on input line 201.
 (pdftex.def)             Requested size: 102.68962pt x 102.66455pt.
 File: cCycleIPCC.jpg Graphic file (type jpg)
 <use cCycleIPCC.jpg>
-Package pdftex.def Info: cCycleIPCC.jpg  used on input line 200.
+Package pdftex.def Info: cCycleIPCC.jpg  used on input line 201.
 (pdftex.def)             Requested size: 102.68962pt x 89.7602pt.
 File: model2.pdf Graphic file (type pdf)
 <use model2.pdf>
-Package pdftex.def Info: model2.pdf  used on input line 200.
+Package pdftex.def Info: model2.pdf  used on input line 201.
 (pdftex.def)             Requested size: 119.80544pt x 135.73254pt.
- [18
+ [19
 
 ]
-<Solenoidal_vector_field_2.pdf, id=781, 573.73306pt x 546.32843pt>
+<Solenoidal_vector_field_2.pdf, id=874, 573.73306pt x 546.32843pt>
 File: Solenoidal_vector_field_2.pdf Graphic file (type pdf)
 <use Solenoidal_vector_field_2.pdf>
-Package pdftex.def Info: Solenoidal_vector_field_2.pdf  used on input line 207.
+Package pdftex.def Info: Solenoidal_vector_field_2.pdf  used on input line 208.
 
 (pdftex.def)             Requested size: 308.06367pt x 293.35403pt.
 
-Overfull \vbox (34.14485pt too high) detected at line 207
+Overfull \vbox (34.14485pt too high) detected at line 208
  []
 
-[19
+[20
 
  <./Solenoidal_vector_field_2.pdf>]
-<VectorFieldWithOnePool.pdf, id=2013, 551.69148pt x 391.71077pt>
+<VectorFieldWithOnePool.pdf, id=2104, 551.69148pt x 391.71077pt>
 File: VectorFieldWithOnePool.pdf Graphic file (type pdf)
 <use VectorFieldWithOnePool.pdf>
-Package pdftex.def Info: VectorFieldWithOnePool.pdf  used on input line 212.
+Package pdftex.def Info: VectorFieldWithOnePool.pdf  used on input line 213.
 (pdftex.def)             Requested size: 308.06367pt x 218.72893pt.
- [20
+ [21
 
  <./VectorFieldWithOnePool.pdf>]
-<VectorFieldWithOnePoolAndSubpools.pdf, id=3243, 551.69148pt x 391.71077pt>
+<VectorFieldWithOnePoolAndSubpools.pdf, id=3334, 551.69148pt x 391.71077pt>
 File: VectorFieldWithOnePoolAndSubpools.pdf Graphic file (type pdf)
 <use VectorFieldWithOnePoolAndSubpools.pdf>
 Package pdftex.def Info: VectorFieldWithOnePoolAndSubpools.pdf  used on input l
-ine 217.
+ine 218.
 (pdftex.def)             Requested size: 308.06367pt x 218.72893pt.
 
-[21
+[22
 
  <./VectorFieldWithOnePoolAndSubpools.pdf>]
-<VectorFieldWithOnePoolAndSubpoolsAndColoredBoundaries.pdf, id=4473, 551.69148p
+<VectorFieldWithOnePoolAndSubpoolsAndColoredBoundaries.pdf, id=4565, 551.69148p
 t x 391.71077pt>
 File: VectorFieldWithOnePoolAndSubpoolsAndColoredBoundaries.pdf Graphic file (t
 ype pdf)
 <use VectorFieldWithOnePoolAndSubpoolsAndColoredBoundaries.pdf>
 Package pdftex.def Info: VectorFieldWithOnePoolAndSubpoolsAndColoredBoundaries.
-pdf  used on input line 222.
+pdf  used on input line 223.
 (pdftex.def)             Requested size: 308.06367pt x 218.72893pt.
- [22
+ [23
 
  <./VectorFieldWithOnePoolAndSubpoolsAndColoredBoundaries.pdf>]
-<SubpoolsAndColoredBoundaries.pdf, id=5706, 849.73264pt x 605.69733pt>
+<SubpoolsAndColoredBoundaries.pdf, id=5798, 849.73264pt x 605.69733pt>
 File: SubpoolsAndColoredBoundaries.pdf Graphic file (type pdf)
 <use SubpoolsAndColoredBoundaries.pdf>
 Package pdftex.def Info: SubpoolsAndColoredBoundaries.pdf  used on input line 2
-27.
+28.
 (pdftex.def)             Requested size: 308.06367pt x 219.58507pt.
- [23
+ [24
 
  <./SubpoolsAndColoredBoundaries.pdf>]
-<SubpoolsAndColoredBoundariesAndArrows.pdf, id=5737, 847.59593pt x 597.25691pt>
+<SubpoolsAndColoredBoundariesAndArrows.pdf, id=5829, 847.59593pt x 597.25691pt>
 
 File: SubpoolsAndColoredBoundariesAndArrows.pdf Graphic file (type pdf)
 <use SubpoolsAndColoredBoundariesAndArrows.pdf>
 Package pdftex.def Info: SubpoolsAndColoredBoundariesAndArrows.pdf  used on inp
-ut line 232.
+ut line 233.
 (pdftex.def)             Requested size: 308.06367pt x 217.07195pt.
 
-[24
+[25
 
  <./SubpoolsAndColoredBoundariesAndArrows.pdf>]
 File: VectorFieldWithOnePoolAndSubpoolsAndColoredBoundaries.pdf Graphic file (t
 ype pdf)
 <use VectorFieldWithOnePoolAndSubpoolsAndColoredBoundaries.pdf>
 Package pdftex.def Info: VectorFieldWithOnePoolAndSubpoolsAndColoredBoundaries.
-pdf  used on input line 238.
+pdf  used on input line 239.
 (pdftex.def)             Requested size: 154.03183pt x 109.36148pt.
 File: SubpoolsAndColoredBoundariesAndArrows.pdf Graphic file (type pdf)
 <use SubpoolsAndColoredBoundariesAndArrows.pdf>
 Package pdftex.def Info: SubpoolsAndColoredBoundariesAndArrows.pdf  used on inp
-ut line 238.
+ut line 239.
 (pdftex.def)             Requested size: 154.03183pt x 108.53142pt.
- [25
-
-]
-<RoundPoolscColoredArrows.pdf, id=5792, 617.87086pt x 596.41478pt>
-File: RoundPoolscColoredArrows.pdf Graphic file (type pdf)
-<use RoundPoolscColoredArrows.pdf>
-Package pdftex.def Info: RoundPoolscColoredArrows.pdf  used on input line 243.
-(pdftex.def)             Requested size: 242.60913pt x 234.18668pt.
  [26
 
- <./RoundPoolscColoredArrows.pdf>]
-<RoundPoolsBlackArrows.pdf, id=5835, 617.87086pt x 596.41478pt>
-File: RoundPoolsBlackArrows.pdf Graphic file (type pdf)
-<use RoundPoolsBlackArrows.pdf>
-Package pdftex.def Info: RoundPoolsBlackArrows.pdf  used on input line 248.
+]
+<RoundPoolscColoredArrows.pdf, id=5884, 617.87086pt x 596.41478pt>
+File: RoundPoolscColoredArrows.pdf Graphic file (type pdf)
+<use RoundPoolscColoredArrows.pdf>
+Package pdftex.def Info: RoundPoolscColoredArrows.pdf  used on input line 244.
 (pdftex.def)             Requested size: 242.60913pt x 234.18668pt.
  [27
 
+ <./RoundPoolscColoredArrows.pdf>]
+<RoundPoolsBlackArrows.pdf, id=5927, 617.87086pt x 596.41478pt>
+File: RoundPoolsBlackArrows.pdf Graphic file (type pdf)
+<use RoundPoolsBlackArrows.pdf>
+Package pdftex.def Info: RoundPoolsBlackArrows.pdf  used on input line 249.
+(pdftex.def)             Requested size: 242.60913pt x 234.18668pt.
+ [28
+
  <./RoundPoolsBlackArrows.pdf>]
-<FritzC.pdf, id=5879, 1227.58624pt x 1284.8pt>
+<FritzC.pdf, id=5970, 1227.58624pt x 1284.8pt>
 File: FritzC.pdf Graphic file (type pdf)
 <use FritzC.pdf>
-Package pdftex.def Info: FritzC.pdf  used on input line 253.
+Package pdftex.def Info: FritzC.pdf  used on input line 254.
 (pdftex.def)             Requested size: 154.03183pt x 161.20734pt.
-<Open_passport.pdf, id=5880, 1565.42152pt x 1905.97704pt>
+<Open_passport.pdf, id=5971, 1565.42152pt x 1905.97704pt>
 File: Open_passport.pdf Graphic file (type pdf)
 <use Open_passport.pdf>
-Package pdftex.def Info: Open_passport.pdf  used on input line 253.
+Package pdftex.def Info: Open_passport.pdf  used on input line 254.
 (pdftex.def)             Requested size: 154.03183pt x 187.5261pt.
- [28
+ [29
 
  <./FritzC.pdf> <./Open_passport.pdf
 
 pdfTeX warning: pdflatex (file ./Open_passport.pdf): PDF inclusion: multiple pd
 fs with page group included in a single page
 >]
-<VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndTrajectory.pdf, id=590
-9, 1029.2373pt x 436.52397pt>
+<VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndTrajectory.pdf, id=600
+1, 1029.2373pt x 436.52397pt>
 File: VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndTrajectory.pdf Gr
 aphic file (type pdf)
 <use VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndTrajectory.pdf>
 Package pdftex.def Info: VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesA
-ndTrajectory.pdf  used on input line 258.
+ndTrajectory.pdf  used on input line 259.
 (pdftex.def)             Requested size: 308.06367pt x 130.65846pt.
- [29
+ [30
 
  <./VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndTrajectory.pdf>]
 <VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndTrajectories.pdf, id=7
-148, 1196.15854pt x 530.25208pt>
+240, 1196.15854pt x 530.25208pt>
 File: VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndTrajectories.pdf 
 Graphic file (type pdf)
 <use VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndTrajectories.pdf>
 Package pdftex.def Info: VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesA
-ndTrajectories.pdf  used on input line 263.
+ndTrajectories.pdf  used on input line 264.
 (pdftex.def)             Requested size: 338.87422pt x 150.22531pt.
- [30
+ [31
 
  <./VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndTrajectories.pdf>]
 File: VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndTrajectories.pdf 
 Graphic file (type pdf)
 <use VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndTrajectories.pdf>
 Package pdftex.def Info: VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesA
-ndTrajectories.pdf  used on input line 275.
+ndTrajectories.pdf  used on input line 276.
 (pdftex.def)             Requested size: 264.1413pt x 117.09334pt.
 
-Overfull \vbox (4.82288pt too high) detected at line 275
+Overfull \vbox (4.82288pt too high) detected at line 276
  []
 
-[31
+[32
 
 ]
-<ParticleAge.pdf, id=8407, 845.04686pt x 597.50786pt>
+<ParticleAge.pdf, id=8500, 845.04686pt x 597.50786pt>
 File: ParticleAge.pdf Graphic file (type pdf)
 <use ParticleAge.pdf>
-Package pdftex.def Info: ParticleAge.pdf  used on input line 293.
+Package pdftex.def Info: ParticleAge.pdf  used on input line 294.
 (pdftex.def)             Requested size: 205.37926pt x 145.21913pt.
- [32
+ [33
 
  <./ParticleAge.pdf>]
 File: ParticleAge.pdf Graphic file (type pdf)
 <use ParticleAge.pdf>
-Package pdftex.def Info: ParticleAge.pdf  used on input line 293.
+Package pdftex.def Info: ParticleAge.pdf  used on input line 294.
 (pdftex.def)             Requested size: 205.37926pt x 145.21913pt.
- [33
+ [34
 
 ]
 File: ParticleAge.pdf Graphic file (type pdf)
 <use ParticleAge.pdf>
-Package pdftex.def Info: ParticleAge.pdf  used on input line 293.
+Package pdftex.def Info: ParticleAge.pdf  used on input line 294.
 (pdftex.def)             Requested size: 205.37926pt x 145.21913pt.
- [34
+ [35
 
 ]
 \openout4 = `Talk-slides.vrb'.
 
  (./Talk-slides.vrb
-<Reservoir_Peoples_Ages.pdf, id=8476, 845.04686pt x 597.50786pt>
+<Reservoir_Peoples_Ages.pdf, id=8569, 845.04686pt x 597.50786pt>
 File: Reservoir_Peoples_Ages.pdf Graphic file (type pdf)
 <use Reservoir_Peoples_Ages.pdf>
 Package pdftex.def Info: Reservoir_Peoples_Ages.pdf  used on input line 9.
 (pdftex.def)             Requested size: 110.4015pt x 78.06354pt.
-) [35
+) [36
 
  <./Reservoir_Peoples_Ages.pdf>]
 \openout4 = `Talk-slides.vrb'.
 
  (./Talk-slides.vrb
-<MeanTransitTime.pdf, id=9577, 845.04686pt x 597.50786pt>
+<MeanTransitTime.pdf, id=9671, 845.04686pt x 597.50786pt>
 File: MeanTransitTime.pdf Graphic file (type pdf)
 <use MeanTransitTime.pdf>
 Package pdftex.def Info: MeanTransitTime.pdf  used on input line 2.
 (pdftex.def)             Requested size: 110.4015pt x 78.06354pt.
-) [36
+) [37
 
  <./MeanTransitTime.pdf>]
-(./Talk-slides.vrb) [37
+(./Talk-slides.vrb) [38
 
 ]
 \openout4 = `Talk-slides.vrb'.
@@ -2020,22 +2062,22 @@ File: MeanTransitTime.pdf Graphic file (type pdf)
 <use MeanTransitTime.pdf>
 Package pdftex.def Info: MeanTransitTime.pdf  used on input line 5.
 (pdftex.def)             Requested size: 73.601pt x 52.04103pt.
-) [38
+) [39
 
 ]
 \openout4 = `Talk-slides.vrb'.
 
  (./Talk-slides.vrb
-<figure/beamer-mean-1.pdf, id=10483, 289.08pt x 289.08pt>
+<figure/beamer-mean-1.pdf, id=10577, 289.08pt x 289.08pt>
 File: figure/beamer-mean-1.pdf Graphic file (type pdf)
 <use figure/beamer-mean-1.pdf>
 Package pdftex.def Info: figure/beamer-mean-1.pdf  used on input line 19.
 (pdftex.def)             Requested size: 136.91603pt x 136.91301pt.
 )
-Overfull \vbox (31.44135pt too high) detected at line 391
+Overfull \vbox (31.44135pt too high) detected at line 392
  []
 
-[39
+[40
 
  <./figure/beamer-mean-1.pdf>] (./Talk-slides.vrb
 File: figure/beamer-mean-1.pdf Graphic file (type pdf)
@@ -2043,25 +2085,25 @@ File: figure/beamer-mean-1.pdf Graphic file (type pdf)
 Package pdftex.def Info: figure/beamer-mean-1.pdf  used on input line 19.
 (pdftex.def)             Requested size: 136.91603pt x 136.91301pt.
 )
-Overfull \vbox (31.44135pt too high) detected at line 391
+Overfull \vbox (31.44135pt too high) detected at line 392
  []
 
-[40
+[41
 
 ]
 \openout4 = `Talk-slides.vrb'.
 
  (./Talk-slides.vrb
-<figure/beamer-histogram-1.pdf, id=10528, 289.08pt x 289.08pt>
+<figure/beamer-histogram-1.pdf, id=10622, 289.08pt x 289.08pt>
 File: figure/beamer-histogram-1.pdf Graphic file (type pdf)
 <use figure/beamer-histogram-1.pdf>
 Package pdftex.def Info: figure/beamer-histogram-1.pdf  used on input line 15.
 (pdftex.def)             Requested size: 119.80544pt x 119.80275pt.
 )
-Overfull \vbox (0.81802pt too high) detected at line 416
+Overfull \vbox (0.81802pt too high) detected at line 417
  []
 
-[41
+[42
 
  <./figure/beamer-histogram-1.pdf>] (./Talk-slides.vrb
 File: figure/beamer-histogram-1.pdf Graphic file (type pdf)
@@ -2069,493 +2111,512 @@ File: figure/beamer-histogram-1.pdf Graphic file (type pdf)
 Package pdftex.def Info: figure/beamer-histogram-1.pdf  used on input line 15.
 (pdftex.def)             Requested size: 119.80544pt x 119.80275pt.
 )
-Overfull \vbox (0.81802pt too high) detected at line 416
+Overfull \vbox (0.81802pt too high) detected at line 417
  []
 
-[42
+[43
 
 ]
 \openout4 = `Talk-slides.vrb'.
 
  (./Talk-slides.vrb
-<figure/beamer-dens-1.pdf, id=10574, 289.08pt x 289.08pt>
+<figure/beamer-dens-1.pdf, id=10668, 289.08pt x 289.08pt>
 File: figure/beamer-dens-1.pdf Graphic file (type pdf)
 <use figure/beamer-dens-1.pdf>
 Package pdftex.def Info: figure/beamer-dens-1.pdf  used on input line 12.
 (pdftex.def)             Requested size: 119.80544pt x 119.80275pt.
 )
-Overfull \vbox (9.23051pt too high) detected at line 438
+Overfull \vbox (9.23051pt too high) detected at line 439
  []
 
-[43
+[44
 
  <./figure/beamer-dens-1.pdf>]
 \openout4 = `Talk-slides.vrb'.
 
  (./Talk-slides.vrb
-<figure/beamer-dens2-1.pdf, id=10604, 289.08pt x 289.08pt>
+<figure/beamer-dens2-1.pdf, id=10698, 289.08pt x 289.08pt>
 File: figure/beamer-dens2-1.pdf Graphic file (type pdf)
 <use figure/beamer-dens2-1.pdf>
 Package pdftex.def Info: figure/beamer-dens2-1.pdf  used on input line 12.
 (pdftex.def)             Requested size: 119.80544pt x 119.80275pt.
 )
-Overfull \vbox (10.78607pt too high) detected at line 457
+Overfull \vbox (10.78607pt too high) detected at line 458
  []
 
-[44
+[45
 
  <./figure/beamer-dens2-1.pdf>]
 <VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndCrossedTrajectories.pd
-f, id=10629, 1288.07014pt x 533.51328pt>
+f, id=10723, 1288.07014pt x 533.51328pt>
 File: VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndCrossedTrajectori
 es.pdf Graphic file (type pdf)
 <use VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndCrossedTrajectorie
 s.pdf>
 Package pdftex.def Info: VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesA
-ndCrossedTrajectories.pdf  used on input line 471.
+ndCrossedTrajectories.pdf  used on input line 472.
 (pdftex.def)             Requested size: 282.6884pt x 117.09334pt.
- [45
+ [46
 
  <./VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndCrossedTrajectories
-.pdf>] [46
+.pdf>] [47
+
+] (./Talk-slides.toc) [48
 
 ]
-<BucketFaucet4.png, id=11907, 743.8992pt x 1016.1162pt>
+<BucketFaucet4.png, id=12033, 743.8992pt x 1016.1162pt>
 File: BucketFaucet4.png Graphic file (type png)
 <use BucketFaucet4.png>
-Package pdftex.def Info: BucketFaucet4.png  used on input line 501.
+Package pdftex.def Info: BucketFaucet4.png  used on input line 503.
 (pdftex.def)             Requested size: 171.4451pt x 234.18668pt.
 
-Overfull \vbox (5.3869pt too high) detected at line 501
+Overfull \vbox (5.3869pt too high) detected at line 503
  []
 
-[47
+[49
 
  <./BucketFaucet4.png>]
+<WellMixed.pdf, id=12056, 845.04686pt x 597.50786pt>
+File: WellMixed.pdf Graphic file (type pdf)
+<use WellMixed.pdf>
+Package pdftex.def Info: WellMixed.pdf  used on input line 508.
+(pdftex.def)             Requested size: 331.20453pt x 234.18668pt.
 
-pdfTeX warning: pdflatex (file ./Figures/Fried1.pdf): PDF inclusion: found PDF 
-version <1.6>, but at most version <1.5> allowed
-<Figures/Fried1.pdf, id=11929, 488.82625pt x 360.34625pt>
-File: Figures/Fried1.pdf Graphic file (type pdf)
-<use Figures/Fried1.pdf>
-Package pdftex.def Info: Figures/Fried1.pdf  used on input line 513.
-(pdftex.def)             Requested size: 146.649pt x 108.1047pt.
+Overfull \vbox (5.3869pt too high) detected at line 508
+ []
 
+[50
 
-pdfTeX warning: pdflatex (file ./Figures/Fried2.pdf): PDF inclusion: found PDF 
-version <1.6>, but at most version <1.5> allowed
-<Figures/Fried2.pdf, id=11930, 335.2525pt x 335.2525pt>
-File: Figures/Fried2.pdf Graphic file (type pdf)
-<use Figures/Fried2.pdf>
-Package pdftex.def Info: Figures/Fried2.pdf  used on input line 513.
-(pdftex.def)             Requested size: 117.34013pt x 117.34013pt.
+ <./WellMixed.pdf>]
+<PoolTrajectoriesColored.pdf, id=12084, 845.04686pt x 597.50786pt>
+File: PoolTrajectoriesColored.pdf Graphic file (type pdf)
+<use PoolTrajectoriesColored.pdf>
+Package pdftex.def Info: PoolTrajectoriesColored.pdf  used on input line 515.
+(pdftex.def)             Requested size: 331.20453pt x 234.18668pt.
 
-Package natbib Warning: Citation `Friedlingstein2006JC' on page 48 undefined on
- input line 513.
+Overfull \vbox (5.3869pt too high) detected at line 515
+ []
 
-[48
+[51
 
- <./Figures/Fried1.pdf> <./Figures/Fried2.pdf>] [49
+ <./PoolTrajectoriesColored.pdf>]
+<PoolTrajectoriesblack.pdf, id=12112, 845.04686pt x 597.50786pt>
+File: PoolTrajectoriesblack.pdf Graphic file (type pdf)
+<use PoolTrajectoriesblack.pdf>
+Package pdftex.def Info: PoolTrajectoriesblack.pdf  used on input line 515.
+(pdftex.def)             Requested size: 331.20453pt x 234.18668pt.
 
-] [50
+Overfull \vbox (5.3869pt too high) detected at line 515
+ []
 
-] [51
+[52
 
-] [52
+ <./PoolTrajectoriesblack.pdf>]
+<PoolTrajectoriesblackWithPartikelsInPoolAtTime.pdf, id=12141, 845.04686pt x 59
+7.50786pt>
+File: PoolTrajectoriesblackWithPartikelsInPoolAtTime.pdf Graphic file (type pdf
+)
+<use PoolTrajectoriesblackWithPartikelsInPoolAtTime.pdf>
+Package pdftex.def Info: PoolTrajectoriesblackWithPartikelsInPoolAtTime.pdf  us
+ed on input line 515.
+(pdftex.def)             Requested size: 331.20453pt x 234.18668pt.
 
-]
-<Figures/ModelLogo.pdf, id=12036, 250.84323pt x 242.68994pt>
+Overfull \vbox (5.3869pt too high) detected at line 515
+ []
+
+[53
+
+ <./PoolTrajectoriesblackWithPartikelsInPoolAtTime.pdf>]
+<Figures/ModelLogo.pdf, id=12174, 250.84323pt x 242.68994pt>
 File: Figures/ModelLogo.pdf Graphic file (type pdf)
 <use Figures/ModelLogo.pdf>
-Package pdftex.def Info: Figures/ModelLogo.pdf  used on input line 562.
+Package pdftex.def Info: Figures/ModelLogo.pdf  used on input line 577.
 (pdftex.def)             Requested size: 87.79643pt x 84.94273pt.
- [53
+ [54
 
  <./Figures/ModelLogo.pdf>]
 File: Figures/ModelLogo.pdf Graphic file (type pdf)
 <use Figures/ModelLogo.pdf>
-Package pdftex.def Info: Figures/ModelLogo.pdf  used on input line 562.
-(pdftex.def)             Requested size: 87.79643pt x 84.94273pt.
- [54
-
-]
-File: Figures/ModelLogo.pdf Graphic file (type pdf)
-<use Figures/ModelLogo.pdf>
-Package pdftex.def Info: Figures/ModelLogo.pdf  used on input line 562.
+Package pdftex.def Info: Figures/ModelLogo.pdf  used on input line 577.
 (pdftex.def)             Requested size: 87.79643pt x 84.94273pt.
  [55
 
 ]
 File: Figures/ModelLogo.pdf Graphic file (type pdf)
 <use Figures/ModelLogo.pdf>
-Package pdftex.def Info: Figures/ModelLogo.pdf  used on input line 562.
+Package pdftex.def Info: Figures/ModelLogo.pdf  used on input line 577.
 (pdftex.def)             Requested size: 87.79643pt x 84.94273pt.
  [56
 
 ]
 File: Figures/ModelLogo.pdf Graphic file (type pdf)
 <use Figures/ModelLogo.pdf>
-Package pdftex.def Info: Figures/ModelLogo.pdf  used on input line 562.
+Package pdftex.def Info: Figures/ModelLogo.pdf  used on input line 577.
 (pdftex.def)             Requested size: 87.79643pt x 84.94273pt.
  [57
 
 ]
 File: Figures/ModelLogo.pdf Graphic file (type pdf)
 <use Figures/ModelLogo.pdf>
-Package pdftex.def Info: Figures/ModelLogo.pdf  used on input line 562.
+Package pdftex.def Info: Figures/ModelLogo.pdf  used on input line 577.
 (pdftex.def)             Requested size: 87.79643pt x 84.94273pt.
  [58
 
 ]
-<Figures/system_empty.pdf, id=12261, 252.56892pt x 186.29599pt>
+File: Figures/ModelLogo.pdf Graphic file (type pdf)
+<use Figures/ModelLogo.pdf>
+Package pdftex.def Info: Figures/ModelLogo.pdf  used on input line 577.
+(pdftex.def)             Requested size: 87.79643pt x 84.94273pt.
+ [59
+
+]
+<Figures/system_empty.pdf, id=12400, 252.56892pt x 186.29599pt>
 File: Figures/system_empty.pdf Graphic file (type pdf)
 <use Figures/system_empty.pdf>
-Package pdftex.def Info: Figures/system_empty.pdf  used on input line 697.
+Package pdftex.def Info: Figures/system_empty.pdf  used on input line 712.
 (pdftex.def)             Requested size: 126.28415pt x 93.14775pt.
 
-Overfull \hbox (6.47871pt too wide) in paragraph at lines 697--697
+Overfull \hbox (6.47871pt too wide) in paragraph at lines 712--712
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 697--697
+Underfull \hbox (badness 10000) in paragraph at lines 712--712
 
  []
 
-<Figures/timeline_empty.pdf, id=12262, 576.3222pt x 123.63808pt>
+<Figures/timeline_empty.pdf, id=12401, 576.3222pt x 123.63808pt>
 File: Figures/timeline_empty.pdf Graphic file (type pdf)
 <use Figures/timeline_empty.pdf>
-Package pdftex.def Info: Figures/timeline_empty.pdf  used on input line 697.
+Package pdftex.def Info: Figures/timeline_empty.pdf  used on input line 712.
 (pdftex.def)             Requested size: 345.79599pt x 74.1834pt.
 
-Overfull \hbox (3.50069pt too wide) in paragraph at lines 697--697
+Overfull \hbox (3.50069pt too wide) in paragraph at lines 712--712
 [][] 
  []
 
-[59
+[60
 
  <./Figures/system_empty.pdf> <./Figures/timeline_empty.pdf
 
 pdfTeX warning: pdflatex (file ./Figures/timeline_empty.pdf): PDF inclusion: mu
 ltiple pdfs with page group included in a single page
 >]
-<Figures/system_T0.pdf, id=12289, 252.56892pt x 186.29599pt>
+<Figures/system_T0.pdf, id=12427, 252.56892pt x 186.29599pt>
 File: Figures/system_T0.pdf Graphic file (type pdf)
 <use Figures/system_T0.pdf>
-Package pdftex.def Info: Figures/system_T0.pdf  used on input line 697.
+Package pdftex.def Info: Figures/system_T0.pdf  used on input line 712.
 (pdftex.def)             Requested size: 126.28415pt x 93.14775pt.
 
-Overfull \hbox (6.47871pt too wide) in paragraph at lines 697--697
+Overfull \hbox (6.47871pt too wide) in paragraph at lines 712--712
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 697--697
+Underfull \hbox (badness 10000) in paragraph at lines 712--712
 
  []
 
-<Figures/timeline_T0.pdf, id=12290, 576.3222pt x 123.63808pt>
+<Figures/timeline_T0.pdf, id=12428, 576.3222pt x 123.63808pt>
 File: Figures/timeline_T0.pdf Graphic file (type pdf)
 <use Figures/timeline_T0.pdf>
-Package pdftex.def Info: Figures/timeline_T0.pdf  used on input line 697.
+Package pdftex.def Info: Figures/timeline_T0.pdf  used on input line 712.
 (pdftex.def)             Requested size: 345.79599pt x 74.1834pt.
 
-Overfull \hbox (3.50069pt too wide) in paragraph at lines 697--697
+Overfull \hbox (3.50069pt too wide) in paragraph at lines 712--712
 [][] 
  []
 
-[60
+[61
 
  <./Figures/system_T0.pdf> <./Figures/timeline_T0.pdf
 
 pdfTeX warning: pdflatex (file ./Figures/timeline_T0.pdf): PDF inclusion: multi
 ple pdfs with page group included in a single page
 >]
-<Figures/system_T1-T0.pdf, id=12313, 252.56892pt x 186.29599pt>
+<Figures/system_T1-T0.pdf, id=12452, 252.56892pt x 186.29599pt>
 File: Figures/system_T1-T0.pdf Graphic file (type pdf)
 <use Figures/system_T1-T0.pdf>
-Package pdftex.def Info: Figures/system_T1-T0.pdf  used on input line 697.
+Package pdftex.def Info: Figures/system_T1-T0.pdf  used on input line 712.
 (pdftex.def)             Requested size: 126.28415pt x 93.14775pt.
 
-Overfull \hbox (6.47871pt too wide) in paragraph at lines 697--697
+Overfull \hbox (6.47871pt too wide) in paragraph at lines 712--712
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 697--697
+Underfull \hbox (badness 10000) in paragraph at lines 712--712
 
  []
 
-<Figures/timeline_T1-T0.pdf, id=12314, 576.3222pt x 123.63808pt>
+<Figures/timeline_T1-T0.pdf, id=12453, 576.3222pt x 123.63808pt>
 File: Figures/timeline_T1-T0.pdf Graphic file (type pdf)
 <use Figures/timeline_T1-T0.pdf>
-Package pdftex.def Info: Figures/timeline_T1-T0.pdf  used on input line 697.
+Package pdftex.def Info: Figures/timeline_T1-T0.pdf  used on input line 712.
 (pdftex.def)             Requested size: 345.79599pt x 74.1834pt.
 
-Overfull \hbox (3.50069pt too wide) in paragraph at lines 697--697
+Overfull \hbox (3.50069pt too wide) in paragraph at lines 712--712
 [][] 
  []
 
-[61
+[62
 
  <./Figures/system_T1-T0.pdf> <./Figures/timeline_T1-T0.pdf
 
 pdfTeX warning: pdflatex (file ./Figures/timeline_T1-T0.pdf): PDF inclusion: mu
 ltiple pdfs with page group included in a single page
 >]
-<Figures/system_T1.pdf, id=12338, 252.56892pt x 186.29599pt>
+<Figures/system_T1.pdf, id=12476, 252.56892pt x 186.29599pt>
 File: Figures/system_T1.pdf Graphic file (type pdf)
 <use Figures/system_T1.pdf>
-Package pdftex.def Info: Figures/system_T1.pdf  used on input line 697.
+Package pdftex.def Info: Figures/system_T1.pdf  used on input line 712.
 (pdftex.def)             Requested size: 126.28415pt x 93.14775pt.
 
-Overfull \hbox (6.47871pt too wide) in paragraph at lines 697--697
+Overfull \hbox (6.47871pt too wide) in paragraph at lines 712--712
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 697--697
+Underfull \hbox (badness 10000) in paragraph at lines 712--712
 
  []
 
-<Figures/timeline_T1.pdf, id=12339, 576.3222pt x 123.63808pt>
+<Figures/timeline_T1.pdf, id=12477, 576.3222pt x 123.63808pt>
 File: Figures/timeline_T1.pdf Graphic file (type pdf)
 <use Figures/timeline_T1.pdf>
-Package pdftex.def Info: Figures/timeline_T1.pdf  used on input line 697.
+Package pdftex.def Info: Figures/timeline_T1.pdf  used on input line 712.
 (pdftex.def)             Requested size: 345.79599pt x 74.1834pt.
 
-Overfull \hbox (3.50069pt too wide) in paragraph at lines 697--697
+Overfull \hbox (3.50069pt too wide) in paragraph at lines 712--712
 [][] 
  []
 
-[62
+[63
 
  <./Figures/system_T1.pdf> <./Figures/timeline_T1.pdf
 
 pdfTeX warning: pdflatex (file ./Figures/timeline_T1.pdf): PDF inclusion: multi
 ple pdfs with page group included in a single page
 >]
-<Figures/system_T2-T1.pdf, id=12362, 252.56892pt x 186.29599pt>
+<Figures/system_T2-T1.pdf, id=12500, 252.56892pt x 186.29599pt>
 File: Figures/system_T2-T1.pdf Graphic file (type pdf)
 <use Figures/system_T2-T1.pdf>
-Package pdftex.def Info: Figures/system_T2-T1.pdf  used on input line 697.
+Package pdftex.def Info: Figures/system_T2-T1.pdf  used on input line 712.
 (pdftex.def)             Requested size: 126.28415pt x 93.14775pt.
 
-Overfull \hbox (6.47871pt too wide) in paragraph at lines 697--697
+Overfull \hbox (6.47871pt too wide) in paragraph at lines 712--712
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 697--697
+Underfull \hbox (badness 10000) in paragraph at lines 712--712
 
  []
 
-<Figures/timeline_T2-T1.pdf, id=12363, 576.3222pt x 123.63808pt>
+<Figures/timeline_T2-T1.pdf, id=12501, 576.3222pt x 123.63808pt>
 File: Figures/timeline_T2-T1.pdf Graphic file (type pdf)
 <use Figures/timeline_T2-T1.pdf>
-Package pdftex.def Info: Figures/timeline_T2-T1.pdf  used on input line 697.
+Package pdftex.def Info: Figures/timeline_T2-T1.pdf  used on input line 712.
 (pdftex.def)             Requested size: 345.79599pt x 74.1834pt.
 
-Overfull \hbox (3.50069pt too wide) in paragraph at lines 697--697
+Overfull \hbox (3.50069pt too wide) in paragraph at lines 712--712
 [][] 
  []
 
-[63
+[64
 
  <./Figures/system_T2-T1.pdf> <./Figures/timeline_T2-T1.pdf
 
 pdfTeX warning: pdflatex (file ./Figures/timeline_T2-T1.pdf): PDF inclusion: mu
 ltiple pdfs with page group included in a single page
 >]
-<Figures/system_T2.pdf, id=12473, 252.56892pt x 186.29599pt>
+<Figures/system_T2.pdf, id=12611, 252.56892pt x 186.29599pt>
 File: Figures/system_T2.pdf Graphic file (type pdf)
 <use Figures/system_T2.pdf>
-Package pdftex.def Info: Figures/system_T2.pdf  used on input line 697.
+Package pdftex.def Info: Figures/system_T2.pdf  used on input line 712.
 (pdftex.def)             Requested size: 126.28415pt x 93.14775pt.
 
-Overfull \hbox (6.47871pt too wide) in paragraph at lines 697--697
+Overfull \hbox (6.47871pt too wide) in paragraph at lines 712--712
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 697--697
+Underfull \hbox (badness 10000) in paragraph at lines 712--712
 
  []
 
-<Figures/timeline_T2.pdf, id=12474, 576.3222pt x 123.63808pt>
+<Figures/timeline_T2.pdf, id=12612, 576.3222pt x 123.63808pt>
 File: Figures/timeline_T2.pdf Graphic file (type pdf)
 <use Figures/timeline_T2.pdf>
-Package pdftex.def Info: Figures/timeline_T2.pdf  used on input line 697.
+Package pdftex.def Info: Figures/timeline_T2.pdf  used on input line 712.
 (pdftex.def)             Requested size: 345.79599pt x 74.1834pt.
 
-Overfull \hbox (3.50069pt too wide) in paragraph at lines 697--697
+Overfull \hbox (3.50069pt too wide) in paragraph at lines 712--712
 [][] 
  []
 
-[64
+[65
 
  <./Figures/system_T2.pdf> <./Figures/timeline_T2.pdf
 
 pdfTeX warning: pdflatex (file ./Figures/timeline_T2.pdf): PDF inclusion: multi
 ple pdfs with page group included in a single page
 >]
-<Figures/system_T3-T2.pdf, id=12497, 252.56892pt x 186.29599pt>
+<Figures/system_T3-T2.pdf, id=12636, 252.56892pt x 186.29599pt>
 File: Figures/system_T3-T2.pdf Graphic file (type pdf)
 <use Figures/system_T3-T2.pdf>
-Package pdftex.def Info: Figures/system_T3-T2.pdf  used on input line 697.
+Package pdftex.def Info: Figures/system_T3-T2.pdf  used on input line 712.
 (pdftex.def)             Requested size: 126.28415pt x 93.14775pt.
 
-Overfull \hbox (6.47871pt too wide) in paragraph at lines 697--697
+Overfull \hbox (6.47871pt too wide) in paragraph at lines 712--712
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 697--697
+Underfull \hbox (badness 10000) in paragraph at lines 712--712
 
  []
 
-<Figures/timeline_T3-T2.pdf, id=12498, 576.3222pt x 123.63808pt>
+<Figures/timeline_T3-T2.pdf, id=12637, 576.3222pt x 123.63808pt>
 File: Figures/timeline_T3-T2.pdf Graphic file (type pdf)
 <use Figures/timeline_T3-T2.pdf>
-Package pdftex.def Info: Figures/timeline_T3-T2.pdf  used on input line 697.
+Package pdftex.def Info: Figures/timeline_T3-T2.pdf  used on input line 712.
 (pdftex.def)             Requested size: 345.79599pt x 74.1834pt.
 
-Overfull \hbox (3.50069pt too wide) in paragraph at lines 697--697
+Overfull \hbox (3.50069pt too wide) in paragraph at lines 712--712
 [][] 
  []
 
-[65
+[66
 
  <./Figures/system_T3-T2.pdf> <./Figures/timeline_T3-T2.pdf
 
 pdfTeX warning: pdflatex (file ./Figures/timeline_T3-T2.pdf): PDF inclusion: mu
 ltiple pdfs with page group included in a single page
 >]
-<Figures/system_T3.pdf, id=12522, 252.56892pt x 186.29599pt>
+<Figures/system_T3.pdf, id=12660, 252.56892pt x 186.29599pt>
 File: Figures/system_T3.pdf Graphic file (type pdf)
 <use Figures/system_T3.pdf>
-Package pdftex.def Info: Figures/system_T3.pdf  used on input line 697.
+Package pdftex.def Info: Figures/system_T3.pdf  used on input line 712.
 (pdftex.def)             Requested size: 126.28415pt x 93.14775pt.
 
-Overfull \hbox (6.47871pt too wide) in paragraph at lines 697--697
+Overfull \hbox (6.47871pt too wide) in paragraph at lines 712--712
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 697--697
+Underfull \hbox (badness 10000) in paragraph at lines 712--712
 
  []
 
-<Figures/timeline_T3.pdf, id=12523, 576.3222pt x 123.63808pt>
+<Figures/timeline_T3.pdf, id=12661, 576.3222pt x 123.63808pt>
 File: Figures/timeline_T3.pdf Graphic file (type pdf)
 <use Figures/timeline_T3.pdf>
-Package pdftex.def Info: Figures/timeline_T3.pdf  used on input line 697.
+Package pdftex.def Info: Figures/timeline_T3.pdf  used on input line 712.
 (pdftex.def)             Requested size: 345.79599pt x 74.1834pt.
 
-Overfull \hbox (3.50069pt too wide) in paragraph at lines 697--697
+Overfull \hbox (3.50069pt too wide) in paragraph at lines 712--712
 [][] 
  []
 
-[66
+[67
 
  <./Figures/system_T3.pdf> <./Figures/timeline_T3.pdf
 
 pdfTeX warning: pdflatex (file ./Figures/timeline_T3.pdf): PDF inclusion: multi
 ple pdfs with page group included in a single page
 >]
-<Figures/system_T4-T3.pdf, id=12546, 252.56892pt x 186.29599pt>
+<Figures/system_T4-T3.pdf, id=12685, 252.56892pt x 186.29599pt>
 File: Figures/system_T4-T3.pdf Graphic file (type pdf)
 <use Figures/system_T4-T3.pdf>
-Package pdftex.def Info: Figures/system_T4-T3.pdf  used on input line 697.
+Package pdftex.def Info: Figures/system_T4-T3.pdf  used on input line 712.
 (pdftex.def)             Requested size: 126.28415pt x 93.14775pt.
 
-Overfull \hbox (6.47871pt too wide) in paragraph at lines 697--697
+Overfull \hbox (6.47871pt too wide) in paragraph at lines 712--712
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 697--697
+Underfull \hbox (badness 10000) in paragraph at lines 712--712
 
  []
 
-<Figures/timeline_T4-T3.pdf, id=12547, 576.3222pt x 123.63808pt>
+<Figures/timeline_T4-T3.pdf, id=12686, 576.3222pt x 123.63808pt>
 File: Figures/timeline_T4-T3.pdf Graphic file (type pdf)
 <use Figures/timeline_T4-T3.pdf>
-Package pdftex.def Info: Figures/timeline_T4-T3.pdf  used on input line 697.
+Package pdftex.def Info: Figures/timeline_T4-T3.pdf  used on input line 712.
 (pdftex.def)             Requested size: 345.79599pt x 74.1834pt.
 
-Overfull \hbox (3.50069pt too wide) in paragraph at lines 697--697
+Overfull \hbox (3.50069pt too wide) in paragraph at lines 712--712
 [][] 
  []
 
-[67
+[68
 
  <./Figures/system_T4-T3.pdf> <./Figures/timeline_T4-T3.pdf
 
 pdfTeX warning: pdflatex (file ./Figures/timeline_T4-T3.pdf): PDF inclusion: mu
 ltiple pdfs with page group included in a single page
 >]
-<Figures/system_T4.pdf, id=12571, 252.56892pt x 186.29599pt>
+<Figures/system_T4.pdf, id=12709, 252.56892pt x 186.29599pt>
 File: Figures/system_T4.pdf Graphic file (type pdf)
 <use Figures/system_T4.pdf>
-Package pdftex.def Info: Figures/system_T4.pdf  used on input line 697.
+Package pdftex.def Info: Figures/system_T4.pdf  used on input line 712.
 (pdftex.def)             Requested size: 126.28415pt x 93.14775pt.
 
-Overfull \hbox (6.47871pt too wide) in paragraph at lines 697--697
+Overfull \hbox (6.47871pt too wide) in paragraph at lines 712--712
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 697--697
+Underfull \hbox (badness 10000) in paragraph at lines 712--712
 
  []
 
-<Figures/timeline_T4.pdf, id=12572, 576.3222pt x 123.63808pt>
+<Figures/timeline_T4.pdf, id=12710, 576.3222pt x 123.63808pt>
 File: Figures/timeline_T4.pdf Graphic file (type pdf)
 <use Figures/timeline_T4.pdf>
-Package pdftex.def Info: Figures/timeline_T4.pdf  used on input line 697.
+Package pdftex.def Info: Figures/timeline_T4.pdf  used on input line 712.
 (pdftex.def)             Requested size: 345.79599pt x 74.1834pt.
 
-Overfull \hbox (3.50069pt too wide) in paragraph at lines 697--697
+Overfull \hbox (3.50069pt too wide) in paragraph at lines 712--712
 [][] 
  []
 
-[68
+[69
 
  <./Figures/system_T4.pdf> <./Figures/timeline_T4.pdf
 
 pdfTeX warning: pdflatex (file ./Figures/timeline_T4.pdf): PDF inclusion: multi
 ple pdfs with page group included in a single page
 >]
-<Figures/system_end.pdf, id=12595, 252.56892pt x 186.29599pt>
+<Figures/system_end.pdf, id=12733, 252.56892pt x 186.29599pt>
 File: Figures/system_end.pdf Graphic file (type pdf)
 <use Figures/system_end.pdf>
-Package pdftex.def Info: Figures/system_end.pdf  used on input line 697.
+Package pdftex.def Info: Figures/system_end.pdf  used on input line 712.
 (pdftex.def)             Requested size: 126.28415pt x 93.14775pt.
 
-Overfull \hbox (6.47871pt too wide) in paragraph at lines 697--697
+Overfull \hbox (6.47871pt too wide) in paragraph at lines 712--712
 [][] 
  []
 
-<Figures/timeline.pdf, id=12596, 576.3222pt x 123.63808pt>
+<Figures/timeline.pdf, id=12734, 576.3222pt x 123.63808pt>
 File: Figures/timeline.pdf Graphic file (type pdf)
 <use Figures/timeline.pdf>
-Package pdftex.def Info: Figures/timeline.pdf  used on input line 697.
+Package pdftex.def Info: Figures/timeline.pdf  used on input line 712.
 (pdftex.def)             Requested size: 345.79599pt x 74.1834pt.
 
-Overfull \hbox (3.50069pt too wide) in paragraph at lines 697--697
+Overfull \hbox (3.50069pt too wide) in paragraph at lines 712--712
 [][]  
  []
 
-[69
+[70
 
  <./Figures/system_end.pdf> <./Figures/timeline.pdf
 
 pdfTeX warning: pdflatex (file ./Figures/timeline.pdf): PDF inclusion: multiple
  pdfs with page group included in a single page
->] [70
-
-] [71
+>] [71
 
 ] [72
 
@@ -2567,33 +2628,29 @@ pdfTeX warning: pdflatex (file ./Figures/timeline.pdf): PDF inclusion: multiple
 
 ] [76
 
+] [77
+
 ]
-
-Package natbib Warning: Citation `Rodhe1979Tellus' on page 77 undefined on inpu
-t line 853.
-
-<Figures/model_eq.pdf, id=12764, 326.30951pt x 369.68626pt>
+<Figures/model_eq.pdf, id=12902, 326.30951pt x 369.68626pt>
 File: Figures/model_eq.pdf Graphic file (type pdf)
 <use Figures/model_eq.pdf>
-Package pdftex.def Info: Figures/model_eq.pdf  used on input line 853.
+Package pdftex.def Info: Figures/model_eq.pdf  used on input line 869.
 (pdftex.def)             Requested size: 160.77933pt x 182.14563pt.
-[77
+ [78
 
  <./Figures/model_eq.pdf>]
-<Figures/equilibrium.pdf, id=12798, 844.15375pt x 597.23125pt>
+<Figures/equilibrium.pdf, id=12937, 844.15375pt x 597.23125pt>
 File: Figures/equilibrium.pdf Graphic file (type pdf)
 <use Figures/equilibrium.pdf>
-Package pdftex.def Info: Figures/equilibrium.pdf  used on input line 860.
+Package pdftex.def Info: Figures/equilibrium.pdf  used on input line 876.
 (pdftex.def)             Requested size: 308.06367pt x 217.95569pt.
 
-Overfull \vbox (1.15591pt too high) detected at line 860
+Overfull \vbox (1.15591pt too high) detected at line 876
  []
 
-[78
+[79
 
- <./Figures/equilibrium.pdf>] [79
-
-] [80
+ <./Figures/equilibrium.pdf>] [80
 
 ] [81
 
@@ -2607,13 +2664,13 @@ Overfull \vbox (1.15591pt too high) detected at line 860
 
 ] [86
 
+] [87
+
 ]
-Overfull \vbox (34.35303pt too high) detected at line 897
+Overfull \vbox (34.35303pt too high) detected at line 913
  []
 
-[87
-
-] [88
+[88
 
 ] [89
 
@@ -2654,349 +2711,362 @@ Overfull \vbox (34.35303pt too high) detected at line 897
 
 ] [107
 
+] [108
+
 ]
-<Figures/presentation/model.pdf, id=13387, 326.30951pt x 369.68626pt>
+<Figures/presentation/model.pdf, id=13525, 326.30951pt x 369.68626pt>
 File: Figures/presentation/model.pdf Graphic file (type pdf)
 <use Figures/presentation/model.pdf>
-Package pdftex.def Info: Figures/presentation/model.pdf  used on input line 105
-2.
+Package pdftex.def Info: Figures/presentation/model.pdf  used on input line 107
+0.
 (pdftex.def)             Requested size: 119.80544pt x 135.73254pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1052--1052
+Underfull \hbox (badness 10000) in paragraph at lines 1070--1070
 []
  []
 
 File: Figures/equilibrium.pdf Graphic file (type pdf)
 <use Figures/equilibrium.pdf>
-Package pdftex.def Info: Figures/equilibrium.pdf  used on input line 1052.
+Package pdftex.def Info: Figures/equilibrium.pdf  used on input line 1070.
 (pdftex.def)             Requested size: 124.59596pt x 88.15007pt.
-<Figures/perturb.pdf, id=13388, 844.15375pt x 597.23125pt>
+<Figures/perturb.pdf, id=13526, 844.15375pt x 597.23125pt>
 File: Figures/perturb.pdf Graphic file (type pdf)
 <use Figures/perturb.pdf>
-Package pdftex.def Info: Figures/perturb.pdf  used on input line 1052.
+Package pdftex.def Info: Figures/perturb.pdf  used on input line 1070.
 (pdftex.def)             Requested size: 124.59596pt x 88.15007pt.
-[108
+[109
 
  <./Figures/presentation/model.pdf> <./Figures/perturb.pdf>]
 File: Figures/presentation/model.pdf Graphic file (type pdf)
 <use Figures/presentation/model.pdf>
-Package pdftex.def Info: Figures/presentation/model.pdf  used on input line 105
-2.
+Package pdftex.def Info: Figures/presentation/model.pdf  used on input line 107
+0.
 (pdftex.def)             Requested size: 119.80544pt x 135.73254pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1052--1052
+Underfull \hbox (badness 10000) in paragraph at lines 1070--1070
 []
  []
 
 File: Figures/equilibrium.pdf Graphic file (type pdf)
 <use Figures/equilibrium.pdf>
-Package pdftex.def Info: Figures/equilibrium.pdf  used on input line 1052.
+Package pdftex.def Info: Figures/equilibrium.pdf  used on input line 1070.
 (pdftex.def)             Requested size: 124.59596pt x 88.15007pt.
 File: Figures/perturb.pdf Graphic file (type pdf)
 <use Figures/perturb.pdf>
-Package pdftex.def Info: Figures/perturb.pdf  used on input line 1052.
-(pdftex.def)             Requested size: 124.59596pt x 88.15007pt.
-[109
-
-]
-File: Figures/presentation/model.pdf Graphic file (type pdf)
-<use Figures/presentation/model.pdf>
-Package pdftex.def Info: Figures/presentation/model.pdf  used on input line 105
-2.
-(pdftex.def)             Requested size: 119.80544pt x 135.73254pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 1052--1052
-[]
- []
-
-File: Figures/equilibrium.pdf Graphic file (type pdf)
-<use Figures/equilibrium.pdf>
-Package pdftex.def Info: Figures/equilibrium.pdf  used on input line 1052.
-(pdftex.def)             Requested size: 124.59596pt x 88.15007pt.
-File: Figures/perturb.pdf Graphic file (type pdf)
-<use Figures/perturb.pdf>
-Package pdftex.def Info: Figures/perturb.pdf  used on input line 1052.
+Package pdftex.def Info: Figures/perturb.pdf  used on input line 1070.
 (pdftex.def)             Requested size: 124.59596pt x 88.15007pt.
 [110
 
 ]
-<Figures/sol.pdf, id=13460, 844.15375pt x 597.23125pt>
-File: Figures/sol.pdf Graphic file (type pdf)
-<use Figures/sol.pdf>
-Package pdftex.def Info: Figures/sol.pdf  used on input line 1059.
-(pdftex.def)             Requested size: 294.23457pt x 208.16814pt.
- [111
+File: Figures/presentation/model.pdf Graphic file (type pdf)
+<use Figures/presentation/model.pdf>
+Package pdftex.def Info: Figures/presentation/model.pdf  used on input line 107
+0.
+(pdftex.def)             Requested size: 119.80544pt x 135.73254pt.
 
- <./Figures/sol.pdf>]
-<Figures/atmosphere.pdf, id=13485, 601.21544pt x 634.90158pt>
-File: Figures/atmosphere.pdf Graphic file (type pdf)
-<use Figures/atmosphere.pdf>
-Package pdftex.def Info: Figures/atmosphere.pdf  used on input line 1073.
-(pdftex.def)             Requested size: 197.11737pt x 208.16814pt.
-
-Overfull \vbox (6.84201pt too high) detected at line 1073
+Underfull \hbox (badness 10000) in paragraph at lines 1070--1070
+[]
  []
 
-[112
+File: Figures/equilibrium.pdf Graphic file (type pdf)
+<use Figures/equilibrium.pdf>
+Package pdftex.def Info: Figures/equilibrium.pdf  used on input line 1070.
+(pdftex.def)             Requested size: 124.59596pt x 88.15007pt.
+File: Figures/perturb.pdf Graphic file (type pdf)
+<use Figures/perturb.pdf>
+Package pdftex.def Info: Figures/perturb.pdf  used on input line 1070.
+(pdftex.def)             Requested size: 124.59596pt x 88.15007pt.
+[111
+
+]
+<Figures/sol.pdf, id=13598, 844.15375pt x 597.23125pt>
+File: Figures/sol.pdf Graphic file (type pdf)
+<use Figures/sol.pdf>
+Package pdftex.def Info: Figures/sol.pdf  used on input line 1077.
+(pdftex.def)             Requested size: 294.23457pt x 208.16814pt.
+ [112
+
+ <./Figures/sol.pdf>]
+<Figures/atmosphere.pdf, id=13624, 601.21544pt x 634.90158pt>
+File: Figures/atmosphere.pdf Graphic file (type pdf)
+<use Figures/atmosphere.pdf>
+Package pdftex.def Info: Figures/atmosphere.pdf  used on input line 1107.
+(pdftex.def)             Requested size: 138.6277pt x 146.39243pt.
+ [113
 
  <./Figures/atmosphere.pdf>]
 File: Figures/atmosphere.pdf Graphic file (type pdf)
 <use Figures/atmosphere.pdf>
-Package pdftex.def Info: Figures/atmosphere.pdf  used on input line 1073.
-(pdftex.def)             Requested size: 197.11737pt x 208.16814pt.
-
-Overfull \vbox (6.84201pt too high) detected at line 1073
- []
-
-[113
+Package pdftex.def Info: Figures/atmosphere.pdf  used on input line 1107.
+(pdftex.def)             Requested size: 138.6277pt x 146.39243pt.
+ [114
 
 ]
-<Figures/ftt1.pdf, id=13535, 844.15375pt x 597.23125pt>
+<Figures/ftt1.pdf, id=13673, 844.15375pt x 597.23125pt>
 File: Figures/ftt1.pdf Graphic file (type pdf)
 <use Figures/ftt1.pdf>
-Package pdftex.def Info: Figures/ftt1.pdf  used on input line 1091.
-(pdftex.def)             Requested size: 257.44719pt x 182.14563pt.
-
-Overfull \vbox (6.50731pt too high) detected at line 1091
- []
-
-[114
+Package pdftex.def Info: Figures/ftt1.pdf  used on input line 1140.
+(pdftex.def)             Requested size: 183.89821pt x 130.10458pt.
+ [115
 
  <./Figures/ftt1.pdf>]
 File: Figures/ftt1.pdf Graphic file (type pdf)
 <use Figures/ftt1.pdf>
-Package pdftex.def Info: Figures/ftt1.pdf  used on input line 1091.
-(pdftex.def)             Requested size: 257.44719pt x 182.14563pt.
-
-Overfull \vbox (6.50731pt too high) detected at line 1091
- []
-
-[115
+Package pdftex.def Info: Figures/ftt1.pdf  used on input line 1140.
+(pdftex.def)             Requested size: 183.89821pt x 130.10458pt.
+ [116
 
 ]
-<Figures/ftt2.pdf, id=13581, 844.15375pt x 597.23125pt>
+<Figures/ftt2.pdf, id=13719, 844.15375pt x 597.23125pt>
 File: Figures/ftt2.pdf Graphic file (type pdf)
 <use Figures/ftt2.pdf>
-Package pdftex.def Info: Figures/ftt2.pdf  used on input line 1091.
-(pdftex.def)             Requested size: 257.44719pt x 182.14563pt.
-
-Overfull \vbox (6.50731pt too high) detected at line 1091
- []
-
-[116
+Package pdftex.def Info: Figures/ftt2.pdf  used on input line 1140.
+(pdftex.def)             Requested size: 183.89821pt x 130.10458pt.
+ [117
 
  <./Figures/ftt2.pdf>]
-<Figures/ftt3.pdf, id=13606, 844.15375pt x 597.23125pt>
+<Figures/ftt3.pdf, id=13745, 844.15375pt x 597.23125pt>
 File: Figures/ftt3.pdf Graphic file (type pdf)
 <use Figures/ftt3.pdf>
-Package pdftex.def Info: Figures/ftt3.pdf  used on input line 1091.
-(pdftex.def)             Requested size: 257.44719pt x 182.14563pt.
-
-Overfull \vbox (6.50731pt too high) detected at line 1091
- []
-
-[117
+Package pdftex.def Info: Figures/ftt3.pdf  used on input line 1140.
+(pdftex.def)             Requested size: 183.89821pt x 130.10458pt.
+ [118
 
  <./Figures/ftt3.pdf>]
-<Figures/ftt4.pdf, id=13632, 844.15375pt x 597.23125pt>
+<Figures/ftt4.pdf, id=13770, 844.15375pt x 597.23125pt>
 File: Figures/ftt4.pdf Graphic file (type pdf)
 <use Figures/ftt4.pdf>
-Package pdftex.def Info: Figures/ftt4.pdf  used on input line 1091.
-(pdftex.def)             Requested size: 257.44719pt x 182.14563pt.
-
-Overfull \vbox (6.50731pt too high) detected at line 1091
- []
-
-[118
-
- <./Figures/ftt4.pdf>]
-<Figures/ftt5.pdf, id=13657, 844.15375pt x 597.23125pt>
-File: Figures/ftt5.pdf Graphic file (type pdf)
-<use Figures/ftt5.pdf>
-Package pdftex.def Info: Figures/ftt5.pdf  used on input line 1091.
-(pdftex.def)             Requested size: 257.44719pt x 182.14563pt.
-
-Overfull \vbox (6.50731pt too high) detected at line 1091
- []
+Package pdftex.def Info: Figures/ftt4.pdf  used on input line 1140.
+(pdftex.def)             Requested size: 183.89821pt x 130.10458pt.
 
 [119
 
+ <./Figures/ftt4.pdf>]
+<Figures/ftt5.pdf, id=13795, 844.15375pt x 597.23125pt>
+File: Figures/ftt5.pdf Graphic file (type pdf)
+<use Figures/ftt5.pdf>
+Package pdftex.def Info: Figures/ftt5.pdf  used on input line 1140.
+(pdftex.def)             Requested size: 183.89821pt x 130.10458pt.
+ [120
+
  <./Figures/ftt5.pdf>]
-Overfull \vbox (1.99475pt too high) detected at line 1138
- []
-
-[120
-
-]
-Overfull \vbox (1.99475pt too high) detected at line 1138
+Overfull \vbox (1.99475pt too high) detected at line 1186
  []
 
 [121
 
 ]
-Overfull \vbox (1.99475pt too high) detected at line 1138
+Overfull \vbox (1.99475pt too high) detected at line 1186
  []
 
 [122
 
 ]
-Overfull \vbox (1.99475pt too high) detected at line 1138
+Overfull \vbox (1.99475pt too high) detected at line 1186
  []
 
 [123
 
 ]
-<Figures/presentation/1.pdf, id=13764, 594.22pt x 588.86662pt>
-File: Figures/presentation/1.pdf Graphic file (type pdf)
-<use Figures/presentation/1.pdf>
-Package pdftex.def Info: Figures/presentation/1.pdf  used on input line 1155.
-(pdftex.def)             Requested size: 297.10927pt x 294.43259pt.
-
-Overfull \vbox (18.77066pt too high) detected at line 1155
+Overfull \vbox (1.99475pt too high) detected at line 1186
  []
 
 [124
 
- <./Figures/presentation/1.pdf>]
-<Figures/presentation/2.pdf, id=13795, 594.22pt x 588.86662pt>
-File: Figures/presentation/2.pdf Graphic file (type pdf)
-<use Figures/presentation/2.pdf>
-Package pdftex.def Info: Figures/presentation/2.pdf  used on input line 1155.
+]
+<Figures/presentation/1.pdf, id=13902, 594.22pt x 588.86662pt>
+File: Figures/presentation/1.pdf Graphic file (type pdf)
+<use Figures/presentation/1.pdf>
+Package pdftex.def Info: Figures/presentation/1.pdf  used on input line 1203.
 (pdftex.def)             Requested size: 297.10927pt x 294.43259pt.
 
-Overfull \vbox (18.77066pt too high) detected at line 1155
+Overfull \vbox (18.77066pt too high) detected at line 1203
  []
 
 [125
 
- <./Figures/presentation/2.pdf>]
-<Figures/presentation/3.pdf, id=13825, 594.22pt x 588.86662pt>
-File: Figures/presentation/3.pdf Graphic file (type pdf)
-<use Figures/presentation/3.pdf>
-Package pdftex.def Info: Figures/presentation/3.pdf  used on input line 1155.
+ <./Figures/presentation/1.pdf>]
+<Figures/presentation/2.pdf, id=13932, 594.22pt x 588.86662pt>
+File: Figures/presentation/2.pdf Graphic file (type pdf)
+<use Figures/presentation/2.pdf>
+Package pdftex.def Info: Figures/presentation/2.pdf  used on input line 1203.
 (pdftex.def)             Requested size: 297.10927pt x 294.43259pt.
 
-Overfull \vbox (18.77066pt too high) detected at line 1155
+Overfull \vbox (18.77066pt too high) detected at line 1203
  []
 
 [126
 
- <./Figures/presentation/3.pdf>]
-<Figures/presentation/4.pdf, id=13856, 594.22pt x 588.86662pt>
-File: Figures/presentation/4.pdf Graphic file (type pdf)
-<use Figures/presentation/4.pdf>
-Package pdftex.def Info: Figures/presentation/4.pdf  used on input line 1155.
+ <./Figures/presentation/2.pdf>]
+<Figures/presentation/3.pdf, id=13962, 594.22pt x 588.86662pt>
+File: Figures/presentation/3.pdf Graphic file (type pdf)
+<use Figures/presentation/3.pdf>
+Package pdftex.def Info: Figures/presentation/3.pdf  used on input line 1203.
 (pdftex.def)             Requested size: 297.10927pt x 294.43259pt.
 
-Overfull \vbox (18.77066pt too high) detected at line 1155
+Overfull \vbox (18.77066pt too high) detected at line 1203
  []
 
 [127
 
- <./Figures/presentation/4.pdf>]
-<Figures/presentation/5.pdf, id=13887, 594.22pt x 588.86662pt>
-File: Figures/presentation/5.pdf Graphic file (type pdf)
-<use Figures/presentation/5.pdf>
-Package pdftex.def Info: Figures/presentation/5.pdf  used on input line 1155.
+ <./Figures/presentation/3.pdf>]
+<Figures/presentation/4.pdf, id=13994, 594.22pt x 588.86662pt>
+File: Figures/presentation/4.pdf Graphic file (type pdf)
+<use Figures/presentation/4.pdf>
+Package pdftex.def Info: Figures/presentation/4.pdf  used on input line 1203.
 (pdftex.def)             Requested size: 297.10927pt x 294.43259pt.
 
-Overfull \vbox (18.77066pt too high) detected at line 1155
+Overfull \vbox (18.77066pt too high) detected at line 1203
  []
 
 [128
 
- <./Figures/presentation/5.pdf>]
-<Figures/presentation/6.pdf, id=13917, 594.22pt x 588.86662pt>
-File: Figures/presentation/6.pdf Graphic file (type pdf)
-<use Figures/presentation/6.pdf>
-Package pdftex.def Info: Figures/presentation/6.pdf  used on input line 1155.
+ <./Figures/presentation/4.pdf>]
+<Figures/presentation/5.pdf, id=14024, 594.22pt x 588.86662pt>
+File: Figures/presentation/5.pdf Graphic file (type pdf)
+<use Figures/presentation/5.pdf>
+Package pdftex.def Info: Figures/presentation/5.pdf  used on input line 1203.
 (pdftex.def)             Requested size: 297.10927pt x 294.43259pt.
 
-Overfull \vbox (18.77066pt too high) detected at line 1155
+Overfull \vbox (18.77066pt too high) detected at line 1203
  []
 
 [129
 
- <./Figures/presentation/6.pdf>]
-<Figures/presentation/7.pdf, id=13947, 594.22pt x 588.86662pt>
-File: Figures/presentation/7.pdf Graphic file (type pdf)
-<use Figures/presentation/7.pdf>
-Package pdftex.def Info: Figures/presentation/7.pdf  used on input line 1155.
+ <./Figures/presentation/5.pdf>]
+<Figures/presentation/6.pdf, id=14054, 594.22pt x 588.86662pt>
+File: Figures/presentation/6.pdf Graphic file (type pdf)
+<use Figures/presentation/6.pdf>
+Package pdftex.def Info: Figures/presentation/6.pdf  used on input line 1203.
 (pdftex.def)             Requested size: 297.10927pt x 294.43259pt.
 
-Overfull \vbox (18.77066pt too high) detected at line 1155
+Overfull \vbox (18.77066pt too high) detected at line 1203
  []
 
 [130
 
- <./Figures/presentation/7.pdf>]
-<Figures/presentation/8.pdf, id=13978, 594.22pt x 588.86662pt>
-File: Figures/presentation/8.pdf Graphic file (type pdf)
-<use Figures/presentation/8.pdf>
-Package pdftex.def Info: Figures/presentation/8.pdf  used on input line 1155.
+ <./Figures/presentation/6.pdf>]
+<Figures/presentation/7.pdf, id=14084, 594.22pt x 588.86662pt>
+File: Figures/presentation/7.pdf Graphic file (type pdf)
+<use Figures/presentation/7.pdf>
+Package pdftex.def Info: Figures/presentation/7.pdf  used on input line 1203.
 (pdftex.def)             Requested size: 297.10927pt x 294.43259pt.
 
-Overfull \vbox (18.77066pt too high) detected at line 1155
+Overfull \vbox (18.77066pt too high) detected at line 1203
  []
 
 [131
 
- <./Figures/presentation/8.pdf>]
-<Figures/presentation/total.pdf, id=14008, 594.22pt x 588.86662pt>
-File: Figures/presentation/total.pdf Graphic file (type pdf)
-<use Figures/presentation/total.pdf>
-Package pdftex.def Info: Figures/presentation/total.pdf  used on input line 115
-5.
-(pdftex.def)             Requested size: 267.39653pt x 264.98752pt.
+ <./Figures/presentation/7.pdf>]
+<Figures/presentation/8.pdf, id=14115, 594.22pt x 588.86662pt>
+File: Figures/presentation/8.pdf Graphic file (type pdf)
+<use Figures/presentation/8.pdf>
+Package pdftex.def Info: Figures/presentation/8.pdf  used on input line 1203.
+(pdftex.def)             Requested size: 297.10927pt x 294.43259pt.
 
-Overfull \vbox (0.70651pt too high) detected at line 1155
+Overfull \vbox (18.77066pt too high) detected at line 1203
  []
 
 [132
 
- <./Figures/presentation/total.pdf>]
-<Figures/presentation/final.pdf, id=14044, 594.22pt x 588.86662pt>
-File: Figures/presentation/final.pdf Graphic file (type pdf)
-<use Figures/presentation/final.pdf>
-Package pdftex.def Info: Figures/presentation/final.pdf  used on input line 115
-5.
+ <./Figures/presentation/8.pdf>]
+<Figures/presentation/total.pdf, id=14145, 594.22pt x 588.86662pt>
+File: Figures/presentation/total.pdf Graphic file (type pdf)
+<use Figures/presentation/total.pdf>
+Package pdftex.def Info: Figures/presentation/total.pdf  used on input line 120
+3.
 (pdftex.def)             Requested size: 267.39653pt x 264.98752pt.
 
-Overfull \vbox (0.70651pt too high) detected at line 1155
+Overfull \vbox (0.70651pt too high) detected at line 1203
  []
 
 [133
 
+ <./Figures/presentation/total.pdf>]
+<Figures/presentation/final.pdf, id=14182, 594.22pt x 588.86662pt>
+File: Figures/presentation/final.pdf Graphic file (type pdf)
+<use Figures/presentation/final.pdf>
+Package pdftex.def Info: Figures/presentation/final.pdf  used on input line 120
+3.
+(pdftex.def)             Requested size: 267.39653pt x 264.98752pt.
+
+Overfull \vbox (0.70651pt too high) detected at line 1203
+ []
+
+[134
+
  <./Figures/presentation/final.pdf>]
-<EmmyNoether.jpg, id=14080, 1001.7425pt x 587.19376pt>
+File: WellMixed.pdf Graphic file (type pdf)
+<use WellMixed.pdf>
+Package pdftex.def Info: WellMixed.pdf  used on input line 1230.
+(pdftex.def)             Requested size: 120.14464pt x 84.94518pt.
+File: Century.png Graphic file (type png)
+<use Century.png>
+Package pdftex.def Info: Century.png  used on input line 1230.
+(pdftex.def)             Requested size: 19.85236pt x 18.42113pt.
+File: RothC.png Graphic file (type png)
+<use RothC.png>
+Package pdftex.def Info: RothC.png  used on input line 1230.
+(pdftex.def)             Requested size: 19.85236pt x 29.76598pt.
+<globalNcycle.jpg, id=14218, 405.4347pt x 382.66965pt>
+File: globalNcycle.jpg Graphic file (type jpg)
+<use globalNcycle.jpg>
+Package pdftex.def Info: globalNcycle.jpg  used on input line 1230.
+(pdftex.def)             Requested size: 19.85236pt x 18.73753pt.
+File: HaberBosch.jpg Graphic file (type jpg)
+<use HaberBosch.jpg>
+Package pdftex.def Info: HaberBosch.jpg  used on input line 1230.
+(pdftex.def)             Requested size: 19.85236pt x 12.78445pt.
+File: CarbonAllocation.jpg Graphic file (type jpg)
+<use CarbonAllocation.jpg>
+Package pdftex.def Info: CarbonAllocation.jpg  used on input line 1230.
+(pdftex.def)             Requested size: 19.85236pt x 24.31123pt.
+ [135
+
+ <./globalNcycle.jpg>]
+(./Talk-slides.toc) [136
+
+]
+File: LibyaPopulation2011.jpg Graphic file (type jpg)
+<use LibyaPopulation2011.jpg>
+Package pdftex.def Info: LibyaPopulation2011.jpg  used on input line 1239.
+(pdftex.def)             Requested size: 308.06367pt x 214.63075pt.
+
+Overfull \vbox (2.16847pt too high) detected at line 1239
+ []
+
+[137
+
+] [138
+
+] [139
+
+] [140
+
+] [141
+
+] [142
+
+]
+<EmmyNoether.jpg, id=14384, 1001.7425pt x 587.19376pt>
 File: EmmyNoether.jpg Graphic file (type jpg)
 <use EmmyNoether.jpg>
-Package pdftex.def Info: EmmyNoether.jpg  used on input line 1169.
+Package pdftex.def Info: EmmyNoether.jpg  used on input line 1788.
 (pdftex.def)             Requested size: 70.12914pt x 41.10776pt.
-<Minerva.pdf, id=14081, 145.54375pt x 145.54375pt>
+<Minerva.pdf, id=14385, 145.54375pt x 145.54375pt>
 File: Minerva.pdf Graphic file (type pdf)
 <use Minerva.pdf>
-Package pdftex.def Info: Minerva.pdf  used on input line 1169.
+Package pdftex.def Info: Minerva.pdf  used on input line 1788.
 (pdftex.def)             Requested size: 43.66345pt x 43.66345pt.
- [134
+ [143
 
  <./EmmyNoether.jpg> <./Minerva.pdf>]
-\openout4 = `Talk-slides.vrb'.
-
- (./Talk-slides.vrb
-<Verwirrung2.jpg, id=14104, 952.55875pt x 590.205pt>
-File: Verwirrung2.jpg Graphic file (type jpg)
-<use Verwirrung2.jpg>
-Package pdftex.def Info: Verwirrung2.jpg  used on input line 2.
-(pdftex.def)             Requested size: 342.2953pt x 212.08638pt.
-) [135
-
- <./Verwirrung2.jpg>] (./Talk-slides.bbl
+(./Talk-slides.bbl
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\translate ' on input line 1.
 
-) [136
+) [144
 
 ]
 \tf@nav=\write6
@@ -3008,57 +3078,54 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 \tf@snm=\write8
 \openout8 = `Talk-slides.snm'.
 
-
-
-Package natbib Warning: There were undefined citations.
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1641.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1641.
-(./Talk-slides.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1641.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1641.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1795.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1795.
+ (./Talk-slides.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1795.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1795.
 
 Package rerunfilecheck Info: File `Talk-slides.out' has not changed.
-(rerunfilecheck)             Checksum: 5816706B5B338D638FB423DC98273936;1447.
+(rerunfilecheck)             Checksum: FF9FE76925755985EA2451CF371DB2A7;2508.
  ) ) 
 Here is how much of TeX's memory you used:
- 32935 strings out of 494847
- 637354 string characters out of 6179081
- 644978 words of memory out of 5000000
- 35345 multiletter control sequences out of 15000+600000
- 556622 words of font info for 118 fonts, out of 8000000 for 9000
+ 33144 strings out of 494847
+ 642020 string characters out of 6179081
+ 648811 words of memory out of 5000000
+ 35511 multiletter control sequences out of 15000+600000
+ 563112 words of font info for 127 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
- 48i,19n,63p,10401b,816s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 56i,19n,68p,10401b,1342s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
 usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss
-12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb>
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></usr/s
-hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share
-/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi12.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmssi8.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmssi9.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9
-.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Talk-slides.pdf (136 pages, 17752931 bytes).
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss
+10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmssi12.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmssi8.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmssi9.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
+8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Talk-slides.pdf (144 pages, 18163259 bytes).
 PDF statistics:
- 14298 PDF objects out of 15390 (max. 8388607)
- 10039 compressed objects within 101 object streams
- 285 named destinations out of 1000 (max. 500000)
- 583 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 14590 PDF objects out of 15390 (max. 8388607)
+ 10310 compressed objects within 104 object streams
+ 305 named destinations out of 1000 (max. 500000)
+ 617 words of extra memory for PDF output out of 10000 (max. 10000000)
 

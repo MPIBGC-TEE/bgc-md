@@ -96,7 +96,7 @@
 \lyxframeend{}
 %
 %
-%\AtBeginSection[] % Do nothing for \section*
+\AtBeginSection[] % Do nothing for \section*
 {
 \begin{frame}<beamer>
 \frametitle{}
@@ -110,19 +110,19 @@
 %\subtitle {A classification by required and obtainable information} % (optional)
 \author {Markus Müller, Holger Metzler, Carlos Sierra}
 \makebeamertitle
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-	\begin{itemize}
-		\item What are pool models?
-		\item Why do we need them?
-		\item What can they be used for?
-			\begin{itemize}
-				\item What is needed?
-				\item What can we learn from them?
-			\end{itemize}
-	\end{itemize}
-\end{frame}
-%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{frame}
+%	\begin{itemize}
+%		\item What are pool models?
+%		\item Why do we need them?
+%		\item What can they be used for?
+%			\begin{itemize}
+%				\item What is needed?
+%				\item What can we learn from them?
+%			\end{itemize}
+%	\end{itemize}
+%\end{frame}
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
   \titlepage
@@ -133,53 +133,54 @@
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Example Applications of Pool Models}
+\section{Example applications of pool models}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
+	\frametitle{Element cycling, e.g. C}
   \includegraphics[height=0.9\textheight]{model2.pdf}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-	\frametitle{Hydrology Watersheds}
+	\frametitle{Hydrology, catchments}
 	\includegraphics[width=0.9\textwidth]{Watersheds.jpeg}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-	\frametitle{Hydrology Catchments}
+	\frametitle{Hydrology, catchments}
 	\includegraphics[width=0.9\textwidth]{EN_Bazinul_hidrografic_al_Raului_Latorita,_Romania.jpg}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-	\frametitle{Plant Physiology/ Carbon allocation}
+	\frametitle{Plant physiology, carbon allocation}
 	\includegraphics[height=0.9\textheight]{CarbonAllocation.jpg}
 	\cite{Hartmann2018EEB}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-	\frametitle{Organic Matter Decomposition / Soil Models}
+	\frametitle{Organic matter decomposition , soil models}
 	\includegraphics[width=0.35\textwidth]{RothC.png}
 	\includegraphics[width=0.55\textwidth]{Century.png}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-	\frametitle{Ecosystem Models}
+	\frametitle{Ecosystem models}
 	\includegraphics[width=0.9\textwidth]{LasagaModel.pdf}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-	\frametitle{Chemical Reactors}
+	\frametitle{Chemical reactors}
 	\includegraphics[width=0.9\textwidth]{HaberBosch.jpg}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-	\frametitle{Population Dynamics}
+	\frametitle{Population dynamics}
 	\includegraphics[width=0.9\textwidth]{LibyaPopulation2011.jpg}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Reducing Model Complexity }
-\subsection{The Carbon Cycle example}
+\section{Reducing model complexity }
+\subsection{The carbon cycle example}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
@@ -199,7 +200,7 @@
 
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Asking Simpler Questions}
+\subsection{Asking simpler questions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
 	\frametitle{}
@@ -263,7 +264,7 @@
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-	\frametitle{Possible  {\color{red} Descriptive} Statistics}
+	\frametitle{Possible  {\color{red} descriptive} statistics}
 	\includegraphics[height=0.45\textheight]{VectorFieldWithOnePoolAndSubpoolsAndColoredBoundariesAndTrajectories.pdf} 
 	\begin{itemize}
 		\item number / mass of particles in pool A, B, ...
@@ -294,7 +295,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
  [fragile]
-\frametitle{Mean Age }
+\frametitle{Mean age }
 \begin{itemize}
    \item Which set of particles to use for the average?\\ 
       proposition:
@@ -314,7 +315,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
  [fragile]
-\frametitle{Mean Transit Time }
+\frametitle{Mean transit time }
   \includegraphics<1>[height=0.3\textheight]{MeanTransitTime.pdf}
   \[
   \bar t_r(t) =\frac{a_1+a_2+\cdots+a_{n_{o}}}{n_{o}}
@@ -456,7 +457,7 @@ It is also }
 \end{knitrout}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Answer Questions more simply}
+\subsection{Answer questions more simply}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
 	\frametitle{Possible {\color{red} Predictive} Statistics ?}
@@ -472,7 +473,7 @@ It is also }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-	\frametitle{Intermediate Summary}
+	\frametitle{Intermediate summary}
 	\begin{enumerate}
 	\item
 		Pool descriptions condense complex information to a time series of pool changes.(A series of stamps in the passport)
@@ -493,48 +494,62 @@ It is also }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Compartmental Systems}
+\section{Compartmental systems}
+\subsection{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-	\frametitle{The simplest Pool Systems}
+	\frametitle{The simplest pool systems}
     	\includegraphics[height=.9\textheight]{BucketFaucet4.png}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%
-
-\frame{
-\frametitle{Diverse model predictions}
-\begin{center}
-  \begin{multicols}{2}
-    \includegraphics[scale=0.3]{Figures/Fried1} \\
-    \includegraphics[scale=0.35]{Figures/Fried2}
-  \end{multicols}
-  \tiny{\citet{Friedlingstein2006JC}}
-\end{center}
-}
-
+\begin{frame}
+	\frametitle{The simplest pool systems are well mixed}
+    	\includegraphics[height=.9\textheight]{WellMixed.pdf}
+\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%
-\frame{
-\frametitle{Model comparison}
-\bf{Key quantities}\vspace{1cm}
-\begin{itemize}
-  \item<2 -> transit time
-    \begin{itemize}
-      \item the time that particles need to travel through the system
-      \item exit time - entry time
-    \end{itemize}
-  \item<3 -> system age
-    \begin{itemize}
-      \item for particles in the system
-      \item current time - entry time
-    \end{itemize}
-  \item<4-> compartment age
-    \begin{itemize}
-      \item system age of particles in a compartment
-    \end{itemize}
-\end{itemize}
-}
-
+\begin{frame}
+	\frametitle{Only the number of particles per Pool counts ...}
+      \only<1>{\includegraphics[height=.9\textheight]{PoolTrajectoriesColored.pdf}}
+      \only<2>{\includegraphics[height=.9\textheight]{PoolTrajectoriesblack.pdf}}
+      \only<3>{\includegraphics[height=.9\textheight]{PoolTrajectoriesblackWithPartikelsInPoolAtTime.pdf}}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\frame{
+%\frametitle{Diverse model predictions}
+%\begin{center}
+%  \begin{multicols}{2}
+%    \includegraphics[scale=0.3]{Figures/Fried1} \\
+%    \includegraphics[scale=0.35]{Figures/Fried2}
+%  \end{multicols}
+%  \tiny{\citet{Friedlingstein2006JC}}
+%\end{center}
+%}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%\frame{
+%\frametitle{Model comparison}
+%\bf{Key quantities}\vspace{1cm}
+%\begin{itemize}
+%  \item<2 -> transit time
+%    \begin{itemize}
+%      \item the time that particles need to travel through the system
+%      \item exit time - entry time
+%    \end{itemize}
+%  \item<3 -> system age
+%    \begin{itemize}
+%      \item for particles in the system
+%      \item current time - entry time
+%    \end{itemize}
+%  \item<4-> compartment age
+%    \begin{itemize}
+%      \item system age of particles in a compartment
+%    \end{itemize}
+%\end{itemize}
+%}
+%
 %%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Linear autonomous}
 
 \frame{
 \frametitle{Linear autonomous compartmental models}
@@ -842,6 +857,7 @@ It is also }
 }
 
 %%%%%s%%%%%%%%%%%%%%%%%%%%
+\subsection{Generalization to nonlinear nonautonomous systems}
 
 \frame{
 \frametitle{Application to a nonlinear carbon cycle model} 
@@ -1027,7 +1043,9 @@ It is also }
   \end{itemize}
 \end{itemize}
 }
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Example application}
 \frame{
 \frametitle{A global carbon cycle model}
 \begin{figure}[htbp]
@@ -1065,31 +1083,61 @@ It is also }
   \end{itemize}
 
   \uncover<2->{
-    \begin{center}
-      \vspace{-0.5cm}
-      \includegraphics[height=0.8\textheight]{Figures/atmosphere}
-    \end{center}
+    \begin{columns}
+      \column{0.45\textwidth}
+        \small{Time evolution of the atmosphere's carbon age density.} 
+        \begin{center}
+        %\vspace{-0.5cm}
+        \includegraphics[width=0.9\textwidth]{Figures/atmosphere}
+      \end{center}
+      \column{0.55\textwidth}
+        \small{
+        \begin{itemize}
+          \item {\color{red} median age}
+          \item {\color{blue} mean age}  
+          \item surface color constant along the time-age diagonal such that
+            the color reflects the moment of entry into the system.  
+          \item left edge equilibrium age density of the atmosphere's carbon at (time $= 1765\,\si{\year}$) 
+          \item lower edge (age $= 250\,\si{\year}$) mass is in the system with age
+            equal to $250\,\si{\year}$ %from the year 1765 through the year 2500.
+        \end{itemize}
+      }
+    \end{columns}
   }
 }
 
 \frame{
 \frametitle{Questions of high scientific and societal interest}
   \begin{itemize}
-    \item[2.] \textbf{Future commitment:} If we allow a pulse of $1$ PgC to be emitted today, how long will a significant fraction of this excess remain in the system?
+    \item[2.] \textbf{Future commitment:} If we allow a pulse of $1$ PgC to be emitted at differecnt times, how long will a significant fraction of this excess remain in the system?
   \end{itemize}
 
   \uncover<2->{
-    \begin{center}
-      \vspace{-0.15cm}
-      \includegraphics<-2>[height=0.7\textheight]{Figures/ftt1}
-      \includegraphics<3>[height=0.7\textheight]{Figures/ftt2}
-      \includegraphics<4>[height=0.7\textheight]{Figures/ftt3}
-      \includegraphics<5>[height=0.7\textheight]{Figures/ftt4}
-      \includegraphics<6>[height=0.7\textheight]{Figures/ftt5}
-    \end{center}
+    \begin{columns}
+      \column{0.65\textwidth}
+        \vspace{-0.15cm}
+        \includegraphics<-2>[height=0.5\textheight]{Figures/ftt1}
+        \includegraphics<3>[height=0.5\textheight]{Figures/ftt2}
+        \includegraphics<4>[height=0.5\textheight]{Figures/ftt3}
+        \includegraphics<5>[height=0.5\textheight]{Figures/ftt4}
+        \includegraphics<6>[height=0.5\textheight]{Figures/ftt5}
+      \column{0.35\textwidth}
+        \small{
+          \begin{itemize}
+            \item
+              Forward transit-time densities of $1\,\si{\peta\gram\carbon}$ hypothetically injected into the atmosphere in different years 
+       %1800 (red), 1990 (blue), 2015 (green), 2170 (purple), and 2300 (orange).
+      %  Forward transit-time densities of $1\,\si{\peta\gram\carbon}$ hypothetically injected into the atmosphere in the years 1800 (red), 1990 (blue), 2015 (green), 2170 (purple), and 2300 (orange).
+            \item
+              medians (dashed vertical lines) increase until the year 2170 and then start decreasing.
+      %The orange curve ends at the age of 200, because our simulation only lasts until the year 2500.
+          \end{itemize}
+       }
+      %The 
+    \end{columns}
   }
-}
 
+}
 
 % \frame{
 % \frametitle{Questions of high scientific and societal interest}
@@ -1108,7 +1156,7 @@ It is also }
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 \frame{ 
-\frametitle{Summary}
+\frametitle{Intermediate Summary}
 \begin{itemize}
   \item <1-> \textbf{carbon cycle models $\leftrightarrow$ stochastic processes}
   \begin{itemize}
@@ -1153,20 +1201,113 @@ It is also }
   \only<10>{\vspace{0.4cm}\includegraphics[scale=0.45]{Figures/presentation/final.pdf}}
 \end{center}
 }
+\frame{
+  \frametitle{Examples for ``Well-mixed Systems''}
+  \begin{columns}
+    \column{0.39\textwidth}
+    \includegraphics[width=0.9\textwidth]{WellMixed.pdf}
+
+    \column{0.29\textwidth}
+    \begin{itemize}
+      \item Century \\
+      \includegraphics[width=0.2\textwidth]{Century.png}
+      \item RothC   \\
+      \includegraphics[width=0.2\textwidth]{RothC.png}
+      \item Element Cycling Models \\
+      \includegraphics[width=0.2\textwidth]{globalNcycle.jpg}
+    \end{itemize}
+    
+    \column{0.29\textwidth}
+    \begin{itemize}
+      \item Reactors
+      \includegraphics[width=0.2\textwidth]{HaberBosch.jpg}
+      \item Carbon Allocation
+      \includegraphics[width=0.2\textwidth]{CarbonAllocation.jpg}
+      \item ...
+    \end{itemize}
+  \end{columns}
+    
+}
+\section{Generalization to non Well Mixed Systems}
+\subsection{Population Dynamics}
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame} 
+  \frametitle{Population Dynamics $\phi(a)$ }
+	\includegraphics[width=0.9\textwidth]{LibyaPopulation2011.jpg}
+  Age distribution varies with time.
+  $\phi(a)= \phi(a,t)$
+\end{frame} 
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame} 
+\frametitle{McKendrick–von Foerster Equation}
+  \begin{itemize}
+  \item <1->{
+  original:
+  \[
+    \frac{\partial \phi}{\partial a}+ \frac{\partial \phi}{\partial t}= m(a) \phi
+  \]
+  The ``deathrate'' $m(a)$ depends on the age $a$.
+  }
+  \item <2->{
+  generalized:
+  \[
+    \frac{\partial \phi}{\partial a}+ \frac{\partial \phi}{\partial t}= m(a,{ \color{red} t}) \phi
+  \]
+      $m(a,{\color{red}t})$ depends on the age $a$  and time {\color{red}t}.
+  }
+  \item <3->{
+  in compartmental systems
+  \[
+    \frac{\partial \phi}{\partial a}+ \frac{\partial \phi}{\partial t}= m({\color{red} t}) \phi
+  \]
+  $m({\color{red} t})$ depends only on  time  {\color{red} t}.
+  }
+  \end{itemize}
+\end{frame} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Hydrology}
+\begin{frame} 
+  \frametitle{Age and transit-time distributions for catchments}
+  \begin{itemize}
+      \item Single catchment 
+      \begin{itemize}
+        \item identical equations as for population dynamics
+        \item ``deathrate'' $\rightarrow$``age selection function''. 
+      \end{itemize}
+         
+      \item multiple connected catchments 
+      \begin{itemize}
+        \item Possible: Prediction of age selection function for systems of
+          well mixed pools. (from transit time and age distributions)
+        \item Challenge: Prediction of age selection function for systems of
+          {\color{red} non} well mixed pools. (global age selection functions from pool wise age selection functions) 
+      \end{itemize}
+        
+  \end{itemize}
+
+\end{frame} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\frame{
-\frametitle{Thanks}
-
-\begin{center}
-  \bf{Funding}\\
-  \vspace{1cm}
-  \includegraphics[scale=0.07]{EmmyNoether} \hspace{5em}
-  \includegraphics[scale=0.3]{Minerva}
-\end{center}
-}
+\begin{frame} 
+\frametitle{Summary}
+  \begin{itemize}
+      \item
+        Pool models greatly simplify:
+      \begin{itemize}
+        \item The questions (that can be) asked
+        \item The way questions are answered by exploiting symmetries 
+      \end{itemize}
+      \item
+        Natural descriptive statistics are time related distributions (age and transit time , per pool per system ...)
+      \item
+        The simplest and most prominet pool models with the most theory are 
+        ``well mixed '' or ``compartmental systems'' modeled by ordinary differential equations.
+      \item
+        Much more general pool models are possible including non constant deathrates (age selection functions)  or delays,  that have to be solved with different mathematical tools.
+        ( partial differential equations,  integral equations, delay equations, Monte Carlo simulations ... ) still much simpler than the underlying complete models.
+  \end{itemize}
+\end{frame} 
 %\begin{frame}
 % [fragile]
 %\frametitle{Example Model}
@@ -1625,13 +1766,26 @@ It is also }
 %\end{itemize}
 %\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
- [fragile]
-\frametitle{Thank you for your attention}
-   \includegraphics<1>[width=\textwidth]{Verwirrung2.jpg}
-%   \\
-%   If you cannot win through you should at least create confusion...
-\end{frame}
+%\begin{frame}
+% [fragile]
+%\frametitle{Thank you for your attention}
+%   \includegraphics<1>[width=\textwidth]{Verwirrung2.jpg}
+%%   \\
+%%   If you cannot win through you should at least create confusion...
+%\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\frame{
+\frametitle{Thanks}
+
+\begin{center}
+  \bf{Funding}\\
+  \vspace{1cm}
+  \includegraphics[scale=0.07]{EmmyNoether} \hspace{5em}
+  \includegraphics[scale=0.3]{Minerva}
+\end{center}
+}
 
 \lyxframeend{}
 \begin{frame}
