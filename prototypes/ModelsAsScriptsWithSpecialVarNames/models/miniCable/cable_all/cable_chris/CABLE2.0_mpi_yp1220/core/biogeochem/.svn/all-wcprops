@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/cable/!svn/ver/1733/branches/Users/czl599/CABLE2.0_mpi/core/biogeochem
+END
+casa_inout.F90
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/cable/!svn/ver/2989/branches/Users/czl599/CABLE2.0_mpi/core/biogeochem/casa_inout.F90
+END
+casa_cnp.F90
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/cable/!svn/ver/2989/branches/Users/czl599/CABLE2.0_mpi/core/biogeochem/casa_cnp.F90
+END
+casa_dump.F90
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/cable/!svn/ver/1221/branches/Users/czl599/CABLE2.0_mpi/core/biogeochem/casa_dump.F90
+END
+casa_variable.F90
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/cable/!svn/ver/2989/branches/Users/czl599/CABLE2.0_mpi/core/biogeochem/casa_variable.F90
+END
+casa_cable.F90
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/cable/!svn/ver/1733/branches/Users/czl599/CABLE2.0_mpi/core/biogeochem/casa_cable.F90
+END

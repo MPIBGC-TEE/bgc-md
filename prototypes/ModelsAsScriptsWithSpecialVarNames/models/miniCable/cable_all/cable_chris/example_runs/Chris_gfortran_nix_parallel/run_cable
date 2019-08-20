@@ -1,0 +1,3 @@
+#!/bin/bash
+mpirun -n 8 --oversubscribe ../../CABLE2.0_mpi_yp1220/offline/.tmp/cable-mpi
+

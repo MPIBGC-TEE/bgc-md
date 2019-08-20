@@ -1,0 +1,9 @@
+Call spincasa before master broadcast casapool to workers.
+
+--This line, and those below, will be ignored--
+
+M    offline/cable_input.F90
+M    offline/cable_mpimaster.F90
+M    core/biogeochem/casa_inout.F90
+M    core/biogeochem/casa_cnp.F90
+M    core/biogeochem/casa_variable.F90

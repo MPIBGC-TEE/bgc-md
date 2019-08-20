@@ -1,0 +1,34 @@
+9
+
+dir
+1094
+https://trac.nci.org.au/svn/cable/branches/Users/yxw599/CABLE-AUX/core
+https://trac.nci.org.au/svn/cable
+
+
+
+2013-11-28T12:25:04.156872Z
+1094
+yxw599
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b483b3d9-cc7d-4f55-9e4c-b4562452379e
+
+biogeochem
+dir
+
+biogeophys
+dir
+

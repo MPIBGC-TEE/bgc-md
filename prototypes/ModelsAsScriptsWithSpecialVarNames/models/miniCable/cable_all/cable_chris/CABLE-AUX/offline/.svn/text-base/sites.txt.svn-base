@@ -1,0 +1,30 @@
+# Single sites over which CABLE is run are defined here. Lines NOT starting with 
+# a "#" are interpreted by the run script (run.ksh) as meaningful and used as 
+# varibles internally (this includes blank/space lines). 
+#
+# The first meaningful line is the short name of the site used only to name the 
+# sub-directory containg output. The second and third meaningful lines are 
+# passed to CABLE as arguments. These are the relative paths to the met. data 
+# and the pool size.   
+#
+#
+# sitename - Tumbarumba, etc 
+Tumbarumba
+#
+# met. file - path relative to $HOME 
+/projects/access/CABLE-AUX/offline/TumbaFluxnet.1.3_met.nc
+#
+# CNP pools size - path relative to $HOME
+/projects/access/CABLE-AUX/core/biogeochem/poolcnpInTumbarumba.csv
+#
+#
+#
+# sitename - etc 
+#Hyytiala
+#
+# met. file - etc
+#data/sample_met/Hyytiala1997-2005_csiro.nc
+#
+# CNP pools size - etc 
+#data/surface_data/poolcnpInHyytiala.csv
+

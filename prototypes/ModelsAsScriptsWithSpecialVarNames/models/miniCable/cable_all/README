@@ -1,0 +1,5 @@
+This directory contains two NIX packages that are both needed to produce the desired output data.
+- cable is the package containing the src code and the information required by NIX to build the 
+execuatables 'cable' and 'cable-mpi'
+
+- cable_runs contains the auxilary files and cable input files to provide the necessary runtime parameters.
