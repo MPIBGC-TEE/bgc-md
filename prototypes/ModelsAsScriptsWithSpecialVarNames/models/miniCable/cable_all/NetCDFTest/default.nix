@@ -1,8 +1,7 @@
 # we want to use the library as defined in our own nix expression 
 with import <nixpkgs> {};
   let 
-    #my_netcdf_fortran=import ../netcdffortran-mpi/default.nix {
-    my_netcdf_fortran=import ../netcdffortran/default.nix {
+    my_netcdf_fortran=import <nixpkgs/pkgs/development/libraries/netcdf-fortran/default.nix> {      
       stdenv=stdenv;
       fetchurl=fetchurl;
       netcdf=netcdf-mpi;
