@@ -5050,8 +5050,9 @@ SUBROUTINE worker_time_update (met, kend, dels)
              met%moy(landpt(i)%cstart) = smoy
              met%year(landpt(i)%cstart) = syear
           CASE DEFAULT
-             CALL abort('Unknown time coordinate! ' &
-                  //' (SUBROUTINE get_met_data)')
+!             CALL abort('Unknown time coordinate! ' &
+!                  //' (SUBROUTINE get_met_data)')
+             CALL abort()
           END SELECT
        ELSE
           ! increment hour-of-day by time step size:

@@ -220,10 +220,10 @@ subroutine ncdf_dump(casamet, n_call, kend, ncfile)
 
       !dims
       character(len=*), dimension(num_dims), parameter :: &
-            dim_name =  (/ "tile", &
-                           "soil", &
+            dim_name =  (/ "tile ", &
+                           "soil ", &
                            "plant",&
-                           "time" /)
+                           "time " /)
 
       integer, dimension(num_dims)  :: &
             dimID   ! (1) mp, (2) ms, (3) mplant (4) time
