@@ -1,9 +1,14 @@
 { stdenv, buildPythonPackage, fetchPypi, isPyPy, pytest
-, numpy, zlib, netcdf, hdf5, curl, libjpeg, cython, cftime ,mpi4py
-}:
+, numpy, zlib, netcdf, hdf5, curl, libjpeg, cython, cftime 
+,mpi4py ? null, openssh ? null}:
+assert (mpi4py!= null) -> 
+  openssh != null
+  && hdf5.mpi == mpi4py.mpi 
+  && netcdf.mpi == mpi4py.mpi;
+
 let 
-  mpiSupport = netcdf.mpiSupport;
-  mpi= netcdf.mpi;
+  mpiSupport = (mpi4py!=null);
+  mpi= if mpiSupport then mpi4py.mpi else null;
 in
   buildPythonPackage rec {
     pname = "netCDF4";
@@ -31,14 +36,13 @@ in
       hdf5
       curl
       libjpeg
-      mpi4py
-    ];
+    ] ++ (if mpiSupport then [mpi4py openssh] else []);
 
     patches=[./parallel4Detection.patch];
   
-    preBuild=''
+    preBuild= if mpiSupport then ''
       makeFlagsArray+=( CC=mpicc CXX=mpicxx )
-    '';
+    '' else "";
 
     checkPhase = ''
       py.test test/tst_*.py
@@ -53,15 +57,16 @@ in
     NETCDF4_DIR="${netcdf}";
     CURL_DIR="${curl.dev}";
     JPEG_DIR="${libjpeg.dev}";
-    # fixme: test for mpi firs
-    MPI_INCDIR="${mpi}/include";
+    #  test for mpi first and then set
+    # MPI_INCDIR="${mpi}/include" ;
+    # is not necessary
     
     passthru = {
       mpiSupport = mpiSupport;
       inherit mpi;
     }; 
     meta = with stdenv.lib; {
-      description = "Interface to netCDF library (versions 3 and 4) with support vor parallel IO";
+      description = "Interface to netCDF library (versions 3 and 4) with support for parallel IO";
       homepage = https://pypi.python.org/pypi/netCDF4;
       license = licenses.free;  # Mix of license (all MIT* like)
     };

@@ -1,0 +1,3 @@
+#!/bin/bash
+mpirun -n 2 ../../cable2.0-trunk/offline/.tmp/cable-mpi
+

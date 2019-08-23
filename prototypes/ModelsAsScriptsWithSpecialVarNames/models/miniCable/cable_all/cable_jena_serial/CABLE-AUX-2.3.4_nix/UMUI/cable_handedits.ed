@@ -1,0 +1,168 @@
+#!/bin/ksh
+#
+#NB. this ed is not foolproof and depends on the UMUI model 
+#configuration setting C97_3A. 
+
+##############################################################
+
+#default configuration - run CABLE w 17 tiles / 6 soil layers
+#to run MOSES simply comment out this "ed" block
+#to run other configurations  comment out this "ed" 
+#AND uncomment the appropriate "ed" block below
+
+ed  FCM_UMUI_MODEL_CFG <<\EOF
+/C97_3A=c97_3a/
+d
+-
+a
+   C97_3A=c97_3a \
+   CABLE_17TILES=cable_17tiles \
+   CABLE_SOIL_LAYERS=cable_soil_layers
+.
+wq
+EOF
+
+
+#
+ed FCM_UMUI_JOB_RECFG <<\EOF
+/%jobdefs RECON=recon/
+d
+-
+a
+%jobdefs RECON=recon \
+         CABLE_17TILES=cable_17tiles \
+         CABLE_SOIL_LAYERS=cable_soil_layers
+.
+wq
+EOF
+
+##configuration - run CABLE w 9 tiles / 6 soil layers
+#ed FCM_UMUI_MODEL_CFG <<\EOF
+#/C97_3A=c97_3a/
+#d
+#-
+#a
+#   C97_3A=c97_3a \
+#   CABLE_9TILES=cable_9tiles \
+#   CABLE_SOIL_LAYERS=cable_soil_layers
+#.
+#wq
+#EOF
+
+
+
+##configuration - run CABLE w 9 tiles / 4 soil layers
+#ed FCM_UMUI_MODEL_CFG <<\EOF
+#/C97_3A=c97_3a/
+#d
+#-
+#a
+#   C97_3A=c97_3a \
+#   CABLE_9TILES=cable_9tiles 
+#.
+#wq
+#EOF
+
+
+
+##configuration - run CABLE w 17 tiles / 4 soil layers
+#ed FCM_UMUI_MODEL_CFG <<\EOF
+#/C97_3A=c97_3a/
+#d
+#-
+#a
+#   C97_3A=c97_3a \
+#   CABLE_17TILES=cable_17tiles 
+#.
+#wq
+#EOF
+
+
+
+ed RECONA << EOF
+g/NTILES=9/s/NTILES=9/NTILES=17/g
+wq
+EOF
+
+
+
+ed SIZES << EOF
+g/NTILES=9/s/NTILES=9/NTILES=17/g
+wq
+EOF
+
+
+
+
+ed CNTLATM << EOF
+/ALBSNC_MAX/
+c
+ ALBSNC_MAX = 0.25, 0.25, 0.60, 0.60, 0.40, 0.25, 0.25, 0.60, 0.60, 0.40, 0.00, 0.00, 0.00,
+.
+/ALBSNC_MIN/ 
+c
+ ALBSNC_MIN = 0.30, 0.30, 0.80, 0.80, 0.80, 0.30, 0.30, 0.80, 0.80, 0.80, 0.00, 0.00, 0.00,
+.
+/ALBSNF_MAX/
+c
+ ALBSNF_MAX = 0.15, 0.15, 0.20, 0.20, 0.20, 0.15, 0.15, 0.20, 0.20, 0.20, 0.00, 0.00, 0.00,
+.
+/DZ0V_DH/
+c
+ DZ0V_DH    = 0.05, 0.05, 0.10, 0.10, 0.10, 0.05, 0.05, 0.10, 0.10, 0.10, 0.00, 0.00, 0.00,
+.
+/CATCH0/
+c
+ CATCH0     = 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.00, 0.00, 0.00,
+.
+/DCATCH_DLAI/
+c
+ DCATCH_DLAI= 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.00, 0.00, 0.00,
+.
+/INFIL_F/
+c
+ INFIL_F    = 4.00, 4.00, 2.00, 2.00, 2.00, 4.00, 4.00, 2.00, 2.00, 0.20, 0.00, 0.00, 0.00,
+.
+/KEXT/
+c
+ KEXT       = 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.00, 0.00, 0.00,
+.
+/ROOTD_FT/
+c
+ ROOTD_FT   = 3.00, 1.00, 0.50, 0.50, 0.50, 3.00, 1.00, 0.50, 0.50, 0.50, 0.00, 0.00, 0.00,
+.
+wq
+EOF
+
+
+
+
+ed STASHC <<\EOF
+/DTILE"/
+/PSLIST/
+c
+ PSLIST=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,
+.
+/DPFT/
+/PSLIST/
+c
+ PSLIST=1,2,3,4,5,6,7,8,9,10,11,12,13,
+.
+w
+q
+EOF
+
+# Use CABLE rather than MOSES.
+
+ed CNTLATM <<\EOF
+/L_CO2_EMITS/
+a
+ L_CABLE=.TRUE.,
+.
+w
+q
+EOF
+
+
+
+

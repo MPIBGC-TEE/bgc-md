@@ -15,6 +15,7 @@ let
     cython=python37.pkgs.cython;
     cftime=python37.pkgs.cftime;
     mpi4py=python37.pkgs.mpi4py;
+    openssh=openssh;
   };  
 in 
   import ./default.nix argset

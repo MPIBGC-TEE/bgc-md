@@ -1,0 +1,93 @@
+&cable
+   filename%met = ''      ! filename for single site met
+   filename%path = './'   ! path for cable output files
+   filename%type    = '/surface_data/gridinfo_CSIRO_CRU05x05_4tiles.nc'  ! grid-info file name, including path
+   filename%veg    =  '/surface_data/def_veg_params_zr_clitt_Medlyn.txt' ! veg parameter text file
+   filename%soil    = '/surface_data/def_soil_params.txt'          ! soil parameter text file (note: only used if soilparmnew is FALSE)
+   filename%out = 'out_cable.nc'                    ! CABLE output file name
+   filename%log = 'log_cable.txt'                   ! cable log filename
+   filename%restart_in  = './restart_in.nc' 
+   filename%restart_out = './restart_out.nc'
+   vegparmnew = .TRUE.  ! using new format when true
+   soilparmnew = .TRUE.  ! using new format when true (uses soil maps in grid-info file)
+   spinup = .TRUE.  ! do we spin up the model?
+   delsoilM = 0.001   ! allowed variation in soil moisture for spin up
+   delsoilT = 0.01    ! allowed variation in soil temperature for spin up
+   output%grid = 'land'  ! 'land' or 'mask' for vector or map output
+   output%restart = .TRUE.  ! should a restart file be created?
+   output%met = .TRUE.  ! input met data
+   output%flux = .TRUE.  ! convective, runoff, NEE
+   output%soil = .TRUE.  ! soil states
+   output%snow = .TRUE.  ! snow states
+   output%radiation = .TRUE.  ! net rad, albedo
+   output%carbon    = .TRUE.  ! NEE, GPP, NPP, stores
+   output%veg       = .TRUE.  ! vegetation states
+   output%params    = .TRUE.  ! input parameters used to produce run
+   output%balances  = .TRUE.  ! energy and water balances
+   output%casa = .TRUE.       ! subset of casa variables sent to cable output  
+   output%patch = .TRUE.      ! tile-specificity retained in cable output
+   output%averaging = 'monthly' ! temporal averaging of CABLE output: 'all', 'monthly' or 'daily'   
+   check%ranges     = .FALSE.  ! variable ranges, input and output
+   check%energy_bal = .TRUE.  ! energy balance
+   check%mass_bal   = .TRUE.  ! water/mass balance
+   verbose = .TRUE. ! write details of every grid cell init and params to log?
+   leaps = .TRUE. ! calculate timing with leap years? 
+   logn = 88      ! log file number - declared in input module
+   fixedCO2 = 350.0   ! if not found in met file, in ppmv
+   spincasa      = .FALSE.     ! spin casa using casa inputs (GPP, soil T, soil moisture) from an earlier run
+   l_laiFeedbk   = .FALSE.  ! using prognostic LAI
+   l_vcmaxFeedbk = .FALSE.  ! using prognostic Vcmax
+   icycle = 0   ! 0 for not using casaCNP, 1 for C, 2 for C+N, 3 for C+N+P; 11 for C spin-casa; 12 for C+N spincasa; 13 for C+N+P spin-casa
+   casafile%cnpipool='./casa_rst.nc'  ! casa input restart file: if blank, defaults to RunIden_casa_rst.nc
+   casafile%cnpbiome='surface_data/pftlookup_csiro_v16_17tile.csv'  ! biome specific BGC parameters
+   casafile%cnpepool=./casa_rst.nc'    ! end of run pool size: if blank, defaults to RunIden_casa_rst.nc
+   casafile%phen='surface_data/modis_phenology_csiro.txt'        ! modis phenology
+   ncciy = 0 ! 0 for not using gswp; 4-digit year input for year of gswp met
+   gswpfile%rainf = 'gswp/Rainf_gswp1987.nc'
+   gswpfile%snowf = 'gswp/Snowf_gswp1987.nc'
+   gswpfile%LWdown= 'gswp/LWdown_srb1987.nc'
+   gswpfile%SWdown= 'gswp/SWdown_srb1987.nc'
+   gswpfile%PSurf = 'gswp/PSurf_ecor1987.nc'
+   gswpfile%Qair  = 'gswp/Qair_cru1987.nc'
+   gswpfile%Tair  = 'gswp/Tair_cru1987.nc'
+   gswpfile%wind  = 'gswp/Wind_ncep1987.nc'
+   redistrb = .FALSE.  ! Turn on/off the hydraulic redistribution
+   wiltParam = 0.5  ! only used if  hydraulic redistribution is turned on
+   satuParam = 0.8  ! only used if  hydraulic redistribution is turned on
+   cable_user%FWSOIL_SWITCH = 'standard'        ! choices are: 
+                                                 ! 1. standard (known inconsistency between carbon and water fluxes)
+                                                 ! 2. non-linear extrapolation 
+                                                 ! 3. Lai and Katul 2000 
+                                                 ! 4. Haverd2013 (See Haverd et al. GMD 2016)
+   cable_user%RUN_DIAG_LEVEL= 'zero'        ! choices are 'zero' or 'none' ! zero dumps bitwise reproducible testing data
+                                                 ! 1. BASIC
+                                                 ! 1. NONE
+   cable_user%CONSISTENCY_CHECK= .TRUE.      ! TRUE outputs combined fluxes at each timestep for comparison to A control run 
+   cable_user%CASA_DUMP_READ = .FALSE.      ! TRUE reads CASA forcing from netcdf format
+   cable_user%CASA_DUMP_WRITE = .FALSE.      ! TRUE outputs CASA forcing in netcdf format
+   cable_user%CABLE_RUNTIME_COUPLED = .FALSE.      ! see Ticket 43  
+   cable_user%SSNOW_POTEV= 'P-M'      ! Humidity Deficit Method or 'P-M' Penman Monteith
+   cable_user%SOIL_STRUC          = 'default'       ! 'default' or 'SLI' (Haverd and Cuntz J.Hyd. 2010)
+   cable_user%litter = .false.  ! litter effect on soil evaporation (See Haverd et al. GMD 2016)
+
+   cable_user%CASA_SPIN_STARTYEAR = 1850        ! start spin year for spin casa run
+   cable_user%CASA_SPIN_ENDYEAR   = 1859        ! end spin year for spin casa run
+   cable_user%LogWorker           = .TRUE.      ! write log file for mpi workers
+   cable_user%CALL_POP            = .T.     ! TRUE uses POP tree demography model, coupled to CASA.
+   cable_user%POP_out             = 'ini'       ! ! POP-output file either 'ini':Standard restart OR 'epi' for whole episode
+   cable_user%POP_rst             = './'        ! path to Pop restart file
+   cable_user%POP_fromZero        = .T.     ! Start POP from Zero stem biomass, don't read restart file
+   cable_user%CASA_fromZero        = .T.   ! Start CASA from casafile%cnpbiome, don't read restart file.(stem biomass to zero when pop_fromzero)
+   cable_user%MetType       = 'cru'        ! Either 'gswp' or 'plum' for PLUME (WATCH) or 'cru' for TRENDY (CRU-NCEP) experiment or '' for single site data. 
+                                           ! See also cru.nml or plume.nml for TRENDY or PLUME experiment settings.
+  cable_user%CASA_OUT_FREQ = 'monthly'        ! casa standard output freq 'daily', 'monthly', 'annually'
+  cable_user%CALL_CLIMATE =.F. ! call climate module: constructs climate history, required for 'CLIMATE' phenology,
+                               ! acclimation of autotrophic respiration and potential vegeation cover for land-use-change runs
+  cable_user%CLIMATE_fromZero =.T. ! Start Climate from Zero, don't read restart file	
+  cable_user%PHENOLOGY_SWITCH = 'MODIS' !'MODIS' (standard, from remote-sensing) or 'CLIMATE' (climate driven leaf-out and leaf-fall for deciduous and grass pfts) 
+  cable_user%POPLUC = .F. ! enable land use module (see also LUC.nml for LUC experiment settings)
+  cabe_user%POLUC_Runtype = 'static' ! 'static' (fixed land-use),'init' (dynamic land use initialised from LUC driving data', 'restart' (dynamic land-use initialised from restart')
+  cable_user%GS_SWITCH = 'leuning' ! 'leuning' or 'medlyn' depedence of stomatal conductance on VPD	       
+  cable_user%vcmax = 'standard' ! N- and P-dependence of vcmax (icycle>0): 'standard' or 'Walker2014'	
+
+&end

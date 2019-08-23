@@ -1,0 +1,16 @@
+ 
+ Revision nuber:            0
+ 
+ This is the latest revision of you workin copy as sourced 
+ by the SVN INFO command at build time. Please note that the
+ accuracy of this number is dependent on how recently you 
+ used SVN UPDATE.
+ SVN STATUS indicates that you have (at least) the following
+ local changes: 
+ 
+ 
+ ============================================================
+ Log file for offline CABLE run:
+ 21:55:24 2019/08/23
+ ============================================================
+ Opening met data file: NCAR/clm45sp_2deg4506_hist.clm2.h1.1901-01-01-00000.nc and 7 more

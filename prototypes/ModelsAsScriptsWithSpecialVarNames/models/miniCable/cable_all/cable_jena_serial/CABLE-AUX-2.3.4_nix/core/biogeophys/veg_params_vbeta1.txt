@@ -1,0 +1,174 @@
+CSIRO veg type parameters (2nd guess calibration)
+17   ! number of vegetation types
+1   forest     evergreen_needleleaf       ! veg number, type and name
+17.0   0.01   0.001  0.055  0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.062  0.302  0.010  0.160  0.390  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.050  0.100  0.010  0.001  0.001  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.225  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 8.6   1.0    0.10   2.0    9.0   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 40.0e-6      3.0000 0.0832 1.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.943                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+  200  10217    876    184    367         ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+2   forest     evergreen_broadleaf
+35.0   0.10   0.050  0.100  0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.076  0.350  0.010  0.160  0.390  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.050  0.250  0.010  0.001  0.001  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.225  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+20.0   1.0    0.10   2.0    14.0   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 55.0e-6      0.600  0.0832 1.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.962                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+  300  16833   1443    303    606         ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+3   deciduous  deciduous_needleleaf
+15.5   0.01   0.001  0.040  0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.056  0.275  0.010  0.160  0.390  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.045  0.144  0.010  0.001  0.001  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.225  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 4.6   1.0    0.10   2.0    9.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 40.0e-6      3.0000 0.0832 1.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+   5    10    1.0    0.966                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+  200   5967    511    107    214         ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+4   deciduous  deciduous_broadleaf
+20.0   0.25   0.080  0.150  0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.092  0.380  0.010  0.160  0.390  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.050  0.250  0.010  0.001  0.001  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.225  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 8.6   1.0    0.10   2.0     8.0   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 60.0e-6      2.2000 0.0832 1.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+   5    15    1.0    0.961                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+  300  12000   1029    216    432         ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+5   shrub      shrub
+ 0.6   0.01   0.005  0.100  0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.100  0.400  0.010  0.200  0.430  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.050  0.240  0.010  0.005  0.001  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.400  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 4.4   0.0    0.10   2.0    5.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 40.0e-6      1.0000 0.0832 1.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.964                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+  159   5000    500    100    250         ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+6   grass      C3 grassland
+ 0.567 -0.30   0.010  0.300 0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.110  0.470  0.010  0.360  0.580  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.070  0.250  0.010  0.220  0.380  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.250  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 6.0   0.0    0.10   2.0     7.0   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 60.0e-6      1.5000 0.0832 1.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.943                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+  250      0    500    275    314         ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+7   grass      C4 grassland
+ 0.567 -0.30   0.010  0.300 1.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.100  0.400  0.010  0.360  0.580  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.100  0.150  0.010  0.220  0.380  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.250  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 6.0   0.0    0.10   2.0    7.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 10.0e-6      2.8000 0.0832 1.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.943                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+  250      0    500    275    314         ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+8   grass      Tundra
+ 0.567 -0.30   0.010  0.300 0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.117  0.343  0.010  0.360  0.580  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.080  0.124  0.010  0.220  0.380  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.250  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 6.0   0.0    0.10   2.0    5.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 40.0e-6      2.5000 0.0832 1.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.943                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+  250      0    500    275    314         ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+9   crop       C3 cropland
+ 0.55 -0.30   0.010  0.300  0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.100  0.400  0.010  0.327  0.548  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.100  0.150  0.010  0.184  0.317  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.225  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 6.0   0.0    0.10   2.0    7.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 80.0e-6      1.5000 0.0832 1.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.961                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+  150      0    607    149    300         ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+10  crop       C4 cropland
+ 0.55 -0.30   0.010  0.300  1.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.090  0.360  0.010  0.327  0.548  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.090  0.225  0.010  0.184  0.317  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.225  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 6.0   0.0    0.10   2.0    1.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 8.00e-5      1.0000 0.0832 1.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.961                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+  150      0    607    149    300         ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+11  wetgrass    wetland
+ 0.567 -0.30   0.010  0.300  0.0          ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.108  0.343  0.010  0.360  0.580  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.075  0.146  0.010  0.220  0.380  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.225  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 6.0   0.0    0.10   2.0    7.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+60.00e-6      1.5000 0.0832 1.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.943                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+  250      0    500    275    314         ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+12  grass      empty
+ 0.2   0.100  0.003  0.030  0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.055  0.190  0.010  0.081  0.196  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.023  0.198  0.010  0.001  0.001  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.300  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 1.0   0.0    0.10   2.0    1.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 1.70e-5      1.0000 0.0832 0.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.975                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+    1      0      1      1     1          ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+13  notused    empty
+ 6.017  0.00   0.015  0.242 0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.091  0.310  0.010  0.283  0.504  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.059  0.163  0.010  0.138  0.237  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.090  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 1.0   0.0    0.10   2.0    1.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 1.00e-6      1.0000 0.0832 1.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.961                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+  0.1      0    0.1    0.1    0.1         ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+14  noveg      barren
+ 0.2   0.00   0.001  0.030  0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.238  0.457  0.010  0.081  0.196  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.039  0.189  0.010  0.001  0.001  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.151  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 0.0   0.0    0.10   2.0    1.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 1.70e-5      1.0000 0.0832 0.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.961                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+    0      0      0      1     1          ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+15  noveg      urban
+ 0.2   0.00   0.001  0.030  0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.143  0.275  0.010  0.081  0.196  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.023  0.113  0.010  0.001  0.001  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.225  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 0.0   0.0    0.10   2.0    1.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 1.70e-5      1.0000 0.0832 0.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.961                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+    1      0      1      1     1          ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+16  noveg      lakes
+ 0.2   0.00   0.001  0.030  0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.143  0.275  0.010  0.081  0.196  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.023  0.113  0.010  0.001  0.001  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.225  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 0.0   0.0    0.10   2.0    1.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 1.70e-5      1.0000 0.0832 0.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.961                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+    1      0      1      1     1          ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+17  noveg      ice
+ 0.2   0.00   0.001  0.030  0.0           ! canopy hgt(m),leaf angle,lf width(m),lf length(m),C4 fraction
+0.159  0.305  0.010  0.081  0.196  0.010  ! rholeaf-vis,nir,therm, rhowood-vis,nir,therm
+0.026  0.113  0.010  0.001  0.001  0.010  ! tauleaf-vis,nir,therm, tauwood-vis,nir,therm
+0.100  0.225  0.020  1.00                 ! rhosoil-vis,nir,therm; xalbnir
+ 0.0   0.0    0.10   2.0    1.00   0.001  ! LAImax(m2/m2),WoodAI(m2/m2),canst1,shelrb,vegcf,extkn
+ 1.70e-5      1.0000 0.0832 0.0           ! vcmax(mol/m2/s), rp20, rpcoeff(/oC), rs20
+ -15   -10    1.0    0.961                ! tvjmin(oC), tvjmax(oC), vbeta, betaroot
+    0      0      0      1     1          ! pool: leaf, wood, root, soilfast, soilslow (gC/m2)
+1.0    0.03   0.14   2.0    0.5           ! rate: leaf, wood, root, soilfast, soilslow (/year)
+
+

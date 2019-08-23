@@ -1,4 +1,3 @@
-# we want to use the library as defined in our own nix expression 
 with import <nixpkgs> {};
   let 
     my_netcdf_fortran=import <nixpkgs/pkgs/development/libraries/netcdf-fortran/default.nix> {      
@@ -10,7 +9,7 @@ with import <nixpkgs> {};
       gfortran =gfortran;
     };
     #my_netcdf4_python=import <nixpkgs/pkgs/development/python-modules/netcdf4/default.nix> {      
-    my_netcdf4_python=import ../my_netcdf4_python/default.nix{      
+    my_netcdf4_python=import ../my_netcdf4_python/default.nix{
       stdenv=stdenv;
       buildPythonPackage=python37.pkgs.buildPythonPackage;
       fetchPypi=python37.pkgs.fetchPypi;
@@ -25,6 +24,7 @@ with import <nixpkgs> {};
       cython=python37.pkgs.cython;
       cftime=python37.pkgs.cftime;
       mpi4py=python37.pkgs.mpi4py;
+      openssh=openssh;
     };
   in stdenv.mkDerivation {
     name ="writeNetCDF";

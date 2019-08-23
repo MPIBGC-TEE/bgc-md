@@ -1,0 +1,7 @@
+#
+bld::excl_dep                                        OBJ::cable_explicit_driver.o
+bld::excl_dep                                        OBJ::cable_implicit_driver.o
+bld::excl_dep                                        OBJ::cable_hyd_driver.o
+bld::excl_dep                                        OBJ::cable_rad_driver.o
+
+bld::tool::ldflags                                   -O2 -r8 -i8 -g  -traceback -L /projects/access/umdir/gcom/gcom_mpp_vn7.3/lib -lgcom -L /apps/netcdf/3.6.3/lib/Intel -L /apps/netcdf/3.6.3/lib/ -lmpi_f77 -lmpi -lopen-rte -lopen-pal -Wl,--export-dynamic -lnsl -lutil -lm -ldl -l -Wl,--noinhibit-exec -Wl,-static -lnetcdf -L $CABLE_AUX/CABLE-AUX/UM -lcable -fpe3
