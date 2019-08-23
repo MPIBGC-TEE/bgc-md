@@ -1,4 +1,9 @@
-Unfortunately this does not work
-The reason is probably that the default version of the netcdffortran library is not build for parallel usage. (This would require that we provide a nix expression and builder to build netcdffortran with parallel IO support based on HDF5-mpi) 
-The exampel F90 file is from the official netcdf page
-https://github.com/Unidata/netcdf-fortran/blob/master/examples/F90/simple_xy_par_wr2.f90
+We build the fortran (netcdffortran) and python (nectdf4_python) bindings with mpi enabled.
+This allows parallel IO which allows us to write to a single file from all processors simultaneously 
+which helps us to avoid the very complicated IO of cable (which sends all results to a master who writes the files) 
+without the need to create a single file for every node in the cluster.
+This is the recommended IO for clusters anyway ...
+On the python side we can also read simultaniously from the same file. The number of processes will be 
+much bigger here since the python code will be embarresingly parallel (no communication between the processors)
+Since we use one netcdf file we can distribute the work independently from how cable did it.
+This avoids a lot of bookkeeping

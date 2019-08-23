@@ -1,0 +1,20 @@
+Common subdirectories: netCDF4-1.5.1.2.orig/ci and netCDF4-1.5.1.2/ci
+Common subdirectories: netCDF4-1.5.1.2.orig/docs and netCDF4-1.5.1.2/docs
+Common subdirectories: netCDF4-1.5.1.2.orig/examples and netCDF4-1.5.1.2/examples
+Common subdirectories: netCDF4-1.5.1.2.orig/include and netCDF4-1.5.1.2/include
+Common subdirectories: netCDF4-1.5.1.2.orig/man and netCDF4-1.5.1.2/man
+Common subdirectories: netCDF4-1.5.1.2.orig/netCDF4 and netCDF4-1.5.1.2/netCDF4
+Common subdirectories: netCDF4-1.5.1.2.orig/netCDF4.egg-info and netCDF4-1.5.1.2/netCDF4.egg-info
+diff -u netCDF4-1.5.1.2.orig/setup.py netCDF4-1.5.1.2/setup.py
+--- netCDF4-1.5.1.2.orig/setup.py	2019-05-07 00:21:28.000000000 +0800
++++ netCDF4-1.5.1.2/setup.py	2019-08-23 00:50:46.000000000 +0800
+@@ -91,7 +91,7 @@
+             for line in open(ncmetapath):
+                 if line.startswith('#define NC_HAS_CDF5'):
+                     has_cdf5_format = bool(int(line.split()[2]))
+-                elif line.startswith('#define NC_HAS_PARALLEL4'):
++                elif line.startswith('#define NC_HAS_PARALLEL'):
+                     has_parallel4_support = bool(int(line.split()[2]))
+                 elif line.startswith('#define NC_HAS_PNETCDF'):
+                     has_pnetcdf_support = bool(int(line.split()[2]))
+Common subdirectories: netCDF4-1.5.1.2.orig/test and netCDF4-1.5.1.2/test

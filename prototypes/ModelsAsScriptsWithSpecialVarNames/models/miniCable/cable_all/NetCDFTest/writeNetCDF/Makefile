@@ -31,7 +31,7 @@ $(PROG) :$(exe).o
 #cable_abort.o: cable_abort.F90 cable_iovars.o cable_define_types.o
 #
 test: $(PROG)
-	./$(PROG)
+	mpirun -n 4 $(PROG)
 
 clean:
-	rm -f *.o *.mod 
+	rm -f *.o *.mod $(PROG) simple_xy_par.nc
