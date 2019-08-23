@@ -524,9 +524,9 @@ SUBROUTINE snowdensity (dels, ssnow, soil)
    REAL, DIMENSION(mp) :: ssnow_tgg_min1
    REAL, DIMENSION(mp,3) :: dels_ssdn, ssnow_tgg_min
      
-   ssnow_isflag_ssdn = SPREAD( ssnow%isflag,2,mp) 
+!   ssnow_isflag_ssdn = SPREAD( ssnow%isflag,2,mp) 
    
-   dels_ssdn = SPREAD( SPREAD( dels, 1, mp ), 2,  mp ) 
+!   dels_ssdn = SPREAD( SPREAD( dels, 1, mp ), 2,  mp ) 
    ssnow_tgg_min1 = MIN( C%TFRZ, ssnow%tgg(:,1) )
    
    WHERE( ssnow%snowd > 0.1 .AND. ssnow%isflag == 0 )
