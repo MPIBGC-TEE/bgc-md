@@ -1,3 +1,4 @@
 set -e
-source $setup
+source ${stdenv}/setup
+source $mysetup
 genericBuild

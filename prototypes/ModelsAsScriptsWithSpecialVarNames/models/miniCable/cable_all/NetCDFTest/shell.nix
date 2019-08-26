@@ -27,8 +27,8 @@ with import <nixpkgs> {};
       openssh=openssh;
     };
   in stdenv.mkDerivation {
-    name ="writeNetCDF";
-    src =./writeNetCDF.tar.gz;
+    name ="test";
+    src=./writeNetCDF.tar.gz;
     buildInputs = with pkgs; [ gnumake gfortran my_netcdf_fortran netcdf-mpi openmpi gdb openssh 
     (python37.withPackages ((ps: [
         ps.mpi4py 
@@ -40,11 +40,21 @@ with import <nixpkgs> {};
     ++ [my_netcdf4_python]
     )))
     ];
-    ncf= my_netcdf_fortran;
-    ncc= netcdf-mpi;
+    #preBuild=''
+    #  makeFlagsArray+=(NAME="simple_xy_par_wr" NCDIR="${my_netcdf_fortran}/lib$ NCMOD="${my_netcdf_fortran}/include" CFLAGS="-x f95-cpp-input" LD='-lnetcdff' LDFLAGS="-L ${my_netcdf_fortran}/libs -O2" FC=mpif90)
+    #'';
+    # define some variables that will be available in the shell
+    builder="${bash}/bin/bash";
+    my_netcdf_fortran=my_netcdf_fortran;
+    stdenv =stdenv;
+    mysetup=./setup.sh;
     NAME="simple_xy_par_wr";
-    exe="simple_xy_par_wr";
-    preBuild=''
-      makeFlagsArray+=( NCDIR="$ncf/lib$" NCMOD="$ncf/include" CFLAGS="-x f95-cpp-input" LD='-lnetcdff' LDFLAGS="-L $ncf/libs -O2" FC=mpif90)
-    '';
+    FC="mpif90";
+    #CC="mpicc";
+    #NCDIR="${my_netcdf_fortran}/lib";
+    NCMOD="${my_netcdf_fortran}/include"; 
+    CFLAGS="-x f95-cpp-input -g "; 
+    #CFLAGS="-x f95-cpp-input"; 
+    myLD="-lnetcdff"; 
+    #LDFLAGS="-L ${my_netcdf_fortran}/libs -O2";
 }
