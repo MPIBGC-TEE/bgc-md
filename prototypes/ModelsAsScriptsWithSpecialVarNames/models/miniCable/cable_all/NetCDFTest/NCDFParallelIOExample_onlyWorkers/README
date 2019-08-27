@@ -1,0 +1,9 @@
+This is a slight variation of the original example from the NetCDF github repo
+Only 4 of the 5 processes do the parallel IO
+We have to create a new communicator excluding the master 
+The processes in this communicator do what the original example did on all processes.
+This one step closer to cable which also has a master process.
+
+To build run and check the example type:
+
+make test
