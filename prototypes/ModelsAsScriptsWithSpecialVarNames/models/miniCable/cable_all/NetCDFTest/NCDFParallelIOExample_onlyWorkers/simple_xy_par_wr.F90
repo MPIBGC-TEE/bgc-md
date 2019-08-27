@@ -52,16 +52,12 @@ program simple_xy_par_wr
   ! This is the data array we will write. It will just be filled with
   ! the rank of this processor.
   integer, allocatable :: data_out(:)
-  integer ( kind = 4 ), allocatable :: even_rank(:)
-  integer ( kind = 4 ) even_comm_id
-  integer ( kind = 4 ) even_group_id
-  integer ( kind = 4 ) even_id
   integer, allocatable :: worker_ranks(:) !array of the ranks of the workers. Note that the entries are w.r.t. COMM_WORLD and not
   ! with respect to the new communicator we will create 
 
   ! MPI stuff: number of processors, rank of this processor, and error
   ! code.
-  integer :: p,wnp, my_rank,my_worker_rank, ierr,world_group_id,worker_group_id,worker_comm_id,wnptest,even_p
+  integer :: p,wnp, my_rank,my_worker_rank, ierr,world_group_id,worker_group_id,worker_comm_id,wnptest
 
   ! Loop indexes, and error handling.
   integer :: x, stat,i,j
@@ -71,9 +67,6 @@ program simple_xy_par_wr
   call MPI_Comm_rank(MPI_COMM_WORLD, my_rank, ierr)
   call MPI_Comm_size(MPI_COMM_WORLD, p, ierr)
   call MPI_Comm_group ( MPI_COMM_WORLD, world_group_id, ierr )
-!
-!  List the even processes, and create their group.
-!
   wnp=p-1
   allocate ( worker_ranks(1:wnp)) 
   do i = 1, wnp ! we start with 1 since the master will be excluded 
@@ -84,7 +77,7 @@ program simple_xy_par_wr
   call MPI_Group_incl ( world_group_id, wnp,worker_ranks, worker_group_id, ierr )
   call MPI_Comm_create ( MPI_COMM_WORLD, worker_group_id, worker_comm_id, ierr ) 
   ! we only get a worker rank if we are in the group (which means that our
-  ! world rank must be greater than 0
+  ! world rank must be greater than 0 otherwise the code will stop
   if (my_rank>0) then
     call MPI_Comm_rank(worker_comm_id, my_worker_rank, ierr)
     call MPI_Comm_size(worker_comm_id, wnptest, ierr)
