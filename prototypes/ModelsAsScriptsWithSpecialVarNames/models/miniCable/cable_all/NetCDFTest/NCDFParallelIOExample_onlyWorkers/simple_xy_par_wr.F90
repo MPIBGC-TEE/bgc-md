@@ -57,36 +57,40 @@ program simple_xy_par_wr
 
   ! MPI stuff: number of processors, rank of this processor, and error
   ! code.
-  integer :: p,wnp, my_rank,my_worker_rank, ierr,world_group_id,worker_group_id,worker_comm_id,wnptest
+  integer :: p,wnp, rank_in_world,rank_in_worker_comm, ierr,world_group_id,worker_group_id,worker_comm_id,wnptest
 
   ! Loop indexes, and error handling.
   integer :: x, stat,i,j
+  logical :: i_am_a_worker
 
   ! Initialize MPI, learn local rank and total number of processors.
   call MPI_Init(ierr)
-  call MPI_Comm_rank(MPI_COMM_WORLD, my_rank, ierr)
+  call MPI_Comm_rank(MPI_COMM_WORLD, rank_in_world, ierr)
   call MPI_Comm_size(MPI_COMM_WORLD, p, ierr)
+  ! create a group of all processes in mpi_comm_world
   call MPI_Comm_group ( MPI_COMM_WORLD, world_group_id, ierr )
   wnp=p-1
   allocate ( worker_ranks(1:wnp)) 
   do i = 1, wnp ! we start with 1 since the master will be excluded 
     worker_ranks(i) = i
   end do
-  if (my_rank ==1) print *,'worker_ranks: ',worker_ranks
+  if (rank_in_world ==1) print *,'worker_ranks: ',worker_ranks
   call MPI_Comm_group ( MPI_COMM_WORLD, world_group_id, ierr ) !world group is now the group of all processes in MPI_COMM_WORLD
   call MPI_Group_incl ( world_group_id, wnp,worker_ranks, worker_group_id, ierr )
   call MPI_Comm_create ( MPI_COMM_WORLD, worker_group_id, worker_comm_id, ierr ) 
-  ! we only get a worker rank if we are in the group (which means that our
-  ! world rank must be greater than 0 otherwise the code will stop
-  if (my_rank>0) then
-    call MPI_Comm_rank(worker_comm_id, my_worker_rank, ierr)
+  i_am_a_worker=worker_comm_id /= MPI_Comm_null
+  wait(rank_in_world)
+  print *,'rank_in_world',rank_in_world,'i_am_a_worker',i_am_a_worker
+
+  if (i_am_a_worker) then
+    call MPI_Comm_rank(worker_comm_id, rank_in_worker_comm, ierr)
     call MPI_Comm_size(worker_comm_id, wnptest, ierr)
-    if (my_rank ==1)print *,'wnptest: ',wnptest
+    if (rank_in_world ==1)print *,'wnptest: ',wnptest
     ! Create some pretend data. We just need one row.
     allocate(data_out(wnp), stat = stat)
     if (stat .ne. 0) stop 3
     do x = 1, wnp
-       data_out(x) = my_worker_rank
+       data_out(x) = rank_in_worker_comm
     end do
 
     ! Create the netCDF file. The NF90_NETCDF4 flag causes a
@@ -104,8 +108,7 @@ program simple_xy_par_wr
     call check(nf90_def_dim(ncid, "y", wnp, y_dimid))
     call check(nf90_def_dim(ncid, "t", NF90_UNLIMITED, t_dimid))
 
-    ! The dimids array is used to pass the IDs of the dimensions of
-    ! the variables. Note that in fortran arrays are stored in
+    ! Note that in fortran arrays are stored in
     ! column-major format.
     dimids = (/ y_dimid, x_dimid, t_dimid /)
 
@@ -122,7 +125,7 @@ program simple_xy_par_wr
     call check(nf90_enddef(ncid))
 
     ! Write the pretend data to the file. Each processor writes one row.
-    start = (/ 1, my_worker_rank + 1, 1/)
+    start = (/ 1, rank_in_worker_comm + 1, 1/)
     count = (/ wnp, 1, 1 /)
 
     ! Unlimited dimensions require collective writes
@@ -143,7 +146,7 @@ program simple_xy_par_wr
   ! MPI library must be shut down.
   call MPI_Finalize(ierr)
 
-  if (my_rank .eq. 0) print *, "*** SUCCESS writing example file ", FILE_NAME, "! "
+  if (rank_in_world .eq. 0) print *, "*** SUCCESS writing example file ", FILE_NAME, "! "
 
 contains
   subroutine check(status)

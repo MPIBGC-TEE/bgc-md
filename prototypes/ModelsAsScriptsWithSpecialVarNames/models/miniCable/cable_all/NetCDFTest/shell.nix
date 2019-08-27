@@ -28,7 +28,7 @@ with import <nixpkgs> {};
     };
   in stdenv.mkDerivation {
     name ="test";
-    src=./writeNetCDF.tar.gz;
+    #src=./writeNetCDF.tar.gz;
     buildInputs = with pkgs; [ gnumake gfortran my_netcdf_fortran netcdf-mpi openmpi gdb openssh 
     (python37.withPackages ((ps: [
         ps.mpi4py 
@@ -47,7 +47,6 @@ with import <nixpkgs> {};
     builder="${bash}/bin/bash";
     my_netcdf_fortran=my_netcdf_fortran;
     stdenv =stdenv;
-    mysetup=./setup.sh;
     NAME="simple_xy_par_wr";
     FC="mpif90";
     #CC="mpicc";
