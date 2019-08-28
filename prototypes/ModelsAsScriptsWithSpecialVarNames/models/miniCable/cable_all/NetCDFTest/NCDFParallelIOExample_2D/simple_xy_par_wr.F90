@@ -76,7 +76,6 @@ program simple_xy_par_wr
   rest=mod(mland,p)
   lpw=mland/p
 
-  offsets(0)=0
   do i=0,p-1
     if (rest>0) then 
       lpws(i)=lpw+1
@@ -85,6 +84,7 @@ program simple_xy_par_wr
       lpws(i)=lpw
     endif
   enddo
+  offsets(0)=0
   do i=1,p-1
     offsets(i)=sum(lpws(0:(i-1)))
   enddo
@@ -127,7 +127,8 @@ program simple_xy_par_wr
 
   ! define the chunk size (1 along unlimited time dimension)
   !chunk_size = (/ p, 1, 1 /)
-  chunk_size = (/ lpws(my_rank),1 /)
+  chunk_size = (/ mland,1 /) !this is the default it should NOT set to something depending on the loadbalancing which 
+  ! will lead to unpredictable mixups 
 
   ! Define the variable. The type of the variable in this case is
   ! NF90_INT (4-byte integer).

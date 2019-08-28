@@ -25,15 +25,13 @@ program simple_xy_par_wr
   ! When we create netCDF files, variables and dimensions, we get back
   ! an ID for each one.
   integer :: ncid_par,ncid_ser, varid_data, varid_temperature&
-            ,dimids_data(NDIMS_data)&
             ,dimids_temperature(NDIMS_temperature)&
-            ,x_dimid_data, y_dimid_data, temp_dimid_data &
             ,lp_dimid_temp, time_dimid_temp&
             ,my_lp_index_offset ,my_lp_number&
             ,my_patch_ind_offset ,my_patch_number
             
   ! add chunk size for unlimited variables
-  integer :: chunk_size_data(NDIMS_data),chunk_size_temperature(NDIMS_temperature)
+  integer :: chunk_size_temperature(NDIMS_temperature)
 
   ! These will tell where in the data file this processor should write.
   integer :: start_data(NDIMS_data), count_data(NDIMS_data)
@@ -99,20 +97,12 @@ program simple_xy_par_wr
     ! only workers can get their rank and the size of their communicator
     call MPI_Comm_rank(worker_comm_id, rank_in_worker_comm, ierr)
     call MPI_Comm_size(worker_comm_id, wnptest, ierr)
-    !if (rank_in_world ==1)print *,'wnptest: ',wnptest
+    
     ! get cable like information about which worker owns which landpoints and
     ! patches
     call get_offsets_and_sizes(my_lp_index_offset ,my_lp_number&
       ,my_patch_ind_offset ,my_patch_number ,mland,rank_in_worker_comm,wnp)
     
-    ! Create some pretend data. We just need one row.
-    allocate(data_out(wnp), stat = ierr)
-    if (ierr .ne. 0) stop 3
-    do i = 1, wnp
-       data_out(i) = rank_in_worker_comm
-    end do
-    allocate(temperature_out(my_lp_number), stat = ierr)
-    if (ierr .ne. 0) stop 3
     ! HDF5/netCDF-4 file to be created. The comm and info parameters
     ! cause parallel I/O to be enabled. Use either NF90_MPIIO or
     ! NF90_MPIPOSIX to select between MPI/IO and MPI/POSIX.
@@ -121,33 +111,19 @@ program simple_xy_par_wr
 
     ! Define the dimensions. NetCDF will hand back an ID for
     ! each. Metadata operations must take place on all processors.
-    call check(nf90_def_dim(ncid_par, "x_data", wnp, x_dimid_data))
-    call check(nf90_def_dim(ncid_par, "y_data", wnp, y_dimid_data))
-    call check(nf90_def_dim(ncid_par, "time_data", NF90_UNLIMITED, temp_dimid_data)) 
     call check(nf90_def_dim(ncid_par, "lp_temperature", mland, lp_dimid_temp))
     call check(nf90_def_dim(ncid_par, "time_temperature", NF90_UNLIMITED, time_dimid_temp)) 
 
     ! Note that in fortran arrays are stored in
     ! column-major format.
-    !dimids_data = (/ y_dimid_data ,x_dimid_data ,temp_dimid_data /)
     dimids_temperature= (/ lp_dimid_temp,time_dimid_temp/)
 
     ! define the chunk size (1 ayg unlimited time dimension)
-    !chunk_size_data = (/ wnp, 1, 1/)
-    chunk_size_temperature= (/ my_lp_number-1, 1/)
+    ! chunk_size_temperature= (/ my_lp_number, 1/) !This seems to be difficult since here
+    ! the chunksize depends on the rank which leads to value displacement 
+    !chunk_size_temperature= (/ 1, 1/) !This seems to be a safe bet if this is really a global variable
+    chunk_size_temperature= (/ mland, 1/) !This seems to be a safe bet too and is the default setting
 
-    ! Define the variable. The type of the variable in this case is
-    ! NF90_INT (4-byte integer).
-    !call check(&
-    !  nf90_def_var(&
-    !    ncid_par&
-    !    ,"data"&
-    !    ,NF90_INT&
-    !    ,dimids_data&
-    !    ,varid_data&
-    !    ,chunksizes=chunk_size_data&
-    !  )&
-    !)
     call check(&
       nf90_def_var(&
         ncid_par&
@@ -155,7 +131,7 @@ program simple_xy_par_wr
         ,NF90_DOUBLE&
         ,dimids_temperature&
         ,varid_temperature&
-        !,chunksizes=chunk_size_temperature&
+        ,chunksizes=chunk_size_temperature& 
       )&
     )
 
@@ -163,33 +139,35 @@ program simple_xy_par_wr
     ! metadata. This operation is collective and all processors will
     ! write their metadata to disk.
     call check(nf90_enddef(ncid_par))
-
-
-
-  ! Write the pretend data to the file. Each processor writes one row.
-    !start_data = (/ 1, rank_in_worker_comm+1, 1/) 
-    !count_data = (/ wnp, 1 , 1/)
-
+    
     ! Unlimited dimensions require collective writes
     !call check(nf90_var_par_access(ncid_par, varid_data, nf90_collective))
     call check(nf90_var_par_access(ncid_par, varid_temperature, nf90_collective))
 
-    !call check(&
-    !  nf90_put_var(&
-    !    ncid_par&
-    !    ,varid_data&
-    !    ,data_out& 
-    !    ,start = start_data&
-    !    ,count = count_data&
-    !  )&
     !)
-    do i=1,5
+    allocate(temperature_out(1:my_lp_number), stat = ierr)
+    if (ierr .ne. 0) stop 3
+    count_temperature=(/ my_lp_number,1 /)
+    do i=1,2
+    ! Create some pretend data. We just need one row.
       start_temperature=(/ my_lp_index_offset+1,i /)
-      count_temperature=(/ my_lp_number,1 /)
-      do j = 1, my_lp_number
-         temperature_out(j) = i*real(j+my_lp_index_offset)
+      do k = 1, my_lp_number
+        temperature_out(k) = i*(k+my_lp_index_offset)
         !temperature_out(j) = real(rank_in_worker_comm)
       end do
+      call sleep(rank_in_worker_comm)
+      print*,'#################################'
+      print*,'rank_in_worker_comm',rank_in_worker_comm
+      print*,'my_lp_index_offset',my_lp_index_offset
+      print*,'my_lp_number',my_lp_number
+      print*,'count_temperature=',count_temperature
+      print*,'chunk_size_temperature=',chunk_size_temperature
+      print*,'start_temperature=',start_temperature
+      !print*,'my_patch_ind_offset',my_patch_ind_offset
+      !print*,'my_patch_number',my_patch_number
+      print*,'mland',mland
+      print*,'temperature_out',temperature_out
+      ! Write the pretend data to the file. Each processor writes one row.
       call check(&
         nf90_put_var(&
           ncid_par&
@@ -205,7 +183,6 @@ program simple_xy_par_wr
     call check( nf90_close(ncid_par) )
 
     ! Free my local memory.
-    deallocate(data_out)
     deallocate(temperature_out)
   endif
 
@@ -260,53 +237,51 @@ contains
     mp=sum(ps_per_lp)
     
     rest=mod(mland,wnp)
-    if (rest>0) then ! we have work left
-      lpw=mland/wnp+1
-    else
-      lpw=mland/wnp
-    endif
-    
-    ! this routine is called by every worker but it always has to consider
-    ! what would be assinged to the other workers with lesser index since
-    ! the offsets are cumulative
-    lps(wnp-1)=mland-(wnp-1)*lpw 
-    lps(0)=lpw
-    lp_index_offsets(0)=0
-    ps_index_offsets(0)=0
-    do wk=0,(wnp-2)
-      lps(wk)=lpw
-      lp_index_offsets(wk+1)=sum(lps(0:wk))
-      ps_per_process(wk)=sum(&
-        ps_per_lp(&
-          (lp_index_offsets(wk)+1):(lp_index_offsets(wk)+lps(wk))&
-        )&
-      )
-      ps_index_offsets(wk+1)=sum(ps_per_process(0:wk))
-    end do
-    ps_per_process(wnp-1)= sum(&
-        ps_per_lp(&
-          (lp_index_offsets(wnp-1)+1):(lp_index_offsets(wnp-1)+lps(wnp-1))&
-        )&
-      )
+    lpw=mland/wnp
     if (rank_in_worker_comm .eq. 0) then
       print *,"wnp: ", wnp
       print *,"rest: ", rest
       print *,"lpw: ", lpw
       print *,"ps_per_lp: ", ps_per_lp
+    endif 
+    ! this routine is called by every worker but it always has to consider
+    ! what would be assinged to the other workers with lesser index since
+    ! the offsets are cumulative
+    ! first compute the landpoint load balancing
+    do wk=0,(wnp-1)
+      if (rest==0) then
+        lps(wk)=lpw
+      else
+        lps(wk)=lpw+1
+        rest=rest-1
+      endif
+    end do
+    lp_index_offsets(0)=0
+    do i=1,wnp-1
+      lp_index_offsets(i)=sum(lps(0:(i-1)))
+    enddo
+    ! now we do the same for the patches
+    do wk=0,(wnp-1)
+      ps_per_process(wk)=sum(&
+        ps_per_lp(&
+          (lp_index_offsets(wk)+1):(lp_index_offsets(wk)+lps(wk))&
+        )&
+      )
+    enddo
+    ps_index_offsets(0)=0
+    do wk=1,wnp-1
+      ps_index_offsets(wk)=sum(ps_per_process(0:wk-1))
+    enddo
+    
+    if (rank_in_worker_comm .eq. 0) then
       do wk=0,(wnp-1)
-        print *,'###########################'
-        print *,'wk',wk
-        print *,'lps(wk)',lps(wk)
-        print *,'lp_index_offsets(wk)',lp_index_offsets(wk)
-        print *,'part',&
-          ps_per_lp((lp_index_offsets(wk)+1):(lp_index_offsets(wk)+lps(wk)))
-        print *,'sum(part)',&
-          sum(ps_per_lp((lp_index_offsets(wk)+1):(lp_index_offsets(wk)+lps(wk))))
-        print *,'lps(wk)',lps(wk)
-        print *,'lp_index_offsets(wk)+lps',lp_index_offsets(wk)+lps(wk)
-        print *,'ps_per_process(wk)',ps_per_process(wk)
-        print *,'ps_index_offsets(wk)',ps_index_offsets(wk)
-       end do
+        print *, '##################################'
+        print *, 'wk',wk
+        print *, 'lps(wk)',lps(wk)
+        print *, 'lp_index_offsets(wk)',lp_index_offsets(wk)
+        print *, 'ps_per_process(wk)',ps_per_process(wk)
+        print *, 'ps_index_offsets(wk)',ps_index_offsets(wk)
+      end do
       endif
       my_lp_index_offset=lp_index_offsets(rank_in_worker_comm)
       my_lp_number=lps(rank_in_worker_comm)
