@@ -36,13 +36,14 @@ program simple_xy_par_wr
 
   ! We are writing 2D data.
   !integer, parameter :: NDIMS = 3
-  ! We are writing  data as a vector.
-  integer, parameter :: NDIMS = 1
+  ! We are writing  time series data along 1 spacial axis
+  integer, parameter :: NDIMS = 2
 
   ! When we create netCDF files, variables and dimensions, we get back
   ! an ID for each one.
   integer :: ncid, varid, dimids(NDIMS)
-  integer :: x_dimid, y_dimid, t_dimid
+  !integer :: x_dimid, y_dimid, t_dimid
+  integer :: x_dimid,  t_dimid
 
   ! add chunk size for unlimited variables
   integer :: chunk_size(NDIMS)
@@ -53,26 +54,57 @@ program simple_xy_par_wr
   
   ! This is the data array we will write. It will just be filled with
   ! the rank of this processor.
-  integer, allocatable :: data_out(:)
+  integer, allocatable :: data_out(:),lpws(:),offsets(:)
 
   ! MPI stuff: number of processors, rank of this processor, and error
   ! code.
   integer :: p, my_rank, ierr
 
-  ! Loop indexes, and error handling.
-  integer :: x, stat
+  ! Loop indexes,and error handling loadbalancing
+  integer :: i, stat, mland,lpw,rest
 
   ! Initialize MPI, learn local rank and total number of processors.
   call MPI_Init(ierr)
   call MPI_Comm_rank(MPI_COMM_WORLD, my_rank, ierr)
   call MPI_Comm_size(MPI_COMM_WORLD, p, ierr)
 
-  ! Create some pretend data. We just need one row.
-  allocate(data_out(p), stat = stat)
+  ! create some loadbalancing which will determine the size 
+  ! of the subarray every processor will contribute to a written variable
+  mland=12
+  allocate(lpws(0:(p-2)))
+  allocate(offsets(0:(p-2)))
+  rest=mod(mland,p)
+  lpw=mland/p
+
+  offsets(0)=0
+  do i=0,p-1
+    if (rest>0) then 
+      lpws(i)=lpw+1
+      rest=rest-1
+    else
+      lpws(i)=lpw
+    endif
+  enddo
+  do i=1,p-1
+    offsets(i)=sum(lpws(0:(i-1)))
+  enddo
+
+   
+  ! Create some pretend data. We will allocate depending on the loadbalancing
+  allocate(data_out(lpws(my_rank)), stat = stat)
   if (stat .ne. 0) stop 3
-  do x = 1, p
-     data_out(x) = my_rank
+  do i = 1, lpws(my_rank)
+     data_out(i) = my_rank
   end do
+  if (my_rank==0) then
+    print *,"lpws",lpws
+    print *,"offsets",offsets
+  endif
+  call sleep(my_rank)
+  print *,'####################################################################################################'
+  print *,'rank',my_rank
+  print *,"lpws(my_rank)",lpws(my_rank)
+  print *,"data_out",data_out
 
   ! Create the netCDF file. The NF90_NETCDF4 flag causes a
   ! HDF5/netCDF-4 file to be created. The comm and info parameters
@@ -83,7 +115,7 @@ program simple_xy_par_wr
 
   ! Define the dimensions. NetCDF will hand back an ID for
   ! each. Metadata operations must take place on all processors.
-  !call check(nf90_def_dim(ncid, "x", p, x_dimid))
+  call check(nf90_def_dim(ncid, "x", mland, x_dimid))
   !call check(nf90_def_dim(ncid, "y", p, y_dimid))
   call check(nf90_def_dim(ncid, "t", NF90_UNLIMITED, t_dimid))
 
@@ -91,11 +123,11 @@ program simple_xy_par_wr
   ! the variables. Note that in fortran arrays are stored in
   ! column-major format.
   !dimids = (/ y_dimid, x_dimid, t_dimid /)
-  dimids = (/  t_dimid /)
+  dimids = (/ x_dimid, t_dimid /)
 
   ! define the chunk size (1 along unlimited time dimension)
   !chunk_size = (/ p, 1, 1 /)
-  chunk_size = (/ p /)
+  chunk_size = (/ lpws(my_rank),1 /)
 
   ! Define the variable. The type of the variable in this case is
   ! NF90_INT (4-byte integer).
@@ -106,11 +138,12 @@ program simple_xy_par_wr
   ! write their metadata to disk.
   call check(nf90_enddef(ncid))
 
-  ! Write the pretend data to the file. Each processor writes one row.
+  ! Write the pretend data to the file. Each processor writes one piece of the array
+  ! the size depending on its loadbalancing chunk.
   !start = (/ 1, my_rank + 1, 1/)
   !count = (/ p, 1, 1 /)
-  start = (/(my_rank*p) + 1/)
-  count = (/p/)
+  start = (/offsets(my_rank)+1,1 /)
+  count = (/lpws(my_rank),1/)
 
   ! Unlimited dimensions require collective writes
   call check(nf90_var_par_access(ncid, varid, nf90_collective))

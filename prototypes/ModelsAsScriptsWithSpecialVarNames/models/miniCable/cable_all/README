@@ -3,3 +3,7 @@ This directory contains two NIX packages that are both needed to produce the des
 execuatables 'cable' and 'cable-mpi'
 
 - cable_runs contains the auxilary files and cable input files to provide the necessary runtime parameters.
+
+rename_fort.bash (rename the output of the jena single point version)
+
+
