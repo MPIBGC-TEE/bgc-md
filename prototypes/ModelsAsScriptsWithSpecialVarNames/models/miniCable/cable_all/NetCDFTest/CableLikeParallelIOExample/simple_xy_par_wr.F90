@@ -18,36 +18,38 @@ program simple_xy_par_wr
   ! We assume the points to be threaded on a single string
   ! We are writing a temperature timeline 1D
   ! for every point. So the dimension for the temperature data is 2
-  integer,      parameter :: NDIMS_data = 3 ,NDIMS_temperature= 2 ,t_dim=48
+  integer,      parameter :: NDIMS_NPP= 2 ,NDIMS_temperature= 2 
 
-  integer                 ::i, j,k,l,mland
+  integer                 ::t,i, j,k,l,mland,mp
 
   ! When we create netCDF files, variables and dimensions, we get back
   ! an ID for each one.
-  integer :: ncid_par,ncid_ser, varid_data, varid_temperature&
+  integer :: ncid_par,ncid_ser, varid_NPP, varid_temperature&
             ,dimids_temperature(NDIMS_temperature)&
-            ,lp_dimid_temp, time_dimid_temp&
+            ,dimids_NPP(NDIMS_NPP)&
+            ,landpoint_dimid, patch_dimid,time_dimid&
             ,my_lp_index_offset ,my_lp_number&
-            ,my_patch_ind_offset ,my_patch_number
+            ,my_patch_ind_offset ,my_patch_number&
+            ,patch_dimid_NPP, time_dimid_NPP
             
   ! add chunk size for unlimited variables
   integer :: chunk_size_temperature(NDIMS_temperature)
+  integer :: chunk_size_NPP(NDIMS_NPP)
 
   ! These will tell where in the data file this processor should write.
-  integer :: start_data(NDIMS_data), count_data(NDIMS_data)
-  integer :: start_temperature(NDIMS_temperature), count_temperature(NDIMS_temperature)
+  integer :: start_NPP(NDIMS_NPP)                 , count_NPP(NDIMS_NPP)
+  integer :: start_temperature(NDIMS_temperature) , count_temperature(NDIMS_temperature)
   
   ! This is the data array we will write. It will just be filled with
   ! the rank_in_world of this processor.
   integer, allocatable :: data_out(:)
-  integer, allocatable :: temperature_out(:)
+  real(kind=8), allocatable :: temperature_out(:) ,NPP_out(:)
   integer, allocatable :: worker_ranks(:) !array of the ranks of the workers. Note that the entries are w.r.t. COMM_WORLD and not
   real, allocatable :: temp_out(:,:)
   
   real(kind=8), parameter                       :: min_x=0,max_x=1,span_x=max_x-min_x
   real(kind=8)                                  :: d_t,d_x ,my_offset ,patch_extend
 
-  real(kind=8)             , dimension(t_dim)   :: time
   real(kind=8), allocatable, dimension(:)       :: my_xs
   real(kind=8), allocatable, dimension(:,:)     :: my_temperatures
   logical :: i_am_a_worker,i_am_master
@@ -95,13 +97,22 @@ program simple_xy_par_wr
 
   if (i_am_a_worker) then
     ! only workers can get their rank and the size of their communicator
-    call MPI_Comm_rank(worker_comm_id, rank_in_worker_comm, ierr)
-    call MPI_Comm_size(worker_comm_id, wnptest, ierr)
+    !call MPI_Comm_rank(worker_comm_id, rank_in_worker_comm, ierr)
+    !call MPI_Comm_size(worker_comm_id, wnptest, ierr)
     
     ! get cable like information about which worker owns which landpoints and
     ! patches
-    call get_offsets_and_sizes(my_lp_index_offset ,my_lp_number&
-      ,my_patch_ind_offset ,my_patch_number ,mland,rank_in_worker_comm,wnp)
+    call get_offsets_and_sizes(&
+      my_lp_index_offset&
+      ,my_lp_number&
+      ,my_patch_ind_offset&
+      ,my_patch_number&
+      ,mland&
+      ,mp&
+      ,rank_in_worker_comm&
+      ,wnp&
+      ,worker_comm_id&
+    )
     
     ! HDF5/netCDF-4 file to be created. The comm and info parameters
     ! cause parallel I/O to be enabled. Use either NF90_MPIIO or
@@ -111,18 +122,22 @@ program simple_xy_par_wr
 
     ! Define the dimensions. NetCDF will hand back an ID for
     ! each. Metadata operations must take place on all processors.
-    call check(nf90_def_dim(ncid_par, "lp_temperature", mland, lp_dimid_temp))
-    call check(nf90_def_dim(ncid_par, "time_temperature", NF90_UNLIMITED, time_dimid_temp)) 
+    call check(nf90_def_dim(ncid_par, "lp_temperature", mland, landpoint_dimid))
+    call check(nf90_def_dim(ncid_par, "time_temperature", NF90_UNLIMITED, time_dimid)) 
+
+    call check(nf90_def_dim(ncid_par, "patch_NPP", mp, patch_dimid))
 
     ! Note that in fortran arrays are stored in
     ! column-major format.
-    dimids_temperature= (/ lp_dimid_temp,time_dimid_temp/)
+    dimids_temperature= (/ landpoint_dimid,time_dimid/)
+    dimids_NPP= (/ patch_dimid,time_dimid/)
 
     ! define the chunk size (1 ayg unlimited time dimension)
     ! chunk_size_temperature= (/ my_lp_number, 1/) !This seems to be difficult since here
     ! the chunksize depends on the rank which leads to value displacement 
     !chunk_size_temperature= (/ 1, 1/) !This seems to be a safe bet if this is really a global variable
     chunk_size_temperature= (/ mland, 1/) !This seems to be a safe bet too and is the default setting
+    chunk_size_NPP= (/ mp, 1/) !This seems to be a safe bet too and is the default setting
 
     call check(&
       nf90_def_var(&
@@ -134,6 +149,16 @@ program simple_xy_par_wr
         ,chunksizes=chunk_size_temperature& 
       )&
     )
+    call check(&
+      nf90_def_var(&
+        ncid_par&
+        ,"NPP"&
+        ,NF90_DOUBLE&
+        ,dimids_NPP&
+        ,varid_NPP&
+        ,chunksizes=chunk_size_NPP& 
+      )&
+    )
 
     ! End define mode. This tells netCDF we are done defining
     ! metadata. This operation is collective and all processors will
@@ -141,42 +166,47 @@ program simple_xy_par_wr
     call check(nf90_enddef(ncid_par))
     
     ! Unlimited dimensions require collective writes
-    !call check(nf90_var_par_access(ncid_par, varid_data, nf90_collective))
     call check(nf90_var_par_access(ncid_par, varid_temperature, nf90_collective))
+    call check(nf90_var_par_access(ncid_par, varid_NPP, nf90_collective))
 
     !)
     allocate(temperature_out(1:my_lp_number), stat = ierr)
     if (ierr .ne. 0) stop 3
-    count_temperature=(/ my_lp_number,1 /)
-    do i=1,2
-    ! Create some pretend data. We just need one row.
-      start_temperature=(/ my_lp_index_offset+1,i /)
+    allocate(NPP_out(1:my_patch_number), stat = ierr)
+    if (ierr .ne. 0) stop 3
+    !count_temperature=(/ my_lp_number,1 /)
+    !count_NPP=(/ my_patch_number,1 /)
+    ! we now simulate a computation with timesteps
+    ! this is the main loop
+    do t=1,2
+      ! in cable we would call some subroutines in the main loop
+      ! Create some pretend data. We just need one row.
+      ! we can either write the data here in the main loop
+      ! or directly in the subroutines in which case we have to
+      ! hand them the file id. 
+      ! here we pretend that we can do the io in this main loop
+      !start_temperature=(/ my_lp_index_offset+1,t /)
       do k = 1, my_lp_number
-        temperature_out(k) = i*(k+my_lp_index_offset)
-        !temperature_out(j) = real(rank_in_worker_comm)
+        temperature_out(k) = t*(k+my_lp_index_offset)
       end do
-      call sleep(rank_in_worker_comm)
-      print*,'#################################'
-      print*,'rank_in_worker_comm',rank_in_worker_comm
-      print*,'my_lp_index_offset',my_lp_index_offset
-      print*,'my_lp_number',my_lp_number
-      print*,'count_temperature=',count_temperature
-      print*,'chunk_size_temperature=',chunk_size_temperature
-      print*,'start_temperature=',start_temperature
-      !print*,'my_patch_ind_offset',my_patch_ind_offset
-      !print*,'my_patch_number',my_patch_number
-      print*,'mland',mland
-      print*,'temperature_out',temperature_out
+      
       ! Write the pretend data to the file. Each processor writes one row.
-      call check(&
-        nf90_put_var(&
-          ncid_par&
-          ,varid_temperature&
-          ,temperature_out& 
-          ,start = start_temperature&
-          ,count = count_temperature&
-        )&
-      )
+      call write_landpoint_var_netcdf(temperature_out,ncid_par,varid_temperature,t,worker_comm_id)
+      
+      !start_temperature=(/ my_lp_index_offset+1,t /)
+      do k = 1, my_patch_number
+        NPP_out(k) = t*(k+my_patch_ind_offset)
+      end do
+      !call check(&
+      !  nf90_put_var(&
+      !    ncid_par&
+      !    ,varid_NPP&
+      !    ,NPP_out& 
+      !    ,start = (/ my_lp_index_offset+1,t /)&
+      !    ,count = (/ my_patch_number,1 /)&
+      !  )&
+      !)
+      call write_patch_var_netcdf(NPP_out,ncid_par,varid_NPP,t,worker_comm_id)
     enddo
     ! Close the file. This frees up any internal netCDF resources
     ! associated with the file, and flushes any buffers.
@@ -184,6 +214,7 @@ program simple_xy_par_wr
 
     ! Free my local memory.
     deallocate(temperature_out)
+    deallocate(NPP_out)
   endif
 
   ! MPI library must be shut down.
@@ -203,9 +234,66 @@ contains
       stop 2
     end if
   end subroutine check  
+  
+  subroutine write_landpoint_var_netcdf(lpvar,file_id,varid,t,worker_comm_id)
+    integer,intent(in)            ::file_id,varid,t,worker_comm_id
+    real(kind=8),intent(in),dimension(:) ::lpvar
+    integer                       ::my_lp_index_offset ,my_lp_number,mland,mp,rank_in_worker_comm,wnp
+    ! get cable like information about which worker owns which landpoints and
+    ! patches This is not necessary in CABLE since the workers are told about this by the master
+    call get_offsets_and_sizes(my_lp_index_offset ,my_lp_number&
+      ,my_patch_ind_offset ,my_patch_number ,mland,mp,rank_in_worker_comm,wnp,worker_comm_id)
+    call check(&
+        nf90_put_var(&
+          file_id&
+          ,varid&
+          ,lpvar& 
+          ,start=(/ my_lp_index_offset+1,t /)&
+          ,count = (/ my_lp_number,1 /)&
+        )&
+    )
+  end subroutine 
 
-  subroutine get_offsets_and_sizes(my_lp_index_offset ,my_lp_number&
-      ,my_patch_ind_offset ,my_patch_number,mland,rank_in_worker_comm ,wnp)
+  subroutine write_patch_var_netcdf(patch_var,file_id,varid,t,worker_comm_id)
+    integer,intent(in)            ::file_id,varid,t,worker_comm_id
+    real(kind=8),intent(in),dimension(:) ::patch_var
+    integer                       ::my_lp_index_offset ,my_lp_number,mland,mp,rank_in_worker_comm,wnp
+    ! get cable like information about which worker owns which landpoints and
+    ! patches This is not necessary in CABLE since the workers are told about this by the master
+    call get_offsets_and_sizes(my_lp_index_offset ,my_lp_number&
+      ,my_patch_ind_offset ,my_patch_number ,mland,mp,rank_in_worker_comm,wnp,worker_comm_id)
+    call sleep(rank_in_worker_comm)
+    print*,'#################################'
+    print*,'rank_in_worker_comm',rank_in_worker_comm
+    print*,'count_temperature=',count_temperature
+    print*,'chunk_size_temperature=',chunk_size_temperature
+    print*,'my_patch_ind_offset',my_patch_ind_offset
+    print*,'my_patch_number',my_patch_number
+    print*,'mland',mland
+    print*,'mp',mp
+    print*,'patch_var',patch_var
+    call check(&
+        nf90_put_var(&
+          file_id&
+          ,varid&
+          ,patch_var& 
+          ,start=(/ my_patch_ind_offset+1,t /)&
+          ,count = (/ my_patch_number,1 /)&
+        )&
+    )
+  end subroutine 
+
+  subroutine get_offsets_and_sizes(&
+    my_lp_index_offset&
+    ,my_lp_number&
+    ,my_patch_ind_offset&
+    ,my_patch_number&
+    ,mland&
+    ,mp&
+    ,rank_in_worker_comm&
+    ,wnp&
+    ,worker_comm_id&
+  )
     ! this is a pretend subroutine that mimics the behaviour in cable
     ! where the number of patches/per landpoint is input from a file
     ! which is eveluated by the master process and send to the workers
@@ -220,15 +308,19 @@ contains
     ! rank_in_worker_comm of the worker as returned by MPI_COMM_RANK at runtime 
     ! possibly reduced by one if rank 0 is the master.
     use mpi
-    INTEGER,intent(out):: mland
+    INTEGER,intent(out):: mland,mp
     integer,intent(out):: my_lp_index_offset ,my_lp_number,my_patch_ind_offset ,my_patch_number 
-    integer,intent(in):: rank_in_worker_comm,wnp 
-    integer mp,rest,lpw,wk
+    integer,intent(out):: rank_in_worker_comm,wnp 
+    integer,intent(in) :: worker_comm_id
+    integer rest,lpw,wk,ierr
     integer,parameter,dimension(10)  :: ps_per_lp= (/ 1,1,1,3,2,1,1,3,4,1/)
     integer,allocatable,dimension(:)::lps&
                                       ,lp_index_offsets&
                                       ,ps_per_process&
                                       ,ps_index_offsets
+    ! only workers can get their rank and the size of their communicator
+    call MPI_Comm_rank(worker_comm_id, rank_in_worker_comm, ierr)
+    call MPI_Comm_size(worker_comm_id, wnp, ierr)
     allocate(lps(0:wnp-1))
     allocate(lp_index_offsets(0:wnp-1))
     allocate(ps_per_process(0:wnp-1))
