@@ -23,22 +23,22 @@ function unpackPhase(){
 }
 function prepareBuild(){
   #export CFLAGS='-g -O0 -x f95-cpp-input -Wall'
-  #export CFLAGS='-g -O0 -x f95-cpp-input'
-  export CFLAGS='-x f95-cpp-input'
+  export CFLAGS='-g -O0 -x f95-cpp-input'
+  #export CFLAGS='-x f95-cpp-input'
   export LD='-lnetcdff'
   export LDFLAGS="-L ${NCDIR} -O2"
 	echo $ctn
 	cd "${ctn}/offline"
 	rm -rf ".tmp"
-  mkdir .tmp
+  mkdir -p ${tmpDir}
   # directories contain source code
   CORE="../core/biogeophys"
   DRV="."
   CASA="../core/biogeochem"
   
-  cp -p $CORE/*90 ./.tmp
-  cp -p $DRV/*90 ./.tmp
-  cp -p $CASA/*90 ./.tmp
+  cp -p $CORE/*90 ${tmpDir}
+  cp -p $DRV/*90 ${tmpDir}
+  cp -p $CASA/*90 ${tmpDir}
 }
 function buildSerial(){
 	echo "########################\n \
@@ -46,18 +46,19 @@ function buildSerial(){
     #################################\n\n"
   prepareBuild
   export FC=gfortran
-  cp -p Makefile_offline  ./.tmp
-  cd .tmp/
+  cp -p Makefile_offline  ${tmpDir}
+  cd ${tmpDir}
   make -f Makefile_offline
 }
 function buildParallel(){
 	echo "########################\n \
   build parallel executable \n \
   #################################\n\n"
+  tmpDir="./tmpParallel"
   prepareBuild
   export FC=mpif90
-  cp -p Makefile_mpi ./.tmp
-  cd .tmp/
+  cp -p Makefile_mpi ${tmpDir}
+  cd ${tmpDir}
   make -f Makefile_mpi
 }
 
@@ -65,6 +66,7 @@ function installSerial(){
 	echo "########################\n \
     install serial executable \n \
     #################################\n\n"
+  tmpDir="./tmp"
   echo $out
   td=${out}/bin
   mkdir -p ${td}
