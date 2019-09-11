@@ -27,7 +27,8 @@ echo copy restart file
 cp -p  ../../CABLE-run-test-lqy/spinup/restart_in.nc ./restart_in.nc
 
 
-
+#prepare directory
+mkdir -p output/new4
 
 
 while [ $i -le 5 ]
