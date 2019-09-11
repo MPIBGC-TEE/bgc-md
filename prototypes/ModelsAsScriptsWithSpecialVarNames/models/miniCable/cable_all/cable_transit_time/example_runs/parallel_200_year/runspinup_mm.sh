@@ -37,7 +37,7 @@ yr=1901
   do
     #mm the files are now produced here
     #cp -p /home/599/czl599/nml/cable_C_spinup_${yr}.nml cable.nml
-    cp -p cable_CN_spiupdump_${yr}.nml cable.nml #for the paper only CN
+    cp -p cable_CN_spindump_${yr}.nml cable.nml #for the paper only CN
     # mm: I cant find this file:
     # assuming My\ Passport/cable_chris_transit_time/
     mpirun -np 9 --oversubscribe ../../CABLE-SRC/offline/tmpParallel/cable-mpi
