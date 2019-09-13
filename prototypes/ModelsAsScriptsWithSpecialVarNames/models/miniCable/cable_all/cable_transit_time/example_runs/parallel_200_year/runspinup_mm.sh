@@ -28,7 +28,8 @@ cp -p  ../../CABLE-run-test-lqy/spinup/restart_in.nc ./restart_in.nc
 
 
 #prepare directory
-mkdir -p output/new4
+odir="output/new4"
+mkdir -p ${odir}
 
 
 while [ $i -le 5 ]
@@ -42,42 +43,42 @@ yr=1901
     # mm: I cant find this file:
     # assuming My\ Passport/cable_chris_transit_time/
     mpirun -np 9 --oversubscribe ../../CABLE-SRC/offline/tmpParallel/cable-mpi
-    mv out_cable.nc      output/new4/out_ncar_${i}_${yr}_ndep.nc
-    mv log_cable.txt     output/new4/log_ncar_${yr}_ndep.txt
+    mv out_cable.nc      ${odir}/out_ncar_${i}_${yr}_ndep.nc
+    mv log_cable.txt     ${odir}/log_ncar_${yr}_ndep.txt
     cp -p restart_out.nc restart_in.nc
     cp -p poolcnp_out.csv poolcnp_in.csv
-    mv cnpflux${yr}.csv  output/new4/cnpfluxndep_${yr}_ndep.csv
-    mv restart_out.nc    output/new4/restart_ncar_${i}_${yr}_ndep.nc
-    mv poolcnp_out.csv   output/new4/poolcnp_out_${i}_${yr}_ndep.csv
+    mv cnpflux${yr}.csv  ${odir}/cnpfluxndep_${yr}_ndep.csv
+    mv restart_out.nc    ${odir}/restart_ncar_${i}_${yr}_ndep.nc
+    mv poolcnp_out.csv   ${odir}/poolcnp_out_${i}_${yr}_ndep.csv
     if [ $i -eq 5 ];then
-      cp -p cnpspindump${yr}.nc output/new4/
+      cp -p cnpspindump${yr}.nc ${odir}/
     fi
     yr=`expr $yr + 1`
   done
   i=`expr $i + 1`
 done
 
-cat fcnpspin.lst<<EOF
+cat <<EOF >fcnpspin.lst
 10
-output/new4/cnpspindump1901.nc
-output/new4/cnpspindump1902.nc
-output/new4/cnpspindump1903.nc
-output/new4/cnpspindump1904.nc
-output/new4/cnpspindump1905.nc
-output/new4/cnpspindump1906.nc
-output/new4/cnpspindump1907.nc
-output/new4/cnpspindump1908.nc
-output/new4/cnpspindump1909.nc
-output/new4/cnpspindump1910.nc
+${odir}/cnpspindump1901.nc
+${odir}/cnpspindump1902.nc
+${odir}/cnpspindump1903.nc
+${odir}/cnpspindump1904.nc
+${odir}/cnpspindump1905.nc
+${odir}/cnpspindump1906.nc
+${odir}/cnpspindump1907.nc
+${odir}/cnpspindump1908.nc
+${odir}/cnpspindump1909.nc
+${odir}/cnpspindump1910.nc
 EOF
 
 cp -p cable_CN_spincasa_${yr}.nml cable.nml
 mpirun -np 9 --oversubscribe ../../CABLE-SRC/offline/tmpParallel/cable-mpi
-mv out_cable.nc     output/new4/out_ncar_${i}_0_ndep.nc
+mv out_cable.nc     ${odir}/out_ncar_${i}_0_ndep.nc
 cp -p restart_out.nc restart_in.nc
 cp -p poolcnp_out.csv poolcnp_in.csv
-mv restart_out.nc output/new4/restart_ncar_${yr}_ndep.nc
-mv poolcnp_out.csv output/new4/poolcnp_out_${yr}_ndep.csv
+mv restart_out.nc ${odir}/restart_ncar_${yr}_ndep.nc
+mv poolcnp_out.csv ${odir}/poolcnp_out_${yr}_ndep.csv
 
 
 while [ $i -le 10 ]
@@ -91,15 +92,15 @@ yr=1901
     # mm: I cant find this file:
     # assuming My\ Passport/cable_chris_transit_time/
     mpirun -np 9 --oversubscribe ../../CABLE-SRC/offline/tmpParallel/cable-mpi
-    mv out_cable.nc      output/new4/out_ncar_${i}_${yr}_ndep.nc
-    mv log_cable.txt     output/new4/log_ncar_${yr}_ndep.txt
+    mv out_cable.nc      ${odir}/out_ncar_${i}_${yr}_ndep.nc
+    mv log_cable.txt     ${odir}/log_ncar_${yr}_ndep.txt
     cp -p restart_out.nc restart_in.nc
     cp -p poolcnp_out.csv poolcnp_in.csv
-    mv cnpflux${yr}.csv  output/new4/cnpfluxndep_${yr}_ndep.csv
-    mv restart_out.nc    output/new4/restart_ncar_${i}_${yr}_ndep.nc
-    mv poolcnp_out.csv   output/new4/poolcnp_out_${i}_${yr}_ndep.csv
+    mv cnpflux${yr}.csv  ${odir}/cnpfluxndep_${yr}_ndep.csv
+    mv restart_out.nc    ${odir}/restart_ncar_${i}_${yr}_ndep.nc
+    mv poolcnp_out.csv   ${odir}/poolcnp_out_${i}_${yr}_ndep.csv
     if [ $i -eq 10 ];then
-      cp -p cnpspindump${yr}.nc output/new4/
+      cp -p cnpspindump${yr}.nc ${odir}/
     fi
     yr=`expr $yr + 1`
   done
