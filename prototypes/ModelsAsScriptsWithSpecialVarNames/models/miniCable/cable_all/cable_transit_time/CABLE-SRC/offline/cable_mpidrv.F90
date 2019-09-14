@@ -11,7 +11,7 @@
 ! registration and the Licence.
 !
 ! Unless required by applicable law or agreed to in writing, 
-! software distributed under the Licence is distributed on an "AS IS" BASIS,
+! software distributed under the Licence is distributed on an "AS IS" BASIS, 
 ! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ! See the Licence for the specific language governing permissions and 
 ! limitations under the Licence.
@@ -35,35 +35,35 @@ PROGRAM mpi_driver
 
   IMPLICIT NONE
 
-  INTEGER :: comm, np, rank, ierr
-  LOGICAL :: flag
+  INTEGER:: comm, np, rank, ierr
+  LOGICAL:: flag
 
   CALL MPI_Init (ierr)
   CALL MPI_Comm_dup (MPI_COMM_WORLD, comm, ierr)
   CALL MPI_Comm_size (comm, np, ierr)
 
   IF (np < 2) THEN
-     WRITE (*,*) 'This program needs at least 2 processes to run!'
-     CALL MPI_Abort (comm, 0, ierr)
+    WRITE (*,*) 'This program needs at least 2 processes to run!'
+    CALL MPI_Abort (comm, 0, ierr)
   END IF
 
   CALL MPI_Comm_rank (comm, rank, ierr)
-  print*,'after MPICommrank,ierr',ierr,rank
+  !  print*,'after MPICommrank, ierr',ierr, rank
 
   IF (rank == 0) THEN
-        WRITE(*,*) 'start to run master'
-          CALL mpidrv_master (comm)
-        print*,'finish run master'
+    WRITE(*,*) 'start to run master'
+    CALL mpidrv_master (comm)
+    !        print*,'finish run master'
   ELSE
-        WRITE(*,*) 'start to run worker'
-          CALL mpidrv_worker (comm,rank)
-        print*,'finish run worker',rank
+    WRITE(*,*) 'start to run worker'
+    CALL mpidrv_worker (comm, rank)
+    !        print*,'finish run worker',rank
   END IF
-  print*,'error index,rank',ierr,rank
+  print*,'error index, rank',ierr, rank
   CALL MPI_Finalize (ierr)
-  print*,'before finalized',flag,rank
-  CALL MPI_Finalized (flag,ierr)
-  print*,'after finalized',flag,rank
+  print*,'before finalized',flag, rank
+  CALL MPI_Finalized (flag, ierr)
+  print*,'after finalized',flag, rank
 
 END PROGRAM mpi_driver
 
