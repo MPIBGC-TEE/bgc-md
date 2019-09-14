@@ -405,7 +405,7 @@ CONTAINS
 
          ! MPI: receive input data for this step from the master
          CALL MPI_Recv (MPI_BOTTOM, 1, inp_t, 0, ktau_gl, icomm, stat, ierr)
-!         if(rank .eq. 16) print*,'rank,ktau',rank,ktau 
+         if(rank .eq. 2) print*,'rank,ktau',rank,ktau 
 
          ! MPI: some fields need explicit init, because we don't transfer
          ! them for better performance

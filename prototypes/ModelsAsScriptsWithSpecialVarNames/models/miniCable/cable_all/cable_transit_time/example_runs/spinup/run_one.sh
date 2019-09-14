@@ -1,6 +1,6 @@
 set -e
 i=1
-yr=1909
+yr=1910
 cp -p cable_CN_spindump_${yr}.nml cable.nml #for the paper only CN
 mpirun -np 9 --oversubscribe ../../CABLE-SRC/offline/tmpParallel/cable-mpi
 mv out_cable.nc      output/new4/out_ncar_${i}_${yr}_ndep.nc
