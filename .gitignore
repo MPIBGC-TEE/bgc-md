@@ -7,3 +7,5 @@ docker_images/centos7/LAPM
 docker_images/centos7/CompartmentalSystems
 
 *.swp
+prototypes/ModelsAsScriptsWithSpecialVarNames/models/miniCable/cable_all/cable_transit_time/example_runs/spinup/cable_*nml
+prototypes/ModelsAsScriptsWithSpecialVarNames/models/miniCable/cable_all/cable_transit_time/example_runs/spinup/cnpspindump*.nc

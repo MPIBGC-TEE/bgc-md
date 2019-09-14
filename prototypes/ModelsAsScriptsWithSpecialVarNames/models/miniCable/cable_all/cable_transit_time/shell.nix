@@ -29,7 +29,7 @@ with import <nixpkgs> {};
     mkDerivation = import ./autotools.nix pkgs;
   in mkDerivation {
     name ="cable";
-    src =./CABLE-SRC.tar.bz2;
+    #src =./CABLE-SRC.tar.bz2;
     ctn ="CABLE-SRC";
     buildInputs = with pkgs; [ gnumake gfortran my_netcdf_fortran netcdf-mpi openmpi gdb openssh 
     (python37.withPackages ((ps: [
