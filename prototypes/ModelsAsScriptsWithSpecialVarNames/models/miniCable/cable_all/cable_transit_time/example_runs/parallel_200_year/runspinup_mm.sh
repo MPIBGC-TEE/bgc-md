@@ -34,9 +34,13 @@ mkdir -p ${odir}
 
 while [ $i -le 5 ]
 do
-yr=1901
+  echo "######################################################################################################"
+	echo "i=${i}"
+  yr=1901
   while [ $yr -le 1910 ]
   do
+    echo "######################################################################################################"
+    echo "yr=${yr}"
     #mm the files are now produced here
     #cp -p /home/599/czl599/nml/cable_C_spinup_${yr}.nml cable.nml
     cp -p cable_CN_spindump_${yr}.nml cable.nml #for the paper only CN
