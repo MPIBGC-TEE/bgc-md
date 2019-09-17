@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Report of the model: A new, simple model of ecosystem C–N cycling and interactions (ACONITE), version: 1</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="buttondown.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">Report of the model: A new, simple model of ecosystem C–N cycling and interactions (ACONITE), version: 1</h1>
+</header>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 29/3/2016.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation" data-cites="Thomas2014GeoscientificModelDevelopment">Thomas &amp; Williams (2014)</span>.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global</p>
+<table>
+<caption>state_variables<br />
+The model section in the yaml file has no subsection: additional_variables.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(C_{leaf}\)</span></td>
+<td style="text-align: left;">Carbon in foliage</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(C_{wood}\)</span></td>
+<td style="text-align: left;">Carbon in wood</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(C_{root}\)</span></td>
+<td style="text-align: left;">Carbon in roots</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(C_{labile}\)</span></td>
+<td style="text-align: left;">Labile carbon</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(C_{bud}\)</span></td>
+<td style="text-align: left;">Bud carbon</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(C_{labileRa}\)</span></td>
+<td style="text-align: left;">Maintenance respiration pool</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>components</caption>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td style="text-align: left;">vector of states (C<span class="math inline">\(_{i}\)</span>) for vegetation</td>
+<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}C_{labile}\\C_{bud}\\C_{leaf}\\C_{wood}\\C_{root}\\C_{labileRa}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(u\)</span></td>
+<td style="text-align: left;">scalar function of photosynthetic inputs</td>
+<td style="text-align: center;"><span class="math inline">\(u=GPP\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(b\)</span></td>
+<td style="text-align: left;">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td style="text-align: center;"><span class="math inline">\(b=\left[\begin{matrix}1\\0\\0\\0\\0\\0\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(A_{x}\)</span></td>
+<td style="text-align: left;">matrix of cycling rates</td>
+<td style="text-align: center;"><span class="math inline">\(A_{x}=\left[\begin{matrix}\frac{1}{C_{labile}}\cdot\left(- Ra_{excess} - Ra_{growth} - a_{budC} - a_{labileRamain} - a_{rootC} - a_{woodC}\right) &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\\frac{a_{budC}}{C_{labile}} &amp;\frac{1}{C_{bud}}\cdot\left(- a_{budC2Ramain} - a_{budC2leaf}\right) &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp;\frac{a_{budC2leaf}}{C_{bud}} &amp; -\tau_{leaf} &amp; 0 &amp; 0 &amp; 0\\\frac{a_{woodC}}{C_{labile}} &amp; 0 &amp; 0 &amp; -\tau_{wood} &amp; 0 &amp; 0\\\frac{a_{rootC}}{C_{labile}} &amp; 0 &amp; 0 &amp; 0 &amp; -\tau_{root} &amp; 0\\\frac{a_{labileRamain}}{C_{labile}} &amp;\frac{a_{budC2Ramain}}{C_{bud}} &amp; 0 &amp; 0 &amp; 0 &amp; -\frac{Ra_{main}}{C_{labileRa}}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(f_{v}\)</span></td>
+<td style="text-align: left;">the righthandside of the ode</td>
+<td style="text-align: center;"><span class="math inline">\(f_{v}=u b + A_{x} x\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{labile}: GPP\)</span></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(C_{labile}: Ra_{excess} + Ra_{growth}\)</span><br />
+<span class="math inline">\(C_{leaf}: C_{leaf}\cdot\tau_{leaf}\)</span><br />
+<span class="math inline">\(C_{wood}: C_{wood}\cdot\tau_{wood}\)</span><br />
+<span class="math inline">\(C_{root}: C_{root}\cdot\tau_{root}\)</span><br />
+<span class="math inline">\(C_{labileRa}: Ra_{main}\)</span></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<p><span class="math inline">\(C_{labile} \rightarrow C_{bud}: a_{budC}\)</span><br />
+<span class="math inline">\(C_{labile} \rightarrow C_{wood}: a_{woodC}\)</span><br />
+<span class="math inline">\(C_{labile} \rightarrow C_{root}: a_{rootC}\)</span><br />
+<span class="math inline">\(C_{labile} \rightarrow C_{labileRa}: a_{labileRamain}\)</span><br />
+<span class="math inline">\(C_{bud} \rightarrow C_{leaf}: a_{budC2leaf}\)</span><br />
+<span class="math inline">\(C_{bud} \rightarrow C_{labileRa}: a_{budC2Ramain}\)</span></p>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(C_labile = C_{labile}\)</span></p>
+<p><span class="math inline">\(C_bud = C_{bud}\)</span></p>
+<p><span class="math inline">\(C_leaf = \frac{a_{budC2leaf}}{\tau_{leaf}}\)</span></p>
+<p><span class="math inline">\(C_wood = \frac{a_{woodC}}{\tau_{wood}}\)</span></p>
+<p><span class="math inline">\(C_root = \frac{a_{rootC}}{\tau_{root}}\)</span></p>
+<p><span class="math inline">\(C_labileRa = C_{labileRa}\)</span></p>
+<h2 id="references" class="unnumbered">References</h2>
+<div id="refs" class="references">
+<div id="ref-Thomas2014GeoscientificModelDevelopment">
+<p>Thomas, R. Q., &amp; Williams, M. (2014). A model using marginal efficiency of investment to analyze carbon and nitrogen interactions in terrestrial ecosystems (ACONITE version 1). <em>Geoscientific Model Development</em>, <em>7</em>(5), 2015–2037. <a href="http://doi.org/10.5194/gmd-7-2015-2014" class="uri">http://doi.org/10.5194/gmd-7-2015-2014</a></p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Report of the model: FOREST-BGC, version: 1</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="buttondown.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">Report of the model: FOREST-BGC, version: 1</h1>
+</header>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 17/7/2015.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation" data-cites="Running1988EcologicalModelling">Running &amp; Coughlan (1988)</span>.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>forest</p>
+<table>
+<caption>state_variables<br />
+The model section in the yaml file has no subsection: additional_variables.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(t\)</span></td>
+<td style="text-align: left;">time step</td>
+<td style="text-align: left;"><span class="math inline">\(year\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(C_{f}\)</span></td>
+<td style="text-align: left;">Carbon in foliage</td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(C_{r}\)</span></td>
+<td style="text-align: left;">Carbon in roots</td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(C_{w}\)</span></td>
+<td style="text-align: left;">Carbon in woody tissue</td>
+<td style="text-align: left;">-</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>components</caption>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td style="text-align: left;">vector of states for vegetation</td>
+<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}C_{f}\\C_{r}\\C_{w}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(u\)</span></td>
+<td style="text-align: left;">scalar function of photosynthetic inputs</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(b\)</span></td>
+<td style="text-align: left;">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td style="text-align: center;"><span class="math inline">\(b=\left[\begin{matrix}\eta_{f}\\\eta_{r}\\\eta_{w}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(A\)</span></td>
+<td style="text-align: left;">matrix of turnover (cycling) rates</td>
+<td style="text-align: center;"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{r} &amp; 0\\0 &amp; 0 &amp; -\gamma_{w}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(f_{v}\)</span></td>
+<td style="text-align: left;">the righthandside of the ode</td>
+<td style="text-align: center;"><span class="math inline">\(f_{v}=u b + A x\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{f}: \eta_{f}\cdot u\)</span><br />
+<span class="math inline">\(C_{r}: \eta_{r}\cdot u\)</span><br />
+<span class="math inline">\(C_{w}: \eta_{w}\cdot u\)</span></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(C_{f}: C_{f}\cdot\gamma_{f}\)</span><br />
+<span class="math inline">\(C_{r}: C_{r}\cdot\gamma_{r}\)</span><br />
+<span class="math inline">\(C_{w}: C_{w}\cdot\gamma_{w}\)</span></p>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(C_f = \frac{\eta_{f}}{\gamma_{f}}\cdot u\)</span></p>
+<p><span class="math inline">\(C_r = \frac{\eta_{r}}{\gamma_{r}}\cdot u\)</span></p>
+<p><span class="math inline">\(C_w = \frac{\eta_{w}}{\gamma_{w}}\cdot u\)</span></p>
+<h2 id="references" class="unnumbered">References</h2>
+<div id="refs" class="references">
+<div id="ref-Running1988EcologicalModelling">
+<p>Running, S. W., &amp; Coughlan, J. C. (1988). A general model of forest ecosystem processes for regional applications i. Hydrologic balance, canopy gas exchange and primary production processes. <em>Ecological Modelling</em>, <em>42</em>(2), 125–154. <a href="http://doi.org/10.1016/0304-3800(88)90112-3" class="uri">http://doi.org/10.1016/0304-3800(88)90112-3</a></p>
+</div>
+</div>
+</body>
+</html>
