@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Report of the model: Data Assimilation Linked Ecosystem model (DALEC), version: 1</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="buttondown.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">Report of the model: Data Assimilation Linked Ecosystem model (DALEC), version: 1</h1>
+</header>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 16/9/2016.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation" data-cites="Williams2005GlobalChangeBiology">Williams, Schwarz, Law, Irvine, &amp; Kurpius (2005)</span>.</p>
+<h3 id="keywords">Keywords</h3>
+<p>Deciduous forest, Phenology</p>
+<h3 id="principles">Principles</h3>
+<p>All C fixed during a day is either released -autotrophic respiration (Ra)- or allocated to tissue pools (C_f, C_w, C_r), R_a is not directly temperature sensitive, Phenology -&gt; Timing of leaf out controlled by simple growing degree day model, and leaf-fall by a min. temperature threshold., Maximum amount of C that can be allocated to leaves is limited by the parameter C_fmax, All C losses are via mineralization (no dissolved losses)</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>deciduous forest</p>
+<h3 id="available-parameter-values">Available parameter values</h3>
+<table>
+<caption>Information on given parameter sets</caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Abbreviation</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">param_vals</td>
+<td style="text-align: left;">NPP value was given per year. p<sub>14</sub>, p<sub>15</sub> and p<sub>16</sub> values not given in publication</td>
+<td style="text-align: left;"><span class="citation" data-cites="Williams2005GlobalChangeBiology">Williams et al. (2005)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="available-initial-values">Available initial values</h3>
+<table>
+<caption>Information on given sets of initial values</caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Abbreviation</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">init_vals</td>
+<td style="text-align: left;">C_lab values not provided in publication</td>
+<td style="text-align: left;"><span class="citation" data-cites="Williams2005GlobalChangeBiology">Williams et al. (2005)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>state_variables<br />
+The model section in the yaml file has no subsection: additional_variables.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(C_{f}\)</span></td>
+<td style="text-align: left;">Foliar C mass</td>
+<td style="text-align: left;"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(C_{lab}\)</span></td>
+<td style="text-align: left;">Labile C mass</td>
+<td style="text-align: left;"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(C_{w}\)</span></td>
+<td style="text-align: left;">Wood C mass</td>
+<td style="text-align: left;"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(C_{r}\)</span></td>
+<td style="text-align: left;">Fine root C mass</td>
+<td style="text-align: left;"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>components</caption>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td style="text-align: left;">vector of states of vegetation</td>
+<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}C_{f}\\C_{lab}\\C_{w}\\C_{r}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(u\)</span></td>
+<td style="text-align: left;">scalar function of photosynthetic inputs</td>
+<td style="text-align: center;"><span class="math inline">\(u=NPP\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(b\)</span></td>
+<td style="text-align: left;">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td style="text-align: center;"><span class="math inline">\(b=\left[\begin{matrix}multtl\cdot p_{3}\\0\\- p_{4} + 1\\p_{4}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(A\)</span></td>
+<td style="text-align: left;">matrix of cycling rates</td>
+<td style="text-align: center;"><span class="math inline">\(A=\left[\begin{matrix}- T_{rate}\cdot multtf\cdot p_{16}\cdot p_{5}\cdot\left(- p_{14} + 1\right) - T_{rate}\cdot multtf\cdot p_{5}\cdot\left(- p_{14} + 1\right)\cdot\left(- p_{16} + 1\right) - multtf\cdot p_{14}\cdot p_{5} &amp; T_{rate}\cdot multtl\cdot p_{15}\cdot\left(- p_{16} + 1\right) &amp; 0 &amp; 0\\T_{rate}\cdot multtf\cdot p_{5}\cdot\left(- p_{14} + 1\right)\cdot\left(- p_{16} + 1\right) &amp; - T_{rate}\cdot multtl\cdot p_{15}\cdot p_{16} - T_{rate}\cdot multtl\cdot p_{15}\cdot\left(- p_{16} + 1\right) &amp; 0 &amp; 0\\0 &amp; 0 &amp; - p_{6} &amp; 0\\0 &amp; 0 &amp; 0 &amp; - p_{7}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(f_{v}\)</span></td>
+<td style="text-align: left;">the right hand side of the ode</td>
+<td style="text-align: center;"><span class="math inline">\(f_{v}=u b + A x\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{f}: NPP\cdot multtl\cdot p_{3}\)</span><br />
+<span class="math inline">\(C_{w}: NPP\cdot\left(- p_{4} + 1\right)\)</span><br />
+<span class="math inline">\(C_{r}: NPP\cdot p_{4}\)</span></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(C_{f}: C_{f}\cdot multtf\cdot p_{5}\cdot\left(p_{14} - 0.5\cdot p_{16}\cdot\left(p_{14} - 1\right)\cdot e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)}\right)\)</span><br />
+<span class="math inline">\(C_{lab}: 0.5\cdot C_{lab}\cdot multtl\cdot p_{15}\cdot p_{16}\cdot e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)}\)</span><br />
+<span class="math inline">\(C_{w}: C_{w}\cdot p_{6}\)</span><br />
+<span class="math inline">\(C_{r}: C_{r}\cdot p_{7}\)</span></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<p><span class="math inline">\(C_{f} \rightarrow C_{lab}: 0.5\cdot C_{f}\cdot multtf\cdot p_{5}\cdot\left(p_{14} - 1\right)\cdot\left(p_{16} - 1\right)\cdot e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)}\)</span><br />
+<span class="math inline">\(C_{lab} \rightarrow C_{f}: - 0.5\cdot C_{lab}\cdot multtl\cdot p_{15}\cdot\left(p_{16} - 1\right)\cdot e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)}\)</span></p>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(C_f = \frac{2.0\cdot NPP\cdot multtl\cdot p_{3}\cdot e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)}}{multtf\cdot p_{5}\cdot\left(\left(p_{16} - 1.0\right)\cdot\left(p_{14}\cdot p_{16} - p_{14} - p_{16} + 1.0\right)\cdot e^{p_{10}\cdot\left(maxt + mint\right)} +\left(- p_{14}\cdot e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)} + 2.0\cdot p_{14} + e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)}\right)\cdot e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)}\right)}\)</span></p>
+<p><span class="math inline">\(C_lab = \frac{2.0\cdot NPP\cdot p_{3}\cdot\left(p_{14}\cdot p_{16} - p_{14} - p_{16} + 1.0\right)\cdot e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)}}{p_{15}\cdot\left(\left(p_{16} - 1.0\right)\cdot\left(p_{14}\cdot p_{16} - p_{14} - p_{16} + 1.0\right)\cdot e^{p_{10}\cdot\left(maxt + mint\right)} +\left(- p_{14}\cdot e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)} + 2.0\cdot p_{14} + e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)}\right)\cdot e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)}\right)}\)</span></p>
+<p><span class="math inline">\(C_w = -\frac{NPP}{p_{6}}\cdot\left(p_{4} - 1.0\right)\)</span></p>
+<p><span class="math inline">\(C_r = \frac{NPP}{p_{7}}\cdot p_{4}\)</span></p>
+<h2 id="references" class="unnumbered">References</h2>
+<div id="refs" class="references">
+<div id="ref-Williams2005GlobalChangeBiology">
+<p>Williams, M., Schwarz, P. A., Law, B. E., Irvine, J., &amp; Kurpius, M. R. (2005). An improved analysis of forest carbon dynamics using data assimilation. <em>Global Change Biology</em>, <em>11</em>(1), 89–105. <a href="http://doi.org/10.1111/j.1365-2486.2004.00891.x" class="uri">http://doi.org/10.1111/j.1365-2486.2004.00891.x</a></p>
+</div>
+</div>
+</body>
+</html>

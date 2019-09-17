@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Report of the model: CSIRO Atmosphere Biosphere Land Exchange (CABLE), version: 1</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="buttondown.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">Report of the model: CSIRO Atmosphere Biosphere Land Exchange (CABLE), version: 1</h1>
+</header>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 14/3/2016.</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation" data-cites="Wang2010Biogeosciences">Wang, Law, &amp; Pak (2010)</span>.</p>
+<h3 id="space-scale">Space Scale</h3>
+<p>global</p>
+<h3 id="available-parameter-values">Available parameter values</h3>
+<table>
+<caption>Information on given parameter sets</caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Abbreviation</th>
+<th style="text-align: left;">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Evergreen needle leaf forest</td>
+<td style="text-align: left;"><span class="citation" data-cites="Wang2010Biogeosciences">Wang et al. (2010)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Evergreen broadleaf forest</td>
+<td style="text-align: left;"><span class="citation" data-cites="Wang2010Biogeosciences">Wang et al. (2010)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Deciduous needle leaf forest</td>
+<td style="text-align: left;"><span class="citation" data-cites="Wang2010Biogeosciences">Wang et al. (2010)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Deciduous broadleaf forest</td>
+<td style="text-align: left;"><span class="citation" data-cites="Wang2010Biogeosciences">Wang et al. (2010)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mixed forest</td>
+<td style="text-align: left;"><span class="citation" data-cites="Wang2010Biogeosciences">Wang et al. (2010)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shrub land (open and close shrubland)</td>
+<td style="text-align: left;"><span class="citation" data-cites="Wang2010Biogeosciences">Wang et al. (2010)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Woddy savannah</td>
+<td style="text-align: left;"><span class="citation" data-cites="Wang2010Biogeosciences">Wang et al. (2010)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Savannah</td>
+<td style="text-align: left;"><span class="citation" data-cites="Wang2010Biogeosciences">Wang et al. (2010)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Grassland</td>
+<td style="text-align: left;"><span class="citation" data-cites="Wang2010Biogeosciences">Wang et al. (2010)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Crop land (cropland mosaic was aggregated into this term)</td>
+<td style="text-align: left;"><span class="citation" data-cites="Wang2010Biogeosciences">Wang et al. (2010)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Barren or sparse vegetation</td>
+<td style="text-align: left;"><span class="citation" data-cites="Wang2010Biogeosciences">Wang et al. (2010)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>state_variables<br />
+The model section in the yaml file has no subsection: additional_variables.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(C_{leaf}\)</span></td>
+<td style="text-align: left;">Plant (carbon) pool Leaf</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(C_{root}\)</span></td>
+<td style="text-align: left;">Plant (carbon) pool Root</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(C_{wood}\)</span></td>
+<td style="text-align: left;">Plant (carbon) pool Wood</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>components</caption>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 24%" />
+<col style="width: 28%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: center;">Expression</th>
+<th style="text-align: left;">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td style="text-align: left;">vector of states for vegetation</td>
+<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}C_{leaf}\\C_{root}\\C_{wood}\end{matrix}\right]\)</span></td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(u\)</span></td>
+<td style="text-align: left;">scalar function of photosynthetic inputs</td>
+<td style="text-align: center;"><span class="math inline">\(u=F_{c}\)</span></td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(b\)</span></td>
+<td style="text-align: left;">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td style="text-align: center;"><span class="math inline">\(b=\left[\begin{matrix}a_{leaf}\\a_{root}\\a_{wood}\end{matrix}\right]\)</span></td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(A\)</span></td>
+<td style="text-align: left;">matrix of turnover (cycling) rates</td>
+<td style="text-align: center;"><span class="math inline">\(A=\left[\begin{matrix}-\mu_{leaf} &amp; 0 &amp; 0\\0 &amp; -\mu_{root} &amp; 0\\0 &amp; 0 &amp; -\mu_{wood}\end{matrix}\right]\)</span></td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(f_{v}\)</span></td>
+<td style="text-align: left;">the righthandside of the ode</td>
+<td style="text-align: center;"><span class="math inline">\(f_{v}=u b + A x\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(gC\cdot m^{-2}\cdot d^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{leaf}: F_{cmax}\cdot a_{leaf}\cdot\min\left(\frac{n_{leaf}}{k_{n} + n_{leaf}},\frac{p_{leaf}}{k_{p} + p_{leaf}}\right)\cdot\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}},\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\)</span><br />
+<span class="math inline">\(C_{root}: F_{cmax}\cdot a_{root}\cdot\min\left(\frac{n_{leaf}}{k_{n} + n_{leaf}},\frac{p_{leaf}}{k_{p} + p_{leaf}}\right)\cdot\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}},\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\)</span><br />
+<span class="math inline">\(C_{wood}: F_{cmax}\cdot a_{wood}\cdot\min\left(\frac{n_{leaf}}{k_{n} + n_{leaf}},\frac{p_{leaf}}{k_{p} + p_{leaf}}\right)\cdot\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}},\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\)</span></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(C_{leaf}: C_{leaf}\cdot\mu_{leaf}\)</span><br />
+<span class="math inline">\(C_{root}: C_{root}\cdot\mu_{root}\)</span><br />
+<span class="math inline">\(C_{wood}: C_{wood}\cdot\mu_{wood}\)</span></p>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(C_leaf = \frac{F_{cmax}}{\mu_{leaf}}\cdot a_{leaf}\cdot\min\left(\frac{n_{leaf}}{k_{n} + n_{leaf}},\frac{p_{leaf}}{k_{p} + p_{leaf}}\right)\cdot\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}},\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\)</span></p>
+<p><span class="math inline">\(C_root = \frac{F_{cmax}}{\mu_{root}}\cdot a_{root}\cdot\min\left(\frac{n_{leaf}}{k_{n} + n_{leaf}},\frac{p_{leaf}}{k_{p} + p_{leaf}}\right)\cdot\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}},\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\)</span></p>
+<p><span class="math inline">\(C_wood = \frac{F_{cmax}}{\mu_{wood}}\cdot a_{wood}\cdot\min\left(\frac{n_{leaf}}{k_{n} + n_{leaf}},\frac{p_{leaf}}{k_{p} + p_{leaf}}\right)\cdot\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}},\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\)</span></p>
+<h2 id="references" class="unnumbered">References</h2>
+<div id="refs" class="references">
+<div id="ref-Wang2010Biogeosciences">
+<p>Wang, Y. P., Law, R. M., &amp; Pak, B. (2010). A global model of carbon, nitrogen and phosphorus cycles for the terrestrial biosphere. <em>Biogeosciences</em>, <em>7</em>(7), 2261–2282. <a href="http://doi.org/10.5194/bg-7-2261-2010" class="uri">http://doi.org/10.5194/bg-7-2261-2010</a></p>
+</div>
+</div>
+</body>
+</html>
