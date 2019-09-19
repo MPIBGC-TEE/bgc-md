@@ -12,11 +12,11 @@ runSpinupYears() {
   while [ $i -le $i_max ]
   do
   yr=$spinStart
-    while [ $yr -le $spinEnd]
+    while [ $yr -le ${spinEnd} ]
     do
       echo "######################################################################################################"
       echo "yr=${yr}"
-      cp -p cable_CN_spiupdump_${yr}.nml cable.nml #for the paper only CN
+      cp -p cable_CN_spindump_${yr}.nml cable.nml #for the paper only CN
       mpirun -np 9 --oversubscribe ../../CABLE-SRC/offline/tmpParallel/cable-mpi
       mv out_cable.nc      ${odir}/out_ncar_${i}_${yr}_ndep.nc
       mv log_cable.txt     ${odir}/log_ncar_${yr}_ndep.txt
@@ -57,7 +57,7 @@ echo "after first loop"
 
 lstFileName="fcnpspin.lst"
 echo 10 > $lstFileName
-for i in $(seq $spinStart $spinEnd)
+for i in $(seq $spinStart ${spinEnd})
 do  
   echo "${odir}/cnspindump${i}.nc" >> $lstFileName
 done

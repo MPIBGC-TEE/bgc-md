@@ -1,3 +1,6 @@
+odir="output/new4"
+spinStart=1901
+spinEnd=1910
 i=1
 while [ $i -le 10 ]
 do
