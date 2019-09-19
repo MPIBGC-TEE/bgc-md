@@ -39,6 +39,7 @@ setup(name='bgc_md',
             ,"CompartmentalSystems"
             ,"testinfrastructure"
             ,"concurrencytest"
+            ,"requests"
         #    ,"mendeley "
             ,"PyYAML"
             ,"pandas"
