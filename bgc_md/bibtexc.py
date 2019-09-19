@@ -384,7 +384,7 @@ def _direct(doi):
 #    config_file_name = gv.resources_path.joinpath('mendeley_user_config.yml').as_posix()
 #
 #    with open(config_file_name) as f:
-#        config = yaml.load(f)
+#        config = yaml.load(f,Loader=yaml.FullLoader)
 #
 #    mendeley = Mendeley(config['clientId'], config['clientSecret'])
 #    session = mendeley.start_client_credentials_flow().authenticate()

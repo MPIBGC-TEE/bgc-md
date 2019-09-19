@@ -619,7 +619,7 @@ def produce_model_report_markdown(yaml_file_name_list, md_file_name_list):
  
 
 def report_from_yaml_str(yaml_str):
-    complete_dict = yaml.load(yaml_str)
+    complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
     model = Model(complete_dict)
     return report_from_model(model)
     

@@ -596,7 +596,7 @@ class Model:
     @classmethod
     def from_str(cls,yaml_str, id):
         try:
-             complete_dict = yaml.load(yaml_str)
+             complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         except yaml.YAMLError as ye:
             raise(ye)
             
@@ -631,7 +631,7 @@ class Model:
         name=yaml_file_path.stem
         # now load the yaml str into a dictionary
         try:
-             complete_dict = yaml.load(yaml_str)
+             complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         except yaml.YAMLError as ye:
             msg=Template("The Yaml in file ${ps} caused the following exception ${submsg}").substitute(ps=str(model.yaml_file_path),submsg=str(ye))
             raise(ModelInitializationException(msg))

@@ -34,7 +34,7 @@ class TestModel(InDirTest):
         pass
 
 #        for yaml_str in self.yaml_str_list:
-#            complete_dict = yaml.load(yaml_str)
+#            complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
 #            del complete_dict['model']
 #
 #            with self.assertRaises(Exception) as cm:
@@ -112,7 +112,7 @@ class TestModel(InDirTest):
                 - state_variables:
                     - X:
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         complete_dict, modelID = load_complete_dict_and_id(complete_dict)
         self.assertEqual(modelID, "S0019")
         
@@ -121,7 +121,7 @@ class TestModel(InDirTest):
             model-id: S0019
             model:
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         with self.assertRaises(ModelInitializationException) as cm:
             complete_dict, modelID = load_complete_dict_and_id(complete_dict)
         e = cm.exception
@@ -143,7 +143,7 @@ class TestModel(InDirTest):
                                      publisher={Springer}
                                 }"
                     """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         bibtex_entry = load_bibtex_entry(complete_dict)
         self.assertEqual(bibtex_entry.key, 'Key_to_check')
 
@@ -152,7 +152,7 @@ class TestModel(InDirTest):
         yaml_str = """\
                         doi: 10.1038/ngeo846
                     """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         bibtex_entry = load_bibtex_entry(complete_dict)
         self.assertEqual(bibtex_entry.key, 'Allison2010NatureGeoscience')
 
@@ -161,7 +161,7 @@ class TestModel(InDirTest):
         yaml_str = """\
                         doi: xyzbgcv12y.122
                     """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         with self.assertRaises(DoiNotFoundException):
             bibtex_entry = load_bibtex_entry(complete_dict)
 
@@ -182,7 +182,7 @@ class TestModel(InDirTest):
                         }"
            
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         bibtex_entry = load_bibtex_entry(complete_dict)
         abstract = load_abstract(complete_dict, bibtex_entry)
         self.assertEqual(abstract, "This abstract will be taken. CO$_2$ will be corrected.")
@@ -191,7 +191,7 @@ class TestModel(InDirTest):
         yaml_str = """\
             modelID: S0019
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         bibtex_entry = load_bibtex_entry(complete_dict)
         abstract = load_abstract(complete_dict, bibtex_entry)
         self.assertEqual(abstract, None)
@@ -215,7 +215,7 @@ class TestModel(InDirTest):
                         }"
               desc: "Another paper"
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         further_references = load_further_references(complete_dict)
         self.assertEqual(further_references[0]['bibtex_entry'].key, 'Allison2010NatureGeoscience')
         self.assertEqual(further_references[1]['bibtex_entry'].key, 'Li2014Biogeochemistry')
@@ -232,7 +232,7 @@ class TestModel(InDirTest):
         #    - doi: 
         #      desc: "Original paper, just by doi"
         #"""
-        #complete_dict = yaml.load(yaml_str)
+        #complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         #with self.assertRaises(ModelInitializationException) as cm:
         #    further_references = load_further_references(complete_dict)
         #e = cm.exception
@@ -244,7 +244,7 @@ class TestModel(InDirTest):
         #    - doi: 34.xxcvj8Fs0
         #      desc: "Invalid doi"
         #"""
-        #complete_dict = yaml.load(yaml_str)
+        #complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         #with self.assertRaises(ModelInitializationException) as cm:
         #    further_references = load_further_references(complete_dict)
         #e = cm.exception
@@ -266,7 +266,7 @@ class TestModel(InDirTest):
               desc: "I checked all the equations by reading the paper."
               type: deep
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         reviews, deeply_reviewed = load_reviews(complete_dict)
         self.assertEqual(reviews[0]['type'], 'shallow')
         self.assertEqual(deeply_reviewed, True)
@@ -283,7 +283,7 @@ class TestModel(InDirTest):
               desc: "I checked all the equations by reading the paper."
               type: deep
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         with self.assertRaises(ModelInitializationException) as cm:
             reviews, deeply_reviewed= load_reviews(complete_dict)
         e = cm.exception
@@ -302,7 +302,7 @@ class TestModel(InDirTest):
                 - c
                 - d:
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         sections, section_titles, complete_dict = load_sections_and_titles(complete_dict)
 
         self.assertEqual(sections, ["state_variables", "additional_variables"])
@@ -323,7 +323,7 @@ class TestModel(InDirTest):
             - additional_variables[different title]:
                 - e:
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         with self.assertRaises(ModelInitializationException) as cm:
             sections, section_titles = load_sections_and_titles(complete_dict)
         e = cm.exception
@@ -355,7 +355,7 @@ class TestModel(InDirTest):
                     unit: "time^{-1}"
                     type: parameter
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         sections, section_titles, complete_dict = load_sections_and_titles(complete_dict)
         df = load_df(complete_dict, sections)
         self.assertEqual(df.list_of_rows, [['name', 'category', 'desc', 'exprs', 'type', 'unit'],
@@ -386,7 +386,7 @@ class TestModel(InDirTest):
                     type: parameter
                 - X:
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         sections, section_titles, complete_dict = load_sections_and_titles(complete_dict)
         with self.assertRaises(ModelInitializationException) as cm:
             df = load_df(complete_dict, sections)
@@ -423,7 +423,7 @@ class TestModel(InDirTest):
                     desc: decomposition operator
                     exprs: "A = diag(k*X, p*Y)"
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         sections, section_titles, complete_dict = load_sections_and_titles(complete_dict)
         df = load_df(complete_dict, sections)
         syms_dict, exprs_dict, symbols_by_type = load_expressions_and_symbols(df)
@@ -451,7 +451,7 @@ class TestModel(InDirTest):
                 - c
                 - d:
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
 
         # test normal usage
         subdict = section_subdict(complete_dict, 'state_variables')
@@ -748,7 +748,7 @@ class TestModel(InDirTest):
                         end: 100
                         step_size: 1
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         model_run_data = load_model_run_data(complete_dict)
         run_times = load_run_times(model_run_data)
 
@@ -769,7 +769,7 @@ class TestModel(InDirTest):
                         end: 100
                         step_size: 1
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         model_run_data = load_model_run_data(complete_dict)
         with self.assertRaises(ModelInitializationException) as cm:
             run_times = load_run_times(model_run_data)
@@ -786,7 +786,7 @@ class TestModel(InDirTest):
                         end: 10
                         step_size: 0.1
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         model_run_data = load_model_run_data(complete_dict)
         with self.assertRaises(ModelInitializationException) as cm:
             run_times = load_run_times(model_run_data)
@@ -978,7 +978,7 @@ class TestModel(InDirTest):
                         ["Set2", "IV1", "RT1"]
                      ]
                   }
-        cd=yaml.load(yaml_str)
+        cd=yaml.load(yaml_str,Loader=yaml.FullLoader)
         res=load_model_run_data(cd)
         self.maxDiff=None
         self.assertEqual(ref_dict,res)
@@ -1041,7 +1041,7 @@ class TestModel(InDirTest):
                "bibtex_entry": BibtexEntry.from_doi(doi="10.1038/ngeo846")
               }
 
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         model_run_data = load_model_run_data(complete_dict)
         parameter_sets = load_parameter_sets(model_run_data)
         initial_values = load_initial_values(model_run_data)
@@ -1061,7 +1061,7 @@ class TestModel(InDirTest):
                         values:       
                             k_01:0.01
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         model_run_data = load_model_run_data(complete_dict)
         with self.assertRaises(ModelInitializationException) as cm:
             parameter_sets = load_parameter_sets(model_run_data)
@@ -1076,7 +1076,7 @@ class TestModel(InDirTest):
                     - Set1:               
                         desc: missing values
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         model_run_data = load_model_run_data(complete_dict)
         with self.assertRaises(ModelInitializationException) as cm:
             parameter_sets = load_parameter_sets(model_run_data)
@@ -1110,7 +1110,7 @@ class TestModel(InDirTest):
                     values:
                         X: 10
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         sections, titles, complete_dict = load_sections_and_titles(complete_dict)
         df = load_df(complete_dict, sections)
         sd, ed, syms_by_type = load_expressions_and_symbols(df)
@@ -1137,7 +1137,7 @@ class TestModel(InDirTest):
                     values:
                         a: 0.5
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         sections, titles, complete_dict = load_sections_and_titles(complete_dict)
         df = load_df(complete_dict, sections)
         sd, ed, syms_by_type = load_expressions_and_symbols(df)
@@ -1167,7 +1167,7 @@ class TestModel(InDirTest):
                 - IV1:
                     values: {Y: 2}
         """
-        complete_dict = yaml.load(yaml_str)
+        complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
         sections, titles, complete_dict = load_sections_and_titles(complete_dict)
         df = load_df(complete_dict, sections)
         sd, ed, syms_by_type = load_expressions_and_symbols(df)

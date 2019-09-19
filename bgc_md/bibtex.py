@@ -60,7 +60,7 @@ def bibtex_entry_str(entry):
 #    # returns Mendeley data or 'None'
 #
 #    with open('mendeley_user_config.yml') as f:
-#        config = yaml.load(f)
+#        config = yaml.load(f,Loader=yaml.FullLoader)
 #    mendeley = Mendeley(config['clientId'], config['clientSecret'])
 #    session = mendeley.start_client_credentials_flow().authenticate()
 #
