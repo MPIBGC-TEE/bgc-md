@@ -35,7 +35,8 @@ def template(model_list):
         scdp= model.cyc_matrix['expr'].is_diagonal()
         l.append(Text(str(scdp)))
         l.append(Text(str(model.partitioning_scheme)))
-        l.append(Text(str(model.claimed_dyn_part)))
+        cdp = model.complete_dict["claimedDynamicPart"]
+        l.append(Text(str(cdp)))
         l.append(Citation(model.bibtex_entry, parentheses=False))
         row = TableRow(l)
         T.add_row(row)
