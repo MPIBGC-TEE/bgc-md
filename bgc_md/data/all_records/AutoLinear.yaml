@@ -1,0 +1,140 @@
+
+## vim:set ff=unix expandtab ts=4 sw=4: 
+citationKey: Ceballos2018AL
+name: ALV 
+longName: Autonomous Linear Vegetation Model 
+version: 1
+model-id: V0019
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+entryCreationDate: 2/2/2018
+lastModification: 12/4/2018
+modApproach: process based
+partitioningScheme: dynamic
+spaceScale: global 
+#    unit: "1°"
+timeResolution: monthly 
+abstract: "Test"
+bibtex: "@article{Ceballos2018AN,
+            author = {Ceballos-Núñez, Verónika},
+            journal = {In production},
+            number = {1},
+            pages = {1-2},
+            title = {Autonomous Linear Vegetation Model},
+            volume = {1},
+            year = {2018}
+        }"
+#t = # units: days, years for allocation
+model:
+    - state_variables:
+        - C_f:
+            desc: Carbon in foliage
+            unit: "kgC*m^{-2}" 
+            key: foliage
+        - C_NSC:
+            desc: Non Structural Carbohydrates
+            unit: "kgC*m^{-2}" 
+            key: sapwood #fixme?
+        - C_w:
+            desc: Carbon in wood (wood of stem, branches, and roots)
+            unit: "kgC*m^{-2}" 
+            key: wood
+        - C_r:
+            desc: Carbon in fine roots
+            unit: "kgC*m^{-2}" 
+            key: fine_roots
+    - photosynthesis_parameters:
+        - t:
+            desc: time step
+            unit: "day"
+            type: variable
+            key: time_symbol
+        - k_1:
+            desc: Absorption rates (light, CO2, water...)
+            unit: "day^{-1}"
+            exprs: # Might depend on soil moisture (also C_r), light use effi (also C_f)
+            type: variable
+            key: NPP
+    - partitioning_rates:
+        - eta_f:
+            desc: Flux rate of photosynthetically fixed carbon from foliage to foliage # fixme? This is the + feedb loop's rate
+            unit: "day^{-1}"
+            key: part_foliage 
+        - eta_NSC:
+            desc: Flux rate of photosynthetically fixed carbon from foliage to Non Structural Carbohydrates
+            unit: "day^{-1}"
+            key: part_sapwood # fixme? Include in Model.py
+        - eta_w:
+            desc: Flux rate of photosynthetically fixed carbon from Non Structural Carbohydrates to wood
+            unit: "day^{-1}"
+            key: part_wood
+        - eta_r:
+            desc: Flux rate of photosynthetically fixed carbon from Non Structural Carbohydrates to roots
+            unit: "day^{-1}"
+            key: part_roots
+    - internal_cycling_rates: 
+# These rates may depend on availaability of resources (light, water, nutrients...)
+        - gamma_fNSC:
+            desc: "Flux rate of carbon from $C_NSC$ to foliage"
+            #exprs: "gamma_fNSC = Piecewise((0.5,t<1),(1,True))"
+            unit: "day^{-1}"
+            key:
+    - release_rates: 
+# These release rates may further be partitioned into single rates respiration, litter...: exprs = "gamma_f = resp_f + litter_f"
+        - gamma_f:
+            desc: "Rate in which carbon leaves from $C_f$ to the exterior (respiration, litter, etc.)"
+            unit: "day^{-1}"
+            key:
+        - gamma_w:
+            desc: "Rate in which carbon leaves from $C_w$ to the exterior (respiration, litter, etc.)"
+            unit: "day^{-1}"
+            key:
+        - gamma_r:
+            desc: "Rate in which carbon leaves from $C_r$ to the exterior (respiration, litter, etc.)"
+            unit: "day^{-1}"
+            key:
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(4,1,[C_f,C_NSC,C_w,C_r])"
+            desc: vector of states for vegetation
+        - u:
+            desc: scalar function of photosynthetic inputs
+            exprs: "u = k_1" 
+            key: scalar_func_phot    # or: phot_in_vec # fixme: add to Model.py
+        - beta: 
+            key: part_coeff    
+            exprs: "beta=Matrix(4,1,[eta_f,0,0,0])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - B:
+            key: cyc_matrix    
+            #key: decomp_op_nonlin
+            exprs: "B = Matrix([[-(gamma_f+eta_NSC),gamma_fNSC,0,0],
+                               [eta_NSC, -(eta_w+eta_r+gamma_fNSC), 0, 0],
+                               [0, eta_w, -(gamma_w), 0],
+                               [0, eta_r, 0, -gamma_r]])"
+            desc: matrix of cycling rates 
+        - f_v:
+            desc: the righthandside of the ode
+            exprs: "f_v = u*beta + B*x"
+            key: state_vector_derivative
+model_run_data:
+    parameter_sets:
+        - "set1":
+            values: {'k_1': 2, 'eta_f': 1, 'eta_NSC': 0.016, 'eta_w': 0.001, 'eta_r': 0.003, 'gamma_f': 0.01, 
+           'gamma_fNSC': 0.01, 'gamma_w': 0.0001, 'gamma_r': 0.0005}
+    initial_values:
+        - "X_0":
+            values: {C_f: 15, C_NSC: 15, C_w: 150, C_r: 90}
+    run_times:
+        - RT1:
+            start: 0
+            end: 2190
+            step_size: 1
+
+    possible_combinations:
+        - ["set1", "X_0", RT1]
+
+
+    
+
