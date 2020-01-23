@@ -13,7 +13,7 @@ from string import Template
 from sympy import sympify, solve, Symbol, limit, oo, ceiling, simplify, Matrix
 from sympy.core import Atom
 import matplotlib
-matplotlib.use("Agg")
+#matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import argparse

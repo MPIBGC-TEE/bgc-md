@@ -3,6 +3,7 @@ from copy import copy, deepcopy
 from pathlib import Path
 from sympy import sympify, Symbol, flatten, Matrix, diff, MatrixSymbol, simplify, Eq, zeros, eye, diag 
 from sympy.core import Atom
+from string import Template
 
 import re
 import string
@@ -590,7 +591,7 @@ def load_model_run_combinations(model_run_data, parameter_sets, initial_values, 
 class Model:
     @classmethod
     def no_variables_sections(cls):
-        return ('parameter_sets','componentscheme' )
+        return ('paramefrom string import Templateter_sets','componentscheme' )
 
     
     @classmethod
@@ -631,7 +632,8 @@ class Model:
         name=yaml_file_path.stem
         # now load the yaml str into a dictionary
         try:
-             complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
+             #complete_dict = yaml.load(yaml_str,Loader=yaml.FullLoader)
+             complete_dict = yaml.load(yaml_str)#,Loader=yaml.FullLoader)
         except yaml.YAMLError as ye:
             msg=Template("The Yaml in file ${ps} caused the following exception ${submsg}").substitute(ps=str(model.yaml_file_path),submsg=str(ye))
             raise(ModelInitializationException(msg))

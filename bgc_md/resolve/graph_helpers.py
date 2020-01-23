@@ -9,7 +9,8 @@ from functools import lru_cache,reduce
 from copy import deepcopy
 from testinfrastructure.helpers import pe
 from .MVar import MVar
-from pygraphviz import *
+from pygraphviz.agraph import AGraph
+#from pygraphviz import *
 import networkx as nx
 from typing import List,Set,Tuple
 import plotly.plotly as py
@@ -196,7 +197,7 @@ def draw_multigraph_graphviz(allMvars,allComputers):
                 Ae.attr['fontcolor']=colordict[computer_colors[c.name]]
                 Ae.attr['label']=c.name
     #print(A.string()) # print to screen
-    A.draw('Multigraph.png',prog="circo") # draw to png using circo
+    A.draw('Multigraph.svg',prog="circo") # draw using circo
 
 def create_multigraph(allMvars,allComputers):
     G=nx.DiGraph()
@@ -360,7 +361,8 @@ def draw_Graph_png(G,file_name_trunk):
     for edge in G.edges:
         A.add_edge(node_2_string(edge[0]),node_2_string(edge[1]))
     #print(A.string()) # print to screen
-    A.draw(file_name_trunk+'.png',prog="circo") # draw to png using circo
+    #A.draw(file_name_trunk+'.png',prog="circo") # draw to png using circo
+    A.draw(file_name_trunk+'.svg',prog='circo') 
 
 def minimal_startnodes_for_single_var(
          spg:nx.Graph

@@ -13,7 +13,7 @@ from .helpers import working_directory
 import shutil
 import subprocess
 import matplotlib
-matplotlib.use("Agg")
+#matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import plotly.offline as po
 

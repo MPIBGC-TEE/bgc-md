@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import matplotlib.pyplot as plt
 from bgc_md.resolve.helpers import  get3, computable_mvar_names
 from bgc_md.resolve.graph_helpers import ( 

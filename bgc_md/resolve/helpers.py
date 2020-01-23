@@ -82,7 +82,7 @@ def special_vars(model_id):
     return gns[special_var_string] 
 
 def names_of_available_mvars(model_id):
-    return [str(k) for k in special_vars(model_id).keys()]
+    return frozenset([str(k) for k in special_vars(model_id).keys()])
 
 
 

@@ -3,7 +3,7 @@ from pathlib import Path
 from functools import reduce
 import numpy as np
 import matplotlib
-matplotlib.use("Agg")
+#matplotlib.use("Agg")
 matplotlib.rcParams.update({'figure.max_open_warning': 0})
 import matplotlib.pyplot as plt
 from sympy import sympify, solve, Symbol, limit, oo, ceiling, simplify, Matrix

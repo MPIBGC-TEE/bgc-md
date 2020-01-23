@@ -1,0 +1,2 @@
+At the moment we can not test the notebooks automatically. The tests for the example models are in ../TestModelFiles.py
+

@@ -41,7 +41,7 @@ def remove_leading_whitespace(string,start):
 class TestComputersBgc(unittest.TestCase):
 
     def test_arg_names(self):
-        # here we test the (growing) sets of Mvars and Computers included in the packe
+        # here we test the (growing) sets of Mvars and Computers included in the package
         # compute the set of computable Mvars from the names of defined variables 
         # this is the set of mvars supposedly given in the model file 
         C=allComputers['smooth_reservoir_model(coord_sys,state_vector,time_symbol,compartmental_dyad,input_vector)']
