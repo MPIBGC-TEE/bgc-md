@@ -23,66 +23,66 @@ from pathlib import Path
 import csv
 # local imports
 t=Symbol('t')
-    ## first we initialize the symbolic ReservoirModel
-    
-    S_1, S_2, S_3 = symbols('S_1 S_2 S_3')
-    t = symbols('t')
-    I_1_expr = Function('I_1')(t)
-    alpha, beta = symbols('alpha beta')
-    k_3 = symbols('k_3')
-    S_1max = symbols('S_1max')
-    
-    state_vector = Matrix(3,1, [S_1, S_2, S_3])
-    
-    # flux rate from S_1 to S_2
-    a_21 = (f(S_1)*f(S_2))**(1/2)
-    
-    # decomposition rate of S_1
-    a_11 = -(1/(S_1**(1/alpha))*(S_1+I_1_expr)/(S_1max))**alpha \
-           -(1/(S_1**(1/alpha))*(S_1-((S_1+I_1_expr)/S_1max)**alpha/S_1max))**beta \
-           -a_21
+## first we initialize the symbolic ReservoirModel
 
-    # no flux from S_1 to S_3
-    a_31 = 0
-    
-    # no flux from S_2 to S_1
-    a_12 = 0
-    
-    # decomposition rate of S_2
-    a_22 = -(f(S_2)*f(S_3))**(1/2)
-    
-    # flux rate from S_2 to S_3
-    a_32 = (f(S_2)*f(S_3))**(1/2)
-    
-    # no flux from S_3 to S_1
-    a_13 = 0
-    
-    # no flux from S_3 to S_2
-    a_23 = 0
-    
-    # outflow rate of S_3
-    a_33 = -k_3
-    
-    # compose the (nonlinear) compartmental matrix
-    A = Matrix([[a_11, a_12, a_13],
-                [a_21, a_22, a_23],
-                [a_31, a_32, a_33]])
+S_1, S_2, S_3 = symbols('S_1 S_2 S_3')
+t = symbols('t')
+I_1_expr = Function('I_1')(t)
+alpha, beta = symbols('alpha beta')
+k_3 = symbols('k_3')
+S_1max = symbols('S_1max')
 
-    # input vector
-    I = Matrix(3,1,[I_1_expr,0,0])
+state_vector = Matrix(3,1, [S_1, S_2, S_3])
 
-    srm = SmoothReservoirModel.from_B_u(
-        state_vector,
-        t,
-        A,
-        I
-    )
+# flux rate from S_1 to S_2
+a_21 = (f(S_1)*f(S_2))**(1/2)
+
+# decomposition rate of S_1
+a_11 = -(1/(S_1**(1/alpha))*(S_1+I_1_expr)/(S_1max))**alpha \
+       -(1/(S_1**(1/alpha))*(S_1-((S_1+I_1_expr)/S_1max)**alpha/S_1max))**beta \
+       -a_21
+
+# no flux from S_1 to S_3
+a_31 = 0
+
+# no flux from S_2 to S_1
+a_12 = 0
+
+# decomposition rate of S_2
+a_22 = -(f(S_2)*f(S_3))**(1/2)
+
+# flux rate from S_2 to S_3
+a_32 = (f(S_2)*f(S_3))**(1/2)
+
+# no flux from S_3 to S_1
+a_13 = 0
+
+# no flux from S_3 to S_2
+a_23 = 0
+
+# outflow rate of S_3
+a_33 = -k_3
+
+# compose the (nonlinear) compartmental matrix
+A = Matrix([[a_11, a_12, a_13],
+            [a_21, a_22, a_23],
+            [a_31, a_32, a_33]])
+
+# input vector
+I = Matrix(3,1,[I_1_expr,0,0])
+
+#srm = SmoothReservoirModel.from_B_u(
+#    state_vector,
+#    t,
+#    A,
+#    I
+#)
 special_vars={
     #'coord_sys':CoordS #Coordinate syste
-    #,'input_vector':I
-    #,'compartmental_dyad':B
+    'input_tuple':I
+    ,'compartmental_matrix':A
     ,'time_symbol':time_symbol
     ,'state_vector':s
-    ,'smooth_model_run_dictionary':{'default':smr}
+    #,'smooth_model_run_dictionary':{'default':smr}
     #,'smooth_model_run':smr 
 }

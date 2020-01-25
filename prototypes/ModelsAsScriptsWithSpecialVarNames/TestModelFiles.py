@@ -54,6 +54,10 @@ class TestModelFiles(unittest.TestCase):
         ##smr=get(var_name="smooth_model_run",model_id='miniCable')
         #self.assertTrue('default' in smrs.keys())
 
+    def test_Sujan(self):
+        from bgc_md.resolve.MvarsAndComputers import Mvars as myMvars
+        from bgc_md.resolve.MvarsAndComputers import Computers as myComputers
+        srm=get3(var_name="smooth_reservoir_model",allMvars=myMvars,allComputers=myComputers,model_id='Sujan')
 
     @unittest.skip
     def test_Symbols_and_Quanteties(self):
