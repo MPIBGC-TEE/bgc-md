@@ -35,6 +35,8 @@ with import <nixpkgs> {};
         ps.numpy 
         ps.sympy 
         ps.bootstrapped-pip 
+        ps.jupyterlab
+        ps.ipyparallel # mecessarry
         #ps.netcdf4
       ] 
     ++ [my_netcdf4_python]
