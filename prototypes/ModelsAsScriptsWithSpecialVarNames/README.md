@@ -36,7 +36,7 @@ In the second case the same assistance is required for queries, which are best d
 
 
 ## Ensurance of reaching the objectives
-The development should be test driven. The required functionality is represented by the 'reports' we want to create, which translates into a set of jupyter notebooks we want to keep functional regardless of changes in the
+The development should be test driven. The required functionality is represented by the 'reports' we want to create, which intuitively translates into a set of jupyter notebooks we want to keep functional regardless of changes in the
 framework or the model `source.py` files.
 The set of functional reports may contain notebooks of both kinds:
 * model specific analyses (plural)
@@ -45,7 +45,8 @@ The set of functional reports may contain notebooks of both kinds:
    * of model runs (for numeric cases where the models may not be inferable from data)
 It is evident that it is undesirable to maintain duplicated similar notebooks for different models.
 Either the (report=notebook) creation has to be automated or the availability of common results for sets of models has to be tested. This shows that the ability to compare models is a byproduct of deduplication.
-The performa
+From a testing perspective a set of notebooks is unwieldy though. It has the role of integration tests, which are much more complex and maintainance intensive that unit test. 
+It seems more reasonable to create a test matrix (as the tensor product set of the set of request and a set of models ).  
 
 
 ## various notes on implementation

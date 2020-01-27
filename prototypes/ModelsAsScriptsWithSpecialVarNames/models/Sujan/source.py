@@ -21,6 +21,8 @@ from sympy.physics.units import convert_to
 from numpy import linspace,array
 from pathlib import Path
 import csv
+def f(S):
+    return 0.1*S
 # local imports
 t=Symbol('t')
 ## first we initialize the symbolic ReservoirModel
@@ -71,18 +73,19 @@ A = Matrix([[a_11, a_12, a_13],
 # input vector
 I = Matrix(3,1,[I_1_expr,0,0])
 
-#srm = SmoothReservoirModel.from_B_u(
-#    state_vector,
-#    t,
-#    A,
-#    I
-#)
+srm = SmoothReservoirModel.from_B_u(
+    state_vector,
+    t,
+    A,
+    I
+)
 special_vars={
     #'coord_sys':CoordS #Coordinate syste
     'input_tuple':I
     ,'compartmental_matrix':A
-    ,'time_symbol':time_symbol
-    ,'state_vector':s
+    ,'time_symbol':t
+    ,'state_vector':state_vector
+    ,'smooth_reservoir_model':srm # this line should become obsolete since the preceding itmes clearly contain sufficient information . 
     #,'smooth_model_run_dictionary':{'default':smr}
     #,'smooth_model_run':smr 
 }
