@@ -9,3 +9,11 @@ docker_images/centos7/CompartmentalSystems
 *.swp
 prototypes/ModelsAsScriptsWithSpecialVarNames/models/miniCable/cable_all/cable_transit_time/example_runs/spinup/cable_*nml
 prototypes/ModelsAsScriptsWithSpecialVarNames/models/miniCable/cable_all/cable_transit_time/example_runs/spinup/cnpspindump*.nc
+
+prototypes/ModelsAsScriptsWithSpecialVarNames/models/miniCable/cable_all/cable_transit_time/example_runs/spinup/*.csv
+prototypes/ModelsAsScriptsWithSpecialVarNames/models/miniCable/cable_all/cable_transit_time/example_runs/spinup/*.nml
+prototypes/ModelsAsScriptsWithSpecialVarNames/models/miniCable/cable_all/cable_transit_time/example_runs/spinup/output/*
+
+prototypes/ModelsAsScriptsWithSpecialVarNames/models/miniCable/cable_all/cable_transit_time/example_runs/parallel_200_year/*.csv
+prototypes/ModelsAsScriptsWithSpecialVarNames/models/miniCable/cable_all/cable_transit_time/example_runs/parallel_200_year/*.nml
+prototypes/ModelsAsScriptsWithSpecialVarNames/models/miniCable/cable_all/cable_transit_time/example_runs/parallel_200/output/*

@@ -31,16 +31,28 @@ with import <nixpkgs> {};
     name ="cable";
     #src =./CABLE-SRC.tar.bz2;
     ctn ="CABLE-SRC";
-    buildInputs = with pkgs; [ gnumake gfortran my_netcdf_fortran netcdf-mpi openmpi gdb openssh 
-    (python37.withPackages ((ps: [
+    buildInputs = with pkgs; [ 
+      gnumake 
+      gfortran #cable
+      my_netcdf_fortran 
+      netcdf-mpi 
+      openmpi 
+      gdb 
+      openssh 
+      nodejs #necessary for jupyter lab vi extension 
+      (python37.withPackages ((ps: [
         ps.mpi4py 
         ps.numpy 
         ps.sympy 
         ps.bootstrapped-pip 
+        ps.jupyterlab
+        ps.ipyparallel # mecessarry
         #ps.netcdf4
       ] 
-    ++ [my_netcdf4_python]
-    )))
+      ++ [my_netcdf4_python]
+      )))
     ];
     ncd= with pkgs; my_netcdf_fortran;
 }
+
+# jupyter serverextension enable --py ipyparallel 

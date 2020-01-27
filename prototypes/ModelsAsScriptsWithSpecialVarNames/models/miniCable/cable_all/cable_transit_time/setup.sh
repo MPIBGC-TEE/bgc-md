@@ -23,8 +23,8 @@ function unpackPhase(){
 }
 function prepareBuild(){
   #export CFLAGS='-g -O0 -x f95-cpp-input -Wall'
-  export CFLAGS='-g -O0 -x f95-cpp-input'
-  #export CFLAGS='-x f95-cpp-input'
+  #export CFLAGS='-g -O0 -x f95-cpp-input' debug
+  export CFLAGS='-x f95-cpp-input'
   export LD='-lnetcdff'
   export LDFLAGS="-L ${NCDIR} -O2"
 	echo $ctn

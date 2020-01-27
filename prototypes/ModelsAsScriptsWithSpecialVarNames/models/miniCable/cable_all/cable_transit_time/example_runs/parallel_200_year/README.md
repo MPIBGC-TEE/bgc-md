@@ -6,7 +6,10 @@
 #   CABLE-run-test.lgy/spinup (on the harddrive)
 #   for the cable run as Chris did we use the  script mknml.bash in cable_chris_transit_time/mm/ on PASSPORT
 # we have to change the paths in this scripts
-# instead of /data/lo02b/CABLE-run-tracebility we need  My_Passport/cable_chris_transit_time/CABLE-AUX/offline/gridinfo_NCAR_1.9x2.5_landfrac_revised
+# instead of /data/lo02b/CABLE-run-tracebility we need 
+# ../../CABLE-AUX/offline/gridinfo_NCAR_1.9x2.5_landfrac_revised
+# (originally # My_Passport/cable_chris_transit_time/CABLE-AUX/offline/gridinfo_NCAR_1.9x2.5_landfrac_revised
+#
 # veg_params_cable_MK3L_v2_kf.txt
 # 
 # age4_annual.ncl produces fluxes (in this script tha last of before years values are used (364,:,:,:) since they are updated later or eqrlier than other varibles
