@@ -74,10 +74,23 @@ Computers=IndexedSet({
             ,func=lambda srm : srm.xi_T_N_u_representation()[2]
             ,description="""Computes N of the SoilModel normal form B=xi*T*N"""
         )
+
+
         ,Computer('smooth_reservoir_model(coord_sys,state_vector,time_symbol,compartmental_dyad,input_vector)' 
             ,func=functions.srm_from_B_u_tens
             ,description="""Produces a smoth reservoir model"""
         )
+        ,Computer('smooth_reservoir_model(state_vector,time_symbol,compartmental_matrix,input_tuple)' 
+            ,func= lambda state_vector, time_symbol, compartmental_matrix, input_tuple: SmoothReservoirModel.from_B_u(
+                state_vector,
+                time_symbol,
+                compartmental_matrix,
+                input_tuple 
+            )
+            ,description="""Produces a smoth reservoir model"""
+        )
+
+
         ,Computer('coord_sys(state_tuple)' 
             ,func=functions.default_coordinate_system
             ,description="""Produces a smoth reservoir model"""
