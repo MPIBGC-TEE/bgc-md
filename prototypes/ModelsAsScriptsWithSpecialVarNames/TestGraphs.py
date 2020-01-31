@@ -33,67 +33,6 @@ from functools import reduce
 
 
 
-#def powerset(S):
-#    # this version is recursive and conceptually close to the definition
-#    # but very inefficient since it involves the creation of a set (which in some implementations involves checking every element against every other for duplication)
-#    if S==frozenset([]):
-#        P=frozenset([
-#            frozenset([])
-#        ])
-#    else:
-#        P=frozenset([S])
-#        for e in S:
-#            P=P.union(
-#                powerset(
-#                    S.difference( frozenset([e]))
-#                )
-#            )
-#    return P
-#class TestSets(TestCase):
-#    def test_powerset(self):
-#        self.assertEqual(powerset(frozenset([])              ),frozenset([ frozenset(sl) for sl in [ []                         ] ]))
-#        self.assertEqual(powerset(frozenset(['a'])           ),frozenset([ frozenset(sl) for sl in [ [] ,['a']                  ] ]))
-#        self.assertEqual(powerset(frozenset(['a','b'])       ),frozenset([ frozenset(sl) for sl in [ [] ,['a'] ,['b'] ,['a','b'] ] ]))
-#        self.assertEqual(
-#             powerset(frozenset(['a','b','c']))
-#            ,frozenset(
-#                [ frozenset(sl) for sl in 
-#                    [ 
-#                         [] ,['a'] ,['b'] ,['c']
-#                        ,['a','b'],['a','c'],['b','c']
-#                        ,['a','b','c']
-#                    ]
-#                ]
-#            )
-#        )
-#
-#        self.assertEqual(
-#             powerset(frozenset(['a','b','c','d']))
-#            ,frozenset(
-#                [ frozenset(sl) for sl in 
-#                    [ 
-#                         []
-#                        ,['a'] 
-#                        ,['b'] 
-#                        ,['c'] 
-#                        ,['d']
-#                        ,['a','b']
-#                        ,['a','c']
-#                        ,['a','d']
-#                        ,['b','c']
-#                        ,['b','d']
-#                        ,['c','d']
-#                        ,['a','b','c']
-#                        ,['a','b','d']
-#                        ,['a','c','d']
-#                        ,['b','c','d']
-#                        ,['a','b','c','d']
-#                    ]
-#                ]
-#            )
-#        )
-
-
 class TestSets(TestCase):
     
     def test_powerlist(self):
@@ -239,7 +178,7 @@ class TestGraphs(TestCase):
         
         # Now we build the directed Graph we can use to compute connectivity
         # the Nodes are sets of Mvars (elemenst of the powerset of all Mvars)
-        # and a connection between two sets indicates computability of the targes set from 
+        # and a connection between two sets indicates computability of the target set from 
         # the source set.
         # The complete graph would contain all elements of the powerset of allMvars and all
         # possible connections, which is prohibitively expensive.

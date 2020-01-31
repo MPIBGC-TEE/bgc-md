@@ -175,8 +175,11 @@ class TestResolveBgc(unittest.TestCase):
             ,'compartmental_dyad'
             ,'input_vector'
             ,'input_tuple'
-            ,'smooth_reservoir_model' # new (provided by computers)
-            ,'compartmental_matrix'   # new (provided by computers)
+            ,'smooth_reservoir_model'       # new (provided by computers)
+            ,'compartmental_matrix'         # new (provided by computers)
+            ,'soil_decomposition_matrix_N'  # new (provided by computers)
+            ,'soil_scaling_matrix_xi'       # new (provided by computers)
+            ,'soil_transport_matrix_T'      # new (provided by computers)
         ])
         self.assertEqual(res,ref)
     

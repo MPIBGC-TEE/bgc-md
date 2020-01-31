@@ -1,8 +1,9 @@
 #!/bin/bash 
 export odir="output/new4"
 #export np=33 #segfaults 
-export np=16
-#export np=9 #original
+#export np=16 #segfault at year 2005 in parallel
+export np=8
+#export np=9 #original in China
 export spinupDir="spinup"
 export cable_exe="../CABLE-SRC/offline/tmpParallel/cable-mpi"
 

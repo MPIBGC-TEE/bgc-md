@@ -101,8 +101,14 @@ def computable_mvar_names(
         ,allComputers:IndexedSet
         ,names_of_available_mvars:frozenset
     )->frozenset:
-    # bottom up approach: repeatedly compute all directly (in the next step) reachable Mvars 
-    # and use the enriched set for the next iteration until the set stays constant 
+    # fixme mm: 
+    # replace by the new graph based method
+    # We can already compute the graph. We only have to do it once and can easyly inver the union
+    # of all nodes reachable from the startset.
+    #
+    # this is the old bottom up approach: repeatedly compute all
+    # directly (in the next step) reachable Mvars and use the enriched set for
+    # the next iteration until the set stays constant 
     dcNames=directly_computable_mvar_names(allMvars,allComputers,names_of_available_mvars)
     
     if dcNames.issubset(names_of_available_mvars):

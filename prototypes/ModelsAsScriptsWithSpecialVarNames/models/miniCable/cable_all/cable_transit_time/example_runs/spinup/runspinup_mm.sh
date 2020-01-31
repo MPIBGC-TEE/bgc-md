@@ -1,1 +1,0 @@
-../parallel_200_year/runspinup_mm.sh
