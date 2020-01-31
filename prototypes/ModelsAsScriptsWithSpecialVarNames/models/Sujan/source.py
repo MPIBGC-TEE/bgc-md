@@ -85,7 +85,7 @@ special_vars={
     ,'compartmental_matrix':A
     ,'time_symbol':t
     ,'state_vector':state_vector
-    ,'smooth_reservoir_model':srm # this line should become obsolete since the preceding itmes clearly contain sufficient information . 
+    #,'smooth_reservoir_model':srm # this line should become obsolete since the preceding itmes clearly contain sufficient information . 
     #,'smooth_model_run_dictionary':{'default':smr}
     #,'smooth_model_run':smr 
 }
