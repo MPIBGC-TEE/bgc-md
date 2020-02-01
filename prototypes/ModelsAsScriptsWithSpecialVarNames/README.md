@@ -82,14 +82,22 @@ It seems more reasonable to create a test matrix (as the tensor product set of t
 
 * Library vs. Framework CompartmentalSystems and LAPM can be considered
   libraries that can be called in different parallelisation scenarios and with
-  different data.  bgc-md has both library and framework characteristics.  The
-  (types) of MVars and computers connecting them represents a domain knowledge
-  in form of a library.  The collection of different models enforces some rules
-  on the way a single model has to formulated in order to be comparable to
-  other models. In this sense it comprises a framework in which different
-  models can be plugged.  (Sympolical) Models and data can be seen as
-  orthogonal to each other but are also connected ( for a model wiht more pools
-  and connections we will need more data...) How much(links to the) data should
-  be part of the database?
+  different data.  
+  bgc-md has both library and framework characteristics.  
+   * 	The (types) of MVars and computers connecting them represents a domain knowledge
+    	in form of a library.  
+   * 	The collection of different models enforces some rules on the way a
+     	single model has to be formulated in order to be comparable to other
+	models. 
+	In this sense it comprises a framework into which different models can be
+	plugged.  
+  This raises practical questions.
+  (Sympolic) Models and data can (preferably) be seen as orthogonal to each other, 
+  but are also connected. 
+  ( for a model with more pools and connections we will
+  need more data...) 
+  Since the aim is to compare models across different datasets the model specific part of 
+  data representation should be minimized.
+  How much (links to the) data should be part of the database?
 
 
