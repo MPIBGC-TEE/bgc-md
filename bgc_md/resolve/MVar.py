@@ -1,3 +1,7 @@
+# This code is outdated since
+# We can achieve the functionality with type hints.
+# look at inspect_type_hints.py 
+#
 from typing import List,Tuple,Callable,Set 
 from testinfrastructure.helpers import pe
 from .NamedObject import NamedObject
