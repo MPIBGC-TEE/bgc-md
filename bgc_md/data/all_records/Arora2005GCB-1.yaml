@@ -17,11 +17,6 @@ timeResolution: monthly
 doi: 10.1111/j.1365-2486.2004.00890.x
 model:
     - state_variables:
-        - t:
-            desc: time step
-            unit: "year"
-            type: variable
-            key: time_symbol
         - C_L:
             desc: Amount of carbon for the leaf
             key: "foliage"
@@ -36,6 +31,11 @@ model:
             unit: "kgC*m^{-2}" 
     
     - respiration_fluxes:
+        - t:
+            desc: time step
+            unit: "year"
+            type: variable
+            key: time_symbol
         - R_gL:
             desc: Growth respiration flux for the leaves
             type: parameter

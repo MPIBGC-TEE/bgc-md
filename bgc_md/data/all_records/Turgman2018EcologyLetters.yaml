@@ -10,11 +10,6 @@ claimedDynamicPart: "yes"
 doi: 10.1111/ele.13136 
 model:
     - state_variables:
-        - t:
-            desc: time step
-            unit: "month"
-            type: variable
-            key: time_symbol
         - C:
             desc: Non-structural carbon (NSC), starch
             key: "sapwood"
@@ -29,6 +24,11 @@ model:
             unit: "kgC*m^{-2}" 
 
     - photosynthesis_parameters:
+        - t:
+            desc: time step
+            unit: "month"
+            type: variable
+            key: time_symbol
         - A_n:
             desc: whole-plant net photosynthesis (classic photosynthetic model of CO2 demand for carbon-limited photosynthesis), function of the interstitial CO2 concentration, the daytime leaf respiration, the maximum rate of carboxylation, and empirical constants
     - release_rates: 

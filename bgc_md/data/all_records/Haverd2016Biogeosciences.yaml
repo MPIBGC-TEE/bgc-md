@@ -11,11 +11,6 @@ claimedDynamicPart: "yes"
 doi: 10.5194/bg-13-761-2016
 model:
     - state_variables:
-        - t:
-            desc: time step
-            unit: "day"
-            type: variable
-            key: time_symbol
         - C_L:
              desc: Leaf biomass 
              key: "foliage"
@@ -29,6 +24,11 @@ model:
              key: "wood"
              unit: "molC*m^{-2}" 
     - photosynthesis_parameters:
+        - t:
+            desc: time step
+            unit: "day"
+            type: variable
+            key: time_symbol
         - F_Cgrowth:
              desc: Growth, the flux of C to structural components, parameterized by a logistic curve. Function of soil water, C_L, and C_R relative to a prognostic carrying capacity C_max
              unit: "molC*m^{-2}*day^{-1}" 

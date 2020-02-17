@@ -29,11 +29,6 @@ timeResolution: yearly # based on table 4. See also table A1> Photosynthesis: se
 doi: 10.1111/j.1365-2486.2004.00890.x
 model:
     - state_variables:
-        - t:
-            desc: time step
-            unit: "year"
-            type: variable
-            key: time_symbol
         - C_leaf:
             desc: Amount of carbon for the leaf
             key: "foliage"
@@ -47,6 +42,11 @@ model:
             key: "fine_roots"
             unit: "kgC*m^{-2}" 
     - photosynthetic_parameters:
+        - t:
+            desc: time step
+            unit: "year"
+            type: variable
+            key: time_symbol
         - GPP:
             desc: Carbon gain via photosynthesis (Gross Primary Productivity, GPP)
             type: variable

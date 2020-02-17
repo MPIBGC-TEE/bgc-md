@@ -19,11 +19,6 @@ doi: 10.1029/93GB02725
 # 10.2307/1313568 1999 paper
 model:
     - state_variables:
-        - t:
-            desc: time step
-            unit: "year"
-            type: variable
-            key: time_symbol
         - C_f:
             desc: Carbon in foliage
             key: "foliage"
@@ -35,6 +30,11 @@ model:
             key: "wood"
     
     - photosynthetic_parameters:
+        - t:
+            desc: time step
+            unit: "year"
+            type: variable
+            key: time_symbol
 # The model estimate of global terrestrianet primary production is 48 PgC yr -1 with a maximum light use efficiency of 0.39 g C MJ -1 PAR.
         - SOL: 
             desc: Total solar radiation (SOL(x,t))
