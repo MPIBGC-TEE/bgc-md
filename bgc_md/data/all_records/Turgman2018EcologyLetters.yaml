@@ -1,0 +1,80 @@
+
+## vim:set ff=unix expandtab ts=4 sw=4:
+name: 
+version: 1
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+modApproach: process based
+partitioningScheme: dynamic 
+claimedDynamicPart: "yes"
+doi: 10.1111/ele.13136 
+model:
+    - state_variables:
+        - t:
+            desc: time step
+            unit: "month"
+            type: variable
+            key: time_symbol
+        - C:
+            desc: Non-structural carbon (NSC), starch
+            key: "sapwood"
+            unit: "kgC*m^{-2}" 
+        - X:
+            desc: Xylem biomass 
+            key: "xylem"
+            unit: "kgC*m^{-2}" 
+        - L:
+            desc: Leaf and fine roots biomass which are linearly related through a constant
+            key: "sapwood"
+            unit: "kgC*m^{-2}" 
+
+    - photosynthesis_parameters:
+        - A_n:
+            desc: whole-plant net photosynthesis (classic photosynthetic model of CO2 demand for carbon-limited photosynthesis), function of the interstitial CO2 concentration, the daytime leaf respiration, the maximum rate of carboxylation, and empirical constants
+    - release_rates: 
+        - m_X:
+            desc: Turnover rate of the xylem
+            unit: "month^{-1}"
+        - m_L:
+            desc: Turnover rate of the xylem
+            unit: "month^{-1}"
+    - internal_cycling_rates: 
+        - C_i:
+            desc: initial NSC that covers carbon for two crown and fine root flushes
+        - W_max:
+            desc: Maximum m sucrose loading rate and depends on tree size.
+        - k_c:
+            desc: Michaelis constant for the sucrose loading rate
+        - W:
+            desc: Sucrose loading rate from storage to the phloem 
+            exprs: "W = (W_max * C)/((k_c*C_i)+C)"
+        - L_opt:
+            desc: Optimal total leaf biomass
+        - U:
+            desc: Variable optimized in the system in the range [0,1]. Fraction of translocatable C invested in xylem reconstruction 
+            exprs: "U = (X/(X+L_opt))*((W-((m_L+m_X)*L_opt))/W)"
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(3,1,[C,X,L])"
+            desc: vector of states for vegetation
+        - u:
+            desc: scalar function of photosynthetic inputs
+            exprs: "u = A_n" 
+            key: scalar_func_phot    # or: phot_in_vec # fixme: add to Model.py
+        - beta: 
+            key: part_coeff    
+            exprs: "beta=Matrix(3,1,[1,0,0])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - B:
+            key: cyc_matrix    
+            #key: decomp_op_nonlin
+            exprs: "B = Matrix([[-W/C,0,0],
+                               [W*U/C, -m_X, 0],
+                               [W*(1-U)/C, 0, -m_L]])"
+            desc: matrix of cycling rates 
+        - f_v:
+            desc: the righthandside of the ode
+            exprs: "f_v = u*beta + B*x"
+            key: state_vector_derivative
+

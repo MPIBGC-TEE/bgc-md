@@ -1,0 +1,75 @@
+
+## vim:set ff=unix expandtab ts=4 sw=4:
+name: HAVANA 
+longName: Hydrology and Vegetation-dynamics Algorithm for Northern Australia
+version: 1
+entryAuthor: "Verónika Ceballos-Núñez"
+entryAuthorOrcid: 0000-0002-0046-1160
+modApproach: process based
+partitioningScheme: dynamic 
+claimedDynamicPart: "yes"
+doi: 10.5194/bg-13-761-2016
+model:
+    - state_variables:
+        - t:
+            desc: time step
+            unit: "day"
+            type: variable
+            key: time_symbol
+        - C_L:
+             desc: Leaf biomass 
+             key: "foliage"
+             unit: "molC*m^{-2}" 
+        - C_R:
+             desc: Fine roots biomass 
+             key: "fine_roots"
+             unit: "molC*m^{-2}" 
+        - C_stem:
+             desc: Trunk and coarse roots
+             key: "wood"
+             unit: "molC*m^{-2}" 
+    - photosynthesis_parameters:
+        - F_Cgrowth:
+             desc: Growth, the flux of C to structural components, parameterized by a logistic curve. Function of soil water, C_L, and C_R relative to a prognostic carrying capacity C_max
+             unit: "molC*m^{-2}*day^{-1}" 
+    - partitioning_parameters:
+        - alpha_L:
+             desc: carbon allocation coefficient, Heaviside step function that depends on C_L and C_R
+        - alpha_R:
+             desc: carbon allocation coefficient, Heaviside step function that depends on C_L and C_R
+        - alpha_stem:
+             desc: carbon allocation coefficient, Heaviside step function that depends on C_L and C_R
+    - release_rates: 
+        - k_L:
+             desc: First-order rate constant
+             unit: "day^{-1}" 
+        - k_R:
+             desc: First-order rate constant 
+             unit: "day^{-1}" 
+        - m_stem:
+             desc: Stem biomass turnover
+             unit: "molC*m^{-2}*day^{-1}" 
+    - components:
+        - x: 
+            key: state_vector 
+            exprs: "x=Matrix(3,1,[C_L,C_R,C_stem])"
+            desc: vector of states for vegetation
+        - u:
+            desc: scalar function of photosynthetic inputs
+            exprs: "u = F_Cgrowth" 
+            key: scalar_func_phot    # or: phot_in_vec # fixme: add to Model.py
+        - beta: 
+            key: part_coeff    
+            exprs: "beta=Matrix(3,1,[alpha_L,alpha_R,alpha_stem])"
+            desc: vector of partitioning coefficients of photosynthetically fixed carbon
+        - B:
+            key: cyc_matrix    
+            #key: decomp_op_nonlin
+            exprs: "B = Matrix([[-(k_L+(m_stem/C_stem)),0,0],
+                               [0, -(k_R+(m_stem/C_stem)), 0],
+                               [0, 0, -m_stem]])"
+            desc: matrix of cycling rates 
+        - f_v:
+            desc: the righthandside of the ode
+            exprs: "f_v = u*beta + B*x"
+            key: state_vector_derivative
