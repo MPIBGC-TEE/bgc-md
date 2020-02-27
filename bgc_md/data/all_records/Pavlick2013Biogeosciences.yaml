@@ -111,7 +111,7 @@ model:
             desc: Relative allocation to aboveground structure
         - t_10:
             desc: Relative allocation to belowground structure
-    - other_variables:
+    - additionl_variables:
         - f_GERM:
         - gamma_GERM:
             desc: Germination fraction

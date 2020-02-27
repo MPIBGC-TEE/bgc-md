@@ -4,7 +4,7 @@ def template(model):
     sdp= defaults()["paths"]["report_templates"].joinpath("single_model")
     rel+=render(sdp.joinpath("GeneralOverview.py"),model)
     rel+=render(sdp.joinpath("StateVariables.py"),model)
-    rel+=render(sdp.joinpath("AdditionalVariables.py"),model)
+    rel+=render(sdp.joinpath("vAdditionalVariables.py"),model)
     rel+=render(sdp.joinpath("Components.py"),model)
     rel+=render(sdp.joinpath("ReservoirModel.py"),model)
 #    rel+=render(sdp.joinpath("Simulations.py"),model)

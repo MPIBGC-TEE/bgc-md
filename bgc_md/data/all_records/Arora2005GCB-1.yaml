@@ -39,6 +39,7 @@ model:
         - R_gL:
             desc: Growth respiration flux for the leaves
             type: parameter
+            unit: 
         - R_mL:
             desc: Maintenance respiration flux for the leaves
             type: parameter

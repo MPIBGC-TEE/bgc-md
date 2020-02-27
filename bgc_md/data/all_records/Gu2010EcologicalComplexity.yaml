@@ -25,7 +25,7 @@ model:
             desc: Carbon in leaf
             unit:
             key: foliage
-    - photosynthesis_parameters:
+    - photosynthetic_parameters:
         - t:
             desc: time step
             unit: "year"
@@ -42,7 +42,7 @@ model:
         - W:
             desc: Scalar water availability
             type: variable # See Arora and Boer 2005
-    - nutrients:
+    - nutrient_uptake:
         - N_ava:
             desc: effect of nitrogen availability on carbon allocation
             type: variable 

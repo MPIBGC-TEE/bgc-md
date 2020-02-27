@@ -58,17 +58,45 @@ model:
             key: NPP
             unit: "KgC*m^{−2}*yr^{−1}"
             #exprs: "NPP=G-(R_gL+R_gS+R_gR)-(R_mL+R_mS+R_mR)"
-    - other_variables:
+    - additional_variables:
         - k_leaf:
+            desc:
+            unit:
+            type:
+            key:
         - cn_leaf:
+            desc:
+            unit:
+            type:
+            key:
         - k_stem:
+            desc:
+            unit:
+            type:
+            key:
         - cn_stem:
+            desc:
+            unit:
+            type:
+            key:
         - k_roots:
+            desc:
+            unit:
+            type:
+            key:
         - cn_roots:
+            desc:
+            unit:
+            type:
+            key:
         - gt:
             desc: Function of Q_10 and temperature # See table A1 for equations
             type: variable
         - teta:
+            desc:
+            unit:
+            type:
+            key:
     - respiration:
         - R_leaf:
             desc: Leaf respiration
@@ -84,8 +112,22 @@ model:
             type: variable
     - partitioning:
         - Allo_fact_stem:
+            desc:
+            unit:
+            type:
+            key:
+            exprs:
         - Allo_fact_roots:
+            desc:
+            unit:
+            type:
+            key:
+            exprs:
         - Allo_fact_leaf:
+            desc:
+            unit:
+            type:
+            key:
             exprs: "Allo_fact_leaf = 1 - Allo_fact_stem - Allo_fact_roots"
         - a_L:
             desc: Parameter introduced by the author of this entry in order to summarize equations on the paper.   

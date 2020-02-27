@@ -23,7 +23,7 @@ model:
             key: "sapwood"
             unit: "kgC*m^{-2}" 
 
-    - photosynthesis_parameters:
+    - photosynthetic_parameters:
         - t:
             desc: time step
             unit: "month"
@@ -38,7 +38,7 @@ model:
         - m_L:
             desc: Turnover rate of the xylem
             unit: "month^{-1}"
-    - internal_cycling_rates: 
+    - cycling_rates: 
         - C_i:
             desc: initial NSC that covers carbon for two crown and fine root flushes
         - W_max:

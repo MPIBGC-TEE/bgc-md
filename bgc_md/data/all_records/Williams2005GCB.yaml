@@ -73,7 +73,7 @@ model:
             desc: "Turnover of labile C (0 = off, 1 = On)"
         - multtf:
             desc: "Turnover of foliage C (0 = off, 1 = On)"
-    - respiratory_rates:
+    - respiration_parameters:
         - p_2:
             range: "0.2 - 0.7"
             desc: Fraction of GPP respired 
@@ -85,7 +85,7 @@ model:
             unit: "day^{-1}"
             key:
             type: parameter
-    - photosynthesis_parameters:
+    - photosynthetic_parameters:
 #        - LAI:
 #            desc: 
 #            key:
