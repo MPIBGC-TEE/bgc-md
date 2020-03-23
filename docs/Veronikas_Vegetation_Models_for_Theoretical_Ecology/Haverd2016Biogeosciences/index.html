@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: Hydrology and Vegetation-dynamics Algorithm for Northern Australia (HAVANA), version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: Hydrology and Vegetation-dynamics Algorithm for Northern Australia (HAVANA), version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on .</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Haverd et al. (2016)</span>.</p>
+<table>
+<caption>state_variables<br />
+The model section in the yaml file has no subsection: additional_variables.</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(C_{L}\)</span></td>
+<td align="left">Leaf biomass</td>
+<td align="left"><span class="math inline">\(molC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(C_{R}\)</span></td>
+<td align="left">Fine roots biomass</td>
+<td align="left"><span class="math inline">\(molC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(C_{stem}\)</span></td>
+<td align="left">Trunk and coarse roots</td>
+<td align="left"><span class="math inline">\(molC\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>components</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{L}\\C_{R}\\C_{stem}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=F_{Cgrowth}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\beta\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(\beta=\left[\begin{matrix}\alpha_{L}\\\alpha_{R}\\\alpha_{stem}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(B\)</span></td>
+<td align="left">matrix of cycling rates</td>
+<td align="center"><span class="math inline">\(B=\left[\begin{matrix}- k_{L} -\frac{m_{stem}}{C_{stem}} &amp; 0 &amp; 0\\0 &amp; - k_{R} -\frac{m_{stem}}{C_{stem}} &amp; 0\\0 &amp; 0 &amp; - m_{stem}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u\beta + B x\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C_{L}: F_{Cgrowth}\cdot\alpha_{L}\)</span><br />
+<span class="math inline">\(C_{R}: F_{Cgrowth}\cdot\alpha_{R}\)</span><br />
+<span class="math inline">\(C_{stem}: F_{Cgrowth}\cdot\alpha_{stem}\)</span></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(C_{L}: \frac{C_{L}\cdot\left(C_{stem}\cdot k_{L} + m_{stem}\right)}{C_{stem}}\)</span><br />
+<span class="math inline">\(C_{R}: \frac{C_{R}\cdot\left(C_{stem}\cdot k_{R} + m_{stem}\right)}{C_{stem}}\)</span><br />
+<span class="math inline">\(C_{stem}: C_{stem}\cdot m_{stem}\)</span></p>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(C_L = \frac{F_{Cgrowth}^{2}\cdot\alpha_{L}\cdot\alpha_{stem}}{F_{Cgrowth}\cdot\alpha_{stem}\cdot k_{L} + m_{stem}^{2}}\)</span></p>
+<p><span class="math inline">\(C_R = \frac{F_{Cgrowth}^{2}\cdot\alpha_{R}\cdot\alpha_{stem}}{F_{Cgrowth}\cdot\alpha_{stem}\cdot k_{R} + m_{stem}^{2}}\)</span></p>
+<p><span class="math inline">\(C_stem = \frac{F_{Cgrowth}\cdot\alpha_{stem}}{m_{stem}}\)</span></p>
+<h2 id="references" class="unnumbered">References</h2>
+<div id="refs" class="references">
+<div id="ref-Haverd2016Biogeosciences">
+<p>Haverd, V., Smith, B., Raupach, M., Briggs, P., Nieradzik, L., Beringer, J., … Cleverly, J. (2016). Coupling carbon allocation with leaf and root phenology predicts treegrass partitioning along a savanna rainfall gradient. <em>Biogeosciences</em>, <em>13</em>(3), 761–779. <a href="http://doi.org/10.5194/bg-13-761-2016" class="uri">http://doi.org/10.5194/bg-13-761-2016</a></p>
+</div>
+</div>
+</body>
+</html>

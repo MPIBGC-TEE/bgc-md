@@ -1,21 +1,13 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>index</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <link rel="stylesheet" href="buttondown.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
 </head>
 <body>
 <h1 id="general-overview">General Overview</h1>
@@ -25,7 +17,7 @@
 </center>
 <p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 27/1/2016.</p>
 <h2 id="about-the-model">About the model</h2>
-<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation" data-cites="Comins1993Ecological_Applications">Comins &amp; McMurtrie (1993)</span>.</p>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Comins &amp; McMurtrie (1993)</span>.</p>
 <h3 id="space-scale">Space Scale</h3>
 <p>global</p>
 <table>
@@ -33,68 +25,68 @@
 The model section in the yaml file has no subsection: additional_variables.</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Unit</th>
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(F\)</span></td>
-<td style="text-align: left;">Foliage carbon content per unit ground area at equilibrium</td>
-<td style="text-align: left;"><span class="math inline">\(Mg/ha\)</span></td>
+<td align="left"><span class="math inline">\(F\)</span></td>
+<td align="left">Foliage carbon content per unit ground area at equilibrium</td>
+<td align="left"><span class="math inline">\(Mg/ha\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(R\)</span></td>
-<td style="text-align: left;">Root carbon</td>
-<td style="text-align: left;"><span class="math inline">\(Mg/ha\)</span></td>
+<td align="left"><span class="math inline">\(R\)</span></td>
+<td align="left">Root carbon</td>
+<td align="left"><span class="math inline">\(Mg/ha\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(W\)</span></td>
-<td style="text-align: left;">Carbon in woody tissue</td>
-<td style="text-align: left;"><span class="math inline">\(Mg/ha\)</span></td>
+<td align="left"><span class="math inline">\(W\)</span></td>
+<td align="left">Carbon in woody tissue</td>
+<td align="left"><span class="math inline">\(Mg/ha\)</span></td>
 </tr>
 </tbody>
 </table>
-<table>
+<table style="width:31%;">
 <caption>components</caption>
 <colgroup>
-<col style="width: 31%" />
-<col style="width: 31%" />
-<col style="width: 36%" />
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Expression</th>
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
-<td style="text-align: left;">vector of states for vegetation</td>
-<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}F\\R\\W\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}F\\R\\W\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(u\)</span></td>
-<td style="text-align: left;">scalar function of photosynthetic inputs</td>
-<td style="text-align: center;"><span class="math inline">\(u=G\)</span></td>
+<td align="left"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=G\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(b\)</span></td>
-<td style="text-align: left;">vector of partitioning coefficients of photosynthetically fixed carbon</td>
-<td style="text-align: center;"><span class="math inline">\(b=\left[\begin{matrix}\eta_{f}\\\eta_{r}\\\eta_{w}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}\eta_{f}\\\eta_{r}\\\eta_{w}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(A\)</span></td>
-<td style="text-align: left;">matrix of senescence (cycling) rates</td>
-<td style="text-align: center;"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{r} &amp; 0\\0 &amp; 0 &amp; -\gamma_{w}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of senescence (cycling) rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{r} &amp; 0\\0 &amp; 0 &amp; -\gamma_{w}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(f_{v}\)</span></td>
-<td style="text-align: left;">the righthandside of the ode</td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u b + A x\)</span></td>
+<td align="left"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u b + A x\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -112,9 +104,9 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <span class="math inline">\(R: R\cdot\gamma_{r}\)</span><br />
 <span class="math inline">\(W: W\cdot\gamma_{w}\)</span></p>
 <h2 id="steady-state-formulas">Steady state formulas</h2>
-<p><span class="math inline">\(F = \frac{G}{\gamma_{f}}\cdot\eta_{f}\)</span></p>
-<p><span class="math inline">\(R = \frac{G}{\gamma_{r}}\cdot\eta_{r}\)</span></p>
-<p><span class="math inline">\(W = \frac{G}{\gamma_{w}}\cdot\eta_{w}\)</span></p>
+<p><span class="math inline">\(F = \frac{G\cdot\eta_{f}}{\gamma_{f}}\)</span></p>
+<p><span class="math inline">\(R = \frac{G\cdot\eta_{r}}{\gamma_{r}}\)</span></p>
+<p><span class="math inline">\(W = \frac{G\cdot\eta_{w}}{\gamma_{w}}\)</span></p>
 <h2 id="references" class="unnumbered">References</h2>
 <div id="refs" class="references">
 <div id="ref-Comins1993Ecological_Applications">

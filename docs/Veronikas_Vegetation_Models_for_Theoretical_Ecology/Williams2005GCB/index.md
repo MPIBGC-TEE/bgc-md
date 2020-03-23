@@ -68,8 +68,8 @@ Name|Description|Expression
 :-----|:-----|:-----:  
 $x$|vector of states of vegetation|$x=\left[\begin{matrix}C_{f}\\C_{lab}\\C_{w}\\C_{r}\end{matrix}\right]$  
 $u$|scalar function of photosynthetic inputs|$u=NPP$  
-$b$|vector of partitioning coefficients of photosynthetically fixed carbon|$b=\left[\begin{matrix}multtl\cdot p_{3}\\0\\- p_{4} + 1\\p_{4}\end{matrix}\right]$  
-$A$|matrix of cycling rates|$A=\left[\begin{matrix}- T_{rate}\cdot multtf\cdot p_{16}\cdot p_{5}\cdot\left(- p_{14} + 1\right) - T_{rate}\cdot multtf\cdot p_{5}\cdot\left(- p_{14} + 1\right)\cdot\left(- p_{16} + 1\right) - multtf\cdot p_{14}\cdot p_{5} & T_{rate}\cdot multtl\cdot p_{15}\cdot\left(- p_{16} + 1\right) & 0 & 0\\T_{rate}\cdot multtf\cdot p_{5}\cdot\left(- p_{14} + 1\right)\cdot\left(- p_{16} + 1\right) & - T_{rate}\cdot multtl\cdot p_{15}\cdot p_{16} - T_{rate}\cdot multtl\cdot p_{15}\cdot\left(- p_{16} + 1\right) & 0 & 0\\0 & 0 & - p_{6} & 0\\0 & 0 & 0 & - p_{7}\end{matrix}\right]$  
+$b$|vector of partitioning coefficients of photosynthetically fixed carbon|$b=\left[\begin{matrix}multtl\cdot p_{3}\\0\\1 - p_{4}\\p_{4}\end{matrix}\right]$  
+$A$|matrix of cycling rates|$A=\left[\begin{matrix}- T_{rate}\cdot multtf\cdot p_{16}\cdot p_{5}\cdot\left(1 - p_{14}\right) - T_{rate}\cdot multtf\cdot p_{5}\cdot\left(1 - p_{14}\right)\cdot\left(1 - p_{16}\right) - multtf\cdot p_{14}\cdot p_{5} & T_{rate}\cdot multtl\cdot p_{15}\cdot\left(1 - p_{16}\right) & 0 & 0\\T_{rate}\cdot multtf\cdot p_{5}\cdot\left(1 - p_{14}\right)\cdot\left(1 - p_{16}\right) & - T_{rate}\cdot multtl\cdot p_{15}\cdot p_{16} - T_{rate}\cdot multtl\cdot p_{15}\cdot\left(1 - p_{16}\right) & 0 & 0\\0 & 0 & - p_{6} & 0\\0 & 0 & 0 & - p_{7}\end{matrix}\right]$  
 $f_{v}$|the right hand side of the ode|$f_{v}=u b + A x$  
   Table: components  
   
@@ -86,7 +86,7 @@ $f_{v}$|the right hand side of the ode|$f_{v}=u b + A x$
 #### Input fluxes  
   
 $C_{f}: NPP\cdot multtl\cdot p_{3}$  
-$C_{w}: NPP\cdot\left(- p_{4} + 1\right)$  
+$C_{w}: NPP\cdot\left(1 - p_{4}\right)$  
 $C_{r}: NPP\cdot p_{4}$  
 
   
@@ -116,11 +116,11 @@ $C_lab = \frac{2.0\cdot NPP\cdot p_{3}\cdot\left(p_{14}\cdot p_{16} - p_{14} - p
   
   
   
-$C_w = -\frac{NPP}{p_{6}}\cdot\left(p_{4} - 1.0\right)$  
+$C_w = -\frac{NPP\cdot\left(p_{4} - 1.0\right)}{p_{6}}$  
   
   
   
-$C_r = \frac{NPP}{p_{7}}\cdot p_{4}$  
+$C_r = \frac{NPP\cdot p_{4}}{p_{7}}$  
   
   
   

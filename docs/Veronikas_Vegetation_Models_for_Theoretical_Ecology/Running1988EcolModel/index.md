@@ -25,12 +25,11 @@ The model depicted in this document considers carbon allocation with a process b
 forest
   
   
-Name|Description|Unit  
-:-----|:-----|:-----  
-$t$|time step|$year$  
-$C_{f}$|Carbon in foliage|-  
-$C_{r}$|Carbon in roots|-  
-$C_{w}$|Carbon in woody tissue|-  
+Name|Description  
+:-----|:-----  
+$C_{f}$|Carbon in foliage  
+$C_{r}$|Carbon in roots  
+$C_{w}$|Carbon in woody tissue  
   Table: state_variables  
 The model section in the yaml file has no subsection: additional_variables.  
   
@@ -70,15 +69,15 @@ $C_{w}: C_{w}\cdot\gamma_{w}$
   
 ## Steady state formulas  
   
-$C_f = \frac{\eta_{f}}{\gamma_{f}}\cdot u$  
+$C_f = \frac{\eta_{f}\cdot u}{\gamma_{f}}$  
   
   
   
-$C_r = \frac{\eta_{r}}{\gamma_{r}}\cdot u$  
+$C_r = \frac{\eta_{r}\cdot u}{\gamma_{r}}$  
   
   
   
-$C_w = \frac{\eta_{w}}{\gamma_{w}}\cdot u$  
+$C_w = \frac{\eta_{w}\cdot u}{\gamma_{w}}$  
   
   
   

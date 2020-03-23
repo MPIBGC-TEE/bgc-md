@@ -1,163 +1,213 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Overview</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <link rel="stylesheet" href="buttondown.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Overview of Models of Carbon Allocation in Vegetation in BGC-MD</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
 </head>
 <body>
 <header>
-<h1 class="title">Overview</h1>
+<h1 class="title">Overview of Models of Carbon Allocation in Vegetation in BGC-MD</h1>
 </header>
-<table style="width:100%;">
+<table style="width:76%;">
 <caption>Summary of the models in the database of Carbon Allocation in Vegetation models</caption>
 <colgroup>
-<col style="width: 17%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
+<col style="width: 9%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Model</th>
-<th style="text-align: center;"># Variables</th>
-<th style="text-align: center;"># Constants</th>
-<th style="text-align: center;">Structure</th>
+<th style="text-align: left;">Structure</th>
+<th style="text-align: center;">Model</th>
+<th style="text-align: center;"># State variables</th>
+<th style="text-align: center;">Diagonal matrix?</th>
+<th style="text-align: center;">Partitioning scheme</th>
+<th style="text-align: center;">Claimed to favour a limiting compartment?</th>
 <th style="text-align: center;">Source</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><a href="Murty2000EcolModell/index.html">Murty2000EcolModell</a></td>
-<td style="text-align: center;"><span class="math inline">\(15\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(12\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Murty2000EcologicalModelling">Murty &amp; McMurtrie (2000)</span></td>
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot \beta+B\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Turgman2018EcologyLetters/index.html">Turgman2018EcologyLetters</a></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">dynamic</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;"><span class="citation" data-cites="Trugman2018EcologyLetters">Trugman et al. (2018)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><a href="Gu2010EcologicalComplexity/index.html">CEVSA2</a></td>
-<td style="text-align: center;"><span class="math inline">\(11\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(7\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Gu2010EcologicalComplexity">Gu et al. (2010)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="Foley1996GBC/index.html">IBIS</a></td>
-<td style="text-align: center;"><span class="math inline">\(4\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(6\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Foley1996GlobalBiogeochemicalCycles">Foley et al. (1996)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="Potter1993GlobalBiogeochmemCy/index.html">CASA</a></td>
-<td style="text-align: center;"><span class="math inline">\(9\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(6\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Potter1993GlobalBiogeochmemCy/index.html">CASA</a></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">fixed</td>
+<td style="text-align: center;">no</td>
 <td style="text-align: center;"><span class="citation" data-cites="Potter1993GlobalBiogeochemicalCycles">Potter et al. (1993)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><a href="Arora2005GCB-1/index.html">CTEM</a></td>
-<td style="text-align: center;"><span class="math inline">\(21\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(23\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u+A\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Arora2005GlobalChangeBiology">Arora &amp; Boer (2005)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="Williams2005GCB/index.html">DALEC</a></td>
-<td style="text-align: center;"><span class="math inline">\(9\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(10\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Williams2005GlobalChangeBiology">Williams, Schwarz, Law, Irvine, &amp; Kurpius (2005)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="Running1988EcolModel/index.html">FOREST-BGC</a></td>
-<td style="text-align: center;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A_{x}\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Thomas2014GeosciModelDev/index.html">ACONITE</a></td>
 <td style="text-align: center;"><span class="math inline">\(6\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Running1988EcologicalModelling">Running &amp; Coughlan (1988)</span></td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">fixed</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;"><span class="citation" data-cites="Thomas2014GeoscientificModelDevelopment">Thomas and Williams (2014)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><a href="Pavlick2013Biogeosciences/index.html">JeDi-DGVM</a></td>
-<td style="text-align: center;"><span class="math inline">\(18\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(10\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Pavlick2013Biogeosciences">Pavlick, Drewry, Bohn, Reu, &amp; Kleidon (2013)</span></td>
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Running1988EcolModel/index.html">FOREST-BGC</a></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">fixed</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;"><span class="citation" data-cites="Running1988EcologicalModelling">Running and Coughlan (1988)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><a href="Luo2012TE/index.html">Luo2012TE</a></td>
-<td style="text-align: center;"><span class="math inline">\(9\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(7\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Luo2012TE">Luo, Weng, &amp; Yang (2012)</span></td>
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="DeAngelis2012TheorEcol/index.html">DeAngelis2012TheorEcol</a></td>
+<td style="text-align: center;"><span class="math inline">\(5\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">fixed</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;"><span class="citation" data-cites="DeAngelis2011TheoreticalEcology">DeAngelis et al. (2011)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><a href="King1993TreePhysiol/index.html">King1993TreePhysiol</a></td>
-<td style="text-align: center;"><span class="math inline">\(5\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(9\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Murty2000EcolModell/index.html">Murty2000EcolModell</a></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">fixed</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;"><span class="citation" data-cites="Murty2000EcologicalModelling">Murty and McMurtrie (2000)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Wang2010Biogeosciences/index.html">CABLE</a></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">fixed</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;"><span class="citation" data-cites="Wang2010Biogeosciences">Y. P. Wang, Law, and Pak (2010)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="King1993TreePhysiol/index.html">King1993TreePhysiol</a></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">fixed</td>
+<td style="text-align: center;">yes</td>
 <td style="text-align: center;"><span class="citation" data-cites="King1993TreePhysiology">King (1993)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><a href="ElMasri2013AgricForMeteorol/index.html">ISAM</a></td>
-<td style="text-align: center;"><span class="math inline">\(13\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Arora2005GCB-1/index.html">CTEM</a></td>
 <td style="text-align: center;"><span class="math inline">\(3\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u+A\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Arora2005GlobalChangeBiology">Arora &amp; Boer (2005)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">dynamic</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;"><span class="citation" data-cites="Arora2005GlobalChangeBiology">Arora and Boer (2005)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><a href="Hilbert1991AnnBot/index.html">Hilbert1991AnnBot</a></td>
-<td style="text-align: center;"><span class="math inline">\(21\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(19\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A_{x}\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Hilbert1991Annals_of_Botany">Hilbert &amp; Reynolds (1991)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="Thomas2014GeosciModelDev/index.html">ACONITE</a></td>
-<td style="text-align: center;"><span class="math inline">\(20\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A_{x}\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Thomas2014GeoscientificModelDevelopment">Thomas &amp; Williams (2014)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="DeAngelis2012TheorEcol/index.html">DeAngelis2012TheorEcol</a></td>
-<td style="text-align: center;"><span class="math inline">\(10\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(17\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="DeAngelis2011TheoreticalEcology">DeAngelis, Ju, Liu, Bryant, &amp; Gourley (2011)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="Comins1993EA/index.html">G’DAY</a></td>
-<td style="text-align: center;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Pavlick2013Biogeosciences/index.html">JeDi-DGVM</a></td>
 <td style="text-align: center;"><span class="math inline">\(6\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Comins1993Ecological_Applications">Comins &amp; McMurtrie (1993)</span></td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">dynamic</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;"><span class="citation" data-cites="Pavlick2013Biogeosciences">Pavlick et al. (2013)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot \beta+B\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Haverd2016Biogeosciences/index.html">HAVANA</a></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">dynamic</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;"><span class="citation" data-cites="Haverd2016Biogeosciences">Haverd et al. (2016)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><a href="Castanho2013Biogeosciences/index.html">IBIS</a></td>
-<td style="text-align: center;"><span class="math inline">\(5\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Luo2012TE/index.html">Luo2012TE</a></td>
 <td style="text-align: center;"><span class="math inline">\(3\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">fixed</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;"><span class="citation" data-cites="Luo2012TE">Luo, Weng, and Yang (2012)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Castanho2013Biogeosciences/index.html">IBIS</a></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">dynamic</td>
+<td style="text-align: center;">no</td>
 <td style="text-align: center;"><span class="citation" data-cites="Castanho2013Biogeosciences">Castanho et al. (2013)</span></td>
 </tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Comins1993EA/index.html">G'DAY</a></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">fixed</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;"><span class="citation" data-cites="Comins1993Ecological_Applications">Comins and McMurtrie (1993)</span></td>
+</tr>
 <tr class="odd">
-<td style="text-align: left;"><a href="Wang2010Biogeosciences/index.html">CABLE</a></td>
-<td style="text-align: center;"><span class="math inline">\(10\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(16\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
-<td style="text-align: center;"><span class="citation" data-cites="Wang2010Biogeosciences">Wang, Law, &amp; Pak (2010)</span></td>
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A_{x}\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Hilbert1991AnnBot/index.html">Hilbert1991AnnBot</a></td>
+<td style="text-align: center;"><span class="math inline">\(5\)</span></td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">dynamic</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;"><span class="citation" data-cites="Hilbert1991Annals_of_Botany">Hilbert and Reynolds (1991)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Williams2005GCB/index.html">DALEC</a></td>
+<td style="text-align: center;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: center;">False</td>
+<td style="text-align: center;">dynamic</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;"><span class="citation" data-cites="Williams2005GlobalChangeBiology">M. Williams et al. (2005)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Foley1996GBC/index.html">IBIS</a></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">fixed</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;"><span class="citation" data-cites="Foley1996GlobalBiogeochemicalCycles">Foley et al. (1996)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="ElMasri2013AgricForMeteorol/index.html">ISAM</a></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">dynamic</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;"><span class="citation" data-cites="Arora2005GlobalChangeBiology">Arora and Boer (2005)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(f_{v}=u\cdot b+A\cdot x\)</span></td>
+<td style="text-align: center;"><a href="Gu2010EcologicalComplexity/index.html">CEVSA2</a></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;">True</td>
+<td style="text-align: center;">dynamic</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;"><span class="citation" data-cites="Gu2010EcologicalComplexity">Gu et al. (2010)</span></td>
 </tr>
 </tbody>
 </table>
@@ -167,23 +217,23 @@
 </center>
 <br>
 <center>
-<img src="Figure%202.svg" alt="Figure 2" /><br><strong>Figure 2:</strong> <em>No. variables &amp; parameters</em><br>
+<img src="Figure%202.svg" alt="Figure 2" /><br><strong>Figure 2:</strong> <em>No. variables &amp; parameters</em><br>
 </center>
 <br>
 <center>
-<img src="Figure%203.svg" alt="Figure 3" /><br><strong>Figure 3:</strong> <em>No. variables &amp; operations</em><br>
+<img src="Figure%203.svg" alt="Figure 3" /><br><strong>Figure 3:</strong> <em>No. variables &amp; operations</em><br>
 </center>
 <br>
 <center>
-<img src="Figure%204.svg" alt="Figure 4" /><br><strong>Figure 4:</strong> <em>No. variables &amp; cascading depth of operations</em><br>
+<img src="Figure%204.svg" alt="Figure 4" /><br><strong>Figure 4:</strong> <em>No. variables &amp; cascading depth of operations</em><br>
 </center>
 <br>
 <center>
-<img src="Figure%205.svg" alt="Figure 5" /><br><strong>Figure 5:</strong> <em>No. variables &amp; cascading depth of operations</em><br>
+<img src="Figure%205.svg" alt="Figure 5" /><br><strong>Figure 5:</strong> <em>No. variables &amp; cascading depth of operations</em><br>
 </center>
 <br>
 <center>
-<img src="Figure%206.svg" alt="Figure 6" /><br><strong>Figure 6:</strong> <em>Type of carbon partitioning scheme among pools and No. operations</em><br>
+<img src="Figure%206.svg" alt="Figure 6" /><br><strong>Figure 6:</strong> <em>Type of carbon partitioning scheme among pools and No. operations</em><br>
 </center>
 <br>
 <center>
@@ -200,52 +250,58 @@
 <h1 id="bibliography" class="unnumbered">Bibliography</h1>
 <div id="refs" class="references">
 <div id="ref-Arora2005GlobalChangeBiology">
-<p>Arora, V. K., &amp; Boer, G. J. (2005). A parameterization of leaf phenology for the terrestrial ecosystem component of climate models. <em>Global Change Biology</em>, <em>11</em>(1), 39–59. <a href="http://doi.org/10.1111/j.1365-2486.2004.00890.x" class="uri">http://doi.org/10.1111/j.1365-2486.2004.00890.x</a></p>
+<p>Arora, Vivek K., and George J. Boer. 2005. “A Parameterization of Leaf Phenology for the Terrestrial Ecosystem Component of Climate Models.” <em>Global Change Biology</em> 11 (1). Wiley: 39–59. doi:<a href="https://doi.org/10.1111/j.1365-2486.2004.00890.x">10.1111/j.1365-2486.2004.00890.x</a>.</p>
 </div>
 <div id="ref-Castanho2013Biogeosciences">
-<p>Castanho, A. D. A., Coe, M. T., Costa, M. H., Malhi, Y., Galbraith, D., &amp; Quesada, C. A. (2013). Improving simulated amazon forest biomass and productivity by including spatial variation in biophysical parameters. <em>Biogeosciences</em>, <em>10</em>(4), 2255–2272. <a href="http://doi.org/10.5194/bg-10-2255-2013" class="uri">http://doi.org/10.5194/bg-10-2255-2013</a></p>
+<p>Castanho, A. D. A., M. T. Coe, M. H. Costa, Y. Malhi, D. Galbraith, and C. A. Quesada. 2013. “Improving Simulated Amazon Forest Biomass and Productivity by Including Spatial Variation in Biophysical Parameters.” <em>Biogeosciences</em> 10 (4). Copernicus GmbH: 2255–72. doi:<a href="https://doi.org/10.5194/bg-10-2255-2013">10.5194/bg-10-2255-2013</a>.</p>
 </div>
 <div id="ref-Comins1993Ecological_Applications">
-<p>Comins, H. N., &amp; McMurtrie, R. E. (1993). Long-term response of nutrient-limited forests to CO<span class="math inline">\(_2\)</span> enrichment; equilibrium behavior of plant-soil models. <em>Ecological Applications</em>, <em>3</em>(4), 666–681.</p>
+<p>Comins, H. N., and Ross E. McMurtrie. 1993. “Long-Term Response of Nutrient-Limited Forests to CO<span class="math inline">\(_2\)</span> Enrichment; Equilibrium Behavior of Plant-Soil Models.” <em>Ecological Applications</em> 3 (4). Ecological Society of America: 666–81.</p>
 </div>
 <div id="ref-DeAngelis2011TheoreticalEcology">
-<p>DeAngelis, D. L., Ju, S., Liu, R., Bryant, J. P., &amp; Gourley, S. A. (2011). Plant allocation of carbon to defense as a function of herbivory, light and nutrient availability. <em>Theoretical Ecology</em>, <em>5</em>(3), 445–456. <a href="http://doi.org/10.1007/s12080-011-0135-z" class="uri">http://doi.org/10.1007/s12080-011-0135-z</a></p>
+<p>DeAngelis, Donald L., Shu Ju, Rongsong Liu, John P. Bryant, and Stephen A. Gourley. 2011. “Plant Allocation of Carbon to Defense as a Function of Herbivory, Light and Nutrient Availability.” <em>Theoretical Ecology</em> 5 (3). Springer Science and Business Media LLC: 445–56. doi:<a href="https://doi.org/10.1007/s12080-011-0135-z">10.1007/s12080-011-0135-z</a>.</p>
 </div>
 <div id="ref-Foley1996GlobalBiogeochemicalCycles">
-<p>Foley, J. A., Prentice, I. C., Ramankutty, N., Levis, S., Pollard, D., Sitch, S., &amp; Haxeltine, A. (1996). An integrated biosphere model of land surface processes, terrestrial carbon balance, and vegetation dynamics. <em>Global Biogeochemical Cycles</em>, <em>10</em>(4), 603–628. <a href="http://doi.org/10.1029/96gb02692" class="uri">http://doi.org/10.1029/96gb02692</a></p>
+<p>Foley, Jonathan A., I. Colin Prentice, Navin Ramankutty, Samuel Levis, David Pollard, Steven Sitch, and Alex Haxeltine. 1996. “An Integrated Biosphere Model of Land Surface Processes, Terrestrial Carbon Balance, and Vegetation Dynamics.” <em>Global Biogeochemical Cycles</em> 10 (4). American Geophysical Union (AGU): 603–28. doi:<a href="https://doi.org/10.1029/96gb02692">10.1029/96gb02692</a>.</p>
 </div>
 <div id="ref-Gu2010EcologicalComplexity">
-<p>Gu, F., Zhang, Y., Tao, B., Wang, Q., Yu, G., Zhang, L., &amp; Li, K. (2010). Modeling the effects of nitrogen deposition on carbon budget in two temperate forests. <em>Ecological Complexity</em>, <em>7</em>(2), 139–148. <a href="http://doi.org/10.1016/j.ecocom.2010.04.002" class="uri">http://doi.org/10.1016/j.ecocom.2010.04.002</a></p>
+<p>Gu, Fengxue, Yuandong Zhang, Bo Tao, Qiufeng Wang, Guirui Yu, Leiming Zhang, and Kerang Li. 2010. “Modeling the Effects of Nitrogen Deposition on Carbon Budget in Two Temperate Forests.” <em>Ecological Complexity</em> 7 (2). Elsevier BV: 139–48. doi:<a href="https://doi.org/10.1016/j.ecocom.2010.04.002">10.1016/j.ecocom.2010.04.002</a>.</p>
+</div>
+<div id="ref-Haverd2016Biogeosciences">
+<p>Haverd, V., B. Smith, M. Raupach, P. Briggs, L. Nieradzik, J. Beringer, L. Hutley, C. M. Trudinger, and J. Cleverly. 2016. “Coupling Carbon Allocation with Leaf and Root Phenology Predicts Treegrass Partitioning Along a Savanna Rainfall Gradient.” <em>Biogeosciences</em> 13 (3). Copernicus GmbH: 761–79. doi:<a href="https://doi.org/10.5194/bg-13-761-2016">10.5194/bg-13-761-2016</a>.</p>
 </div>
 <div id="ref-Hilbert1991Annals_of_Botany">
-<p>Hilbert, D. W., &amp; Reynolds, J. F. (1991). A model allocating growth among leaf proteins, shoot structure, and root biomass to produce balanced activity. <em>Annals of Botany</em>, <em>68</em>(5), 417–425. Retrieved from <a href="http://aob.oxfordjournals.org/content/68/5/417.abstract" class="uri">http://aob.oxfordjournals.org/content/68/5/417.abstract</a></p>
+<p>Hilbert, David W., and James F. Reynolds. 1991. “A Model Allocating Growth Among Leaf Proteins, Shoot Structure, and Root Biomass to Produce Balanced Activity.” <em>Annals of Botany</em> 68 (5): 417–25. <a href="http://aob.oxfordjournals.org/content/68/5/417.abstract" class="uri">http://aob.oxfordjournals.org/content/68/5/417.abstract</a>.</p>
 </div>
 <div id="ref-King1993TreePhysiology">
-<p>King, D. A. (1993). A model analysis of the influence of root and foliage allocation on forest production and competition between trees. <em>Tree Physiology</em>, <em>12</em>(2), 119–135. <a href="http://doi.org/10.1093/treephys/12.2.119" class="uri">http://doi.org/10.1093/treephys/12.2.119</a></p>
+<p>King, D. A. 1993. “A Model Analysis of the Influence of Root and Foliage Allocation on Forest Production and Competition Between Trees.” <em>Tree Physiology</em> 12 (2). Oxford University Press (OUP): 119–35. doi:<a href="https://doi.org/10.1093/treephys/12.2.119">10.1093/treephys/12.2.119</a>.</p>
 </div>
 <div id="ref-Luo2012TE">
-<p>Luo, Y., Weng, E., &amp; Yang, Y. (2012). Ecosystem ecology, 219–229.</p>
+<p>Luo, Yiqi, Ensheng Weng, and Yuanhe Yang. 2012. “Ecosystem Ecology.” Edited by Alan Hastings and Louis Gross. Berkeley: University of California Press, 219–29.</p>
 </div>
 <div id="ref-Murty2000EcologicalModelling">
-<p>Murty, D., &amp; McMurtrie, R. E. (2000). The decline of forest productivity as stands age: A model-based method for analysing causes for the decline. <em>Ecological Modelling</em>, <em>134</em>(2-3), 185–205. <a href="http://doi.org/10.1016/s0304-3800(00)00345-8" class="uri">http://doi.org/10.1016/s0304-3800(00)00345-8</a></p>
+<p>Murty, Danuse, and Ross E. McMurtrie. 2000. “The Decline of Forest Productivity as Stands Age: A Model-Based Method for Analysing Causes for the Decline.” <em>Ecological Modelling</em> 134 (2-3). Elsevier BV: 185–205. doi:<a href="https://doi.org/10.1016/s0304-3800(00)00345-8">10.1016/s0304-3800(00)00345-8</a>.</p>
 </div>
 <div id="ref-Pavlick2013Biogeosciences">
-<p>Pavlick, R., Drewry, D. T., Bohn, K., Reu, B., &amp; Kleidon, A. (2013). The jena diversity-dynamic global vegetation model (jedi-dgvm): A diverse approach to representing terrestrial biogeography and biogeochemistry based on plant functional trade-offs. <em>Biogeosciences</em>, <em>10</em>(6), 4137–4177. <a href="http://doi.org/10.5194/bg-10-4137-2013" class="uri">http://doi.org/10.5194/bg-10-4137-2013</a></p>
+<p>Pavlick, R, D T Drewry, K Bohn, B Reu, and A Kleidon. 2013. “The Jena Diversity-Dynamic Global Vegetation Model (Jedi-Dgvm): A Diverse Approach to Representing Terrestrial Biogeography and Biogeochemistry Based on Plant Functional Trade-Offs.” <em>Biogeosciences</em> 10 (6): 4137–77. doi:<a href="https://doi.org/10.5194/bg-10-4137-2013">10.5194/bg-10-4137-2013</a>.</p>
 </div>
 <div id="ref-Potter1993GlobalBiogeochemicalCycles">
-<p>Potter, C. S., Randerson, J. T., Field, C. B., Matson, P. A., Vitousek, P. M., Mooney, H. A., &amp; Klooster, S. A. (1993). Terrestrial ecosystem production: A process model based on global satellite and surface data. <em>Global Biogeochemical Cycles</em>, <em>7</em>(4), 811–841. <a href="http://doi.org/10.1029/93gb02725" class="uri">http://doi.org/10.1029/93gb02725</a></p>
+<p>Potter, Christopher S., James T. Randerson, Christopher B. Field, Pamela A. Matson, Peter M. Vitousek, Harold A. Mooney, and Steven A. Klooster. 1993. “Terrestrial Ecosystem Production: A Process Model Based on Global Satellite and Surface Data.” <em>Global Biogeochemical Cycles</em> 7 (4). American Geophysical Union (AGU): 811–41. doi:<a href="https://doi.org/10.1029/93gb02725">10.1029/93gb02725</a>.</p>
 </div>
 <div id="ref-Running1988EcologicalModelling">
-<p>Running, S. W., &amp; Coughlan, J. C. (1988). A general model of forest ecosystem processes for regional applications i. Hydrologic balance, canopy gas exchange and primary production processes. <em>Ecological Modelling</em>, <em>42</em>(2), 125–154. <a href="http://doi.org/10.1016/0304-3800(88)90112-3" class="uri">http://doi.org/10.1016/0304-3800(88)90112-3</a></p>
+<p>Running, Steven W., and Joseph C. Coughlan. 1988. “A General Model of Forest Ecosystem Processes for Regional Applications I. Hydrologic Balance, Canopy Gas Exchange and Primary Production Processes.” <em>Ecological Modelling</em> 42 (2). Elsevier BV: 125–54. doi:<a href="https://doi.org/10.1016/0304-3800(88)90112-3">10.1016/0304-3800(88)90112-3</a>.</p>
 </div>
 <div id="ref-Thomas2014GeoscientificModelDevelopment">
-<p>Thomas, R. Q., &amp; Williams, M. (2014). A model using marginal efficiency of investment to analyze carbon and nitrogen interactions in terrestrial ecosystems (ACONITE version 1). <em>Geoscientific Model Development</em>, <em>7</em>(5), 2015–2037. <a href="http://doi.org/10.5194/gmd-7-2015-2014" class="uri">http://doi.org/10.5194/gmd-7-2015-2014</a></p>
+<p>Thomas, R. Q., and M. Williams. 2014. “A Model Using Marginal Efficiency of Investment to Analyze Carbon and Nitrogen Interactions in Terrestrial Ecosystems (ACONITE Version 1).” <em>Geoscientific Model Development</em> 7 (5). Copernicus GmbH: 2015–37. doi:<a href="https://doi.org/10.5194/gmd-7-2015-2014">10.5194/gmd-7-2015-2014</a>.</p>
+</div>
+<div id="ref-Trugman2018EcologyLetters">
+<p>Trugman, A. T., M. Detto, M. K. Bartlett, D. Medvigy, W. R. L. Anderegg, C. Schwalm, B. Schaffer, and S. W. Pacala. 2018. “Tree Carbon Allocation Explains Forest Drought-Kill and Recovery Patterns.” Edited by Duncan Cameron. <em>Ecology Letters</em> 21 (10). Wiley: 1552–60. doi:<a href="https://doi.org/10.1111/ele.13136">10.1111/ele.13136</a>.</p>
 </div>
 <div id="ref-Wang2010Biogeosciences">
-<p>Wang, Y. P., Law, R. M., &amp; Pak, B. (2010). A global model of carbon, nitrogen and phosphorus cycles for the terrestrial biosphere. <em>Biogeosciences</em>, <em>7</em>(7), 2261–2282. <a href="http://doi.org/10.5194/bg-7-2261-2010" class="uri">http://doi.org/10.5194/bg-7-2261-2010</a></p>
+<p>Wang, Y. P., R. M. Law, and B. Pak. 2010. “A Global Model of Carbon, Nitrogen and Phosphorus Cycles for the Terrestrial Biosphere.” <em>Biogeosciences</em> 7 (7). Copernicus GmbH: 2261–82. doi:<a href="https://doi.org/10.5194/bg-7-2261-2010">10.5194/bg-7-2261-2010</a>.</p>
 </div>
 <div id="ref-Williams2005GlobalChangeBiology">
-<p>Williams, M., Schwarz, P. A., Law, B. E., Irvine, J., &amp; Kurpius, M. R. (2005). An improved analysis of forest carbon dynamics using data assimilation. <em>Global Change Biology</em>, <em>11</em>(1), 89–105. <a href="http://doi.org/10.1111/j.1365-2486.2004.00891.x" class="uri">http://doi.org/10.1111/j.1365-2486.2004.00891.x</a></p>
+<p>Williams, Mathew, Paul A. Schwarz, Beverly E. Law, James Irvine, and Meredith R. Kurpius. 2005. “An Improved Analysis of Forest Carbon Dynamics Using Data Assimilation.” <em>Global Change Biology</em> 11 (1). Wiley: 89–105. doi:<a href="https://doi.org/10.1111/j.1365-2486.2004.00891.x">10.1111/j.1365-2486.2004.00891.x</a>.</p>
 </div>
 </div>
 </body>

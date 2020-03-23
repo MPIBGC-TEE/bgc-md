@@ -89,15 +89,15 @@ $C_{r}: C_{r}\cdot\gamma_{r}$
   
 ## Steady state formulas  
   
-$C_f = \frac{GPP}{\gamma_{f}}\cdot Q_{10}^{\frac{T}{10} - 1}\cdot\eta_{f}\cdot\min\left(1.0, 0.5\cdot W\right)$  
+$C_f = \frac{GPP\cdot Q_{10}^{\frac{T}{10} - 1}\cdot\eta_{f}\cdot\min\left(1.0, 0.5\cdot W\right)}{\gamma_{f}}$  
   
   
   
-$C_w = \frac{GPP}{\gamma_{w}}\cdot Q_{10}^{\frac{T}{10} - 1}\cdot\eta_{w}\cdot\min\left(1.0, 0.5\cdot W\right)$  
+$C_w = \frac{GPP\cdot Q_{10}^{\frac{T}{10} - 1}\cdot\eta_{w}\cdot\min\left(1.0, 0.5\cdot W\right)}{\gamma_{w}}$  
   
   
   
-$C_r = \frac{GPP}{\gamma_{r}}\cdot Q_{10}^{\frac{T}{10} - 1}\cdot\eta_{r}\cdot\min\left(1.0, 0.5\cdot W\right)$  
+$C_r = \frac{GPP\cdot Q_{10}^{\frac{T}{10} - 1}\cdot\eta_{r}\cdot\min\left(1.0, 0.5\cdot W\right)}{\gamma_{r}}$  
   
   
   

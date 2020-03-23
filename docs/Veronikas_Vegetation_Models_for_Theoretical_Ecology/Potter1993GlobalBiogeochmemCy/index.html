@@ -1,26 +1,18 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Report of the model: Carnegie-Ames-Stanford approach (CASA), version: 1</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <link rel="stylesheet" href="buttondown.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
 </head>
 <body>
-<header>
+<div id="header">
 <h1 class="title">Report of the model: Carnegie-Ames-Stanford approach (CASA), version: 1</h1>
-</header>
+</div>
 <h1 id="general-overview">General Overview</h1>
 <br>
 <center>
@@ -28,7 +20,7 @@
 </center>
 <p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 17/7/2015.</p>
 <h2 id="about-the-model">About the model</h2>
-<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation" data-cites="Potter1993GlobalBiogeochemicalCycles">Potter et al. (1993)</span>.</p>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Potter et al. (1993)</span>.</p>
 <h3 id="space-scale">Space Scale</h3>
 <p>global</p>
 <h3 id="available-parameter-values">Available parameter values</h3>
@@ -36,54 +28,54 @@
 <caption>Information on given parameter sets</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Abbreviation</th>
-<th style="text-align: left;">Source</th>
+<th align="left">Abbreviation</th>
+<th align="left">Source</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Original dataset of the publication</td>
-<td style="text-align: left;"><span class="citation" data-cites="Potter1993GlobalBiogeochemicalCycles">Potter et al. (1993)</span></td>
+<td align="left">Original dataset of the publication</td>
+<td align="left"><span class="citation">Potter et al. (1993)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Tundra</td>
-<td style="text-align: left;"><span class="citation" data-cites="Potter1999BioScience">Potter (1999)</span></td>
+<td align="left">Tundra</td>
+<td align="left"><span class="citation">Potter (1999)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">High-latitude forest</td>
-<td style="text-align: left;"><span class="citation" data-cites="Potter1999BioScience">Potter (1999)</span></td>
+<td align="left">High-latitude forest</td>
+<td align="left"><span class="citation">Potter (1999)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Boreal coniferous forest</td>
-<td style="text-align: left;"><span class="citation" data-cites="Potter1999BioScience">Potter (1999)</span></td>
+<td align="left">Boreal coniferous forest</td>
+<td align="left">@Potter1999BioScience</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Temperate grassland</td>
-<td style="text-align: left;"><span class="citation" data-cites="Potter1999BioScience">Potter (1999)</span></td>
+<td align="left">Temperate grassland</td>
+<td align="left"><span class="citation">Potter (1999)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Mixed coniferous forest</td>
-<td style="text-align: left;"><span class="citation" data-cites="Potter1999BioScience">Potter (1999)</span></td>
+<td align="left">Mixed coniferous forest</td>
+<td align="left"><span class="citation">Potter (1999)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Temperate deciduous forest</td>
-<td style="text-align: left;"><span class="citation" data-cites="Potter1999BioScience">Potter (1999)</span></td>
+<td align="left">Temperate deciduous forest</td>
+<td align="left"><span class="citation">Potter (1999)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Desert and bare ground</td>
-<td style="text-align: left;"><span class="citation" data-cites="Potter1999BioScience">Potter (1999)</span></td>
+<td align="left">Desert and bare ground</td>
+<td align="left"><span class="citation">Potter (1999)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Semi-arid shrubland</td>
-<td style="text-align: left;"><span class="citation" data-cites="Potter1999BioScience">Potter (1999)</span></td>
+<td align="left">Semi-arid shrubland</td>
+<td align="left"><span class="citation">Potter (1999)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Savanna and woody grassland</td>
-<td style="text-align: left;"><span class="citation" data-cites="Potter1999BioScience">Potter (1999)</span></td>
+<td align="left">Savanna and woody grassland</td>
+<td align="left"><span class="citation">Potter (1999)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Tropical evergreen rain forest</td>
-<td style="text-align: left;"><span class="citation" data-cites="Potter1999BioScience">Potter (1999)</span></td>
+<td align="left">Tropical evergreen rain forest</td>
+<td align="left"><span class="citation">Potter (1999)</span></td>
 </tr>
 </tbody>
 </table>
@@ -92,73 +84,64 @@
 The model section in the yaml file has no subsection: additional_variables.</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Unit</th>
+<th align="left">Name</th>
+<th align="left">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(t\)</span></td>
-<td style="text-align: left;">time step</td>
-<td style="text-align: left;"><span class="math inline">\(year\)</span></td>
+<td align="left"><span class="math inline">\(C_{f}\)</span></td>
+<td align="left">Carbon in foliage</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(C_{f}\)</span></td>
-<td style="text-align: left;">Carbon in foliage</td>
-<td style="text-align: left;">-</td>
+<td align="left"><span class="math inline">\(C_{r}\)</span></td>
+<td align="left">Carbon in roots</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(C_{r}\)</span></td>
-<td style="text-align: left;">Carbon in roots</td>
-<td style="text-align: left;">-</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><span class="math inline">\(C_{w}\)</span></td>
-<td style="text-align: left;">Carbon in woody tissue</td>
-<td style="text-align: left;">-</td>
+<td align="left"><span class="math inline">\(C_{w}\)</span></td>
+<td align="left">Carbon in woody tissue</td>
 </tr>
 </tbody>
 </table>
-<table>
+<table style="width:31%;">
 <caption>components</caption>
 <colgroup>
-<col style="width: 31%" />
-<col style="width: 31%" />
-<col style="width: 36%" />
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Expression</th>
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
-<td style="text-align: left;">vector of states for vegetation</td>
-<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}C_{f}\\C_{r}\\C_{w}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{f}\\C_{r}\\C_{w}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(u\)</span></td>
-<td style="text-align: left;">scalar function of photosynthetic inputs</td>
-<td style="text-align: center;"><span class="math inline">\(u=NPP\)</span></td>
+<td align="left"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=NPP\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(b\)</span></td>
-<td style="text-align: left;">vector of partitioning coefficients of photosynthetically fixed carbon</td>
-<td style="text-align: center;"><span class="math inline">\(b=\left[\begin{matrix}\alpha_{f}\\\alpha_{r}\\\alpha_{w}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}\alpha_{f}\\\alpha_{r}\\\alpha_{w}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(A\)</span></td>
-<td style="text-align: left;">matrix of turnover (cycling) rates</td>
-<td style="text-align: center;"><span class="math inline">\(A=\left[\begin{matrix}-\tau_{f} &amp; 0 &amp; 0\\0 &amp; -\tau_{r} &amp; 0\\0 &amp; 0 &amp; -\tau_{w}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of turnover (cycling) rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\tau_{f} &amp; 0 &amp; 0\\0 &amp; -\tau_{r} &amp; 0\\0 &amp; 0 &amp; -\tau_{w}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(f_{v}\)</span></td>
-<td style="text-align: left;">the righthandside of the ode</td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u b + A x\)</span></td>
+<td align="left"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u b + A x\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -176,9 +159,9 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <span class="math inline">\(C_{r}: C_{r}\cdot\tau_{r}\)</span><br />
 <span class="math inline">\(C_{w}: C_{w}\cdot\tau_{w}\)</span></p>
 <h2 id="steady-state-formulas">Steady state formulas</h2>
-<p><span class="math inline">\(C_f = \frac{0.5}{\tau_{f}}\cdot FPAR\cdot SOL\cdot\alpha_{f}\cdot\epsilon\)</span></p>
-<p><span class="math inline">\(C_r = \frac{0.5}{\tau_{r}}\cdot FPAR\cdot SOL\cdot\alpha_{r}\cdot\epsilon\)</span></p>
-<p><span class="math inline">\(C_w = \frac{0.5}{\tau_{w}}\cdot FPAR\cdot SOL\cdot\alpha_{w}\cdot\epsilon\)</span></p>
+<p><span class="math inline">\(C_f = \frac{0.5\cdot FPAR\cdot SOL\cdot\alpha_{f}\cdot\epsilon}{\tau_{f}}\)</span></p>
+<p><span class="math inline">\(C_r = \frac{0.5\cdot FPAR\cdot SOL\cdot\alpha_{r}\cdot\epsilon}{\tau_{r}}\)</span></p>
+<p><span class="math inline">\(C_w = \frac{0.5\cdot FPAR\cdot SOL\cdot\alpha_{w}\cdot\epsilon}{\tau_{w}}\)</span></p>
 <h2 id="references" class="unnumbered">References</h2>
 <div id="refs" class="references">
 <div id="ref-Potter1999BioScience">

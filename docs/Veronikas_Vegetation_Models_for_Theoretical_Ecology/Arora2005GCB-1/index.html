@@ -1,26 +1,18 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Report of the model: CTEM, version: 1</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <link rel="stylesheet" href="buttondown.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
 </head>
 <body>
-<header>
+<div id="header">
 <h1 class="title">Report of the model: CTEM, version: 1</h1>
-</header>
+</div>
 <h1 id="general-overview">General Overview</h1>
 <br>
 <center>
@@ -28,29 +20,29 @@
 </center>
 <p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 21/1/2016.</p>
 <h2 id="about-the-model">About the model</h2>
-<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation" data-cites="Arora2005GlobalChangeBiology">Arora &amp; Boer (2005)</span>.</p>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Arora &amp; Boer (2005)</span>.</p>
 <h3 id="space-scale">Space Scale</h3>
 <p>global</p>
 <h3 id="available-parameter-values">Available parameter values</h3>
-<table>
+<table style="width:29%;">
 <caption>Information on given parameter sets</caption>
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Abbreviation</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Source</th>
+<th align="left">Abbreviation</th>
+<th align="left">Description</th>
+<th align="left">Source</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Original dataset of the publication</td>
-<td style="text-align: left;">Eastern US and Germany, cold broadleaf deciduous</td>
-<td style="text-align: left;"><span class="citation" data-cites="Arora2005GlobalChangeBiology">Arora &amp; Boer (2005)</span></td>
+<td align="left">Original dataset of the publication</td>
+<td align="left">Eastern US and Germany, cold broadleaf deciduous</td>
+<td align="left"><span class="citation">Arora &amp; Boer (2005)</span></td>
 </tr>
 </tbody>
 </table>
@@ -59,68 +51,63 @@
 The model section in the yaml file has no subsection: additional_variables.</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Unit</th>
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(t\)</span></td>
-<td style="text-align: left;">time step</td>
-<td style="text-align: left;"><span class="math inline">\(year\)</span></td>
+<td align="left"><span class="math inline">\(C_{L}\)</span></td>
+<td align="left">Amount of carbon for the leaf</td>
+<td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(C_{L}\)</span></td>
-<td style="text-align: left;">Amount of carbon for the leaf</td>
-<td style="text-align: left;"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(C_{S}\)</span></td>
+<td align="left">Amount of carbon for the stem</td>
+<td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(C_{S}\)</span></td>
-<td style="text-align: left;">Amount of carbon for the stem</td>
-<td style="text-align: left;"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><span class="math inline">\(C_{R}\)</span></td>
-<td style="text-align: left;">Amount of carbon for the root</td>
-<td style="text-align: left;"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(C_{R}\)</span></td>
+<td align="left">Amount of carbon for the root</td>
+<td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
 </tr>
 </tbody>
 </table>
-<table>
+<table style="width:31%;">
 <caption>components</caption>
 <colgroup>
-<col style="width: 31%" />
-<col style="width: 31%" />
-<col style="width: 36%" />
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Expression</th>
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
-<td style="text-align: left;">vector of states for vegetation</td>
-<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}C_{L}\\C_{S}\\C_{R}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{L}\\C_{S}\\C_{R}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(u\)</span></td>
-<td style="text-align: left;">Vector of functions of photosynthetic inputs</td>
-<td style="text-align: center;"><span class="math inline">\(u=\left[\begin{matrix}G - R_{mL}\\a_{S}\\a_{R}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(u\)</span></td>
+<td align="left">Vector of functions of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=\left[\begin{matrix}G - R_{mL}\\a_{S}\\a_{R}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(A\)</span></td>
-<td style="text-align: left;">matrix of cycling rates</td>
-<td style="text-align: center;"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{N} -\gamma_{T} -\gamma_{W} &amp; 0 &amp; 0\\0 &amp; - R_{gS} - R_{mS} -\gamma_{S} &amp; 0\\0 &amp; 0 &amp; - R_{gR} - R_{mR} -\gamma_{R}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of cycling rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{N} -\gamma_{T} -\gamma_{W} &amp; 0 &amp; 0\\0 &amp; - R_{gS} - R_{mS} -\gamma_{S} &amp; 0\\0 &amp; 0 &amp; - R_{gR} - R_{mR} -\gamma_{R}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(f_{v}\)</span></td>
-<td style="text-align: left;">the righthandside of the ode</td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=A x + u\)</span></td>
+<td align="left"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=A x + u\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -132,13 +119,13 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <h4 id="input-fluxes">Input fluxes</h4>
 <p><span class="math inline">\(C_{L}: G - R_{mL}\)</span><br />
 <span class="math inline">\(C_{S}: \frac{\epsilon_{S} +\omega\cdot\left(1 - e^{- LAI\cdot k_{n}}\right)}{\omega\cdot\left(- W + 2 - e^{- LAI\cdot k_{n}}\right) + 1}\)</span><br />
-<span class="math inline">\(C_{R}: \frac{-\epsilon_{L} -\epsilon_{S} +\omega\cdot\left(- W + 1\right) + 1}{\omega\cdot\left(- W + 2 - e^{- LAI\cdot k_{n}}\right) + 1}\)</span></p>
+<span class="math inline">\(C_{R}: \frac{-\epsilon_{L} -\epsilon_{S} +\omega\cdot\left(1 - W\right) + 1}{\omega\cdot\left(- W + 2 - e^{- LAI\cdot k_{n}}\right) + 1}\)</span></p>
 <h4 id="output-fluxes">Output fluxes</h4>
-<p><span class="math inline">\(C_{L}: C_{L}\cdot\left(\gamma_{N} +\gamma_{Tmax}\cdot\left(-\beta_{T} + 1\right)^{b_{T}} +\gamma_{W}\right)\)</span><br />
+<p><span class="math inline">\(C_{L}: C_{L}\cdot\left(\gamma_{N} +\gamma_{Tmax}\cdot\left(1 -\beta_{T}\right)^{b_{T}} +\gamma_{W}\right)\)</span><br />
 <span class="math inline">\(C_{S}: C_{S}\cdot\left(R_{gS} + R_{mS} +\gamma_{S}\right)\)</span><br />
 <span class="math inline">\(C_{R}: C_{R}\cdot\left(R_{gR} + R_{mR} +\gamma_{R}\right)\)</span></p>
 <h2 id="steady-state-formulas">Steady state formulas</h2>
-<p><span class="math inline">\(C_L = \frac{G - R_{mL}}{\gamma_{N} +\gamma_{Tmax}\cdot\left(-\beta_{T} + 1\right)^{b_{T}} +\gamma_{W}}\)</span></p>
+<p><span class="math inline">\(C_L = \frac{G - R_{mL}}{\gamma_{N} +\gamma_{Tmax}\cdot\left(1 -\beta_{T}\right)^{b_{T}} +\gamma_{W}}\)</span></p>
 <p><span class="math inline">\(C_S = \frac{-\epsilon_{S}\cdot e^{LAI\cdot k_{n}} -\omega\cdot e^{LAI\cdot k_{n}} +\omega}{R_{gS}\cdot W\cdot\omega\cdot e^{LAI\cdot k_{n}} - 2\cdot R_{gS}\cdot\omega\cdot e^{LAI\cdot k_{n}} + R_{gS}\cdot\omega - R_{gS}\cdot e^{LAI\cdot k_{n}} + R_{mS}\cdot W\cdot\omega\cdot e^{LAI\cdot k_{n}} - 2\cdot R_{mS}\cdot\omega\cdot e^{LAI\cdot k_{n}} + R_{mS}\cdot\omega - R_{mS}\cdot e^{LAI\cdot k_{n}} + W\cdot\gamma_{S}\cdot\omega\cdot e^{LAI\cdot k_{n}} - 2\cdot\gamma_{S}\cdot\omega\cdot e^{LAI\cdot k_{n}} +\gamma_{S}\cdot\omega -\gamma_{S}\cdot e^{LAI\cdot k_{n}}}\)</span></p>
 <p><span class="math inline">\(C_R = \frac{\left(W\cdot\omega +\epsilon_{L} +\epsilon_{S} -\omega - 1\right)\cdot e^{LAI\cdot k_{n}}}{R_{gR}\cdot W\cdot\omega\cdot e^{LAI\cdot k_{n}} - 2\cdot R_{gR}\cdot\omega\cdot e^{LAI\cdot k_{n}} + R_{gR}\cdot\omega - R_{gR}\cdot e^{LAI\cdot k_{n}} + R_{mR}\cdot W\cdot\omega\cdot e^{LAI\cdot k_{n}} - 2\cdot R_{mR}\cdot\omega\cdot e^{LAI\cdot k_{n}} + R_{mR}\cdot\omega - R_{mR}\cdot e^{LAI\cdot k_{n}} + W\cdot\gamma_{R}\cdot\omega\cdot e^{LAI\cdot k_{n}} - 2\cdot\gamma_{R}\cdot\omega\cdot e^{LAI\cdot k_{n}} +\gamma_{R}\cdot\omega -\gamma_{R}\cdot e^{LAI\cdot k_{n}}}\)</span></p>
 <h2 id="references" class="unnumbered">References</h2>

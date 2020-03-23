@@ -1,26 +1,18 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Report of the model: Murty2000EcolModell, version: 1</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <link rel="stylesheet" href="buttondown.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
 </head>
 <body>
-<header>
+<div id="header">
 <h1 class="title">Report of the model: Murty2000EcolModell, version: 1</h1>
-</header>
+</div>
 <h1 id="general-overview">General Overview</h1>
 <br>
 <center>
@@ -28,33 +20,33 @@
 </center>
 <p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on 16/3/2016.</p>
 <h2 id="about-the-model">About the model</h2>
-<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation" data-cites="Murty2000EcologicalModelling">Murty &amp; McMurtrie (2000)</span>.</p>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Murty &amp; McMurtrie (2000)</span>.</p>
 <h3 id="space-scale">Space Scale</h3>
 <p>global</p>
 <table>
 <caption>state_variables</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Unit</th>
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(C_{f}\)</span></td>
-<td style="text-align: left;">Foliar carbon mass</td>
-<td style="text-align: left;"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(C_{f}\)</span></td>
+<td align="left">Foliar carbon mass</td>
+<td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(C_{r}\)</span></td>
-<td style="text-align: left;">Root carbon</td>
-<td style="text-align: left;"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(C_{r}\)</span></td>
+<td align="left">Root carbon</td>
+<td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(C_{w}\)</span></td>
-<td style="text-align: left;">Carbon in woody tissue</td>
-<td style="text-align: left;"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(C_{w}\)</span></td>
+<td align="left">Carbon in woody tissue</td>
+<td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -62,102 +54,102 @@
 <caption>additional_variables</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Expression</th>
-<th style="text-align: left;">Unit</th>
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(C_{sw}\)</span></td>
-<td style="text-align: left;">Sapwood carbon content</td>
-<td style="text-align: center;"><span class="math inline">\(C_{sw}=1.11\cdot C_{w}^{0.77}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(C_{sw}\)</span></td>
+<td align="left">Sapwood carbon content</td>
+<td align="center"><span class="math inline">\(C_{sw}=1.11\cdot C_{w}^{0.77}\)</span></td>
+<td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(N_{f}\)</span></td>
-<td style="text-align: left;">Nitrogen content of foliage</td>
-<td style="text-align: center;">-</td>
-<td style="text-align: left;"><span class="math inline">\(kgN\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(N_{f}\)</span></td>
+<td align="left">Nitrogen content of foliage</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(kgN\cdot m^{-2}\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(N_{r}\)</span></td>
-<td style="text-align: left;">Nitrogen content of fine roots</td>
-<td style="text-align: center;">-</td>
-<td style="text-align: left;">-</td>
+<td align="left"><span class="math inline">\(N_{r}\)</span></td>
+<td align="left">Nitrogen content of fine roots</td>
+<td align="center">-</td>
+<td align="left">-</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(n_{f}\)</span></td>
-<td style="text-align: left;">Foliar N:C ratio</td>
-<td style="text-align: center;">-</td>
-<td style="text-align: left;">-</td>
+<td align="left"><span class="math inline">\(n_{f}\)</span></td>
+<td align="left">Foliar N:C ratio</td>
+<td align="center">-</td>
+<td align="left">-</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(n_{crit}\)</span></td>
-<td style="text-align: left;">Foliar N:C ratio below which production is N-limited</td>
-<td style="text-align: center;">-</td>
-<td style="text-align: left;">-</td>
+<td align="left"><span class="math inline">\(n_{crit}\)</span></td>
+<td align="left">Foliar N:C ratio below which production is N-limited</td>
+<td align="center">-</td>
+<td align="left">-</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(T_{a}\)</span></td>
-<td style="text-align: left;">Mean air temperature</td>
-<td style="text-align: center;">-</td>
-<td style="text-align: left;">-</td>
+<td align="left"><span class="math inline">\(T_{a}\)</span></td>
+<td align="left">Mean air temperature</td>
+<td align="center">-</td>
+<td align="left">-</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(Q_{10}\)</span></td>
-<td style="text-align: left;"></td>
-<td style="text-align: center;">-</td>
-<td style="text-align: left;">-</td>
+<td align="left"><span class="math inline">\(Q_{10}\)</span></td>
+<td align="left"></td>
+<td align="center">-</td>
+<td align="left">-</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(Q_{010}\)</span></td>
-<td style="text-align: left;"></td>
-<td style="text-align: center;">-</td>
-<td style="text-align: left;">-</td>
+<td align="left"><span class="math inline">\(Q_{010}\)</span></td>
+<td align="left"></td>
+<td align="center">-</td>
+<td align="left">-</td>
 </tr>
 </tbody>
 </table>
-<table>
+<table style="width:31%;">
 <caption>components</caption>
 <colgroup>
-<col style="width: 31%" />
-<col style="width: 31%" />
-<col style="width: 36%" />
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Expression</th>
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
-<td style="text-align: left;">vector of states for vegetation</td>
-<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}C_{f}\\C_{r}\\C_{w}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{f}\\C_{r}\\C_{w}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(u\)</span></td>
-<td style="text-align: left;">scalar function of photosynthetic inputs</td>
-<td style="text-align: center;"><span class="math inline">\(u=NPP\)</span></td>
+<td align="left"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=NPP\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(b\)</span></td>
-<td style="text-align: left;">vector of partitioning coefficients of photosynthetically fixed carbon</td>
-<td style="text-align: center;"><span class="math inline">\(b=\left[\begin{matrix}a_{f}\\a_{r}\\a_{w}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}a_{f}\\a_{r}\\a_{w}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(A\)</span></td>
-<td style="text-align: left;">matrix of senescence (cycling) rates</td>
-<td style="text-align: center;"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{r} &amp; 0\\0 &amp; 0 &amp; -\gamma_{w}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of senescence (cycling) rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}-\gamma_{f} &amp; 0 &amp; 0\\0 &amp; -\gamma_{r} &amp; 0\\0 &amp; 0 &amp; -\gamma_{w}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(f_{v}\)</span></td>
-<td style="text-align: left;">the righthandside of the ode</td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u b + A x\)</span></td>
+<td align="left"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u b + A x\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -167,9 +159,9 @@
 <img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
 </center>
 <h4 id="input-fluxes">Input fluxes</h4>
-<p><span class="math inline">\(C_{f}: a_{f}\cdot\left(- 0.0097236\cdot C_{w}^{0.77}\cdot Q_{010}^{\frac{T_{a}}{10}} + I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases} - 0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - R_{c}\right)\)</span><br />
-<span class="math inline">\(C_{r}: a_{r}\cdot\left(- 0.0097236\cdot C_{w}^{0.77}\cdot Q_{010}^{\frac{T_{a}}{10}} + I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases} - 0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - R_{c}\right)\)</span><br />
-<span class="math inline">\(C_{w}: \left(- a_{f} - a_{r} + 1\right)\cdot\left(- 0.0097236\cdot C_{w}^{0.77}\cdot Q_{010}^{\frac{T_{a}}{10}} + I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t_{1} &lt; t\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{for}\: t{\geq} t_{2}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{f} &lt; n_{crit}\\1 &amp;\text{for}\: n_{f} &gt; n_{crit}\end{cases} - 0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - R_{c}\right)\)</span></p>
+<p><span class="math inline">\(C_{f}: a_{f}\cdot\left(- 0.0097236\cdot C_{w}^{0.77}\cdot Q_{010}^{\frac{T_{a}}{10}} + I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &gt; t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\left(\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{crit} &gt; n_{f}\\1 &amp;\text{for}\: n_{crit} &lt; n_{f}\end{cases}\right) - 0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - R_{c}\right)\)</span><br />
+<span class="math inline">\(C_{r}: a_{r}\cdot\left(- 0.0097236\cdot C_{w}^{0.77}\cdot Q_{010}^{\frac{T_{a}}{10}} + I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &gt; t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\left(\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{crit} &gt; n_{f}\\1 &amp;\text{for}\: n_{crit} &lt; n_{f}\end{cases}\right) - 0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - R_{c}\right)\)</span><br />
+<span class="math inline">\(C_{w}: \left(- a_{f} - a_{r} + 1\right)\cdot\left(- 0.0097236\cdot C_{w}^{0.77}\cdot Q_{010}^{\frac{T_{a}}{10}} + I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\cdot\left(\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &gt; t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\right)\cdot\left(\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{crit} &gt; n_{f}\\1 &amp;\text{for}\: n_{crit} &lt; n_{f}\end{cases}\right) - 0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0} - R_{c}\right)\)</span></p>
 <h4 id="output-fluxes">Output fluxes</h4>
 <p><span class="math inline">\(C_{f}: C_{f}\cdot\gamma_{f}\)</span><br />
 <span class="math inline">\(C_{r}: C_{r}\cdot\gamma_{r}\)</span><br />

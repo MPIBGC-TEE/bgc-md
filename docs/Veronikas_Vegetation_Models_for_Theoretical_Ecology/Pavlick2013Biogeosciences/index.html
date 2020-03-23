@@ -1,26 +1,18 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Report of the model: The Jena Diversity-Dynamic Global Vegetation Model (JeDi-DGVM), version: 1</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <link rel="stylesheet" href="buttondown.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
 </head>
 <body>
-<header>
+<div id="header">
 <h1 class="title">Report of the model: The Jena Diversity-Dynamic Global Vegetation Model (JeDi-DGVM), version: 1</h1>
-</header>
+</div>
 <h1 id="general-overview">General Overview</h1>
 <br>
 <center>
@@ -28,7 +20,7 @@
 </center>
 <p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on .</p>
 <h2 id="about-the-model">About the model</h2>
-<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation" data-cites="Pavlick2013Biogeosciences">Pavlick, Drewry, Bohn, Reu, &amp; Kleidon (2013)</span>.</p>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Pavlick, Drewry, Bohn, Reu, &amp; Kleidon (2013)</span>.</p>
 <h3 id="space-scale">Space Scale</h3>
 <p>global</p>
 <table>
@@ -36,83 +28,83 @@
 The model section in the yaml file has no subsection: additional_variables.</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Unit</th>
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(C_{A}\)</span></td>
-<td style="text-align: left;">Carbon in stored assimilates</td>
-<td style="text-align: left;"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(C_{A}\)</span></td>
+<td align="left">Carbon in stored assimilates</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(C_{L}\)</span></td>
-<td style="text-align: left;">Carbon in leaves</td>
-<td style="text-align: left;"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(C_{L}\)</span></td>
+<td align="left">Carbon in leaves</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(C_{R}\)</span></td>
-<td style="text-align: left;">Carbon in fine roots</td>
-<td style="text-align: left;"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(C_{R}\)</span></td>
+<td align="left">Carbon in fine roots</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(C_{WL}\)</span></td>
-<td style="text-align: left;">Carbon in aboveground wood (branches and stems)</td>
-<td style="text-align: left;"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(C_{WL}\)</span></td>
+<td align="left">Carbon in aboveground wood (branches and stems)</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(C_{WR}\)</span></td>
-<td style="text-align: left;">Carbon in belowground wood (coarse roots)</td>
-<td style="text-align: left;"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(C_{WR}\)</span></td>
+<td align="left">Carbon in belowground wood (coarse roots)</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(C_{S}\)</span></td>
-<td style="text-align: left;">Carbon in seeds (reproductive tisses)</td>
-<td style="text-align: left;"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(C_{S}\)</span></td>
+<td align="left">Carbon in seeds (reproductive tisses)</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
 </tr>
 </tbody>
 </table>
-<table>
+<table style="width:31%;">
 <caption>components</caption>
 <colgroup>
-<col style="width: 31%" />
-<col style="width: 31%" />
-<col style="width: 36%" />
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: center;">Expression</th>
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
-<td style="text-align: left;">vector of states for vegetation</td>
-<td style="text-align: center;"><span class="math inline">\(x=\left[\begin{matrix}C_{A}\\C_{S}\\C_{L}\\C_{R}\\C_{WL}\\C_{WR}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C_{A}\\C_{S}\\C_{L}\\C_{R}\\C_{WL}\\C_{WR}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(u\)</span></td>
-<td style="text-align: left;">scalar function of photosynthetic inputs</td>
-<td style="text-align: center;"><span class="math inline">\(u=NPP\)</span></td>
+<td align="left"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=NPP\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(b\)</span></td>
-<td style="text-align: left;">vector of partitioning coefficients of photosynthetically fixed carbon</td>
-<td style="text-align: center;"><span class="math inline">\(b=\left[\begin{matrix}1\\0\\0\\0\\0\\0\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(b\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(b=\left[\begin{matrix}1\\0\\0\\0\\0\\0\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(A\)</span></td>
-<td style="text-align: left;">matrix of cycling rates</td>
-<td style="text-align: center;"><span class="math inline">\(A=\left[\begin{matrix}- A_{L}\cdot\left(- C_{RES L} + 1\right) - A_{R}\cdot\left(- C_{RES R} + 1\right) - A_{S}\cdot\left(- C_{RES S} + 1\right) - A_{WL}\cdot\left(- C_{RES WL} + 1\right) - A_{WR}\cdot\left(- C_{RES WR} + 1\right) &amp;\frac{f_{GERM}\cdot\gamma_{GERM}}{\max\left(k_{GERM}, p\right)} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\A_{S}\cdot\left(- C_{RES S} + 1\right) &amp; -\frac{f_{GERM}\cdot\gamma_{GERM}}{\max\left(k_{GERM}, p\right)} -\frac{1}{\tau_{S}} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\A_{L}\cdot\left(- C_{RES L} + 1\right) &amp; 0 &amp; -\frac{1}{\tau_{L}} &amp; 0 &amp; 0 &amp; 0\\A_{R}\cdot\left(- C_{RES R} + 1\right) &amp; 0 &amp; 0 &amp; -\frac{1}{\tau_{R}} &amp; 0 &amp; 0\\A_{WL}\cdot\left(- C_{RES WL} + 1\right) &amp; 0 &amp; 0 &amp; 0 &amp; -\frac{1}{\tau_{WL}} &amp; 0\\A_{WR}\cdot\left(- C_{RES WR} + 1\right) &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; -\frac{1}{\tau_{WR}}\end{matrix}\right]\)</span></td>
+<td align="left"><span class="math inline">\(A\)</span></td>
+<td align="left">matrix of cycling rates</td>
+<td align="center"><span class="math inline">\(A=\left[\begin{matrix}- A_{L}\cdot\left(1 - C_{RES L}\right) - A_{R}\cdot\left(1 - C_{RES R}\right) - A_{S}\cdot\left(1 - C_{RES S}\right) - A_{WL}\cdot\left(1 - C_{RES WL}\right) - A_{WR}\cdot\left(1 - C_{RES WR}\right) &amp;\frac{f_{GERM}\cdot\gamma_{GERM}}{\max\left(k_{GERM}, p\right)} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\A_{S}\cdot\left(1 - C_{RES S}\right) &amp; -\frac{f_{GERM}\cdot\gamma_{GERM}}{\max\left(k_{GERM}, p\right)} -\frac{1}{\tau_{S}} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\A_{L}\cdot\left(1 - C_{RES L}\right) &amp; 0 &amp; -\frac{1}{\tau_{L}} &amp; 0 &amp; 0 &amp; 0\\A_{R}\cdot\left(1 - C_{RES R}\right) &amp; 0 &amp; 0 &amp; -\frac{1}{\tau_{R}} &amp; 0 &amp; 0\\A_{WL}\cdot\left(1 - C_{RES WL}\right) &amp; 0 &amp; 0 &amp; 0 &amp; -\frac{1}{\tau_{WL}} &amp; 0\\A_{WR}\cdot\left(1 - C_{RES WR}\right) &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; -\frac{1}{\tau_{WR}}\end{matrix}\right]\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(f_{v}\)</span></td>
-<td style="text-align: left;">the righthandside of the ode</td>
-<td style="text-align: center;"><span class="math inline">\(f_{v}=u b + A x\)</span></td>
+<td align="left"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u b + A x\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -133,9 +125,9 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <p><span class="math inline">\(C_{A} \rightarrow C_{S}: -\frac{C_{A}\cdot f_{SEED}\cdot t_{5}\cdot\left(C_{RES S} - 1\right)}{t_{5} + t_{6} + t_{7} + t_{8}}\)</span><br />
 <span class="math inline">\(C_{A} \rightarrow C_{L}: \frac{C_{A}\cdot f_{GROW}\cdot t_{6}\cdot\left(C_{RES L} - 1\right)\cdot\left(t_{9} - 1\right)}{t_{5} + t_{6} + t_{7} + t_{8}}\)</span><br />
 <span class="math inline">\(C_{A} \rightarrow C_{R}: \frac{C_{A}\cdot f_{GROW}\cdot t_{7}\cdot\left(C_{RES R} - 1\right)\cdot\left(t_{10} - 1\right)}{t_{5} + t_{6} + t_{7} + t_{8}}\)</span><br />
-<span class="math inline">\(C_{A} \rightarrow C_{WL}: -\frac{C_{A}\cdot f_{GROW}\cdot t_{6}\cdot t_{9}\cdot e^{- 0.5\cdot C_{L}\cdot SLA}}{t_{5} + t_{6} + t_{7} + t_{8}}\cdot\left(C_{RES WL} - 1\right)\cdot\left(e^{0.5\cdot C_{L}\cdot SLA} - 1\right)\)</span><br />
-<span class="math inline">\(C_{A} \rightarrow C_{WR}: -\frac{C_{A}\cdot f_{GROW}\cdot t_{10}\cdot t_{7}\cdot e^{- 0.5\cdot C_{L}\cdot SLA}}{t_{5} + t_{6} + t_{7} + t_{8}}\cdot\left(C_{RES WR} - 1\right)\cdot\left(e^{0.5\cdot C_{L}\cdot SLA} - 1\right)\)</span><br />
-<span class="math inline">\(C_{S} \rightarrow C_{A}: \frac{C_{S}\cdot f_{GERM}}{\max\left(k_{GERM}, p\right)}\cdot 10^{\frac{4}{t_{4}^{4}}}\)</span></p>
+<span class="math inline">\(C_{A} \rightarrow C_{WL}: \frac{C_{A}\cdot f_{GROW}\cdot t_{6}\cdot t_{9}\cdot\left(1 - e^{0.5\cdot C_{L}\cdot SLA}\right)\cdot\left(C_{RES WL} - 1\right)\cdot e^{- 0.5\cdot C_{L}\cdot SLA}}{t_{5} + t_{6} + t_{7} + t_{8}}\)</span><br />
+<span class="math inline">\(C_{A} \rightarrow C_{WR}: \frac{C_{A}\cdot f_{GROW}\cdot t_{10}\cdot t_{7}\cdot\left(1 - e^{0.5\cdot C_{L}\cdot SLA}\right)\cdot\left(C_{RES WR} - 1\right)\cdot e^{- 0.5\cdot C_{L}\cdot SLA}}{t_{5} + t_{6} + t_{7} + t_{8}}\)</span><br />
+<span class="math inline">\(C_{S} \rightarrow C_{A}: \frac{10^{\frac{4}{t_{4}^{4}}}\cdot C_{S}\cdot f_{GERM}}{\max\left(k_{GERM}, p\right)}\)</span></p>
 <h2 id="references" class="unnumbered">References</h2>
 <div id="refs" class="references">
 <div id="ref-Pavlick2013Biogeosciences">

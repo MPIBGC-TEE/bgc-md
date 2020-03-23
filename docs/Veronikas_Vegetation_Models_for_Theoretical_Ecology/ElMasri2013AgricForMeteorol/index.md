@@ -27,7 +27,6 @@ regional
   
 Name|Description|Unit  
 :-----|:-----|:-----  
-$t$|time step|$year$  
 $C_{leaf}$|Amount of carbon for the leaf|$kgC\cdot m^{-2}$  
 $C_{stem}$|Amount of carbon for the stem|$kgC\cdot m^{-2}$  
 $C_{roots}$|Amount of carbon for the root|$kgC\cdot m^{-2}$  
@@ -54,9 +53,9 @@ $f_{v}$|the righthandside of the ode|$f_{v}=A x + u$
   
 #### Input fluxes  
   
-$C_{leaf}: \begin{cases} -\frac{C_{leaf}}{cn_{leaf}}\cdot gt\cdot k_{leaf}\cdot teta + GPP\cdot\left(- Allo_{fact roots} - Allo_{fact stem} + 1\right) &\text{for}\: NPP < 0\\NPP\cdot\left(- Allo_{fact roots} - Allo_{fact stem} + 1\right) &\text{for}\: NPP > 0\end{cases}$  
-$C_{stem}: \begin{cases} Allo_{fact stem}\cdot GPP -\frac{C_{stem}}{cn_{stem}}\cdot gt\cdot k_{stem}\cdot teta &\text{for}\: NPP < 0\\Allo_{fact stem}\cdot NPP &\text{for}\: NPP > 0\end{cases}$  
-$C_{roots}: \begin{cases} Allo_{fact roots}\cdot GPP -\frac{C_{roots}}{cn_{roots}}\cdot gt\cdot k_{roots}\cdot teta &\text{for}\: NPP < 0\\Allo_{fact roots}\cdot NPP &\text{for}\: NPP > 0\end{cases}$  
+$C_{leaf}: \begin{cases} -\frac{C_{leaf}\cdot gt\cdot k_{leaf}\cdot teta}{cn_{leaf}} + GPP\cdot\left(- Allo_{fact roots} - Allo_{fact stem} + 1\right) &\text{for}\: NPP < 0\\NPP\cdot\left(- Allo_{fact roots} - Allo_{fact stem} + 1\right) &\text{for}\: NPP > 0\end{cases}$  
+$C_{stem}: \begin{cases} Allo_{fact stem}\cdot GPP -\frac{C_{stem}\cdot gt\cdot k_{stem}\cdot teta}{cn_{stem}} &\text{for}\: NPP < 0\\Allo_{fact stem}\cdot NPP &\text{for}\: NPP > 0\end{cases}$  
+$C_{roots}: \begin{cases} Allo_{fact roots}\cdot GPP -\frac{C_{roots}\cdot gt\cdot k_{roots}\cdot teta}{cn_{roots}} &\text{for}\: NPP < 0\\Allo_{fact roots}\cdot NPP &\text{for}\: NPP > 0\end{cases}$  
 
   
   

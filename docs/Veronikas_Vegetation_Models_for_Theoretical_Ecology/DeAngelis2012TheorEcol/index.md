@@ -78,16 +78,16 @@ $f_{v}$|the righthandside of the ode|$f_{v}=u b + A x$
   
 #### Input fluxes  
   
-$C_{f}: \frac{G_{0}\cdot N_{f}\cdot\eta_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)$  
-$C_{r}: \frac{G_{0}\cdot N_{f}\cdot\eta_{r}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)$  
-$C_{w}: \frac{G_{0}\cdot N_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right)$  
-$N_{f}: \frac{G_{0}\cdot N_{f}}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\frac{C_{f}\cdot N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)} -\eta_{m}\cdot v_{m} -\frac{N_{w}}{C_{w}}\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right) -\frac{N_{r}}{C_{r}}\cdot\eta_{r}\right)$  
+$C_{f}: \frac{G_{0}\cdot N_{f}\cdot\eta_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}$  
+$C_{r}: \frac{G_{0}\cdot N_{f}\cdot\eta_{r}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}$  
+$C_{w}: \frac{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right)}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}$  
+$N_{f}: \frac{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(\frac{C_{f}\cdot N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}{G_{0}\cdot N_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)\cdot\left(N_{pore} + k_{N}\right)} -\eta_{m}\cdot v_{m} -\frac{N_{w}\cdot\left(\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\right)}{C_{w}} -\frac{N_{r}\cdot\eta_{r}}{C_{r}}\right)}{C_{f}\cdot\left(v_{0} +\frac{N_{f}}{C_{f}}\right)}$  
 
   
   
 #### Output fluxes  
   
-$C_{f}: \frac{C_{f}}{N_{f}}\cdot\left(F_{i} + N_{f}\cdot\gamma_{f}\right)$  
+$C_{f}: \frac{C_{f}\cdot\left(F_{i} + N_{f}\cdot\gamma_{f}\right)}{N_{f}}$  
 $C_{r}: C_{r}\cdot\gamma_{r}$  
 $C_{w}: C_{w}\cdot\gamma_{w}$  
 $N_{f}: F_{i} + N_{f}\cdot\gamma_{f}$  

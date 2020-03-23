@@ -10,7 +10,7 @@ title: 'Report of the model: CEVSA2, version: 2'
 <center>
 ![Logo](Logo.svg)
 </center>
-This report is the result of the use of the python package bgc_md, as means to translate published models to a common language.  The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on \mathrm{None}.  
+This report is the result of the use of the python package bgc_md, as means to translate published models to a common language.  The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on \text{None}.  
   
   
   

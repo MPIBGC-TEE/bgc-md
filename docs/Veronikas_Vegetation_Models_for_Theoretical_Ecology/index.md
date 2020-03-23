@@ -1,27 +1,29 @@
 ---
-title: Overview
+title: Overview of Models of Carbon Allocation in Vegetation in BGC-MD
 ---
   
   
-Model|# Variables|# Constants|Structure|Source  
-:-----|:-----:|:-----:|:-----:|:-----:  
-[Murty2000EcolModell](Murty2000EcolModell/index.html)|$15$|$12$|$f_{v}=u\cdot b+A\cdot x$|@Murty2000EcologicalModelling  
-[CEVSA2](Gu2010EcologicalComplexity/index.html)|$11$|$7$|$f_{v}=u\cdot b+A\cdot x$|@Gu2010EcologicalComplexity  
-[IBIS](Foley1996GBC/index.html)|$4$|$6$|$f_{v}=u\cdot b+A\cdot x$|@Foley1996GlobalBiogeochemicalCycles  
-[CASA](Potter1993GlobalBiogeochmemCy/index.html)|$9$|$6$|$f_{v}=u\cdot b+A\cdot x$|@Potter1993GlobalBiogeochemicalCycles  
-[CTEM](Arora2005GCB-1/index.html)|$21$|$23$|$f_{v}=u+A\cdot x$|@Arora2005GlobalChangeBiology  
-[DALEC](Williams2005GCB/index.html)|$9$|$10$|$f_{v}=u\cdot b+A\cdot x$|@Williams2005GlobalChangeBiology  
-[FOREST-BGC](Running1988EcolModel/index.html)|$4$|$6$|$f_{v}=u\cdot b+A\cdot x$|@Running1988EcologicalModelling  
-[JeDi-DGVM](Pavlick2013Biogeosciences/index.html)|$18$|$10$|$f_{v}=u\cdot b+A\cdot x$|@Pavlick2013Biogeosciences  
-[Luo2012TE](Luo2012TE/index.html)|$9$|$7$|$f_{v}=u\cdot b+A\cdot x$|@Luo2012TE  
-[King1993TreePhysiol](King1993TreePhysiol/index.html)|$5$|$9$|$f_{v}=u\cdot b+A\cdot x$|@King1993TreePhysiology  
-[ISAM](ElMasri2013AgricForMeteorol/index.html)|$13$|$3$|$f_{v}=u+A\cdot x$|@Arora2005GlobalChangeBiology  
-[Hilbert1991AnnBot](Hilbert1991AnnBot/index.html)|$21$|$19$|$f_{v}=u\cdot b+A_{x}\cdot x$|@Hilbert1991Annals_of_Botany  
-[ACONITE](Thomas2014GeosciModelDev/index.html)|$20$|$3$|$f_{v}=u\cdot b+A_{x}\cdot x$|@Thomas2014GeoscientificModelDevelopment  
-[DeAngelis2012TheorEcol](DeAngelis2012TheorEcol/index.html)|$10$|$17$|$f_{v}=u\cdot b+A\cdot x$|@DeAngelis2011TheoreticalEcology  
-[G'DAY](Comins1993EA/index.html)|$4$|$6$|$f_{v}=u\cdot b+A\cdot x$|@Comins1993Ecological_Applications  
-[IBIS](Castanho2013Biogeosciences/index.html)|$5$|$3$|$f_{v}=u\cdot b+A\cdot x$|@Castanho2013Biogeosciences  
-[CABLE](Wang2010Biogeosciences/index.html)|$10$|$16$|$f_{v}=u\cdot b+A\cdot x$|@Wang2010Biogeosciences  
+Structure|Model|# State variables|Diagonal matrix?|Partitioning scheme|Claimed to favour a limiting compartment?|Source  
+:-----|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:  
+$f_{v}=u\cdot \beta+B\cdot x$|[Turgman2018EcologyLetters](Turgman2018EcologyLetters/index.html)|$3$|False|dynamic|yes|@Trugman2018EcologyLetters  
+$f_{v}=u\cdot b+A\cdot x$|[CASA](Potter1993GlobalBiogeochmemCy/index.html)|$3$|True|fixed|no|@Potter1993GlobalBiogeochemicalCycles  
+$f_{v}=u\cdot b+A_{x}\cdot x$|[ACONITE](Thomas2014GeosciModelDev/index.html)|$6$|False|fixed|no|@Thomas2014GeoscientificModelDevelopment  
+$f_{v}=u\cdot b+A\cdot x$|[FOREST-BGC](Running1988EcolModel/index.html)|$3$|True|fixed|no|@Running1988EcologicalModelling  
+$f_{v}=u\cdot b+A\cdot x$|[DeAngelis2012TheorEcol](DeAngelis2012TheorEcol/index.html)|$5$|True|fixed|yes|@DeAngelis2011TheoreticalEcology  
+$f_{v}=u\cdot b+A\cdot x$|[Murty2000EcolModell](Murty2000EcolModell/index.html)|$3$|True|fixed|no|@Murty2000EcologicalModelling  
+$f_{v}=u\cdot b+A\cdot x$|[CABLE](Wang2010Biogeosciences/index.html)|$3$|True|fixed|no|@Wang2010Biogeosciences  
+$f_{v}=u\cdot b+A\cdot x$|[King1993TreePhysiol](King1993TreePhysiol/index.html)|$3$|True|fixed|yes|@King1993TreePhysiology  
+$f_{v}=u+A\cdot x$|[CTEM](Arora2005GCB-1/index.html)|$3$|True|dynamic|yes|@Arora2005GlobalChangeBiology  
+$f_{v}=u\cdot b+A\cdot x$|[JeDi-DGVM](Pavlick2013Biogeosciences/index.html)|$6$|False|dynamic|yes|@Pavlick2013Biogeosciences  
+$f_{v}=u\cdot \beta+B\cdot x$|[HAVANA](Haverd2016Biogeosciences/index.html)|$3$|True|dynamic|yes|@Haverd2016Biogeosciences  
+$f_{v}=u\cdot b+A\cdot x$|[Luo2012TE](Luo2012TE/index.html)|$3$|True|fixed|no|@Luo2012TE  
+$f_{v}=u\cdot b+A\cdot x$|[IBIS](Castanho2013Biogeosciences/index.html)|$3$|True|dynamic|no|@Castanho2013Biogeosciences  
+$f_{v}=u\cdot b+A\cdot x$|[G'DAY](Comins1993EA/index.html)|$3$|True|fixed|no|@Comins1993Ecological_Applications  
+$f_{v}=u\cdot b+A_{x}\cdot x$|[Hilbert1991AnnBot](Hilbert1991AnnBot/index.html)|$5$|False|dynamic|yes|@Hilbert1991Annals_of_Botany  
+$f_{v}=u\cdot b+A\cdot x$|[DALEC](Williams2005GCB/index.html)|$4$|False|dynamic|yes|@Williams2005GlobalChangeBiology  
+$f_{v}=u\cdot b+A\cdot x$|[IBIS](Foley1996GBC/index.html)|$3$|True|fixed|yes|@Foley1996GlobalBiogeochemicalCycles  
+$f_{v}=u+A\cdot x$|[ISAM](ElMasri2013AgricForMeteorol/index.html)|$3$|True|dynamic|yes|@Arora2005GlobalChangeBiology  
+$f_{v}=u\cdot b+A\cdot x$|[CEVSA2](Gu2010EcologicalComplexity/index.html)|$3$|True|dynamic|yes|@Gu2010EcologicalComplexity  
   Table: Summary of the models in the database of Carbon Allocation in Vegetation models  
   
 

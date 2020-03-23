@@ -37,7 +37,6 @@ Original dataset of the publication|Eastern US and Germany, cold broadleaf decid
   
 Name|Description|Unit  
 :-----|:-----|:-----  
-$t$|time step|$year$  
 $C_{L}$|Amount of carbon for the leaf|$kgC\cdot m^{-2}$  
 $C_{S}$|Amount of carbon for the stem|$kgC\cdot m^{-2}$  
 $C_{R}$|Amount of carbon for the root|$kgC\cdot m^{-2}$  
@@ -66,20 +65,20 @@ $f_{v}$|the righthandside of the ode|$f_{v}=A x + u$
   
 $C_{L}: G - R_{mL}$  
 $C_{S}: \frac{\epsilon_{S} +\omega\cdot\left(1 - e^{- LAI\cdot k_{n}}\right)}{\omega\cdot\left(- W + 2 - e^{- LAI\cdot k_{n}}\right) + 1}$  
-$C_{R}: \frac{-\epsilon_{L} -\epsilon_{S} +\omega\cdot\left(- W + 1\right) + 1}{\omega\cdot\left(- W + 2 - e^{- LAI\cdot k_{n}}\right) + 1}$  
+$C_{R}: \frac{-\epsilon_{L} -\epsilon_{S} +\omega\cdot\left(1 - W\right) + 1}{\omega\cdot\left(- W + 2 - e^{- LAI\cdot k_{n}}\right) + 1}$  
 
   
   
 #### Output fluxes  
   
-$C_{L}: C_{L}\cdot\left(\gamma_{N} +\gamma_{Tmax}\cdot\left(-\beta_{T} + 1\right)^{b_{T}} +\gamma_{W}\right)$  
+$C_{L}: C_{L}\cdot\left(\gamma_{N} +\gamma_{Tmax}\cdot\left(1 -\beta_{T}\right)^{b_{T}} +\gamma_{W}\right)$  
 $C_{S}: C_{S}\cdot\left(R_{gS} + R_{mS} +\gamma_{S}\right)$  
 $C_{R}: C_{R}\cdot\left(R_{gR} + R_{mR} +\gamma_{R}\right)$  
   
   
 ## Steady state formulas  
   
-$C_L = \frac{G - R_{mL}}{\gamma_{N} +\gamma_{Tmax}\cdot\left(-\beta_{T} + 1\right)^{b_{T}} +\gamma_{W}}$  
+$C_L = \frac{G - R_{mL}}{\gamma_{N} +\gamma_{Tmax}\cdot\left(1 -\beta_{T}\right)^{b_{T}} +\gamma_{W}}$  
   
   
   

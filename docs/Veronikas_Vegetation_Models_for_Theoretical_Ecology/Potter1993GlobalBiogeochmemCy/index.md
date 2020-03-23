@@ -45,12 +45,11 @@ Tropical evergreen rain forest|@Potter1999BioScience
   Table:  Information on given parameter sets  
   
   
-Name|Description|Unit  
-:-----|:-----|:-----  
-$t$|time step|$year$  
-$C_{f}$|Carbon in foliage|-  
-$C_{r}$|Carbon in roots|-  
-$C_{w}$|Carbon in woody tissue|-  
+Name|Description  
+:-----|:-----  
+$C_{f}$|Carbon in foliage  
+$C_{r}$|Carbon in roots  
+$C_{w}$|Carbon in woody tissue  
   Table: state_variables  
 The model section in the yaml file has no subsection: additional_variables.  
   
@@ -90,15 +89,15 @@ $C_{w}: C_{w}\cdot\tau_{w}$
   
 ## Steady state formulas  
   
-$C_f = \frac{0.5}{\tau_{f}}\cdot FPAR\cdot SOL\cdot\alpha_{f}\cdot\epsilon$  
+$C_f = \frac{0.5\cdot FPAR\cdot SOL\cdot\alpha_{f}\cdot\epsilon}{\tau_{f}}$  
   
   
   
-$C_r = \frac{0.5}{\tau_{r}}\cdot FPAR\cdot SOL\cdot\alpha_{r}\cdot\epsilon$  
+$C_r = \frac{0.5\cdot FPAR\cdot SOL\cdot\alpha_{r}\cdot\epsilon}{\tau_{r}}$  
   
   
   
-$C_w = \frac{0.5}{\tau_{w}}\cdot FPAR\cdot SOL\cdot\alpha_{w}\cdot\epsilon$  
+$C_w = \frac{0.5\cdot FPAR\cdot SOL\cdot\alpha_{w}\cdot\epsilon}{\tau_{w}}$  
   
   
   

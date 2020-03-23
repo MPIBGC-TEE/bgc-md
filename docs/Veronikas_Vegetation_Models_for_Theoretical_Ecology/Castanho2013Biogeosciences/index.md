@@ -60,8 +60,8 @@ $f_{v}$|the righthandside of the ode|$f_{v}=u b + A x$
   
 #### Input fluxes  
   
-$C_{il}: NPP_{i}\cdot\left(- 0.0025\cdot S + 0.44\right)$  
-$C_{is}: NPP_{i}\cdot\left(- 0.0014\cdot S + 0.423\right)$  
+$C_{il}: NPP_{i}\cdot\left(0.44 - 0.0025\cdot S\right)$  
+$C_{is}: NPP_{i}\cdot\left(0.423 - 0.0014\cdot S\right)$  
 $C_{ir}: NPP_{i}\cdot\left(0.0039\cdot S + 0.137\right)$  
 
   
@@ -75,11 +75,11 @@ $C_{ir}: \frac{C_{ir}}{\tau_{ir}}$
   
 ## Steady state formulas  
   
-$C_il = NPP_{i}\cdot\tau_{il}\cdot\left(- 0.0025\cdot S + 0.44\right)$  
+$C_il = NPP_{i}\cdot\tau_{il}\cdot\left(0.44 - 0.0025\cdot S\right)$  
   
   
   
-$C_is = NPP_{i}\cdot\tau_{is}\cdot\left(- 0.0014\cdot S + 0.423\right)$  
+$C_is = NPP_{i}\cdot\tau_{is}\cdot\left(0.423 - 0.0014\cdot S\right)$  
   
   
   

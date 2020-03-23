@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Report of the model: Turgman2018EcologyLetters, version: 1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="buttondown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Report of the model: Turgman2018EcologyLetters, version: 1</h1>
+</div>
+<h1 id="general-overview">General Overview</h1>
+<br>
+<center>
+<img src="Logo.svg" alt="Logo" />
+</center>
+<p>This report is the result of the use of the python package bgc_md, as means to translate published models to a common language. The underlying yaml file was created by Verónika Ceballos-Núñez (Orcid ID: 0000-0002-0046-1160) on .</p>
+<h2 id="about-the-model">About the model</h2>
+<p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Trugman et al. (2018)</span>.</p>
+<table style="width:29%;">
+<caption>state_variables<br />
+The model section in the yaml file has no subsection: additional_variables.</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(C\)</span></td>
+<td align="left">Non-structural carbon (NSC), starch</td>
+<td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(X\)</span></td>
+<td align="left">Xylem biomass</td>
+<td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(L\)</span></td>
+<td align="left">Leaf and fine roots biomass which are linearly related through a constant</td>
+<td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>components</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(x\)</span></td>
+<td align="left">vector of states for vegetation</td>
+<td align="center"><span class="math inline">\(x=\left[\begin{matrix}C\\X\\L\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(u\)</span></td>
+<td align="left">scalar function of photosynthetic inputs</td>
+<td align="center"><span class="math inline">\(u=A_{n}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\beta\)</span></td>
+<td align="left">vector of partitioning coefficients of photosynthetically fixed carbon</td>
+<td align="center"><span class="math inline">\(\beta=\left[\begin{matrix}1\\0\\0\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(B\)</span></td>
+<td align="left">matrix of cycling rates</td>
+<td align="center"><span class="math inline">\(B=\left[\begin{matrix}-\frac{W}{C} &amp; 0 &amp; 0\\\frac{U\cdot W}{C} &amp; - m_{X} &amp; 0\\\frac{W\cdot\left(1 - U\right)}{C} &amp; 0 &amp; - m_{L}\end{matrix}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(f_{v}\)</span></td>
+<td align="left">the righthandside of the ode</td>
+<td align="center"><span class="math inline">\(f_{v}=u\beta + B x\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pool-model-representation">Pool model representation</h2>
+<br>
+<center>
+<img src="Figure%201.svg" alt="Figure 1" /><br><strong>Figure 1:</strong> <em>Pool model representation</em><br>
+</center>
+<h4 id="input-fluxes">Input fluxes</h4>
+<p><span class="math inline">\(C: A_{n}\)</span></p>
+<h4 id="output-fluxes">Output fluxes</h4>
+<p><span class="math inline">\(X: X\cdot m_{X}\)</span><br />
+<span class="math inline">\(L: L\cdot m_{L}\)</span></p>
+<h4 id="internal-fluxes">Internal fluxes</h4>
+<p><span class="math inline">\(C \rightarrow X: \frac{X\cdot\left(C\cdot W_{max} - L_{opt}\cdot\left(C + C_{i}\cdot k_{c}\right)\cdot\left(m_{L} + m_{X}\right)\right)}{\left(C + C_{i}\cdot k_{c}\right)\cdot\left(L_{opt} + X\right)}\)</span><br />
+<span class="math inline">\(C \rightarrow L: \frac{C\cdot W_{max}\cdot\left(L_{opt} + X\right) - X\cdot\left(C\cdot W_{max} - L_{opt}\cdot\left(C + C_{i}\cdot k_{c}\right)\cdot\left(m_{L} + m_{X}\right)\right)}{\left(C + C_{i}\cdot k_{c}\right)\cdot\left(L_{opt} + X\right)}\)</span></p>
+<h2 id="steady-state-formulas">Steady state formulas</h2>
+<p><span class="math inline">\(C = -\frac{A_{n}\cdot C_{i}\cdot k_{c}}{A_{n} - W_{max}}\)</span></p>
+<p><span class="math inline">\(X = 0\)</span></p>
+<p><span class="math inline">\(L = \frac{A_{n}}{m_{L}}\)</span></p>
+<p><span class="math inline">\(C = -\frac{A_{n}\cdot C_{i}\cdot k_{c}}{A_{n} - W_{max}}\)</span></p>
+<p><span class="math inline">\(X = \frac{A_{n} - L_{opt}\cdot m_{L} - 2\cdot L_{opt}\cdot m_{X}}{m_{X}}\)</span></p>
+<p><span class="math inline">\(L = \frac{L_{opt}\cdot\left(m_{L} + 2\cdot m_{X}\right)}{m_{L}}\)</span></p>
+<h2 id="references" class="unnumbered">References</h2>
+<div id="refs" class="references">
+<div id="ref-Trugman2018EcologyLetters">
+<p>Trugman, A. T., Detto, M., Bartlett, M. K., Medvigy, D., Anderegg, W. R. L., Schwalm, C., … Pacala, S. W. (2018). Tree carbon allocation explains forest drought-kill and recovery patterns. <em>Ecology Letters</em>, <em>21</em>(10), 1552–1560. <a href="http://doi.org/10.1111/ele.13136" class="uri">http://doi.org/10.1111/ele.13136</a></p>
+</div>
+</div>
+</body>
+</html>

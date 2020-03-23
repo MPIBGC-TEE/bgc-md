@@ -69,15 +69,15 @@ $W: W\cdot\gamma_{w}$
   
 ## Steady state formulas  
   
-$F = \frac{G}{\gamma_{f}}\cdot\eta_{f}$  
+$F = \frac{G\cdot\eta_{f}}{\gamma_{f}}$  
   
   
   
-$R = \frac{G}{\gamma_{r}}\cdot\eta_{r}$  
+$R = \frac{G\cdot\eta_{r}}{\gamma_{r}}$  
   
   
   
-$W = \frac{G}{\gamma_{w}}\cdot\eta_{w}$  
+$W = \frac{G\cdot\eta_{w}}{\gamma_{w}}$  
   
   
   
