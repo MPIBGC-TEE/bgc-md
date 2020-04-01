@@ -31,7 +31,42 @@ $C_{S}$|Carbon in stem|-
 $C_{R}$|Carbon in root|-  
 $C_{L}$|Carbon in leaf|-  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$t$|time step|$year$  
+$NPP$|Net Primary Production|-  
+$L$|Scalar light availability|-  
+$W$|Scalar water availability|-  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description|Expression  
+:-----|:-----|:-----:  
+$N_{ava}$|effect of nitrogen availability on carbon allocation|-  
+  Table: nutrient_uptake  
+  
+  
+Name|Description|Expression  
+:-----|:-----|:-----:  
+$\Omega$|Sensitivity of allocation to changes in resources availability. If =0, partitioning is determined by constant allocation fractions.|-  
+$\epsilon_{S}$|Parameter relative to vegetation type|-  
+$\epsilon_{R}$|Parameter relative to vegetation type|-  
+$\epsilon_{L}$|Parameter relative to vegetation type|$\epsilon_{L}=-\epsilon_{R} -\epsilon_{S} + 1$  
+$a_{S}$|Allocation fraction to stem|$a_{S}=\frac{\Omega\cdot\left(- L - 0.5\cdot N_{ava} + 1.5\right) +\epsilon_{S}}{\Omega\cdot\left(- L - N_{ava} - W + 3\right) + 1}$  
+$a_{R}$|Allocation fraction to root|$a_{R}=\frac{\Omega\cdot\left(- 0.5\cdot N_{ava} - W + 1.5\right) +\epsilon_{R}}{\Omega\cdot\left(- L - N_{ava} - W + 3\right) + 1}$  
+$a_{L}$|Allocation fraction to leaf|$a_{L}=\frac{\epsilon_{L}}{\Omega\cdot\left(- L - N_{ava} - W + 3\right) + 1}$  
+  Table: partitioning_rates  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$\gamma_{S}$|Stem turnover rate|$years$  
+$\gamma_{R}$|Root turnover rate|$years$  
+$\gamma_{L}$|Stem turnover rate|$years$  
+  Table: cycling_rates  
+  
   
 Name|Description|Expression  
 :-----|:-----|:-----:  

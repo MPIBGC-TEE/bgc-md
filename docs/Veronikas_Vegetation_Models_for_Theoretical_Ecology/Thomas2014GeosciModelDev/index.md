@@ -34,7 +34,44 @@ $C_{labile}$|Labile carbon
 $C_{bud}$|Bud carbon  
 $C_{labileRa}$|Maintenance respiration pool  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description|Expression|Unit  
+:-----|:-----|:-----:|:-----  
+$GPP$|Photosynthesis; based on ACM model (see article for description)|-|$gC\cdot day^{-1}$  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$Ra_{growth}$|Growth respiration that occurs when tissue is allocated; a constant fraction of carbon allocated to tissue|$gC\cdot m^{-2}\cdot day^{-1}$  
+$Ra_{excess}$|Respiration that occurs when labile C exceeds a maximum labile C store; used for N fixation|$gC\cdot m^{-2}\cdot day^{-1}$  
+$Ra_{main}$|Respiration of living tissues; a function of N content and temperature|$gC\cdot m^{-2}\cdot day^{-1}$  
+  Table: respiration_fluxes  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$a_{budC2leaf}$|Allocation from bud C pool to leaf C|$gC\cdot m^{-2}\cdot day^{-1}$  
+$a_{woodC}$|Allocation from labile C to wood C|$gC\cdot m^{-2}\cdot day^{-1}$  
+$a_{rootC}$|Allocation from labile C to root C|$gC\cdot m^{-2}\cdot day^{-1}$  
+$a_{budC2Ramain}$|Allocation of bud C pool to maintenance respiration pool when maintain respiration pool reaches zero; represents forgoing future leaf C to prevent carbon starvation.|$gC\cdot m^{-2}\cdot day^{-1}$  
+$a_{budC}$|Allocation of labile C to bud C; a fraction of the potential maximum leaf C|$gC\cdot m^{-2}\cdot day^{-1}$  
+$a_{Ramain}$|Allocation of labile C to future maintenance respiration; helps prevent carbon starvation during periods of negative NPP|$gC\cdot m^{-2}\cdot day^{-1}$  
+$a_{labileRamain}$|Allocation of labile C to respiration of living tissues|$gC\cdot m^{-2}\cdot day^{-1}$  
+  Table: allocation_fluxes  
+  
+  
+Name|Description|Expression|Unit  
+:-----|:-----|:-----:|:-----  
+$\tau_{leaf}$|Turnover of leaf (C and N)|-|$day^{-1}$  
+$\tau_{wood}$|Turnover of wood (C and N)|-|$day^{-1}$  
+$\tau_{root}$|Turnover of root (C and N)|-|$day^{-1}$  
+$t_{leafC}$|Turnover of leaf C to litter C; constant over year in humid tropics; seasonal otherwise|$t_{leafC}=C_{leaf}\cdot\tau_{leaf}$|$gC\cdot m^{-2}\cdot day^{-1}$  
+$t_{woodC}$|Turnover of wood C to CWDC pool; occurs throughout year|$t_{woodC}=C_{wood}\cdot\tau_{wood}$|$gC\cdot m^{-2}\cdot day^{-1}$  
+$t_{rootC}$|Turnover of root C to litter C; occurs throughout year|$t_{rootC}=C_{root}\cdot\tau_{root}$|$gC\cdot m^{-2}\cdot day^{-1}$  
+  Table: turnover_fluxes  
+  
   
 Name|Description|Expression  
 :-----|:-----|:-----:  

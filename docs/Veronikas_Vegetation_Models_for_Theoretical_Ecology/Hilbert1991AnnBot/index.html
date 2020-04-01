@@ -191,6 +191,164 @@
 </tr>
 </tbody>
 </table>
+<table style="width:40%;">
+<caption>photosynthetic_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(t\)</span></td>
+<td align="left">time step</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(day\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(I_{dens}\)</span></td>
+<td align="left">(I) photon flux density. Photosynthetically active radiation.</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\([\mu mol\, m^{-2}\,s^{-1}]\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(h_{max}\)</span></td>
+<td align="left">leaf max. thickness</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\([m]\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(h_{half}\)</span></td>
+<td align="left"><span class="math inline">\(h_{0.5}\)</span> leaf half thickness</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\rho\)</span></td>
+<td align="left">leaf density</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(h\)</span></td>
+<td align="left"></td>
+<td align="center"><span class="math inline">\(h=\frac{I_{dens}\cdot h_{max}}{I_{dens} + h_{half}}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(A\)</span></td>
+<td align="left">Area</td>
+<td align="center"><span class="math inline">\(A=\frac{W_{s}}{h\cdot\rho}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(N_{a}\)</span></td>
+<td align="left">Leaf nitrogen concentration</td>
+<td align="center"><span class="math inline">\(N_{a}=\frac{W_{p}\cdot f_{np}}{A}\)</span></td>
+<td align="left"><span class="math inline">\(gN\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(C_{i}\)</span></td>
+<td align="left">Intercellular CO_2 concentration</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\([\mu l\, l^{-1}]\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(V_{cmax}\)</span></td>
+<td align="left">Maximum carboxylation velocity</td>
+<td align="center"><span class="math inline">\(V_{cmax}=35.76\cdot N_{a} + 12.42\)</span></td>
+<td align="left"><span class="math inline">\([\mu mol CO_2\, m^{-2}\,s^{-1}]\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(J_{max}\)</span></td>
+<td align="left">Maximum rate of electron transport</td>
+<td align="center"><span class="math inline">\(J_{max}=92.55\cdot N_{a} + 13.85\)</span></td>
+<td align="left"><span class="math inline">\([\mu Eq\, m^{-2}\,s^{-1}]\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(J\)</span></td>
+<td align="left">Rate of electron transport</td>
+<td align="center"><span class="math inline">\(J=\frac{I_{dens}\cdot J_{max}}{I_{dens} + 2.1\cdot J_{max}}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(R_{d}\)</span></td>
+<td align="left">Dark respiration rate</td>
+<td align="center"><span class="math inline">\(R_{d}=0.775\cdot N_{a} - 0.238\)</span></td>
+<td align="left"><span class="math inline">\([\mu mol CO_2\, m^{-2}\,s^{-1}]\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(A_{1}\)</span></td>
+<td align="left">RuBP saturated portion of the carbon dioxide response curve</td>
+<td align="center"><span class="math inline">\(A_{1}=- R_{d} +\frac{V_{cmax}\cdot\left(C_{i} - 31\right)}{C_{i} + 827}\)</span></td>
+<td align="left"><span class="math inline">\([\mu mol CO_2\, m^{-2}\,s^{-1}]\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(A_{2}\)</span></td>
+<td align="left">RuBP limited portion of the carbon dioxide response curve</td>
+<td align="center"><span class="math inline">\(A_{2}=\frac{J\cdot\left(C_{i} - 31\right)}{4.5\cdot C_{i} + 325.5} - R_{d}\)</span></td>
+<td align="left"><span class="math inline">\([\mu mol CO_2\, m^{-2}\,s^{-1}]\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\sigma_{c}\)</span></td>
+<td align="left">Photosynthetic rate per unit leaf</td>
+<td align="center"><span class="math inline">\(\sigma_{c}=\min\left(A_{1}, A_{2}\right)\)</span></td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>allocation_coefficients</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(P\)</span></td>
+<td align="left"></td>
+<td align="center"><span class="math inline">\(P=\frac{W_{r}\cdot f_{C}\cdot\sigma_{r}}{A\cdot f_{N}\cdot\sigma_{c}}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(Q\)</span></td>
+<td align="left"></td>
+<td align="center"><span class="math inline">\(Q=\frac{f_{N}}{B\cdot f_{C}}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\lambda_{p}\)</span></td>
+<td align="left"></td>
+<td align="center"><span class="math inline">\(\lambda_{p}=\frac{P}{P + Q + 1}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\lambda_{s}\)</span></td>
+<td align="left"></td>
+<td align="center"><span class="math inline">\(\lambda_{s}=\frac{Q}{P + Q + 1}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\lambda_{r}\)</span></td>
+<td align="left"></td>
+<td align="center"><span class="math inline">\(\lambda_{r}=\frac{1}{P + Q + 1}\)</span></td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
 <table style="width:31%;">
 <caption>components</caption>
 <colgroup>

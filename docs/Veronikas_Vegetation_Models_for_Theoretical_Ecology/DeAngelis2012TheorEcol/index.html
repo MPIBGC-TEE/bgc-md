@@ -136,6 +136,183 @@
 </tr>
 </tbody>
 </table>
+<table style="width:40%;">
+<caption>photosynthetic_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(G_{0}\)</span></td>
+<td align="left">Maximum possible primary production, assuming all light is captured and photosynthesizing material (foliage) is operating optimally.</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(b_{f}\)</span></td>
+<td align="left">Converts carbon per square meter to LAI</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(k_{f}\)</span></td>
+<td align="left">Foliage light-extinction (Beer-Lambert law) coefficient</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(v_{0}\)</span></td>
+<td align="left">Half-saturation constant for the effect of foliar nitrogen concentration on primary production</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(G\)</span></td>
+<td align="left">Net carbon production or growth per unit time</td>
+<td align="center"><span class="math inline">\(G=\frac{G_{0}\cdot v_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)}{v_{0} + v_{f}}\)</span></td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:40%;">
+<caption>nutrient_uptake</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(g_{N}\)</span></td>
+<td align="left">Maximum possible nutrient uptake rate</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(k_{N}\)</span></td>
+<td align="left">Half-saturation constant for uptake of soil porewater N</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(k_{r}\)</span></td>
+<td align="left">Coefficient analogous to k<span class="math inline">\(_{f}\)</span></td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(b_{r}\)</span></td>
+<td align="left">Coefficient of fine root length per unit C</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(U\)</span></td>
+<td align="left">Nutrient uptake rate of plant available nutrient. Saturated response of uptake to soil porewater concentration is assumed</td>
+<td align="center"><span class="math inline">\(U=\frac{N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)}{N_{pore} + k_{N}}\)</span></td>
+<td align="left"><span class="math inline">\(gN\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>allocation_coefficients</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(s_{f}\)</span></td>
+<td align="left">Allocation ratio of wood to foliage</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(s_{r}\)</span></td>
+<td align="left">Allocation ratio of wood to fine roots</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\eta_{f}\)</span></td>
+<td align="left">Allocation fraction to foliar biomass</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\eta_{r}\)</span></td>
+<td align="left">Allocation fraction to roots biomass</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\eta_{w}\)</span></td>
+<td align="left">Allocation fraction to wood (in stem, branches and large structurl roots) biomass</td>
+<td align="center"><span class="math inline">\(\eta_{w}=\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\eta_{m}\)</span></td>
+<td align="left">Allocation fraction to reproduction</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\eta_{d}\)</span></td>
+<td align="left">Allocation fraction to plant defense</td>
+<td align="center"><span class="math inline">\(\eta_{d}=-\eta_{f} -\eta_{m} -\eta_{r} -\eta_{w} + 1\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>cycling_rates</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\gamma_{f}\)</span></td>
+<td align="left">Foliage senescence rate</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\gamma_{r}\)</span></td>
+<td align="left">Roots senescence rate</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\gamma_{w}\)</span></td>
+<td align="left">Wood senescence rate</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
 <table style="width:31%;">
 <caption>components</caption>
 <colgroup>

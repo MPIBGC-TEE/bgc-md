@@ -24,8 +24,7 @@
 <h3 id="space-scale">Space Scale</h3>
 <p>global</p>
 <table>
-<caption>state_variables<br />
-The model section in the yaml file has no subsection: additional_variables.</caption>
+<caption>state_variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Name</th>
@@ -63,6 +62,122 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <td align="left"><span class="math inline">\(C_{S}\)</span></td>
 <td align="left">Carbon in seeds (reproductive tisses)</td>
 <td align="left"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>respiration</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(C_{RES S}\)</span></td>
+<td align="left">Growth respiration coefficient</td>
+<td align="left"><span class="math inline">\(gC\cdot gC^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(C_{RES L}\)</span></td>
+<td align="left">Growth respiration coefficient</td>
+<td align="left"><span class="math inline">\(gC\cdot gC^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(C_{RES R}\)</span></td>
+<td align="left">Growth respiration coefficient</td>
+<td align="left"><span class="math inline">\(gC\cdot gC^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(C_{RES WL}\)</span></td>
+<td align="left">Growth respiration coefficient</td>
+<td align="left"><span class="math inline">\(gC\cdot gC^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(C_{RES WR}\)</span></td>
+<td align="left">Growth respiration coefficient</td>
+<td align="left"><span class="math inline">\(gC\cdot gC^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:40%;">
+<caption>cycling_rates</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(A_{S}\)</span></td>
+<td align="left">Allocation fraction to seeds</td>
+<td align="center"><span class="math inline">\(A_{S}=\frac{f_{SEED}\cdot t_{5}}{t_{5} + t_{6} + t_{7} + t_{8}}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(A_{L}\)</span></td>
+<td align="left">Allocation fraction to leaves</td>
+<td align="center"><span class="math inline">\(A_{L}=\frac{f_{GROW}\cdot t_{6}\cdot\left(1 - t_{9}\right)}{t_{5} + t_{6} + t_{7} + t_{8}}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(A_{R}\)</span></td>
+<td align="left">Allocation fraction to fine roots</td>
+<td align="center"><span class="math inline">\(A_{R}=\frac{f_{GROW}\cdot t_{7}\cdot\left(1 - t_{10}\right)}{t_{5} + t_{6} + t_{7} + t_{8}}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(A_{WL}\)</span></td>
+<td align="left">Allocation fraction to aboveground wood</td>
+<td align="center"><span class="math inline">\(A_{WL}=\frac{f_{GROW}\cdot f_{VEG}\cdot t_{6}\cdot t_{9}}{t_{5} + t_{6} + t_{7} + t_{8}}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(A_{WR}\)</span></td>
+<td align="left">Allocation fraction to belowground wood</td>
+<td align="center"><span class="math inline">\(A_{WR}=\frac{f_{GROW}\cdot f_{VEG}\cdot t_{10}\cdot t_{7}}{t_{5} + t_{6} + t_{7} + t_{8}}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\tau_{S}\)</span></td>
+<td align="left">Seeds turnover rate</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(days\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\tau_{L}\)</span></td>
+<td align="left">Stem turnover rate</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(days\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\tau_{R}\)</span></td>
+<td align="left">Fine roots turnover rate</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(days\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\tau_{WL}\)</span></td>
+<td align="left">Aboveground wood turnover rate</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(days\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\tau_{WR}\)</span></td>
+<td align="left">Belowground wood turnover rate</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(days\)</span></td>
 </tr>
 </tbody>
 </table>

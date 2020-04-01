@@ -22,8 +22,7 @@
 <h2 id="about-the-model">About the model</h2>
 <p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Trugman et al. (2018)</span>.</p>
 <table style="width:29%;">
-<caption>state_variables<br />
-The model section in the yaml file has no subsection: additional_variables.</caption>
+<caption>state_variables</caption>
 <colgroup>
 <col width="9%" />
 <col width="9%" />
@@ -51,6 +50,102 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <td align="left"><span class="math inline">\(L\)</span></td>
 <td align="left">Leaf and fine roots biomass which are linearly related through a constant</td>
 <td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:29%;">
+<caption>photosynthetic_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(t\)</span></td>
+<td align="left">time step</td>
+<td align="left"><span class="math inline">\(month\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(A_{n}\)</span></td>
+<td align="left">whole-plant net photosynthesis (classic photosynthetic model of CO2 demand for carbon-limited photosynthesis), function of the interstitial CO2 concentration, the daytime leaf respiration, the maximum rate of carboxylation, and empirical constants</td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>cycling_rates</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(C_{i}\)</span></td>
+<td align="left">initial NSC that covers carbon for two crown and fine root flushes</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(W_{max}\)</span></td>
+<td align="left">Maximum m sucrose loading rate and depends on tree size.</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(k_{c}\)</span></td>
+<td align="left">Michaelis constant for the sucrose loading rate</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(W\)</span></td>
+<td align="left">Sucrose loading rate from storage to the phloem</td>
+<td align="center"><span class="math inline">\(W=\frac{C\cdot W_{max}}{C + C_{i}\cdot k_{c}}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(L_{opt}\)</span></td>
+<td align="left">Optimal total leaf biomass</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(U\)</span></td>
+<td align="left">Variable optimized in the system in the range [0,1]. Fraction of translocatable C invested in xylem reconstruction</td>
+<td align="center"><span class="math inline">\(U=\frac{X\cdot\left(- L_{opt}\cdot\left(m_{L} + m_{X}\right) + W\right)}{W\cdot\left(L_{opt} + X\right)}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>release_rates</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(m_{X}\)</span></td>
+<td align="left">Turnover rate of the xylem</td>
+<td align="left"><span class="math inline">\(month^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(m_{L}\)</span></td>
+<td align="left">Turnover rate of the xylem</td>
+<td align="left"><span class="math inline">\(month^{-1}\)</span></td>
 </tr>
 </tbody>
 </table>

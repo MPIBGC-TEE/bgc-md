@@ -80,8 +80,7 @@
 </tbody>
 </table>
 <table>
-<caption>state_variables<br />
-The model section in the yaml file has no subsection: additional_variables.</caption>
+<caption>state_variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Name</th>
@@ -100,6 +99,115 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <tr class="odd">
 <td align="left"><span class="math inline">\(C_{w}\)</span></td>
 <td align="left">Carbon in woody tissue</td>
+</tr>
+</tbody>
+</table>
+<table style="width:40%;">
+<caption>photosynthetic_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(t\)</span></td>
+<td align="left">time step</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(year\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(SOL\)</span></td>
+<td align="left">Total solar radiation (SOL(x,t))</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(FPAR\)</span></td>
+<td align="left">Fraction of incoming PAR intercerpted by green vegetation (FPAR(x,t))</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(IPAR\)</span></td>
+<td align="left">Intercepted photosynthetically active radiation(IPAR(x,t)). The factor of 0.5 accounts for the fact that approx. half of SOL is in PAR waveband (0.4-0.7 <span class="math inline">\(\mu\)</span>m)</td>
+<td align="center"><span class="math inline">\(IPAR=0.5\cdot FPAR\cdot SOL\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\epsilon\)</span></td>
+<td align="left">PAR use efficiency (<span class="math inline">\(\epsilon(x,t)\)</span>). Function that depends on effects of temperature and water stress</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(NPP\)</span></td>
+<td align="left">New production of plant biomass (NPP(x,t)) at a grid cell (<span class="math inline">\(x\)</span>) in month <span class="math inline">\(t\)</span></td>
+<td align="center"><span class="math inline">\(NPP=IPAR\cdot\epsilon\)</span></td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<table style="width:19%;">
+<caption>allocation_coefficients</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\alpha_{f}\)</span></td>
+<td align="left">Proportional allocation constant of available carbon allocated to foliage</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\alpha_{r}\)</span></td>
+<td align="left">Proportional allocation constant of available carbon allocated to roots</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\alpha_{w}\)</span></td>
+<td align="left">Proportional allocation constant of available carbon allocated to wood</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>cycling_rates</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\tau_{f}\)</span></td>
+<td align="left">Residence time of carbon in foliage</td>
+<td align="left"><span class="math inline">\(years\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\tau_{r}\)</span></td>
+<td align="left">Residence time of carbon in roots</td>
+<td align="left"><span class="math inline">\(years\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\tau_{w}\)</span></td>
+<td align="left">Residence time of carbon in wood</td>
+<td align="left"><span class="math inline">\(years\)</span></td>
 </tr>
 </tbody>
 </table>

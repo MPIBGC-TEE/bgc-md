@@ -51,7 +51,36 @@ $C_{f}$|Carbon in foliage
 $C_{r}$|Carbon in roots  
 $C_{w}$|Carbon in woody tissue  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description|Expression|Unit  
+:-----|:-----|:-----:|:-----  
+$t$|\text{None}|-|$day$  
+$GPP$|Photosynthetic rate (Carbon input) at time t|-|$gC\cdot day^{-1}$  
+$T$|Temperature|-|-  
+$Q_{10}$|Temperature quotient that describes a change in decomposition rate for evey 10°C difference in temperature|-|-  
+$W$|Volumetric soil moisture|-|-  
+$f_{W}$|Function of W|$f_{W}=\min\left(1, 0.5\cdot W\right)$|-  
+$f_{T}$|Function of T|$f_{T}=Q_{10}^{\frac{T}{10} - 1}$|-  
+$\epsilon_{t}$|Environmental scalar|$\epsilon_{t}=f_{T}\cdot f_{W}$|$km^2$  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description  
+:-----|:-----  
+$\eta_{f}$|Fixed partitioning ratio (fraction) of available carbon allocated to foliage  
+$\eta_{r}$|Fixed partitioning ratio (fraction) of available carbon allocated to roots  
+$\eta_{w}$|Fixed partitioning ratio (fraction) of available carbon allocated to wood  
+  Table: allocation_coefficients  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$\gamma_{f}$|Foliage turnover rate|-  
+$\gamma_{r}$|Roots turnover rate|-  
+$\gamma_{w}$|Wood turnover rate|-  
+  Table: cycling_rates  
+  
   
 Name|Description|Expression  
 :-----|:-----|:-----:  

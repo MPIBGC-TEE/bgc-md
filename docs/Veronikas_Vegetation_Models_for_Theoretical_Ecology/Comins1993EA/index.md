@@ -31,7 +31,29 @@ $F$|Foliage carbon content per unit ground area at equilibrium|$Mg/ha$
 $R$|Root carbon|$Mg/ha$  
 $W$|Carbon in woody tissue|$Mg/ha$  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$G$|Net rate of plant carbon production|$Mg\cdot ha^{-1}\cdot yr^{-1}$  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description  
+:-----|:-----  
+$\eta_{f}$|Allocation fraction to foliar biomass  
+$\eta_{r}$|Allocation fraction to roots biomass  
+$\eta_{w}$|Allocation fraction to wood (in stem, branches and large structurl roots) biomass  
+  Table: allocation_coefficients  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$\gamma_{f}$|Foliage senescence rate|$yr^{-1}$  
+$\gamma_{r}$|Roots senescence rate|$yr^{-1}$  
+$\gamma_{w}$|Wood senescence rate|$yr^{-1}$  
+  Table: cycling_rates  
+  
   
 Name|Description|Expression  
 :-----|:-----|:-----:  

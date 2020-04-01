@@ -57,6 +57,46 @@ $v_{m}$|N:C ratio for reproductive propagules|-|-
   Table: additional_variables  
   
   
+Name|Description|Expression|Unit  
+:-----|:-----|:-----:|:-----  
+$G_{0}$|Maximum possible primary production, assuming all light is captured and photosynthesizing material (foliage) is operating optimally.|-|-  
+$b_{f}$|Converts carbon per square meter to LAI|-|-  
+$k_{f}$|Foliage light-extinction (Beer-Lambert law) coefficient|-|-  
+$v_{0}$|Half-saturation constant for the effect of foliar nitrogen concentration on primary production|-|-  
+$G$|Net carbon production or growth per unit time|$G=\frac{G_{0}\cdot v_{f}\cdot\left(1 - e^{- C_{f}\cdot b_{f}\cdot k_{f}}\right)}{v_{0} + v_{f}}$|$gC\cdot m^{-2}\cdot day^{-1}$  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description|Expression|Unit  
+:-----|:-----|:-----:|:-----  
+$g_{N}$|Maximum possible nutrient uptake rate|-|-  
+$k_{N}$|Half-saturation constant for uptake of soil porewater N|-|-  
+$k_{r}$|Coefficient analogous to k$_{f}$|-|-  
+$b_{r}$|Coefficient of fine root length per unit C|-|-  
+$U$|Nutrient uptake rate of plant available nutrient. Saturated response of uptake to soil porewater concentration is assumed|$U=\frac{N_{pore}\cdot g_{N}\cdot\left(1 - e^{- C_{r}\cdot b_{r}\cdot k_{r}}\right)}{N_{pore} + k_{N}}$|$gN\cdot m^{-2}\cdot day^{-1}$  
+  Table: nutrient_uptake  
+  
+  
+Name|Description|Expression  
+:-----|:-----|:-----:  
+$s_{f}$|Allocation ratio of wood to foliage|-  
+$s_{r}$|Allocation ratio of wood to fine roots|-  
+$\eta_{f}$|Allocation fraction to foliar biomass|-  
+$\eta_{r}$|Allocation fraction to roots biomass|-  
+$\eta_{w}$|Allocation fraction to wood (in stem, branches and large structurl roots) biomass|$\eta_{w}=\eta_{f}\cdot s_{f} +\eta_{r}\cdot s_{r}$  
+$\eta_{m}$|Allocation fraction to reproduction|-  
+$\eta_{d}$|Allocation fraction to plant defense|$\eta_{d}=-\eta_{f} -\eta_{m} -\eta_{r} -\eta_{w} + 1$  
+  Table: allocation_coefficients  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$\gamma_{f}$|Foliage senescence rate|$day^{-1}$  
+$\gamma_{r}$|Roots senescence rate|$day^{-1}$  
+$\gamma_{w}$|Wood senescence rate|$day^{-1}$  
+  Table: cycling_rates  
+  
+  
 Name|Description|Expression  
 :-----|:-----|:-----:  
 $x$|vector of states for vegetation|$x=\left[\begin{matrix}C_{f}\\C_{r}\\C_{w}\\N_{f}\end{matrix}\right]$  

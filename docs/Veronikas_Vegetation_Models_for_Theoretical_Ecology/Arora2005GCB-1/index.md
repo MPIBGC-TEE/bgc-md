@@ -41,7 +41,77 @@ $C_{L}$|Amount of carbon for the leaf|$kgC\cdot m^{-2}$
 $C_{S}$|Amount of carbon for the stem|$kgC\cdot m^{-2}$  
 $C_{R}$|Amount of carbon for the root|$kgC\cdot m^{-2}$  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description|Expression  
+:-----|:-----|:-----:  
+$G$|Carbon gain via photosynthesis (Gross Primary Productivity, GPP)|-  
+$N$|Net primary Productivity (NPP)|$N=G - R_{gL} - R_{gR} - R_{gS} - R_{mL} - R_{mR} - R_{mS}$  
+$LAI$|Leaf Area Index|-  
+$k_{n}$|PFT-dependent light extinction coefficient|-  
+$L$|Light availability (scalar index between 0 and 1)|$L=e^{- LAI\cdot k_{n}}$  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description|Expression  
+:-----|:-----|:-----:  
+$\theta_{i}$|Volumetric soil moisture content|-  
+$\theta_{field}$|Field capacity|-  
+$\theta_{wilt}$|Wilting point|-  
+$W_{i}$|Availability of water in soil layer i. Weighted by the fraction of roots present in each soil layer|$W_{i}=\max\left(0,\min\left(1,\frac{\theta_{i} -\theta_{wilt}}{\theta_{field} -\theta_{wilt}}\right)\right)$  
+$W$|Averaged soil water availability index|-  
+  Table: water_availability  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$t$|time step|$year$  
+$R_{gL}$|Growth respiration flux for the leaves|-  
+$R_{mL}$|Maintenance respiration flux for the leaves|-  
+$R_{gS}$|Growth respiration flux for the stem|-  
+$R_{mS}$|Maintenance respiration flux for the stem|-  
+$R_{gR}$|Growth respiration flux for the root|-  
+$R_{mR}$|Maintenance respiration flux for the root|-  
+$R_{hD}$|Heterotrophic respiration from litter (debris)|-  
+$R_{hH}$|Heterotrophic respiration from soil carbon (humus)|-  
+  Table: respiration_fluxes  
+  
+  
+Name|Description|Expression  
+:-----|:-----|:-----:  
+$\epsilon_{L}$|PFT-dependent parameter for leaf|-  
+$\epsilon_{S}$|PFT-dependent parameter for stem|-  
+$\epsilon_{R}$|PFT-dependent parameter for root|$\epsilon_{R}=-\epsilon_{L} -\epsilon_{S} + 1$  
+$\omega$|PFT-dependent parameter|-  
+$a_{S}$|Stem allocation fraction|$a_{S}=\frac{\epsilon_{S} +\omega\cdot\left(1 - L\right)}{\omega\cdot\left(- L - W + 2\right) + 1}$  
+$a_{R}$|Root allocation fration|$a_{R}=\frac{\epsilon_{R} +\omega\cdot\left(1 - W\right)}{\omega\cdot\left(- L - W + 2\right) + 1}$  
+$a_{L}$|Leaf allocation fraction|$a_{L}=- a_{R} - a_{S} + 1$  
+  Table: allocation_fractions  
+  
+  
+Name|Description|Expression  
+:-----|:-----|:-----:  
+$A_{S}$|Amount of carbon allocated to the stem|$A_{S}=\begin{cases} G\cdot a_{S} &\text{for}\: N < 0\\N\cdot a_{S} + R_{gS} + R_{mS} &\text{for}\: N > 0\end{cases}$  
+$A_{R}$|Amount of carbon allocated to the root|$A_{R}=\begin{cases} G\cdot a_{R} &\text{for}\: N < 0\\N\cdot a_{R} + R_{gR} + R_{mR} &\text{otherwise}\end{cases}$  
+  Table: allocation_coefficients  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$T_{air}$|Temperature of the air|$°C$  
+$T_{cold}$|Cold temperature threshold for a PFT below which leaf loss begins to occur|$°C$  
+$b_{T}$|Parameter that describes sensitivity of leaf loss to temp. below the T$_{cold}$|-  
+$\beta_{T}$|Temperature measure (varies between 0 and 1)|-  
+  Table: temperature  
+  
+  
+Name|Description|Expression  
+:-----|:-----|:-----:  
+$D_{L}$|Litter loss from the leaves|$D_{L}=C_{L}\cdot\left(\gamma_{N} +\gamma_{T} +\gamma_{W}\right)$  
+$D_{S}$|Litter loss from the stem|$D_{S}=C_{S}\cdot\gamma_{S}$  
+$D_{R}$|Litter loss from the root|$D_{R}=C_{R}\cdot\gamma_{R}$  
+  Table: litter_fluxes  
+  
   
 Name|Description|Expression  
 :-----|:-----|:-----:  

@@ -26,7 +26,23 @@ $C_{L}$|Leaf biomass|$molC\cdot m^{-2}$
 $C_{R}$|Fine roots biomass|$molC\cdot m^{-2}$  
 $C_{stem}$|Trunk and coarse roots|$molC\cdot m^{-2}$  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description  
+:-----|:-----  
+$\alpha_{L}$|carbon allocation coefficient, Heaviside step function that depends on C_L and C_R  
+$\alpha_{R}$|carbon allocation coefficient, Heaviside step function that depends on C_L and C_R  
+$\alpha_{stem}$|carbon allocation coefficient, Heaviside step function that depends on C_L and C_R  
+  Table: partitioning_parameters  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$k_{L}$|First-order rate constant|$day^{-1}$  
+$k_{R}$|First-order rate constant|$day^{-1}$  
+$m_{stem}$|Stem biomass turnover|$molC\cdot m^{-2}\cdot day^{-1}$  
+  Table: release_rates  
+  
   
 Name|Description|Expression  
 :-----|:-----|:-----:  

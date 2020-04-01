@@ -34,7 +34,32 @@ $C_{WL}$|Carbon in aboveground wood (branches and stems)|$gC\cdot m^{-2}$
 $C_{WR}$|Carbon in belowground wood (coarse roots)|$gC\cdot m^{-2}$  
 $C_{S}$|Carbon in seeds (reproductive tisses)|$gC\cdot m^{-2}$  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$C_{RES S}$|Growth respiration coefficient|$gC\cdot gC^{-1}$  
+$C_{RES L}$|Growth respiration coefficient|$gC\cdot gC^{-1}$  
+$C_{RES R}$|Growth respiration coefficient|$gC\cdot gC^{-1}$  
+$C_{RES WL}$|Growth respiration coefficient|$gC\cdot gC^{-1}$  
+$C_{RES WR}$|Growth respiration coefficient|$gC\cdot gC^{-1}$  
+  Table: respiration  
+  
+  
+Name|Description|Expression|Unit  
+:-----|:-----|:-----:|:-----  
+$A_{S}$|Allocation fraction to seeds|$A_{S}=\frac{f_{SEED}\cdot t_{5}}{t_{5} + t_{6} + t_{7} + t_{8}}$|-  
+$A_{L}$|Allocation fraction to leaves|$A_{L}=\frac{f_{GROW}\cdot t_{6}\cdot\left(1 - t_{9}\right)}{t_{5} + t_{6} + t_{7} + t_{8}}$|-  
+$A_{R}$|Allocation fraction to fine roots|$A_{R}=\frac{f_{GROW}\cdot t_{7}\cdot\left(1 - t_{10}\right)}{t_{5} + t_{6} + t_{7} + t_{8}}$|-  
+$A_{WL}$|Allocation fraction to aboveground wood|$A_{WL}=\frac{f_{GROW}\cdot f_{VEG}\cdot t_{6}\cdot t_{9}}{t_{5} + t_{6} + t_{7} + t_{8}}$|-  
+$A_{WR}$|Allocation fraction to belowground wood|$A_{WR}=\frac{f_{GROW}\cdot f_{VEG}\cdot t_{10}\cdot t_{7}}{t_{5} + t_{6} + t_{7} + t_{8}}$|-  
+$\tau_{S}$|Seeds turnover rate|-|$days$  
+$\tau_{L}$|Stem turnover rate|-|$days$  
+$\tau_{R}$|Fine roots turnover rate|-|$days$  
+$\tau_{WL}$|Aboveground wood turnover rate|-|$days$  
+$\tau_{WR}$|Belowground wood turnover rate|-|$days$  
+  Table: cycling_rates  
+  
   
 Name|Description|Expression  
 :-----|:-----|:-----:  

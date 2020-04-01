@@ -24,8 +24,7 @@
 <h3 id="space-scale">Space Scale</h3>
 <p>regional</p>
 <table>
-<caption>state_variables<br />
-The model section in the yaml file has no subsection: additional_variables.</caption>
+<caption>state_variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Name</th>
@@ -48,6 +47,204 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <td align="left"><span class="math inline">\(C_{roots}\)</span></td>
 <td align="left">Amount of carbon for the root</td>
 <td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>additional_variables</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(k_{leaf}\)</span></td>
+<td align="left"></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(cn_{leaf}\)</span></td>
+<td align="left"></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(k_{stem}\)</span></td>
+<td align="left"></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(cn_{stem}\)</span></td>
+<td align="left"></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(k_{roots}\)</span></td>
+<td align="left"></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(cn_{roots}\)</span></td>
+<td align="left"></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(gt\)</span></td>
+<td align="left">Function of Q_10 and temperature</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(teta\)</span></td>
+<td align="left"></td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<table style="width:29%;">
+<caption>photosynthetic_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(t\)</span></td>
+<td align="left">time step</td>
+<td align="left"><span class="math inline">\(year\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(GPP\)</span></td>
+<td align="left">Carbon gain via photosynthesis (Gross Primary Productivity, GPP)</td>
+<td align="left"><span class="math inline">\(KgC\cdot m^{−2}\cdot yr^{−1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(NPP\)</span></td>
+<td align="left">Net primary Productivity (NPP)</td>
+<td align="left"><span class="math inline">\(KgC\cdot m^{−2}\cdot yr^{−1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>respiration</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(R_{leaf}\)</span></td>
+<td align="left">Leaf respiration</td>
+<td align="center"><span class="math inline">\(R_{leaf}=\frac{C_{leaf}\cdot gt\cdot k_{leaf}\cdot teta}{cn_{leaf}}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(R_{stem}\)</span></td>
+<td align="left">Stem respiration</td>
+<td align="center"><span class="math inline">\(R_{stem}=\frac{C_{stem}\cdot gt\cdot k_{stem}\cdot teta}{cn_{stem}}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(R_{roots}\)</span></td>
+<td align="left">Roots respiration</td>
+<td align="center"><span class="math inline">\(R_{roots}=\frac{C_{roots}\cdot gt\cdot k_{roots}\cdot teta}{cn_{roots}}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:40%;">
+<caption>partitioning</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(Allo_{fact stem}\)</span></td>
+<td align="left"></td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(Allo_{fact roots}\)</span></td>
+<td align="left"></td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(Allo_{fact leaf}\)</span></td>
+<td align="left"></td>
+<td align="center"><span class="math inline">\(Allo_{fact leaf}=- Allo_{fact roots} - Allo_{fact stem} + 1\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(a_{L}\)</span></td>
+<td align="left">Parameter introduced by the author of this entry in order to summarize equations on the paper.</td>
+<td align="center"><span class="math inline">\(a_{L}=\begin{cases} Allo_{fact leaf}\cdot GPP - R_{leaf} &amp;\text{for}\: NPP &lt; 0\\Allo_{fact leaf}\cdot NPP &amp;\text{for}\: NPP &gt; 0\end{cases}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{S}\)</span></td>
+<td align="left">Parameter introduced by the author of this entry in order to summarize equations on the paper.</td>
+<td align="center"><span class="math inline">\(a_{S}=\begin{cases} Allo_{fact stem}\cdot GPP - R_{stem} &amp;\text{for}\: NPP &lt; 0\\Allo_{fact stem}\cdot NPP &amp;\text{for}\: NPP &gt; 0\end{cases}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(a_{R}\)</span></td>
+<td align="left">Parameter introduced by the author of this entry in order to summarize equations on the paper.</td>
+<td align="center"><span class="math inline">\(a_{R}=\begin{cases} Allo_{fact roots}\cdot GPP - R_{roots} &amp;\text{for}\: NPP &lt; 0\\Allo_{fact roots}\cdot NPP &amp;\text{for}\: NPP &gt; 0\end{cases}\)</span></td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>litter</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(Y_{leaf}\)</span></td>
+<td align="left">Litter production</td>
+<td align="left"><span class="math inline">\(year\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(Y_{stem}\)</span></td>
+<td align="left">Litter production</td>
+<td align="left"><span class="math inline">\(year\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(Y_{roots}\)</span></td>
+<td align="left">Litter production</td>
+<td align="left"><span class="math inline">\(year\)</span></td>
 </tr>
 </tbody>
 </table>

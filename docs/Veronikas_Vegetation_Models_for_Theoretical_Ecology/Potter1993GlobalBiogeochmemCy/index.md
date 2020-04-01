@@ -51,7 +51,34 @@ $C_{f}$|Carbon in foliage
 $C_{r}$|Carbon in roots  
 $C_{w}$|Carbon in woody tissue  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description|Expression|Unit  
+:-----|:-----|:-----:|:-----  
+$t$|time step|-|$year$  
+$SOL$|Total solar radiation (SOL(x,t))|-|-  
+$FPAR$|Fraction of incoming PAR intercerpted by green vegetation (FPAR(x,t))|-|-  
+$IPAR$|Intercepted photosynthetically active radiation(IPAR(x,t)). The factor of 0.5 accounts for the fact that approx. half of SOL is in PAR waveband (0.4-0.7 $\mu$m)|$IPAR=0.5\cdot FPAR\cdot SOL$|-  
+$\epsilon$|PAR use efficiency ($\epsilon(x,t)$). Function that depends on effects of temperature and water stress|-|-  
+$NPP$|New production of plant biomass (NPP(x,t)) at a grid cell ($x$) in month $t$|$NPP=IPAR\cdot\epsilon$|-  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description  
+:-----|:-----  
+$\alpha_{f}$|Proportional allocation constant of available carbon allocated to foliage  
+$\alpha_{r}$|Proportional allocation constant of available carbon allocated to roots  
+$\alpha_{w}$|Proportional allocation constant of available carbon allocated to wood  
+  Table: allocation_coefficients  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$\tau_{f}$|Residence time of carbon in foliage|$years$  
+$\tau_{r}$|Residence time of carbon in roots|$years$  
+$\tau_{w}$|Residence time of carbon in wood|$years$  
+  Table: cycling_rates  
+  
   
 Name|Description|Expression  
 :-----|:-----|:-----:  

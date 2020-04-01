@@ -47,8 +47,7 @@
 </tbody>
 </table>
 <table>
-<caption>state_variables<br />
-The model section in the yaml file has no subsection: additional_variables.</caption>
+<caption>state_variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Name</th>
@@ -71,6 +70,295 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <td align="left"><span class="math inline">\(C_{R}\)</span></td>
 <td align="left">Amount of carbon for the root</td>
 <td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>photosynthetic_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(G\)</span></td>
+<td align="left">Carbon gain via photosynthesis (Gross Primary Productivity, GPP)</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(N\)</span></td>
+<td align="left">Net primary Productivity (NPP)</td>
+<td align="center"><span class="math inline">\(N=G - R_{gL} - R_{gR} - R_{gS} - R_{mL} - R_{mR} - R_{mS}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(LAI\)</span></td>
+<td align="left">Leaf Area Index</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(k_{n}\)</span></td>
+<td align="left">PFT-dependent light extinction coefficient</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(L\)</span></td>
+<td align="left">Light availability (scalar index between 0 and 1)</td>
+<td align="center"><span class="math inline">\(L=e^{- LAI\cdot k_{n}}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>water_availability</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\theta_{i}\)</span></td>
+<td align="left">Volumetric soil moisture content</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\theta_{field}\)</span></td>
+<td align="left">Field capacity</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\theta_{wilt}\)</span></td>
+<td align="left">Wilting point</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(W_{i}\)</span></td>
+<td align="left">Availability of water in soil layer i. Weighted by the fraction of roots present in each soil layer</td>
+<td align="center"><span class="math inline">\(W_{i}=\max\left(0,\min\left(1,\frac{\theta_{i} -\theta_{wilt}}{\theta_{field} -\theta_{wilt}}\right)\right)\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(W\)</span></td>
+<td align="left">Averaged soil water availability index</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>respiration_fluxes</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(t\)</span></td>
+<td align="left">time step</td>
+<td align="left"><span class="math inline">\(year\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(R_{gL}\)</span></td>
+<td align="left">Growth respiration flux for the leaves</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(R_{mL}\)</span></td>
+<td align="left">Maintenance respiration flux for the leaves</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(R_{gS}\)</span></td>
+<td align="left">Growth respiration flux for the stem</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(R_{mS}\)</span></td>
+<td align="left">Maintenance respiration flux for the stem</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(R_{gR}\)</span></td>
+<td align="left">Growth respiration flux for the root</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(R_{mR}\)</span></td>
+<td align="left">Maintenance respiration flux for the root</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(R_{hD}\)</span></td>
+<td align="left">Heterotrophic respiration from litter (debris)</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(R_{hH}\)</span></td>
+<td align="left">Heterotrophic respiration from soil carbon (humus)</td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>allocation_fractions</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\epsilon_{L}\)</span></td>
+<td align="left">PFT-dependent parameter for leaf</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\epsilon_{S}\)</span></td>
+<td align="left">PFT-dependent parameter for stem</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\epsilon_{R}\)</span></td>
+<td align="left">PFT-dependent parameter for root</td>
+<td align="center"><span class="math inline">\(\epsilon_{R}=-\epsilon_{L} -\epsilon_{S} + 1\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\omega\)</span></td>
+<td align="left">PFT-dependent parameter</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{S}\)</span></td>
+<td align="left">Stem allocation fraction</td>
+<td align="center"><span class="math inline">\(a_{S}=\frac{\epsilon_{S} +\omega\cdot\left(1 - L\right)}{\omega\cdot\left(- L - W + 2\right) + 1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(a_{R}\)</span></td>
+<td align="left">Root allocation fration</td>
+<td align="center"><span class="math inline">\(a_{R}=\frac{\epsilon_{R} +\omega\cdot\left(1 - W\right)}{\omega\cdot\left(- L - W + 2\right) + 1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{L}\)</span></td>
+<td align="left">Leaf allocation fraction</td>
+<td align="center"><span class="math inline">\(a_{L}=- a_{R} - a_{S} + 1\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>allocation_coefficients</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(A_{S}\)</span></td>
+<td align="left">Amount of carbon allocated to the stem</td>
+<td align="center"><span class="math inline">\(A_{S}=\begin{cases} G\cdot a_{S} &amp;\text{for}\: N &lt; 0\\N\cdot a_{S} + R_{gS} + R_{mS} &amp;\text{for}\: N &gt; 0\end{cases}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(A_{R}\)</span></td>
+<td align="left">Amount of carbon allocated to the root</td>
+<td align="center"><span class="math inline">\(A_{R}=\begin{cases} G\cdot a_{R} &amp;\text{for}\: N &lt; 0\\N\cdot a_{R} + R_{gR} + R_{mR} &amp;\text{otherwise}\end{cases}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:29%;">
+<caption>temperature</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(T_{air}\)</span></td>
+<td align="left">Temperature of the air</td>
+<td align="left"><span class="math inline">\(°C\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(T_{cold}\)</span></td>
+<td align="left">Cold temperature threshold for a PFT below which leaf loss begins to occur</td>
+<td align="left"><span class="math inline">\(°C\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(b_{T}\)</span></td>
+<td align="left">Parameter that describes sensitivity of leaf loss to temp. below the T<span class="math inline">\(_{cold}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\beta_{T}\)</span></td>
+<td align="left">Temperature measure (varies between 0 and 1)</td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>litter_fluxes</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(D_{L}\)</span></td>
+<td align="left">Litter loss from the leaves</td>
+<td align="center"><span class="math inline">\(D_{L}=C_{L}\cdot\left(\gamma_{N} +\gamma_{T} +\gamma_{W}\right)\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(D_{S}\)</span></td>
+<td align="left">Litter loss from the stem</td>
+<td align="center"><span class="math inline">\(D_{S}=C_{S}\cdot\gamma_{S}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(D_{R}\)</span></td>
+<td align="left">Litter loss from the root</td>
+<td align="center"><span class="math inline">\(D_{R}=C_{R}\cdot\gamma_{R}\)</span></td>
 </tr>
 </tbody>
 </table>

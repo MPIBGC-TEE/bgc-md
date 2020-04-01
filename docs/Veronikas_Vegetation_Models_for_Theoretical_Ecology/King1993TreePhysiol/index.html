@@ -44,8 +44,7 @@
 </tbody>
 </table>
 <table>
-<caption>state_variables<br />
-The model section in the yaml file has no subsection: additional_variables.</caption>
+<caption>state_variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Name</th>
@@ -68,6 +67,115 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <td align="left"><span class="math inline">\(W\)</span></td>
 <td align="left">Woody tissue dry mass</td>
 <td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:40%;">
+<caption>photosynthetic_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(k\)</span></td>
+<td align="left">Radiation extinction coefficient of canopy</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\Phi_{0}\)</span></td>
+<td align="left">Incident PAR</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(MJ\cdot m\cdot ^{-2}\cdot year^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\omega\)</span></td>
+<td align="left">Specific leaf area</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(m\cdot ^2\cdot kg^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\Phi\)</span></td>
+<td align="left">Annual photosynthetically active radiation (PAR) intercepted by the canopy</td>
+<td align="center"><span class="math inline">\(\Phi=\Phi_{0}\cdot\left(1 - e^{- F\cdot k\cdot\omega}\right)\)</span></td>
+<td align="left"><span class="math inline">\(MJ\cdot m\cdot ^{-2}\cdot year^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\epsilon\)</span></td>
+<td align="left">Light utilization coefficient</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(kg\cdot MJ^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(G\)</span></td>
+<td align="left">Rate of biomass production per unit ground area</td>
+<td align="center"><span class="math inline">\(G=\Phi\cdot\epsilon\)</span></td>
+<td align="left"><span class="math inline">\(kg\cdot m^{-2}\cdot year^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>allocation_coefficients</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\eta_{f}\)</span></td>
+<td align="left">Fraction of biomass production partitioned to leaves</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\eta_{r}\)</span></td>
+<td align="left">Fraction of biomass production partitioned to roots</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\eta_{w}\)</span></td>
+<td align="left">Fraction of biomass production partitioned to wood</td>
+<td align="center"><span class="math inline">\(\eta_{w}=-\eta_{f} -\eta_{r} + 1\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>cycling_rates</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\gamma_{f}\)</span></td>
+<td align="left">Senescence rate per unit foliage biomass</td>
+<td align="left"><span class="math inline">\(kg^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\gamma_{r}\)</span></td>
+<td align="left">Senescence rate per unit fine roots biomass</td>
+<td align="left"><span class="math inline">\(kg^{-1}\)</span></td>
 </tr>
 </tbody>
 </table>

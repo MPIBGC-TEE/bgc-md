@@ -39,6 +39,28 @@ $S$|Percent sand in soil|$percentage$
   Table: additional_variables  
   
   
+Name|Description  
+:-----|:-----  
+$NPP_{i}$|Net Primary Production for PFT$_{i}$  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description|Expression  
+:-----|:-----|:-----:  
+$a_{il}$|Fraction of annual NPP allocated to leaves for PFT$_{i}$|$a_{il}=0.44 - 0.0025\cdot S$  
+$a_{ir}$|Fraction of annual NPP allocated to roots for PFT$_{i}$|$a_{ir}=0.0039\cdot S + 0.137$  
+$a_{is}$|Fraction of annual NPP allocated to stem for PFT$_{i}$|$a_{is}=- a_{il} - a_{ir} + 1$  
+  Table: allocation_coefficients  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$\tau_{il}$|Residence time of carbon in leaves for PFT$_{i}$|-  
+$\tau_{is}$|Residence time of carbon in stem for PFT$_{i}$|-  
+$\tau_{ir}$|Residence time of carbon in roots for PFT$_{i}$|-  
+  Table: cycling_rates  
+  
+  
 Name|Description|Expression  
 :-----|:-----|:-----:  
 $x$|vector of states for vegetation|$x=\left[\begin{matrix}C_{il}\\C_{is}\\C_{ir}\end{matrix}\right]$  

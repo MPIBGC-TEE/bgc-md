@@ -22,8 +22,7 @@
 <h2 id="about-the-model">About the model</h2>
 <p>The model depicted in this document considers carbon allocation with a process based approach. It was originally described by <span class="citation">Haverd et al. (2016)</span>.</p>
 <table>
-<caption>state_variables<br />
-The model section in the yaml file has no subsection: additional_variables.</caption>
+<caption>state_variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Name</th>
@@ -46,6 +45,60 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <td align="left"><span class="math inline">\(C_{stem}\)</span></td>
 <td align="left">Trunk and coarse roots</td>
 <td align="left"><span class="math inline">\(molC\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:19%;">
+<caption>partitioning_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\alpha_{L}\)</span></td>
+<td align="left">carbon allocation coefficient, Heaviside step function that depends on C_L and C_R</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\alpha_{R}\)</span></td>
+<td align="left">carbon allocation coefficient, Heaviside step function that depends on C_L and C_R</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\alpha_{stem}\)</span></td>
+<td align="left">carbon allocation coefficient, Heaviside step function that depends on C_L and C_R</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>release_rates</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(k_{L}\)</span></td>
+<td align="left">First-order rate constant</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(k_{R}\)</span></td>
+<td align="left">First-order rate constant</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(m_{stem}\)</span></td>
+<td align="left">Stem biomass turnover</td>
+<td align="left"><span class="math inline">\(molC\cdot m^{-2}\cdot day^{-1}\)</span></td>
 </tr>
 </tbody>
 </table>

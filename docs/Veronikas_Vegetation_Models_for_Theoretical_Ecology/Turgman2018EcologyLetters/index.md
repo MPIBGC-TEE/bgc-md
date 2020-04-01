@@ -26,7 +26,32 @@ $C$|Non-structural carbon (NSC), starch|$kgC\cdot m^{-2}$
 $X$|Xylem biomass|$kgC\cdot m^{-2}$  
 $L$|Leaf and fine roots biomass which are linearly related through a constant|$kgC\cdot m^{-2}$  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$t$|time step|$month$  
+$A_{n}$|whole-plant net photosynthesis (classic photosynthetic model of CO2 demand for carbon-limited photosynthesis), function of the interstitial CO2 concentration, the daytime leaf respiration, the maximum rate of carboxylation, and empirical constants|-  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description|Expression  
+:-----|:-----|:-----:  
+$C_{i}$|initial NSC that covers carbon for two crown and fine root flushes|-  
+$W_{max}$|Maximum m sucrose loading rate and depends on tree size.|-  
+$k_{c}$|Michaelis constant for the sucrose loading rate|-  
+$W$|Sucrose loading rate from storage to the phloem|$W=\frac{C\cdot W_{max}}{C + C_{i}\cdot k_{c}}$  
+$L_{opt}$|Optimal total leaf biomass|-  
+$U$|Variable optimized in the system in the range [0,1]. Fraction of translocatable C invested in xylem reconstruction|$U=\frac{X\cdot\left(- L_{opt}\cdot\left(m_{L} + m_{X}\right) + W\right)}{W\cdot\left(L_{opt} + X\right)}$  
+  Table: cycling_rates  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$m_{X}$|Turnover rate of the xylem|$month^{-1}$  
+$m_{L}$|Turnover rate of the xylem|$month^{-1}$  
+  Table: release_rates  
+  
   
 Name|Description|Expression  
 :-----|:-----|:-----:  

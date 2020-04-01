@@ -62,7 +62,49 @@ $C_{lab}$|Labile C mass|$gC\cdot m^{-2}$
 $C_{w}$|Wood C mass|$gC\cdot m^{-2}$  
 $C_{r}$|Fine root C mass|$gC\cdot m^{-2}$  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$NPP$|\text{None}|$gC\cdot m^{-2}\cdot day^{-1}$  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$p_{2}$|Fraction of GPP respired|-  
+$p_{16}$|Fraction of labile transfers respired|$day^{-1}$  
+  Table: respiration_parameters  
+  
+  
+Name|Description  
+:-----|:-----  
+$p_{3}$|Fraction of NPP partitioned to foliage  
+$p_{4}$|Fraction of NPP partitioned to roots  
+  Table: partitioning_coefficients  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$p_{5}$|Turnover rate of foliage|$day^{-1}$  
+$p_{6}$|Turnover rate of wood|$day^{-1}$  
+$p_{7}$|Turnover rate of roots|$day^{-1}$  
+$p_{14}$|Fraction of leaf loss transferred to litter|-  
+$p_{15}$|Turnover rate of labile carbon|$day^{-1}$  
+  Table: cycling_rates  
+  
+  
+Name|Description|Expression|Unit  
+:-----|:-----|:-----:|:-----  
+$t$|time|-|$day$  
+$p_{10}$|Parameter in exponential term of temperature dependent rate parameter|-|-  
+$mint$|Dayly minimum temperature|-|-  
+$maxt$|Dayly maximum temperature|-|-  
+$T_{rate}$|Temperature sensitive rate parameter|$T_{rate}=0.5\cdot e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)}$|-  
+$multtl$|Turnover of labile C (0 = off, 1 = On)|-|-  
+$multtf$|Turnover of foliage C (0 = off, 1 = On)|-|-  
+  Table: phenology_parameters  
+  
   
 Name|Description|Expression  
 :-----|:-----|:-----:  

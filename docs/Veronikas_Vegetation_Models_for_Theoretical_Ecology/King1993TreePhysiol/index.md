@@ -41,7 +41,33 @@ $F$|Foliage dry mass|$kgC\cdot m^{-2}$
 $R$|Fine roots dry mass|$kgC\cdot m^{-2}$  
 $W$|Woody tissue dry mass|$kgC\cdot m^{-2}$  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description|Expression|Unit  
+:-----|:-----|:-----:|:-----  
+$k$|Radiation extinction coefficient of canopy|-|-  
+$\Phi_{0}$|Incident PAR|-|$MJ\cdot m\cdot ^{-2}\cdot year^{-1}$  
+$\omega$|Specific leaf area|-|$m\cdot ^2\cdot kg^{-1}$  
+$\Phi$|Annual photosynthetically active radiation (PAR) intercepted by the canopy|$\Phi=\Phi_{0}\cdot\left(1 - e^{- F\cdot k\cdot\omega}\right)$|$MJ\cdot m\cdot ^{-2}\cdot year^{-1}$  
+$\epsilon$|Light utilization coefficient|-|$kg\cdot MJ^{-1}$  
+$G$|Rate of biomass production per unit ground area|$G=\Phi\cdot\epsilon$|$kg\cdot m^{-2}\cdot year^{-1}$  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description|Expression  
+:-----|:-----|:-----:  
+$\eta_{f}$|Fraction of biomass production partitioned to leaves|-  
+$\eta_{r}$|Fraction of biomass production partitioned to roots|-  
+$\eta_{w}$|Fraction of biomass production partitioned to wood|$\eta_{w}=-\eta_{f} -\eta_{r} + 1$  
+  Table: allocation_coefficients  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$\gamma_{f}$|Senescence rate per unit foliage biomass|$kg^{-1}$  
+$\gamma_{r}$|Senescence rate per unit fine roots biomass|$kg^{-1}$  
+  Table: cycling_rates  
+  
   
 Name|Description|Expression  
 :-----|:-----|:-----:  

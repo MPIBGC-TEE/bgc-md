@@ -24,8 +24,7 @@
 <h3 id="space-scale">Space Scale</h3>
 <p>forest</p>
 <table>
-<caption>state_variables<br />
-The model section in the yaml file has no subsection: additional_variables.</caption>
+<caption>state_variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Name</th>
@@ -48,6 +47,134 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <td align="left"><span class="math inline">\(C_{L}\)</span></td>
 <td align="left">Carbon in leaf</td>
 <td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>photosynthetic_parameters</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(t\)</span></td>
+<td align="left">time step</td>
+<td align="left"><span class="math inline">\(year\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(NPP\)</span></td>
+<td align="left">Net Primary Production</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(L\)</span></td>
+<td align="left">Scalar light availability</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(W\)</span></td>
+<td align="left">Scalar water availability</td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>nutrient_uptake</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(N_{ava}\)</span></td>
+<td align="left">effect of nitrogen availability on carbon allocation</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>partitioning_rates</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\Omega\)</span></td>
+<td align="left">Sensitivity of allocation to changes in resources availability. If =0, partitioning is determined by constant allocation fractions.</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\epsilon_{S}\)</span></td>
+<td align="left">Parameter relative to vegetation type</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\epsilon_{R}\)</span></td>
+<td align="left">Parameter relative to vegetation type</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\epsilon_{L}\)</span></td>
+<td align="left">Parameter relative to vegetation type</td>
+<td align="center"><span class="math inline">\(\epsilon_{L}=-\epsilon_{R} -\epsilon_{S} + 1\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{S}\)</span></td>
+<td align="left">Allocation fraction to stem</td>
+<td align="center"><span class="math inline">\(a_{S}=\frac{\Omega\cdot\left(- L - 0.5\cdot N_{ava} + 1.5\right) +\epsilon_{S}}{\Omega\cdot\left(- L - N_{ava} - W + 3\right) + 1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(a_{R}\)</span></td>
+<td align="left">Allocation fraction to root</td>
+<td align="center"><span class="math inline">\(a_{R}=\frac{\Omega\cdot\left(- 0.5\cdot N_{ava} - W + 1.5\right) +\epsilon_{R}}{\Omega\cdot\left(- L - N_{ava} - W + 3\right) + 1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{L}\)</span></td>
+<td align="left">Allocation fraction to leaf</td>
+<td align="center"><span class="math inline">\(a_{L}=\frac{\epsilon_{L}}{\Omega\cdot\left(- L - N_{ava} - W + 3\right) + 1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>cycling_rates</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\gamma_{S}\)</span></td>
+<td align="left">Stem turnover rate</td>
+<td align="left"><span class="math inline">\(years\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\gamma_{R}\)</span></td>
+<td align="left">Root turnover rate</td>
+<td align="left"><span class="math inline">\(years\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\gamma_{L}\)</span></td>
+<td align="left">Stem turnover rate</td>
+<td align="left"><span class="math inline">\(years\)</span></td>
 </tr>
 </tbody>
 </table>

@@ -51,7 +51,37 @@ $C_{leaf}$|Plant (carbon) pool Leaf
 $C_{root}$|Plant (carbon) pool Root  
 $C_{wood}$|Plant (carbon) pool Wood  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description|Expression|Unit  
+:-----|:-----|:-----:|:-----  
+$\Delta_{t}$|Time step of model integration|-|$d$  
+$N_{min}$|Amount of mineral N in soil|-|$gN\cdot m^{-2}$  
+$P_{lab}$|Amount of labile P in soil|-|$gP\cdot m^{-2}$  
+$F_{nupmin}$|Minimum amount of N uptake required to sustain a given NPP|-|-  
+$F_{pupmin}$|Minimum amount of P uptake required to sustain a given NPP|-|-  
+$x_{nup}$|Nitrogen uptake limitation on NPP|$x_{nup}=\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}}\right)$|-  
+$x_{pup}$|Phosphorus uptake limitation on NPP|$x_{pup}=\min\left(1,\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)$|-  
+$x_{npup}$|Nutrient uptake limiting factor|$x_{npup}=\min\left(x_{nup}, x_{pup}\right)$|-  
+$n_{leaf}$|N:C ratio of leaf biomass|-|$gN/gC$  
+$p_{leaf}$|P:C ratio of leaf biomass|-|$gP/gC$  
+$k_{n}$|Empirical constant|-|$gN\cdot (gC)^{-1}$  
+$k_{p}$|Empirical constant|-|$gP\cdot (gC)^{-1}$  
+$x_{nleaf}$|\text{None}|$x_{nleaf}=\frac{n_{leaf}}{k_{n} + n_{leaf}}$|-  
+$x_{pleaf}$|\text{None}|$x_{pleaf}=\frac{p_{leaf}}{k_{p} + p_{leaf}}$|-  
+$x_{npleaf}$|Nutrient concentration limiting factor|$x_{npleaf}=\min\left(x_{nleaf}, x_{pleaf}\right)$|-  
+$F_{cmax}$|Nutrient unlimited NPP|-|$gC\cdot m^{-2}\cdot d^{-1}$  
+$F_{c}$|Net Primary Productivity (flux)|$F_{c}=F_{cmax}\cdot x_{npleaf}\cdot x_{npup}$|$gC\cdot m^{-2}\cdot d^{-1}$  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description  
+:-----|:-----  
+$a_{leaf}$|Fraction of NPP allocated to plant pool Leaf  
+$a_{root}$|Fraction of NPP allocated to plant pool Root  
+$a_{wood}$|Fraction of NPP allocated to plant pool Wood  
+  Table: allocation_coefficients  
+  
   
 Name|Description|Expression|Unit  
 :-----|:-----|:-----:|:-----  

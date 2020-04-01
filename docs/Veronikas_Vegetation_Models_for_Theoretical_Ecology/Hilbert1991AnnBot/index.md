@@ -74,6 +74,37 @@ $N$|Substrate nitrogen concentration|$N=\frac{W_{N}}{W_{g}}$|-
   Table: additional_variables  
   
   
+Name|Description|Expression|Unit  
+:-----|:-----|:-----:|:-----  
+$t$|time step|-|$day$  
+$I_{dens}$|(I) photon flux density. Photosynthetically active radiation.|-|$[\mu mol\, m^{-2}\,s^{-1}]$  
+$h_{max}$|leaf max. thickness|-|$[m]$  
+$h_{half}$|$h_{0.5}$ leaf half thickness|-|-  
+$\rho$|leaf density|-|-  
+$h$|\text{None}|$h=\frac{I_{dens}\cdot h_{max}}{I_{dens} + h_{half}}$|-  
+$A$|Area|$A=\frac{W_{s}}{h\cdot\rho}$|-  
+$N_{a}$|Leaf nitrogen concentration|$N_{a}=\frac{W_{p}\cdot f_{np}}{A}$|$gN\cdot m^{-2}$  
+$C_{i}$|Intercellular CO_2 concentration|-|$[\mu l\, l^{-1}]$  
+$V_{cmax}$|Maximum carboxylation velocity|$V_{cmax}=35.76\cdot N_{a} + 12.42$|$[\mu mol CO_2\, m^{-2}\,s^{-1}]$  
+$J_{max}$|Maximum rate of electron transport|$J_{max}=92.55\cdot N_{a} + 13.85$|$[\mu Eq\, m^{-2}\,s^{-1}]$  
+$J$|Rate of electron transport|$J=\frac{I_{dens}\cdot J_{max}}{I_{dens} + 2.1\cdot J_{max}}$|-  
+$R_{d}$|Dark respiration rate|$R_{d}=0.775\cdot N_{a} - 0.238$|$[\mu mol CO_2\, m^{-2}\,s^{-1}]$  
+$A_{1}$|RuBP saturated portion of the carbon dioxide response curve|$A_{1}=- R_{d} +\frac{V_{cmax}\cdot\left(C_{i} - 31\right)}{C_{i} + 827}$|$[\mu mol CO_2\, m^{-2}\,s^{-1}]$  
+$A_{2}$|RuBP limited portion of the carbon dioxide response curve|$A_{2}=\frac{J\cdot\left(C_{i} - 31\right)}{4.5\cdot C_{i} + 325.5} - R_{d}$|$[\mu mol CO_2\, m^{-2}\,s^{-1}]$  
+$\sigma_{c}$|Photosynthetic rate per unit leaf|$\sigma_{c}=\min\left(A_{1}, A_{2}\right)$|-  
+  Table: photosynthetic_parameters  
+  
+  
+Name|Description|Expression|Unit  
+:-----|:-----|:-----:|:-----  
+$P$|\text{None}|$P=\frac{W_{r}\cdot f_{C}\cdot\sigma_{r}}{A\cdot f_{N}\cdot\sigma_{c}}$|-  
+$Q$|\text{None}|$Q=\frac{f_{N}}{B\cdot f_{C}}$|-  
+$\lambda_{p}$|\text{None}|$\lambda_{p}=\frac{P}{P + Q + 1}$|-  
+$\lambda_{s}$|\text{None}|$\lambda_{s}=\frac{Q}{P + Q + 1}$|-  
+$\lambda_{r}$|\text{None}|$\lambda_{r}=\frac{1}{P + Q + 1}$|-  
+  Table: allocation_coefficients  
+  
+  
 Name|Description|Expression  
 :-----|:-----|:-----:  
 $x$|vector of states for vegetation|$x=\left[\begin{matrix}W_{N}\\W_{C}\\W_{p}\\W_{s}\\W_{r}\end{matrix}\right]$  

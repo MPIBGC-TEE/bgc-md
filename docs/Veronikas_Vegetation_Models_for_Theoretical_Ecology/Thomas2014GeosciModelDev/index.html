@@ -24,8 +24,7 @@
 <h3 id="space-scale">Space Scale</h3>
 <p>global</p>
 <table>
-<caption>state_variables<br />
-The model section in the yaml file has no subsection: additional_variables.</caption>
+<caption>state_variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Name</th>
@@ -56,6 +55,170 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <tr class="even">
 <td align="left"><span class="math inline">\(C_{labileRa}\)</span></td>
 <td align="left">Maintenance respiration pool</td>
+</tr>
+</tbody>
+</table>
+<table style="width:40%;">
+<caption>photosynthetic_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(GPP\)</span></td>
+<td align="left">Photosynthesis; based on ACM model (see article for description)</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(gC\cdot day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:29%;">
+<caption>respiration_fluxes</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(Ra_{growth}\)</span></td>
+<td align="left">Growth respiration that occurs when tissue is allocated; a constant fraction of carbon allocated to tissue</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(Ra_{excess}\)</span></td>
+<td align="left">Respiration that occurs when labile C exceeds a maximum labile C store; used for N fixation</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(Ra_{main}\)</span></td>
+<td align="left">Respiration of living tissues; a function of N content and temperature</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:29%;">
+<caption>allocation_fluxes</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{budC2leaf}\)</span></td>
+<td align="left">Allocation from bud C pool to leaf C</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(a_{woodC}\)</span></td>
+<td align="left">Allocation from labile C to wood C</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{rootC}\)</span></td>
+<td align="left">Allocation from labile C to root C</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(a_{budC2Ramain}\)</span></td>
+<td align="left">Allocation of bud C pool to maintenance respiration pool when maintain respiration pool reaches zero; represents forgoing future leaf C to prevent carbon starvation.</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{budC}\)</span></td>
+<td align="left">Allocation of labile C to bud C; a fraction of the potential maximum leaf C</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(a_{Ramain}\)</span></td>
+<td align="left">Allocation of labile C to future maintenance respiration; helps prevent carbon starvation during periods of negative NPP</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{labileRamain}\)</span></td>
+<td align="left">Allocation of labile C to respiration of living tissues</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:40%;">
+<caption>turnover_fluxes</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\tau_{leaf}\)</span></td>
+<td align="left">Turnover of leaf (C and N)</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\tau_{wood}\)</span></td>
+<td align="left">Turnover of wood (C and N)</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\tau_{root}\)</span></td>
+<td align="left">Turnover of root (C and N)</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(t_{leafC}\)</span></td>
+<td align="left">Turnover of leaf C to litter C; constant over year in humid tropics; seasonal otherwise</td>
+<td align="center"><span class="math inline">\(t_{leafC}=C_{leaf}\cdot\tau_{leaf}\)</span></td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(t_{woodC}\)</span></td>
+<td align="left">Turnover of wood C to CWDC pool; occurs throughout year</td>
+<td align="center"><span class="math inline">\(t_{woodC}=C_{wood}\cdot\tau_{wood}\)</span></td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(t_{rootC}\)</span></td>
+<td align="left">Turnover of root C to litter C; occurs throughout year</td>
+<td align="center"><span class="math inline">\(t_{rootC}=C_{root}\cdot\tau_{root}\)</span></td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
 </tr>
 </tbody>
 </table>

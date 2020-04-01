@@ -64,8 +64,7 @@
 </tbody>
 </table>
 <table>
-<caption>state_variables<br />
-The model section in the yaml file has no subsection: additional_variables.</caption>
+<caption>state_variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Name</th>
@@ -84,6 +83,127 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <tr class="odd">
 <td align="left"><span class="math inline">\(C_{w}\)</span></td>
 <td align="left">Carbon in woody tissue</td>
+</tr>
+</tbody>
+</table>
+<table style="width:40%;">
+<caption>photosynthetic_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(t\)</span></td>
+<td align="left"></td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(day\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(GPP\)</span></td>
+<td align="left">Photosynthetic rate (Carbon input) at time t</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(gC\cdot day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(T\)</span></td>
+<td align="left">Temperature</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(Q_{10}\)</span></td>
+<td align="left">Temperature quotient that describes a change in decomposition rate for evey 10°C difference in temperature</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(W\)</span></td>
+<td align="left">Volumetric soil moisture</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(f_{W}\)</span></td>
+<td align="left">Function of W</td>
+<td align="center"><span class="math inline">\(f_{W}=\min\left(1, 0.5\cdot W\right)\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(f_{T}\)</span></td>
+<td align="left">Function of T</td>
+<td align="center"><span class="math inline">\(f_{T}=Q_{10}^{\frac{T}{10} - 1}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\epsilon_{t}\)</span></td>
+<td align="left">Environmental scalar</td>
+<td align="center"><span class="math inline">\(\epsilon_{t}=f_{T}\cdot f_{W}\)</span></td>
+<td align="left"><span class="math inline">\(km^2\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:19%;">
+<caption>allocation_coefficients</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\eta_{f}\)</span></td>
+<td align="left">Fixed partitioning ratio (fraction) of available carbon allocated to foliage</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\eta_{r}\)</span></td>
+<td align="left">Fixed partitioning ratio (fraction) of available carbon allocated to roots</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\eta_{w}\)</span></td>
+<td align="left">Fixed partitioning ratio (fraction) of available carbon allocated to wood</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>cycling_rates</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\gamma_{f}\)</span></td>
+<td align="left">Foliage turnover rate</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\gamma_{r}\)</span></td>
+<td align="left">Roots turnover rate</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\gamma_{w}\)</span></td>
+<td align="left">Wood turnover rate</td>
+<td align="left">-</td>
 </tr>
 </tbody>
 </table>

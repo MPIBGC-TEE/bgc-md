@@ -31,7 +31,24 @@ $C_{f}$|Carbon in foliage
 $C_{r}$|Carbon in roots  
 $C_{w}$|Carbon in woody tissue  
   Table: state_variables  
-The model section in the yaml file has no subsection: additional_variables.  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$t$|time step|$year$  
+$\eta_{f}$|\text{None}|-  
+$\eta_{r}$|\text{None}|-  
+$\eta_{w}$|\text{None}|-  
+  Table: allocation_coefficients  
+  
+  
+Name|Description|Unit  
+:-----|:-----|:-----  
+$\gamma_{f}$|\text{None}|-  
+$\gamma_{r}$|\text{None}|-  
+$\gamma_{w}$|\text{None}|-  
+  Table: cycling_rates  
+  
   
 Name|Description|Expression  
 :-----|:-----|:-----:  

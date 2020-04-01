@@ -111,6 +111,199 @@
 </tr>
 </tbody>
 </table>
+<table style="width:40%;">
+<caption>photosynthetic_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(I_{0}\)</span></td>
+<td align="left">Incident PAR</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(GJ\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\sigma\)</span></td>
+<td align="left">Leaf area per unit carbon</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(m^{2}\cdot kgC^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(k\)</span></td>
+<td align="left">Light extinction coefficient</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(kgC\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(APAR\)</span></td>
+<td align="left">Absorbed photosynthetically active radiation</td>
+<td align="center"><span class="math inline">\(APAR=I_{0}\cdot\left(1 - e^{- C_{f}\cdot k\cdot\sigma}\right)\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(E_{nf}\)</span></td>
+<td align="left">Function that represents the dependence of NPP on foliar N:C ratio (n_f)</td>
+<td align="center"><span class="math inline">\(E_{nf}=\begin{cases}\frac{\left(n_{crit} + 0.017\right)\cdot\left(1.84\cdot n_{f} - 0.01\right)}{\left(1.84\cdot n_{crit} - 0.01\right)\cdot\left(n_{f} + 0.017\right)} &amp;\text{for}\: n_{crit} &gt; n_{f}\\1 &amp;\text{for}\: n_{crit} &lt; n_{f}\end{cases}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\epsilon_{young}\)</span></td>
+<td align="left">Maximum gross PAR utilization efficiency of young stands</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(gC\cdot MJ^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\epsilon_{old}\)</span></td>
+<td align="left">Maximum gross PAR utilization efficiency of old stands</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(gC\cdot MJ^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\epsilon_{0}\)</span></td>
+<td align="left">Maximum gross PAR utilization efficiency</td>
+<td align="center"><span class="math inline">\(\epsilon_{0}=\begin{cases}\epsilon_{young} &amp;\text{for}\: t{\leq} t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &gt; t_{1}\\\begin{cases}\epsilon_{young} -\frac{\left(-\epsilon_{old} +\epsilon_{young}\right)\cdot\left(t - t_{1}\right)}{- t_{1} + t_{2}} &amp;\text{for}\: t &lt; t_{2}\\\epsilon_{old} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases} &amp;\text{otherwise}\end{cases}\)</span></td>
+<td align="left"><span class="math inline">\(gC\cdot MJ^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(GPP\)</span></td>
+<td align="left">Gross primary production</td>
+<td align="center"><span class="math inline">\(GPP=APAR\cdot E_{nf}\cdot\epsilon_{0}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(NPP\)</span></td>
+<td align="left">Annual net primary production</td>
+<td align="center"><span class="math inline">\(NPP=GPP - R_{c} - R_{m}\)</span></td>
+<td align="left"><span class="math inline">\(kgC\cdot m^{-2}\cdot year^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:40%;">
+<caption>respiration_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(R_{c}\)</span></td>
+<td align="left">Total construction respiration</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(R_{0}\)</span></td>
+<td align="left">Respiration rate per unit nitrogen content corresponding to a temperature of 0°C</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(kgC\cdot kgN^{-1}\cdot year^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(R_{mf}\)</span></td>
+<td align="left">Annual maintenance respiration rate of foliage (dark period only)</td>
+<td align="center"><span class="math inline">\(R_{mf}=0.5\cdot N_{f}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(R_{mr}\)</span></td>
+<td align="left">Annual maintenance respiration rate of fine roots (dark period only)</td>
+<td align="center"><span class="math inline">\(R_{mr}=N_{r}\cdot Q_{10}^{\frac{T_{a}}{10}}\cdot R_{0}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(R_{msw}\)</span></td>
+<td align="left">Annual maintenance respiration rate of sapwood (dark period only)</td>
+<td align="center"><span class="math inline">\(R_{msw}=0.00876\cdot C_{sw}\cdot Q_{010}^{\frac{T_{a}}{10}}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(R_{m}\)</span></td>
+<td align="left">Total maintenance respiration</td>
+<td align="center"><span class="math inline">\(R_{m}=R_{mf} + R_{mr} + R_{msw}\)</span></td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<table style="width:31%;">
+<caption>allocation_coefficients</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{f}\)</span></td>
+<td align="left">Allocation fraction to foliar biomass</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(a_{r}\)</span></td>
+<td align="left">Allocation fraction to roots biomass</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{w}\)</span></td>
+<td align="left">Allocation fraction to wood (in stem, branches and large structurl roots) biomass</td>
+<td align="center"><span class="math inline">\(a_{w}=- a_{f} - a_{r} + 1\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>cycling_rates</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\gamma_{f}\)</span></td>
+<td align="left">Foliage senescence rate</td>
+<td align="left"><span class="math inline">\(yr^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\gamma_{r}\)</span></td>
+<td align="left">Roots senescence rate</td>
+<td align="left"><span class="math inline">\(yr^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\gamma_{w}\)</span></td>
+<td align="left">Wood senescence rate</td>
+<td align="left"><span class="math inline">\(yr^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
 <table style="width:31%;">
 <caption>components</caption>
 <colgroup>

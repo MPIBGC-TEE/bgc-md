@@ -74,8 +74,7 @@
 </tbody>
 </table>
 <table>
-<caption>state_variables<br />
-The model section in the yaml file has no subsection: additional_variables.</caption>
+<caption>state_variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Name</th>
@@ -103,6 +102,162 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <td align="left"><span class="math inline">\(C_{r}\)</span></td>
 <td align="left">Fine root C mass</td>
 <td align="left"><span class="math inline">\(gC\cdot m^{-2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>photosynthetic_parameters</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(NPP\)</span></td>
+<td align="left"></td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>respiration_parameters</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(p_{2}\)</span></td>
+<td align="left">Fraction of GPP respired</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(p_{16}\)</span></td>
+<td align="left">Fraction of labile transfers respired</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>partitioning_coefficients</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(p_{3}\)</span></td>
+<td align="left">Fraction of NPP partitioned to foliage</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(p_{4}\)</span></td>
+<td align="left">Fraction of NPP partitioned to roots</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>cycling_rates</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(p_{5}\)</span></td>
+<td align="left">Turnover rate of foliage</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(p_{6}\)</span></td>
+<td align="left">Turnover rate of wood</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(p_{7}\)</span></td>
+<td align="left">Turnover rate of roots</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(p_{14}\)</span></td>
+<td align="left">Fraction of leaf loss transferred to litter</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(p_{15}\)</span></td>
+<td align="left">Turnover rate of labile carbon</td>
+<td align="left"><span class="math inline">\(day^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table style="width:40%;">
+<caption>phenology_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(t\)</span></td>
+<td align="left">time</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(day\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(p_{10}\)</span></td>
+<td align="left">Parameter in exponential term of temperature dependent rate parameter</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(mint\)</span></td>
+<td align="left">Dayly minimum temperature</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(maxt\)</span></td>
+<td align="left">Dayly maximum temperature</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(T_{rate}\)</span></td>
+<td align="left">Temperature sensitive rate parameter</td>
+<td align="center"><span class="math inline">\(T_{rate}=0.5\cdot e^{0.5\cdot p_{10}\cdot\left(maxt + mint\right)}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(multtl\)</span></td>
+<td align="left">Turnover of labile C (0 = off, 1 = On)</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(multtf\)</span></td>
+<td align="left">Turnover of foliage C (0 = off, 1 = On)</td>
+<td align="center">-</td>
+<td align="left">-</td>
 </tr>
 </tbody>
 </table>

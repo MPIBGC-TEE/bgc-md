@@ -84,8 +84,7 @@
 </tbody>
 </table>
 <table>
-<caption>state_variables<br />
-The model section in the yaml file has no subsection: additional_variables.</caption>
+<caption>state_variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Name</th>
@@ -104,6 +103,150 @@ The model section in the yaml file has no subsection: additional_variables.</cap
 <tr class="odd">
 <td align="left"><span class="math inline">\(C_{wood}\)</span></td>
 <td align="left">Plant (carbon) pool Wood</td>
+</tr>
+</tbody>
+</table>
+<table style="width:40%;">
+<caption>photosynthetic_parameters</caption>
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+<th align="center">Expression</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\Delta_{t}\)</span></td>
+<td align="left">Time step of model integration</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(d\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(N_{min}\)</span></td>
+<td align="left">Amount of mineral N in soil</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(gN\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(P_{lab}\)</span></td>
+<td align="left">Amount of labile P in soil</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(gP\cdot m^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(F_{nupmin}\)</span></td>
+<td align="left">Minimum amount of N uptake required to sustain a given NPP</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(F_{pupmin}\)</span></td>
+<td align="left">Minimum amount of P uptake required to sustain a given NPP</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(x_{nup}\)</span></td>
+<td align="left">Nitrogen uptake limitation on NPP</td>
+<td align="center"><span class="math inline">\(x_{nup}=\min\left(1,\frac{N_{min}}{\Delta_{t}\cdot F_{nupmin}}\right)\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(x_{pup}\)</span></td>
+<td align="left">Phosphorus uptake limitation on NPP</td>
+<td align="center"><span class="math inline">\(x_{pup}=\min\left(1,\frac{P_{lab}}{\Delta_{t}\cdot F_{pupmin}}\right)\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(x_{npup}\)</span></td>
+<td align="left">Nutrient uptake limiting factor</td>
+<td align="center"><span class="math inline">\(x_{npup}=\min\left(x_{nup}, x_{pup}\right)\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(n_{leaf}\)</span></td>
+<td align="left">N:C ratio of leaf biomass</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(gN/gC\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(p_{leaf}\)</span></td>
+<td align="left">P:C ratio of leaf biomass</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(gP/gC\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(k_{n}\)</span></td>
+<td align="left">Empirical constant</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(gN\cdot (gC)^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(k_{p}\)</span></td>
+<td align="left">Empirical constant</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(gP\cdot (gC)^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(x_{nleaf}\)</span></td>
+<td align="left"></td>
+<td align="center"><span class="math inline">\(x_{nleaf}=\frac{n_{leaf}}{k_{n} + n_{leaf}}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(x_{pleaf}\)</span></td>
+<td align="left"></td>
+<td align="center"><span class="math inline">\(x_{pleaf}=\frac{p_{leaf}}{k_{p} + p_{leaf}}\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(x_{npleaf}\)</span></td>
+<td align="left">Nutrient concentration limiting factor</td>
+<td align="center"><span class="math inline">\(x_{npleaf}=\min\left(x_{nleaf}, x_{pleaf}\right)\)</span></td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(F_{cmax}\)</span></td>
+<td align="left">Nutrient unlimited NPP</td>
+<td align="center">-</td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot d^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(F_{c}\)</span></td>
+<td align="left">Net Primary Productivity (flux)</td>
+<td align="center"><span class="math inline">\(F_{c}=F_{cmax}\cdot x_{npleaf}\cdot x_{npup}\)</span></td>
+<td align="left"><span class="math inline">\(gC\cdot m^{-2}\cdot d^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>allocation_coefficients</caption>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{leaf}\)</span></td>
+<td align="left">Fraction of NPP allocated to plant pool Leaf</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(a_{root}\)</span></td>
+<td align="left">Fraction of NPP allocated to plant pool Root</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(a_{wood}\)</span></td>
+<td align="left">Fraction of NPP allocated to plant pool Wood</td>
 </tr>
 </tbody>
 </table>
