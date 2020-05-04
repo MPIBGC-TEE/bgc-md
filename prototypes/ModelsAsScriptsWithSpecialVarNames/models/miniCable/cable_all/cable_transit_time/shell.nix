@@ -19,7 +19,7 @@ with import <nixpkgs> {};
           libjpeg=libjpeg;
           openssh=openssh;
         } // ( 
-          with python37.pkgs; {
+          with python38.pkgs; {
             cython=cython;
             cftime=cftime;
             mpi4py=mpi4py;
