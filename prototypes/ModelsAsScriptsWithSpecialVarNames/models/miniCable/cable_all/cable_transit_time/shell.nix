@@ -9,23 +9,28 @@ with import <nixpkgs> {};
       gfortran =gfortran;
     };
     #my_netcdf4_python=import <nixpkgs/pkgs/development/python-modules/netcdf4/default.nix> {      
-    my_netcdf4_python=import ../my_netcdf4_python/default.nix{
-      stdenv=stdenv;
-      buildPythonPackage=python37.pkgs.buildPythonPackage;
-      fetchPypi=python37.pkgs.fetchPypi;
-      isPyPy=python37.pkgs.isPyPy;
-      pytest =python37.pkgs.pytest;
-      numpy=python37.pkgs.numpy;
-      zlib=zlib;
-      netcdf=netcdf-mpi; #important for parallel IO version
-      hdf5=hdf5-mpi; # important for parallel version
-      curl=curl;
-      libjpeg=libjpeg;
-      cython=python37.pkgs.cython;
-      cftime=python37.pkgs.cftime;
-      mpi4py=python37.pkgs.mpi4py;
-      openssh=openssh;
-    };
+      my_netcdf4_python=import ../my_netcdf4_python/default.nix (
+        { 
+          stdenv=stdenv;
+          zlib=zlib;
+          netcdf=netcdf-mpi; #important for parallel IO version
+          hdf5=hdf5-mpi; # important for parallel version
+          curl=curl;
+          libjpeg=libjpeg;
+          openssh=openssh;
+        } // ( 
+          with python37.pkgs; {
+            cython=cython;
+            cftime=cftime;
+            mpi4py=mpi4py;
+            buildPythonPackage=buildPythonPackage;
+            fetchPypi=fetchPypi;
+            isPyPy=isPyPy;
+            pytest =pytest;
+            numpy=numpy;
+          }
+        )
+      );
     mkDerivation = import ./autotools.nix pkgs;
   in mkDerivation {
     name ="cable";
