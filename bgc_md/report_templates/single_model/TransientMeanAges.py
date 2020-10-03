@@ -1,7 +1,9 @@
 def template(model):
-    from CompartmentalSystems.start_distributions import start_age_moments_from_zero_initial_content
+    from CompartmentalSystems.start_distributions import ( 
+            start_age_moments_from_zero_initial_content
+    )
     # include mean ages
-    fontsize = 20
+    # fontsize = 20
     rel = EmptyLine()
     rel += Header("Mean ages", 2)
 

@@ -62,27 +62,26 @@ class TestWriteReportElements(InDirTest):
     def test_write_html_with_picture(self):
         csl_file_path = gv.resources_path.joinpath('apa.csl')
         css_file_path = gv.resources_path.joinpath('buttondown.css')
-        rel=Text("some text before the first picture")
-        fig=plt.figure()
-        x_values=[2*pi/100*i for i in range(0,100)]
-        y_values=[sin(x) for x in x_values]
-        fig.add_subplot(1,1,1).plot(x_values,y_values)
-        
-        fig2=plt.figure()
-        n=1000
-        x=np.array([i/(2*n) for i in range(-n,n)],dtype="float")
-        y=np.exp(-x**2/2)
-        ax0=fig2.add_subplot(1,1,1)
-        number_of_bins=20
-        ax0.hist(y, number_of_bins, normed=1, histtype='stepfilled', facecolor='g', alpha=0.75)
-        rel+=MatplotlibFigure(fig,"Label","caption text2 ") 
-        rel+=Newline()
-        
-        rel+=Text("some text before the second picture")
-        rel+=MatplotlibFigure(fig2,"differentLabel","caption text 2") 
+        rel = Text("some text before the first picture")
+        fig = plt.figure()
+        x_values = [2*pi/100*i for i in range(0, 100)]
+        y_values = [sin(x) for x in x_values]
+        fig.add_subplot(1, 1, 1).plot(x_values, y_values)
+
+        fig2 = plt.figure()
+        n = 1000
+        x = np.array([i/(2*n) for i in range(-n, n)], dtype="float")
+        y = np.exp(-x**2/2)
+        ax0 = fig2.add_subplot(1, 1, 1)
+        number_of_bins = 20
+        ax0.hist(y, number_of_bins, histtype='stepfilled', facecolor='g', alpha=0.75)
+        rel += MatplotlibFigure(fig, "Label", "caption text2 ") 
+        rel += Newline()
+        rel += Text("some text before the second picture")
+        rel += MatplotlibFigure(fig2, "differentLabel", "caption text 2") 
         # now refer to the figures from the text
-        html_file_path=Path("text_with_figure.html")
-        rel.write_pypandoc_html(html_file_path,csl_file_path,css_file_path)
+        html_file_path = Path("text_with_figure.html")
+        rel.write_pypandoc_html(html_file_path, csl_file_path, css_file_path)
 
 
         

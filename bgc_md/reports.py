@@ -979,8 +979,8 @@ def render_parse():
 def render(template_path,*args,**kw):
     
     with template_path.open() as f:
-        #print('####################')
-        #print(str(template_path))
+        print('####################')
+        print(str(template_path))
         code= compile(f.read(),template_path,mode='exec')
         #code=f.read()
     
