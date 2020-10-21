@@ -10,6 +10,7 @@ partitioningScheme: dynamic
 claimedDynamicPart: "yes"
 spaceScale: global
 timeResolution: daily
+doi: "10.5194/bg-10-4137-2013"
 bibtex: "@article{Pavlick2013Biogeosciences,
          author = {R Pavlick and D T Drewry and K Bohn and B Reu and A Kleidon},
          doi = {10.5194/bg-10-4137-2013},

@@ -13,6 +13,7 @@ claimedDynamicPart: "yes"
 spaceScale: individual 
 #    unit: "1°"
 timeResolution: monthly 
+doi: 10.1093/oxfordjournals.aob.a088273
 abstract: "A model is developed that considers the allocation of carbon and nitrogen substrates to a protein compartment in the shoots, shoot structural components, and root biomass. Inclusion of a shoot-protein compartment allows variation in shoot-specific activity to be modelled as a function of leaf nitrogen concentration. Allocation to the biomass compartments is controlled by two partitioning variables that are defined by explicitly using the balanced activity hypothesis. The model produces balanced activity where the shoot-specific activity, as well as root and shoot biomass, vary in response to the above-ground (light and CO$_2$) and below-ground (nitrogen) environments. The predicted patterns of both root: shoot ratio and leaf nitrogen concentration in response to environmental resource availability are qualitatively consistent with general trends observed in plants."
 bibtex: "@article{Hilbert1991Annals_of_Botany,
             author = {Hilbert, David W. and Reynolds, James F.},
